@@ -2,9 +2,7 @@
 out/
 site/
 ContextProject.iml
-/logs/*
+logs/*
 .classpath
 .project
-.settings/org.eclipse.jdt.core.prefs
-.settings/org.eclipse.m2e.core.prefs
-.settings
+.settings/
