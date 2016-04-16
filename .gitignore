@@ -2,3 +2,7 @@
 out/
 site/
 ContextProject.iml
+logs/*
+.classpath
+.project
+.settings/
