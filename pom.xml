@@ -30,7 +30,7 @@
                        <phase>validate</phase>
                        <configuration>
                            <propertyExpansion>samedir=${basedir}</propertyExpansion>
-                           <configLocation>${basedir}/checkstyle.xml</configLocation>
+                           <configLocation>checkstyle.xml</configLocation>
                            <encoding>UTF-8</encoding>
                            <consoleOutput>true</consoleOutput>
                            <failsOnError>true</failsOnError>
