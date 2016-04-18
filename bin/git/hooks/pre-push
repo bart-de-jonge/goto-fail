@@ -41,7 +41,7 @@ elif [ "$tested" == "n" ]; then
     echo "Maven Test Failed!"
     exit 1
   fi
-  exit 1
+  exit 0
 else
   echo "unrecognized input"
   exit 1
