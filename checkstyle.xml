@@ -26,7 +26,7 @@
 
     <property name="severity" value="warning"/>
 
-    <property name="fileExtensions" value="java, properties, xml"/>
+     <!-- <property name="fileExtensions" value="java, properties, xml"/> -->
     <!-- Checks for whitespace                               -->
     <!-- See http://checkstyle.sf.net/config_whitespace.html -->
         <module name="FileTabCharacter">
@@ -34,6 +34,7 @@
         </module>
 
     <module name="TreeWalker">
+	<property name="severity" value="error"/>
         <module name="OuterTypeFilename"/>
         <module name="IllegalTokenText">
             <property name="tokens" value="STRING_LITERAL, CHAR_LITERAL"/>
@@ -196,11 +197,11 @@
              value="Method name ''{0}'' must match pattern ''{1}''."/>
         </module>
         <module name="SingleLineJavadoc">
-            <property name="ignoreInlineTags" value="false"/>
+            
         </module>
-        <module name="EmptyCatchBlock">
+        <!-- <module name="EmptyCatchBlock">
             <property name="exceptionVariableName" value="expected"/>
-        </module>
-        <module name="CommentsIndentation"/>
+        </module> 
+        <module name="CommentsIndentation"/> -->
     </module>
 </module>
