@@ -4,6 +4,7 @@ import lombok.Setter;
 public class MainClass {
     @Getter @Setter
     public static int counter;
+    private int x;
 
     /**
      * @param args - the main arguments.
@@ -12,5 +13,18 @@ public class MainClass {
         System.out.println(getCounter());
         System.out.println("Welcome to the main class of goto-fail;");
         System.out.println("For commit diff");
+        
     }
+    
+    /**
+     * Kek.
+     * @param a doeEensIets
+     */
+    public static void eenMethode(int a) {
+    	boolean x = true;
+    	
+    	
+    }
+    
+    
 }
