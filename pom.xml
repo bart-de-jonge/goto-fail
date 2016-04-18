@@ -37,6 +37,11 @@
      </execution>
    </executions>
             </plugin>
+			 <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5</version>
+            </plugin>
         </plugins>
 
         <directory>out</directory>
@@ -55,13 +60,7 @@
                 <directory>src/test/resources</directory>
             </testResource>
         </testResources>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5</version>
-            </plugin>
-        </plugins>
+       
     </build>
 
     <dependencies>
