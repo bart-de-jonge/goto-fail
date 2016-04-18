@@ -27,6 +27,15 @@
         </testResources>
     </build>
 
+    <dependencies>
+	    <dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <version>1.16.8</version>
+		    <scope>provided</scope>
+	    </dependency>
+    </dependencies>
+
     <reporting>
         <outputDirectory>site</outputDirectory>
         <plugins>
