@@ -13,8 +13,8 @@
         <outputDirectory>out/classes</outputDirectory>
         <finalName>${artifactId}-${version}</finalName>
         <testOutputDirectory>out/test-classes</testOutputDirectory>
-        <sourceDirectory>src/main/java</sourceDirectory>
-        <testSourceDirectory>src/test/java</testSourceDirectory>
+        <sourceDirectory>src/</sourceDirectory>
+        <testSourceDirectory>src/</testSourceDirectory>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -25,6 +25,13 @@
                 <directory>src/test/resources</directory>
             </testResource>
         </testResources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5</version>
+            </plugin>
+        </plugins>
     </build>
 
     <dependencies>
