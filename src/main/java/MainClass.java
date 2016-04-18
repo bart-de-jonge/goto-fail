@@ -2,6 +2,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class MainClass {
+    
     @Getter @Setter
     public static int counter;
     private int x;
@@ -13,7 +14,9 @@ public class MainClass {
         System.out.println(getCounter());
         System.out.println("Welcome to the main class of goto-fail;");
         System.out.println("For commit diff");
-        
+        System.out.println("Kek");
+        System.out.println("KEK");
+
     }
     
     /**

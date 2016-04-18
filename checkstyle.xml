@@ -25,7 +25,16 @@
     <property name="charset" value="UTF-8"/>
 
     <property name="severity" value="warning"/>
+
 	<module name="FileLength"/>
+
+	
+	<module name="SuppressionFilter">
+    	<property name="file" value="${basedir}/mysuppressions.xml" />
+    </module>
+
+  <module name="SuppressWarningsFilter" />
+
 
      <!-- <property name="fileExtensions" value="java, properties, xml"/> -->
     <!-- Checks for whitespace                               -->
