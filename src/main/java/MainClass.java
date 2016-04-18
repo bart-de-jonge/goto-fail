@@ -6,10 +6,11 @@ public class MainClass {
     public static int counter;
 
     /**
-     * @param args - the main arguments
+     * @param args - the main arguments.
      */
     public static void main(String[] args) {
         System.out.println(getCounter());
         System.out.println("Welcome to the main class of goto-fail;");
+        System.out.println("For commit diff");
     }
 }
