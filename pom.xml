@@ -54,8 +54,8 @@
         <outputDirectory>out/classes</outputDirectory>
         <finalName>${artifactId}-${version}</finalName>
         <testOutputDirectory>out/test-classes</testOutputDirectory>
-        <sourceDirectory>src/</sourceDirectory>
-        <testSourceDirectory>src/</testSourceDirectory>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -112,6 +112,7 @@
 					<propertyExpansion>samedir=${basedir}</propertyExpansion>
 					<configLocation>${basedir}/checkstyle.xml</configLocation>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>
+					<consoleOutput>true</consoleOutput>
 				</configuration>
 				<reportSets>
 					<reportSet>
