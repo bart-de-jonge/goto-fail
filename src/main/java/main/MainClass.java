@@ -1,31 +1,10 @@
-/**
- * 
- */
 package main;
 
-<<<<<<< Updated upstream
-/**
- * @author Bart
- *
- */
-public class MainClass {
-
-	/**
-	 * @param arg - the main arguments
-	 */
-	public static void main(String[] args) {
-		
-		System.out.println("Welcom to the main class of goto-fail;");
-
-	}
-
-=======
 import lombok.Getter;
 import lombok.Setter;
 
 public class MainClass {
-    @Getter
-    @Setter
+    @Getter @Setter
     public static int counter;
 
     /**
@@ -34,7 +13,6 @@ public class MainClass {
     public static void main(String[] args) {
         setCounter(5);
         System.out.println(getCounter());
-    System.out.println("Welcome to the main class of goto-fail;");
+        System.out.println("Welcome to the main class of goto-fail;");
     }
->>>>>>> Stashed changes
 }
