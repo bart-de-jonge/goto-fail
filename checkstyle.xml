@@ -46,7 +46,7 @@
 			<property name="maxTotal" value="50" />
 		</module>
 		<module name="ParameterNumber">
-			<property name="max" value="10"
+			<property name="max" value="10" />
 		</module>
 		<module name="OuterTypeNumber" />
         <module name="AvoidEscapedUnicodeCharacters">
