@@ -21,28 +21,28 @@
     <build>
         <plugins>
            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-   <artifactId>maven-checkstyle-plugin</artifactId>
-   <version>2.16</version>
-   <executions>
-     <execution>
-       <id>validate</id>
-       <phase>validate</phase>
-       <configuration>
-        <propertyExpansion>samedir=${basedir}</propertyExpansion>
-         <configLocation>${basedir}/checkstyle.xml</configLocation>
-         <encoding>UTF-8</encoding>
-         <consoleOutput>true</consoleOutput>
-         <failsOnError>true</failsOnError>
-		 
-         <linkXRef>false</linkXRef>
-       </configuration>
-       <goals>
-         <goal>check</goal>
-       </goals>
-     </execution>
-   </executions>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-checkstyle-plugin</artifactId>
+               <version>2.16</version>
+               <executions>
+                   <execution>
+                       <id>validate</id>
+                       <phase>validate</phase>
+                       <configuration>
+                           <propertyExpansion>samedir=${basedir}</propertyExpansion>
+                           <configLocation>${basedir}/checkstyle.xml</configLocation>
+                           <encoding>UTF-8</encoding>
+                           <consoleOutput>true</consoleOutput>
+                           <failsOnError>true</failsOnError>
+                           <linkXRef>false</linkXRef>
+                       </configuration>
+                       <goals>
+                           <goal>check</goal>
+                       </goals>
+                   </execution>
+               </executions>
             </plugin>
+
 			 <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -66,7 +66,6 @@
                 <directory>src/test/resources</directory>
             </testResource>
         </testResources>
-       
     </build>
 
     <dependencies>
@@ -76,31 +75,31 @@
 		    <version>1.16.8</version>
 		    <scope>provided</scope>
 	    </dependency>
-		
-		
+
 		<dependency>
 			<groupId>pmd</groupId>
 			<artifactId>pmd</artifactId>
 				<version>3.5</version>
 		</dependency>
+
 		<dependency>
 			<groupId>findbugs</groupId>
 			<artifactId>findbugs</artifactId>
 				<version>1.0.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>1.9.5</version>
 		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		
     </dependencies>
 
     <reporting>
@@ -123,28 +122,31 @@
 				</reportSets>
 			</plugin>
 
-<plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>3.0.2</version>
-      </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>3.0.2</version>
+            </plugin>
+
 			<plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-jxr-plugin</artifactId>
-      <version>2.3</version>
-    </plugin>
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-pmd-plugin</artifactId>
-      <version>3.5</version>
-      <configuration>
-        <targetJdk>1.8</targetJdk>
-		<skipEmptyReport>false</skipEmptyReport>
-        <rulesets>
-          <ruleset>${basedir}/pmd_rules.xml</ruleset>
-        </rulesets>
-      </configuration>
-    </plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.5</version>
+                <configuration>
+                    <targetJdk>1.8</targetJdk>
+                    <skipEmptyReport>false</skipEmptyReport>
+                    <rulesets>
+                        <ruleset>${basedir}/pmd_rules.xml</ruleset>
+                    </rulesets>
+                </configuration>
+            </plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
@@ -153,9 +155,6 @@
 					<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</reporting>
-
-
 </project>
