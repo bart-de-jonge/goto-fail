@@ -4,7 +4,7 @@ jdk:
 notifications:
   slack: gotofail:rNibSSSvoPtDAS7wws1KtdXd
 before_install:
-  - "[ \"$BUILD_PR_BRANCH\" = \"true\" ] && git checkout $TRAVIS_BRANCH ; true"
+  - "[ \"$BUILD_PR_BRANCH\" = \"true\" ] && git branch -b dummyBranch && git checkout master && git merge dummyBranch; true"
 env:
   - BUILD_PR_BRANCH=true
 
