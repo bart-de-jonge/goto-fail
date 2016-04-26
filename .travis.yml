@@ -6,6 +6,7 @@ jdk:
   - oraclejdk8
 notifications:
   slack: gotofail:rNibSSSvoPtDAS7wws1KtdXd
+  email: false
 before_install:
   - "[ \"$BUILD_PR_BRANCH\" = \"true\" ] && git checkout -b dummyBranch && git checkout master && git merge dummyBranch; true"
 env:
