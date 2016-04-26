@@ -19,7 +19,7 @@ public class RootPane extends Application {
     private RootFooterArea rootFooterArea;
 
     @Override
-    public void start(Stagoue primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws Exception {
 
         // Create a BorderPane,
         // a layout with 5 areas: top, bottom, left, right and center,

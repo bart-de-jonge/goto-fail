@@ -6,5 +6,5 @@
 
 <suppressions>
     <suppress files="[/\\]src[/\\]test[/\\]java[/\\][a-zA-Z0-9]*" checks="[a-zA-Z0-9]*"/>
-    <suppress checks="MagicNumberCheck" files="gui.*"/>
+    <suppress checks="MagicNumberCheck" files="gui/*"/>
 </suppressions>
