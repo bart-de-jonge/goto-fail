@@ -14,6 +14,7 @@ public class Camera {
     private String description;
 
     // Number of counts this camera needs at maximum to move to a new position.
+    // This defines the minimum margin between two consecutive shots
     @Getter @Setter
     private int movementMargin;
 
