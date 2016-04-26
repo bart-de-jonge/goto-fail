@@ -2,8 +2,13 @@ package data;
 
 import lombok.Getter;
 import lombok.Setter;
+import xml.XmlReader;
+import xml.XmlWriter;
 
 import java.util.ArrayList;
+
+
+
 
 /**
  * Created by Bart.
@@ -33,6 +38,32 @@ public class ScriptingProject {
      */
     public ScriptingProject(String description) {
         this.description = description;
+    }
+
+    /**
+     * Method to write the current project to a file.
+     * @param fileName  - the file to write the project to
+     * @return          - boolean indicating if the write was successful
+     */
+    public boolean write(String fileName) {
+
+        // Write using XML, change if writing with another
+        // module is necessary
+        XmlWriter writer = new XmlWriter(fileName);
+        return writer.writeProject(this);
+    }
+
+    /**
+     * Method to write the current project to a file.
+     * @param fileName  - the file to write the project to
+     * @return          - boolean indicating if the write was successful
+     */
+    public static ScriptingProject read(String fileName) {
+
+        // Read using XML, change if reading with another
+        // module is necessary
+        XmlReader reader = new XmlReader(fileName);
+        return reader.readProject();
     }
 
     /**
