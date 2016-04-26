@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 class TopPane extends VBox {
 
     TopPane() {
+        // border style to mark it, for debugging for now.
         setStyle("-fx-border-style: solid inside;" +
                 "-fx-border-width: 1;");
 

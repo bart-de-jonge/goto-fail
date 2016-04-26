@@ -27,10 +27,13 @@ public class RootPane extends Application {
         // Create scene and set the stage. This is where the window is basically
         // created. Also has some useful settings.
 
-        Scene scene = new Scene(topLevelPane, 640, 480);
-
-        primaryStage.setTitle("Hoi ben een titel lol."); // title bar title
-        primaryStage.setScene(scene); // start resolution of application (keep low?)
+        primaryStage.setScene(new Scene(topLevelPane)); // start resolution of application (keep low?)
+        primaryStage.setTitle("Hoi ben een titel lol.");
+        primaryStage.setMinHeight(480);
+        primaryStage.setMinWidth(640);
+        primaryStage.setWidth(800);
+        primaryStage.setHeight(600);
+        primaryStage.centerOnScreen();
         primaryStage.show();
     }
 
