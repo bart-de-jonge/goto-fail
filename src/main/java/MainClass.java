@@ -1,11 +1,25 @@
-public class MainClass {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class MainClass extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        System.out.println( getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        primaryStage.setTitle("Hello World");
+        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.show();
+    }
 
     /**
      *  @param args - the main arguments.
      */
     public static void main(String[] args) {
-        System.out.println("Welcome to the main class of goto-fail;");
-
+        launch(args);
     }
     
 }
