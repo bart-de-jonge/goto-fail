@@ -11,12 +11,12 @@ import javafx.scene.layout.VBox;
  * Class that represents the whole of top-level elements in the gui.
  * In other words, the file-edit-view-help menus and any buttons below that.
  */
-class TopPane extends VBox {
+class RootHeaderArea extends VBox {
 
     /**
-     * TopPane Constructor.
+     * RootHeaderArea Constructor.
      */
-    TopPane() {
+    RootHeaderArea() {
         // border style to mark it, for debugging for now.
         setStyle("-fx-border-style: solid inside;"
                 + "-fx-border-width: 1;");

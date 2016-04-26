@@ -8,12 +8,12 @@ import javafx.scene.layout.HBox;
  * Class that represents the whole of bottom-level elements in the gui.
  * In other words, the bar at the bottom, at the least, goes here.
  */
-class BottomPane extends HBox {
+class RootFooterArea extends HBox {
 
     /**
-     * BottomPane Constructor.
+     * RootFooterArea Constructor.
      */
-    BottomPane() {
+    RootFooterArea() {
         // border style to mark it, for debugging for now.
         setStyle("-fx-border-style: solid inside;"
                 + "-fx-border-width: 1;");

@@ -1,4 +1,5 @@
 import gui.RootPane;
+import javafx.application.Application;
 
 public class MainClass {
 
@@ -6,9 +7,8 @@ public class MainClass {
      *  @param args - the main arguments.
      */
     public static void main(String[] args) {
-        RootPane root = new RootPane();
-        root.launch(RootPane.class, args);
         System.out.println("Welcome to the main class of goto-fail;");
+        Application.launch(RootPane.class, args);
     }
     
 }

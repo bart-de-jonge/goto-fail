@@ -3,9 +3,9 @@ package gui;
 /**
  * Created by markv on 4/26/2016.
  */
-public class RightPane {
+public class RootLeftArea {
 
-    RightPane() {
+    RootLeftArea() {
         // Dummy class for now.
     }
 

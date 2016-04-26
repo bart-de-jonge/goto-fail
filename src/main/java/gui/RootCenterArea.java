@@ -4,9 +4,9 @@ package gui;
  * Class representing the center (main section) of the gui.
  * In other words, the time line view goes here.
  */
-class CenterPane {
+class RootCenterArea {
 
-    CenterPane() {
+    RootCenterArea() {
         // Dummy class for now.
     }
 

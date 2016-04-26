@@ -10,41 +10,40 @@ import javafx.stage.Stage;
  */
 public class RootPane extends Application {
 
-    private int minResX = 640;
-    private int minResY = 480;
-    private int startResX = 800;
-    private int startResY = 600;
+    private int minimumResolutionX = 640;
+    private int minimumResolutionY = 480;
+    private int startingResolutionX = 800;
+    private int startingResolutionY = 600;
+    private BorderPane topLevelPane;
+    private RootHeaderArea rootHeaderArea;
+    private RootFooterArea rootFooterArea;
 
-    //CHECKSTYLE:OFF: MagicNumber
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         // Create a BorderPane,
         // a layout with 5 areas: top, bottom, left, right and center,
         // and add our views to it.
-
-        BorderPane topLevelPane = new BorderPane();
+         topLevelPane = new BorderPane();
 
         // represents file-view-help bar and button bars at top of gui.
-        TopPane topPane = new TopPane();
-        topLevelPane.setTop(topPane);
+        rootHeaderArea = new RootHeaderArea();
+        topLevelPane.setTop(rootHeaderArea);
 
         // represents simple bar at bottom of gui.
-        BottomPane bottomPane = new BottomPane();
-        topLevelPane.setBottom(bottomPane);
+        rootFooterArea = new RootFooterArea();
+        topLevelPane.setBottom(rootFooterArea);
 
         // Create scene and set the stage. This is where the window is basically
         // created. Also has some useful settings.
-
         primaryStage.setScene(new Scene(topLevelPane));
         primaryStage.setTitle("Hoi ben een titel lol.");
-        primaryStage.setMinHeight(minResY);
-        primaryStage.setMinWidth(minResX);
-        primaryStage.setHeight(startResY);
-        primaryStage.setWidth(startResX);
+        primaryStage.setMinHeight(minimumResolutionY);
+        primaryStage.setMinWidth(minimumResolutionX);
+        primaryStage.setHeight(startingResolutionY);
+        primaryStage.setWidth(startingResolutionX);
         primaryStage.centerOnScreen();
         primaryStage.show();
     }
 
-    //CHECKSTYLE:ON: MagicNumber
 }
