@@ -19,12 +19,12 @@ public class RootPane extends Application {
     private RootFooterArea rootFooterArea;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stagoue primaryStage) throws Exception {
 
         // Create a BorderPane,
         // a layout with 5 areas: top, bottom, left, right and center,
         // and add our views to it.
-         topLevelPane = new BorderPane();
+        topLevelPane = new BorderPane();
 
         // represents file-view-help bar and button bars at top of gui.
         rootHeaderArea = new RootHeaderArea();
