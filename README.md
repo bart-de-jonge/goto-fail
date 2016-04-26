@@ -5,7 +5,7 @@ This is the Context project of the team 'goto fail;'. This project aims to impro
 This project uses lombok, an annotation processor for java. This annotation processor needs to be enabled in your settings. This can be done using the following steps:
 
 ### IntelliJ
-In IntelliJ, this can be done in your settings under: `Build, Execution, Deployment > Compiler > Annotation Processors`. You only need to click the checkbox at the top of the page. The setting is named: `Enable annotation processing`.
+In IntelliJ, this can be done in your settings under: `Build, Execution, Deployment > Compiler > Annotation Processors`. You only need to click the checkbox at the top of the page. The setting is named: `Enable annotation processing`. For the final step, you will need to install the IntelliJ lombok plugin. This can be done under: `Settings > Plugins > Browse repositories...`.
 
 ### Eclipse
 In Eclipse this can also be done. If you are interested, please let us know. We'll happily provide instructions if this is necessary.
