@@ -1,4 +1,4 @@
-import gui.*;
+import gui.RootPane;
 
 public class MainClass {
 

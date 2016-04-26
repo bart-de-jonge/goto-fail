@@ -13,10 +13,13 @@ import javafx.scene.layout.VBox;
  */
 class TopPane extends VBox {
 
+    /**
+     * TopPane Constructor.
+     */
     TopPane() {
         // border style to mark it, for debugging for now.
-        setStyle("-fx-border-style: solid inside;" +
-                "-fx-border-width: 1;");
+        setStyle("-fx-border-style: solid inside;"
+                + "-fx-border-width: 1;");
 
         MenuBar topMenuBar = new MenuBar();
         Menu menu1 = new Menu("File");

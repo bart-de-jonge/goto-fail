@@ -6,7 +6,7 @@ package gui;
 public class LeftPane {
 
     LeftPane() {
-
+        // Dummy class for now.
     }
 
 }

@@ -7,7 +7,7 @@ package gui;
 class CenterPane {
 
     CenterPane() {
-
+        // Dummy class for now.
     }
 
 }
