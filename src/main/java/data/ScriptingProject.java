@@ -43,6 +43,8 @@ public class ScriptingProject {
     public ScriptingProject(String description, double secondsPerCount) {
         this.description = description;
         this.secondsPerCount = secondsPerCount;
+        this.cameras = new ArrayList<Camera>();
+        this.cameraTimelines = new ArrayList<CameraTimeline>();
     }
 
     /**

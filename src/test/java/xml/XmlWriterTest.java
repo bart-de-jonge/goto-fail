@@ -24,10 +24,12 @@ public class XmlWriterTest {
 
     @Test
     public void writeProject() throws Exception {
-        ScriptingProject project = new ScriptingProject("A test project");
+        ScriptingProject project = new ScriptingProject("A test project", 2.00);
         XmlWriter writer = new XmlWriter("src/test/java/xml/test_files/test-write.xml");
         DirectorTimeline dt = new DirectorTimeline("A test director timeline");
-        dt.addDirectorShot(new DirectorShot("shot-1", "A test director shot"));
+        DirectorShot directorShot = new DirectorShot("shot-1", "A test director shot");
+        int directorShotInstance = directorShot.getInstance();
+        dt.addDirectorShot(directorShot);
         project.setDirectorTimeline(dt);
 
         writer.writeProject(project);
@@ -38,7 +40,7 @@ public class XmlWriterTest {
                 "<scripting-project description=\"A test project\">\r\n" +
                 "    <director-timeline description=\"A test director timeline\">\r\n" +
                 "        <director-shots number-of-shots=\"1\">\r\n" +
-                "            <director-shot description=\"A test director shot\" instance=\"0\" name=\"shot-1\"/>\r\n" +
+                "            <director-shot description=\"A test director shot\" instance=\"" + directorShotInstance + "\" name=\"shot-1\"/>\r\n" +
                 "        </director-shots>\r\n" +
                 "    </director-timeline>\r\n" +
                 "</scripting-project>\r\n", file);

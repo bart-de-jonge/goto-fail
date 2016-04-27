@@ -1,5 +1,6 @@
 package data;
 
+        import lombok.EqualsAndHashCode;
         import lombok.Getter;
         import lombok.Setter;
 
@@ -7,6 +8,7 @@ package data;
  * Created by Bart.
  * Class to store information about cameras.
  */
+@EqualsAndHashCode
 public class Camera {
 
     // Name of the camera
@@ -42,8 +44,8 @@ public class Camera {
     }
 
     /**
-     * Reset the movementMargin overwrite so the default value in
-     * the camera type is used
+     * Reset the movementMargin overwrite.
+     * This means the default value in the camera type is used
      */
     public void resetMovementMargin() {
         this.setMovementMargin(-1);

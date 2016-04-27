@@ -1,11 +1,13 @@
 package data;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * Created by Bart.
  */
+@EqualsAndHashCode
 public class CameraType {
 
     // Name of the cameraType
