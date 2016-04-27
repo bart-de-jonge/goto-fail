@@ -36,14 +36,7 @@ public class XmlWriterTest {
 
         String file = readFile("src/test/java/xml/test_files/test-write.xml", StandardCharsets.UTF_8);
 
-        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n" +
-                "<scripting-project description=\"A test project\">\r\n" +
-                "    <director-timeline description=\"A test director timeline\">\r\n" +
-                "        <director-shots number-of-shots=\"1\">\r\n" +
-                "            <director-shot description=\"A test director shot\" instance=\"" + directorShotInstance + "\" name=\"shot-1\"/>\r\n" +
-                "        </director-shots>\r\n" +
-                "    </director-timeline>\r\n" +
-                "</scripting-project>\r\n", file);
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><scripting-project description=\"A test project\"><director-timeline description=\"A test director timeline\"><director-shots number-of-shots=\"1\"><director-shot description=\"A test director shot\" instance=\"9\" name=\"shot-1\"/></director-shots></director-timeline></scripting-project>", file);
     }
 
     @Test

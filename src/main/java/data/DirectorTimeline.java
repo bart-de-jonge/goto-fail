@@ -29,6 +29,6 @@ public class DirectorTimeline extends Timeline {
     }
 
     public void clearDirectorShots() {
-        this.shots = new ArrayList<DirectorShot>();
+        this.shots.clear();
     }
 }

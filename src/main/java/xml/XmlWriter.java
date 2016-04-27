@@ -61,9 +61,11 @@ public class XmlWriter {
             // Write document to file
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
 
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            // Commented because of problems between windows and linux
+            // maybe we will find a solution in the future
+//            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+//            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+//            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(new File(fileName));
             transformer.transform(source, result);
