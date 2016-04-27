@@ -13,11 +13,17 @@ public abstract class Shot {
     @Getter @Setter
     private String name;
 
+    // The instancenumber of the Shot.
+    @Getter
+    private int instance;
+
     /**
      * The constructor for the Shot.
+     * @param instance the instance number of the Shot
      * @param name the name of the Shot
      */
-    public Shot(String name) {
+    public Shot(int instance, String name) {
         this.name = name;
+        this.instance = instance;
     }
 }

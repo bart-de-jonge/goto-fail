@@ -16,18 +16,13 @@ public class DirectorShot extends Shot {
     @Getter @Setter
     private String description;
 
-    // The number of the Shot.
-    @Getter
-    private int number;
-
     /**
      * The constructor for the Shot.
      * @param name the name of the Shot
      * @param description the description of the Shot
      */
     public DirectorShot(String name, String description) {
-        super(name);
-        this.number = instanceCounter;
+        super(instanceCounter, name);
         instanceCounter++;
         this.description = description;
     }

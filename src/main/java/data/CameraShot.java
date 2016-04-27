@@ -11,17 +11,12 @@ public class CameraShot extends Shot {
     // Counter that ensures no shots with duplicate numbers will be created.
     private static int instanceCounter = 0;
 
-    // The number of the Shot.
-    @Getter
-    private int number;
-
     /**
      * The constructor for the Shot.
      * @param name the name of the Shot
      */
     public CameraShot(String name) {
-        super(name);
-        this.number = instanceCounter;
+        super(instanceCounter, name);
         instanceCounter++;
     }
 }
