@@ -23,6 +23,7 @@ class TimetableBlock extends Region {
 
     private double margin = 6.0; // margin of edge size for dragging.
     private int dragging = 0; // 0 is center, 1 top, 2 right, 3 bottom, 4 left.
+    private RootCenterArea pane; // parent pane this block is located in.
 
     private double mouseCurrentXPosition;
     private double mouseCurrentYPosition;
@@ -32,15 +33,60 @@ class TimetableBlock extends Region {
     private Point2D scrollMouse;
 
     /**
-     * Constructor class for timetable block.
-     * @param pane parent area this block is located in.
+     * Constructor for TimetableBlock class.
+     * @param pane the parent pane.
      */
     TimetableBlock(RootCenterArea pane) {
-        // some basic temporary styling for the block. That's size, position, and style.
         setLayoutX(100.0);
         setLayoutY(100.0);
-        setMinHeight(100.0);
-        setMinWidth(100.0);
+        setMinHeight(50.0);
+        setMinWidth(50.0);
+        setPrefHeight(100.0);
+        setPrefWidth(100.0);
+        init(pane);
+    }
+
+    /**
+     * Constructor for TimetableBlock class.
+     * @param pane the parent pane.
+     * @param x start coordinate.
+     * @param y start coordinate.
+     */
+    TimetableBlock(RootCenterArea pane, double x, double y) {
+        setLayoutX(x);
+        setLayoutY(y);
+        setMinHeight(50.0);
+        setMinWidth(50.0);
+        setPrefWidth(100.0);
+        setPrefHeight(100.0);
+        init(pane);
+    }
+
+    /**
+     * Constructor for TimetableBlock class.
+     * @param pane the parent pane.
+     * @param x start coordinate.
+     * @param y start coordinate.
+     * @param width start width.
+     * @param height start height.
+     */
+    TimetableBlock(RootCenterArea pane, double x, double y, double width, double height) {
+        setLayoutX(x);
+        setLayoutY(y);
+        setMinWidth(50.0);
+        setMinHeight(50.0);
+        setPrefWidth(width);
+        setPrefHeight(height);
+        init(pane);
+    }
+
+    /**
+     * Helper function for initialization. Called by constructors.
+     * @param pane pane passed by constructors.
+     */
+    private void init(RootCenterArea pane) {
+
+        this.pane = pane;
         setStyle(normalStyle);
 
         // mouse press handler. Called when mouse is pressed on this block.
@@ -58,7 +104,7 @@ class TimetableBlock extends Region {
         setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                onMouseDraggedHelper(pane, event);
+                onMouseDraggedHelper(event);
             }
         });
 
@@ -73,10 +119,9 @@ class TimetableBlock extends Region {
 
     /**
      * Helper function for MouseDragged event.
-     * @param pane pane this block is located in.
      * @param event the mousedrag event in question.
      */
-    private void onMouseDraggedHelper(RootCenterArea pane, MouseEvent event) {
+    private void onMouseDraggedHelper( MouseEvent event) {
         // Mouse movement in pixels during this event.
         mouseCurrentXMovement = event.getSceneX() - mouseCurrentXPosition;
         mouseCurrentYMovement = event.getSceneY() - mouseCurrentYPosition;
@@ -88,11 +133,11 @@ class TimetableBlock extends Region {
 
         // determine what kind of dragging we're going to do.
         if (dragging == 1 || dragging == 3) { // handle vertical drags in helper.
-            onMouseDraggedHelperVertical(pane, event);
+            onMouseDraggedHelperVertical(event);
         } else if (dragging == 2 || dragging == 4) { // handle horizontal drags in helper.
-            onMouseDraggedHelperHorizontal(pane, event);
+            onMouseDraggedHelperHorizontal(event);
         } else { // handle just general dragging
-            onMouseDraggedHelperNormal(pane, event);
+            onMouseDraggedHelperNormal(event);
         }
 
         // store current mouse position for next mouse movement calculation
@@ -102,26 +147,25 @@ class TimetableBlock extends Region {
 
     /**
      * Helper function for MouseDragged event. Normal (actual dragging) part.
-     * @param pane pane this block is located in.
      * @param event the mousedrag event in question.
      */
-    private void onMouseDraggedHelperNormal(RootCenterArea pane, MouseEvent event) {
+    private void onMouseDraggedHelperNormal(MouseEvent event) {
         // current height and width of TOTAL scrollable area.
         double totalHeight = pane.getContent().getBoundsInLocal().getHeight();
         double totalWidth = pane.getContent().getBoundsInLocal().getWidth();
         // set block position depending on movement made. Cap off at borders with min and max.
         setLayoutX(Math.min(Math.max(getLayoutX() + mouseCurrentXMovement,
-                0.0), totalWidth - getMinWidth()));
+                0.0), totalWidth - getWidth()));
         setLayoutY(Math.min(Math.max(getLayoutY() + mouseCurrentYMovement,
-                0.0), totalHeight - getMinHeight()));
+                0.0), totalHeight - getHeight()));
     }
 
     /**
      * Helper function for MouseDragged event. Vertical part.
-     * @param pane pane this block is located in.
      * @param event the mousedrag event in question.
      */
-    private void onMouseDraggedHelperVertical(RootCenterArea pane, MouseEvent event) {
+    private void onMouseDraggedHelperVertical(MouseEvent event) {
+        System.out.println(getLayoutY() + " " + (getLayoutY() + getPrefHeight()));
         // current height of total scrollable area
         double totalHeight = pane.getContent().getBoundsInLocal().getHeight();
         // current height of visible part of scrollable area.
@@ -129,28 +173,34 @@ class TimetableBlock extends Region {
         // current number of pixels from top that are invisible due to scrolling.
         double viewTop = (totalHeight - viewHeight) * pane.getVvalue();
         if (dragging == 1) { // drag from top edge
-            double oldLayoutY = getLayoutY()
-                    - (scrollMouse.getY() - pane.getLayoutY());
-            setLayoutY(event.getSceneY() + viewTop - pane.getLayoutY());
-            if (getLayoutY() < 0.0) {
-                setLayoutY(0.0); // cap off beyond border
-            } else {
-                setMinHeight(oldLayoutY  - viewTop + getMinHeight());
+            double oldLayoutY = getLayoutY() - (scrollMouse.getY() - pane.getLayoutY());
+            if (getPrefHeight() > getMinHeight()
+                    || (mouseCurrentYMovement < 0.0 && mouseCurrentYPosition < getLayoutY())) {
+                double newLayout = event.getSceneY() + viewTop - pane.getLayoutY();
+                double newPrefHeight = oldLayoutY - viewTop + getPrefHeight();
+                if (newLayout < 0.0) {
+                    newLayout = 0.0;
+                    newPrefHeight = getPrefHeight();
+                    if (getLayoutY() != 0.0) {
+                        newPrefHeight += getLayoutY();
+                    }
+                }
+                setLayoutY(newLayout);
+                setPrefHeight(newPrefHeight);
             }
         } else { // drag from bottom edge
-            setMinHeight(scrollMouse.getY() - getLayoutY() + viewTop - pane.getLayoutY());
-            if (getLayoutY() + getMinHeight() > totalHeight) { // cap off beyond border
-                setMinHeight(totalHeight - getLayoutY());
+            setPrefHeight(scrollMouse.getY() - getLayoutY() + viewTop - pane.getLayoutY());
+            if (getLayoutY() + getPrefHeight() > totalHeight) { // cap off beyond border
+                setPrefHeight(totalHeight - getLayoutY());
             }
         }
     }
 
     /**
      * Helper function for MouseDragged event. Horizontal part.
-     * @param pane pane this block is located in.
      * @param event the mousedrag event in question.
      */
-    private void onMouseDraggedHelperHorizontal(RootCenterArea pane, MouseEvent event) {
+    private void onMouseDraggedHelperHorizontal(MouseEvent event) {
         // current  width of total scrollable area
         double totalWidth = pane.getContent().getBoundsInLocal().getWidth();
         // current width of visible part of scrollable area.
@@ -158,18 +208,25 @@ class TimetableBlock extends Region {
         // current number of pixels from left that are invisible due to scrolling.
         double viewLeft = (totalWidth - viewWidth) * pane.getHvalue();
         if (dragging == 2) { // drag from right edge
-            setMinWidth(scrollMouse.getX() - getLayoutX() + viewLeft - pane.getLayoutX());
-            if (getLayoutX() + getMinWidth() > totalWidth) { // cap off beyond border
-                setMinWidth(totalWidth - getLayoutX());
+            setPrefWidth(scrollMouse.getX() - getLayoutX() + viewLeft - pane.getLayoutX());
+            if (getLayoutX() + getPrefWidth() > totalWidth) { // cap off beyond border
+                setPrefWidth(totalWidth - getLayoutX());
             }
         } else { // drag from left edge
-            double oldLayoutX = getLayoutX()
-                    - (scrollMouse.getX() - pane.getLayoutX());
-            setLayoutX(event.getSceneX() + viewLeft - pane.getLayoutX());
-            if (getLayoutX() < 0.0) {
-                setLayoutX(0.0); // cap off beyond border
-            } else {
-                setMinWidth(oldLayoutX  - viewLeft + getMinWidth());
+            double oldLayoutX = getLayoutX() - (scrollMouse.getX() - pane.getLayoutX());
+            if (getPrefWidth() > getMinWidth()
+                    || (mouseCurrentXMovement < 0.0 && mouseCurrentXPosition < getLayoutX())) {
+                double newLayout = event.getSceneX() + viewLeft - pane.getLayoutX();
+                double newPrefWidth = oldLayoutX - viewLeft + getPrefWidth();
+                if (newLayout < 0.0) {
+                    newLayout = 0.0;
+                    newPrefWidth = getPrefWidth();
+                    if (getLayoutX() != 0.0) {
+                        newPrefWidth += getLayoutX();
+                    }
+                }
+                setLayoutX(newLayout);
+                setPrefWidth(newPrefWidth);
             }
         }
     }

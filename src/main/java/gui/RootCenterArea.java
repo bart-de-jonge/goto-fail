@@ -29,10 +29,10 @@ class RootCenterArea extends ScrollPane {
         System.out.println("Width = " + getWidth());
         System.out.println("Height = " + getHeight());
 
-        TimetableBlock rect1 = new TimetableBlock(this);
+        TimetableBlock rect1 = new TimetableBlock(this, 500, 100, 60, 50);
         TimetableBlock rect2 = new TimetableBlock(this);
-        TimetableBlock rect3 = new TimetableBlock(this);
-        TimetableBlock rect4 = new TimetableBlock(this);
+        TimetableBlock rect3 = new TimetableBlock(this, 400, 400);
+        TimetableBlock rect4 = new TimetableBlock(this, 300, 200, 200, 150);
 
         contentPane.getChildren().add(rect1);
         contentPane.getChildren().add(rect2);
