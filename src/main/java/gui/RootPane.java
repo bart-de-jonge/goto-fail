@@ -42,8 +42,6 @@ public class RootPane extends Application {
         primaryStage.setHeight(startingResolutionY);
         primaryStage.setWidth(startingResolutionX);
 
-
-
         // represents file-view-help bar and button bars at top of gui.
         rootHeaderArea = new RootHeaderArea(this);
         topLevelPane.setTop(rootHeaderArea);
