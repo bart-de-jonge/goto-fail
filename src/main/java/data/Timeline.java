@@ -1,8 +1,8 @@
 package data;
 
-import lombok.Getter;
-
 import java.util.ArrayList;
+
+import lombok.Getter;
 
 /**
  * Created by Bart.

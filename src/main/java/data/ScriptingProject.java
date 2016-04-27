@@ -1,11 +1,10 @@
 package data;
 
+import java.util.ArrayList;
 import lombok.Getter;
 import lombok.Setter;
 import xml.XmlReader;
 import xml.XmlWriter;
-
-import java.util.ArrayList;
 
 
 
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 public class ScriptingProject {
 
     // Description of this project
-    @Getter
+    @Getter @Setter
     private String description;
 
     // List of cameras that are available in this project
@@ -32,12 +31,20 @@ public class ScriptingProject {
     @Getter @Setter
     private ArrayList<CameraTimeline> cameraTimelines;
 
+    // The number of seconds per count;
+    @Getter @Setter
+    private double secondsPerCount;
+
     /**
      * Constructor.
      * @param description - the description of the project
+     * @param secondsPerCount - the number of seconds each count takes
      */
-    public ScriptingProject(String description) {
+    public ScriptingProject(String description, double secondsPerCount) {
         this.description = description;
+        this.secondsPerCount = secondsPerCount;
+        this.cameras = new ArrayList<Camera>();
+        this.cameraTimelines = new ArrayList<CameraTimeline>();
     }
 
     /**
@@ -64,6 +71,24 @@ public class ScriptingProject {
         // module is necessary
         XmlReader reader = new XmlReader(fileName);
         return reader.readProject();
+    }
+
+    /**
+     * Compute the number of counts from the number of seconds.
+     * @param seconds - the number of seconds to compute with
+     * @return - the computed number of counts
+     */
+    public double secondsToCounts(double seconds) {
+        return seconds / secondsPerCount;
+    }
+
+    /**
+     * Compute the number of seconds from the number of counts.
+     * @param counts - the number of counts
+     * @return - the computed number of seconds
+     */
+    public double countsToSeconds(double counts) {
+        return counts * secondsPerCount;
     }
 
     /**
