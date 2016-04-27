@@ -21,6 +21,7 @@ class RootHeaderArea extends VBox {
 
     /**
      * RootHeaderArea Constructor.
+     * @param rootPane the root pane this pane itself is located in.
      */
     RootHeaderArea(RootPane rootPane) {
         this.rootPane = rootPane;
@@ -34,6 +35,10 @@ class RootHeaderArea extends VBox {
         this.setPrefHeight(50);
     }
 
+    /**
+     * Initializes top menu (file, edit, etc).
+     * @return MenuBar containing menus.
+     */
     private MenuBar initMenus() {
         MenuBar topMenuBar = new MenuBar();
         Menu menu1 = new Menu("File");
@@ -44,6 +49,10 @@ class RootHeaderArea extends VBox {
         return topMenuBar;
     }
 
+    /**
+     * Initializes top button area.
+     * @return HBox box containing buttons.
+     */
     private HBox initButtons() {
         HBox topButtonBar = new HBox();
         topButtonBar.setSpacing(15);
@@ -66,6 +75,7 @@ class RootHeaderArea extends VBox {
                     case "MOUSE_EXITED":
                         text = "Mouse exited";
                         break;
+                    default: break;
                 }
                 System.out.println(text);
                 rootPane.getRootFooterArea().getTextOutputLabel().setText(text);
