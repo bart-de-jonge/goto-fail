@@ -11,33 +11,35 @@ import static org.junit.Assert.*;
 public class DirectorShotTest {
     DirectorShot shot;
     @Before
-    public void initialize() {
+    public void initializeTest() {
         shot = new DirectorShot("directorshot-1", "A test director shot");
     }
 
     @Test
-    public void getDescription() throws Exception {
+    public void getDescriptionTest() {
         assertEquals("A test director shot", shot.getDescription());
     }
 
     @Test
-    public void setDescription() throws Exception {
+    public void setDescriptionTest() {
         shot.setDescription("testdescription");
         assertEquals("testdescription", shot.getDescription());
     }
 
     @Test
-    public void getName() throws Exception {
+    public void getNameTest() {
         assertEquals("directorshot-1", shot.getName());
     }
 
     @Test
-    public void getInstance() throws Exception {
-        assertEquals(0, shot.getInstance());
+    public void getInstanceTest() {
+        int oldInstance = shot.getInstance();
+        DirectorShot newShot = new DirectorShot("name", "description");
+        assertEquals(oldInstance + 1, newShot.getInstance());
     }
 
     @Test
-    public void setName() throws Exception {
+    public void setNameTest() {
         shot.setName("testname");
         assertEquals("testname", shot.getName());
     }

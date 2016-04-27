@@ -18,9 +18,9 @@ public class CameraType {
     @Getter @Setter
     private String description;
 
-    // Number of counts this camera needs at maximum to move to a new position.
-    // This defines the minimum margin between two consecutive shots
-    // Defined in seconds
+    /* Number of counts this camera needs at maximum to move to a new position.
+     * This defines the minimum margin between two consecutive shots
+     * Defined in seconds */
     @Getter @Setter
     private double movementMargin;
 

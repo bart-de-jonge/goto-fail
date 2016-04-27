@@ -11,74 +11,74 @@ import static org.junit.Assert.*;
 public class CameraTypeTest {
     CameraType type;
     @Before
-    public void initialize() {
+    public void initializeTest() {
         type = new CameraType("type-1", "A test camera type", 2);
     }
 
     @Test
-    public void getName() throws Exception {
+    public void getNameTest() {
         assertEquals("type-1", type.getName());
     }
 
     @Test
-    public void getDescription() throws Exception {
+    public void getDescriptionTest() {
         assertEquals("A test camera type", type.getDescription());
     }
 
     @Test
-    public void getMovementMargin() throws Exception {
+    public void getMovementMarginTest() {
         assertEquals(2, type.getMovementMargin(), 0);
     }
 
     @Test
-    public void setName() throws Exception {
+    public void setNameTest() {
         type.setName("testname");
         assertEquals("testname", type.getName());
     }
 
     @Test
-    public void setDescription() throws Exception {
+    public void setDescriptionTest() {
         type.setDescription("testdescription");
         assertEquals("testdescription", type.getDescription());
     }
 
     @Test
-    public void setMovementMargin() throws Exception {
+    public void setMovementMarginTest() {
         type.setMovementMargin(100.5);
         assertEquals(100.5, type.getMovementMargin(), 0);
     }
 
     @Test
-    public void equalsTrue() throws Exception {
+    public void equalsTrueTest() {
         CameraType type2 = new CameraType("type-1", "A test camera type", 2);
         assertEquals(type2, type);
     }
 
     @Test
-    public void equalsName() throws Exception {
+    public void equalsNameTest() {
         CameraType type2 = new CameraType("type-2", "A test camera type", 2);
         assertNotEquals(type2, type);
     }
 
     @Test
-    public void equalsDescription() throws Exception {
+    public void equalsDescriptionTest() {
         CameraType type2 = new CameraType("type-1", "A test camera type 2", 2);
         assertNotEquals(type2, type);
     }
 
     @Test
-    public void equalsMovementMargin() throws Exception {
+    public void equalsMovementMarginTest() {
         CameraType type2 = new CameraType("type-1", "A test camera type", 3);
         assertNotEquals(type2, type);
     }
 
     @Test
-    public void testHashCode() throws Exception {
+    public void testHashCodeTest() {
         assertEquals(-245683693, type.hashCode());
     }
 
     @Test
-    public void canEqual() throws Exception {
+    public void canEqualTest() {
         CameraType type2 = new CameraType("type-1", "A test camera type", 3);
         assertTrue(type.canEqual(type2));
     }

@@ -2,7 +2,7 @@
 <scripting-project description="A test project">
     <director-timeline description="A test director timeline">
         <director-shots number-of-shots="1">
-            <director-shot description="A test director shot" instance="8" name="shot-1"/>
+            <director-shot description="A test director shot" instance="9" name="shot-1"/>
         </director-shots>
     </director-timeline>
 </scripting-project>

@@ -11,7 +11,7 @@ import lombok.Setter;
  */
 public class DirectorTimeline extends Timeline {
 
-    @Getter @Setter
+    @Getter
     private ArrayList<DirectorShot> shots;
 
     /**
@@ -26,5 +26,9 @@ public class DirectorTimeline extends Timeline {
 
     public void addDirectorShot(DirectorShot shot) {
         shots.add(shot);
+    }
+
+    public void clearDirectorShots() {
+        this.shots = new ArrayList<DirectorShot>();
     }
 }

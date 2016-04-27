@@ -11,22 +11,24 @@ import static org.junit.Assert.*;
 public class CameraShotTest {
     CameraShot cameraShot;
     @Before
-    public void initialize() {
+    public void initializeTest() {
         cameraShot = new CameraShot("camerashot-1");
     }
 
     @Test
-    public void getName() throws Exception {
+    public void getNameinitializeTest() {
         assertEquals("camerashot-1", cameraShot.getName());
     }
 
     @Test
-    public void getInstance() throws Exception {
-        assertEquals(0, cameraShot.getInstance());
+    public void getInstanceinitializeTest() {
+        int oldInstance = cameraShot.getInstance();
+        CameraShot newShot = new CameraShot("name");
+        assertEquals(oldInstance + 1, newShot.getInstance());
     }
 
     @Test
-    public void setName() throws Exception {
+    public void setNameinitializeTest() {
         cameraShot.setName("testname");
         assertEquals("testname", cameraShot.getName());
     }

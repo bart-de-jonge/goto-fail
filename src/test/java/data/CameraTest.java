@@ -11,13 +11,13 @@ import static org.junit.Assert.*;
 public class CameraTest {
     Camera camera;
     @Before
-    public void initialize() {
+    public void initializeTest() {
         CameraType type = new CameraType("cameratype-1", "A test cameratype", 2.00);
         camera = new Camera("camera-1", "A test camera", type);
     }
 
     @Test
-    public void resetMovementMargin() throws Exception {
+    public void resetMovementMarginTest() {
         camera.setMovementMargin(3.00);
         assertEquals(3.00, camera.getMovementMargin(), 0);
         camera.resetMovementMargin();
@@ -25,53 +25,53 @@ public class CameraTest {
     }
 
     @Test
-    public void getName() throws Exception {
+    public void getNameTest() {
         assertEquals("camera-1", camera.getName());
     }
 
     @Test
-    public void getDescription() throws Exception {
+    public void getDescriptionTest() {
         assertEquals("A test camera", camera.getDescription());
     }
 
     @Test
-    public void getCameraType() throws Exception {
+    public void getCameraTypeTest() {
         CameraType type = new CameraType("cameratype-1", "A test cameratype", 2.00);
         assertEquals(type, camera.getCameraType());
     }
 
     @Test
-    public void getMovementMargin() throws Exception {
+    public void getMovementMarginTest() {
         assertEquals(-1, camera.getMovementMargin(), 0);
     }
 
     @Test
-    public void setName() throws Exception {
+    public void setNameTest() {
         camera.setName("testname");
         assertEquals("testname", camera.getName());
     }
 
     @Test
-    public void setDescription() throws Exception {
+    public void setDescriptionTest() {
         camera.setDescription("testdescription");
         assertEquals("testdescription", camera.getDescription());
     }
 
     @Test
-    public void setCameraType() throws Exception {
+    public void setCameraTypeTest() {
         CameraType type = new CameraType("cameratype-2", "A second test cameratype", 3.00);
         camera.setCameraType(type);
         assertEquals(type, camera.getCameraType());
     }
 
     @Test
-    public void setMovementMargin() throws Exception {
+    public void setMovementMarginTest() {
         camera.setMovementMargin(3.00);
         assertEquals(3.00, camera.getMovementMargin(), 0);
     }
 
     @Test
-    public void equals() throws Exception {
+    public void equalsTest() {
         CameraType type2 = new CameraType("cameratype-1", "A test cameratype", 3.00);
         Camera camera2 = new Camera("camera-1", "A test camera", type2);
         CameraType type3 = new CameraType("cameratype-1", "A test cameratype", 2.00);
@@ -80,12 +80,12 @@ public class CameraTest {
     }
 
     @Test
-    public void testHashCode() throws Exception {
+    public void testHashCodeTest() {
         assertEquals(-2059658920, camera.hashCode());
     }
 
     @Test
-    public void canEqual() throws Exception {
+    public void canEqualTest() {
         CameraType type2 = new CameraType("cameratype-1", "A test cameratype", 3.00);
         Camera camera2 = new Camera("camera-1", "A test camera", type2);
         assertTrue(camera.canEqual(camera2));

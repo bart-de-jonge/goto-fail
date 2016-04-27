@@ -14,12 +14,12 @@ public class DirectorTimelineTest {
 
     DirectorTimeline timeline;
     @Before
-    public void initialize() {
+    public void initializeTest() {
         timeline = new DirectorTimeline("A test director timeline");
     }
 
     @Test
-    public void addDirectorShot() throws Exception {
+    public void addDirectorShotTest() {
         DirectorShot shot = new DirectorShot("testname", "testdescription");
         timeline.addDirectorShot(shot);
         assertEquals(1, timeline.getShots().size());
@@ -27,7 +27,7 @@ public class DirectorTimelineTest {
     }
 
     @Test
-    public void getShots() throws Exception {
+    public void getShotsTest() {
         DirectorShot shot = new DirectorShot("testname", "testdescription");
         ArrayList<DirectorShot> shots = new ArrayList<DirectorShot>();
         shots.add(shot);
@@ -37,16 +37,16 @@ public class DirectorTimelineTest {
     }
 
     @Test
-    public void setShots() throws Exception {
+    public void clearShotsTest() {
         DirectorShot shot = new DirectorShot("testname", "testdescription");
         ArrayList<DirectorShot> shots = new ArrayList<DirectorShot>();
         shots.add(shot);
-        timeline.setShots(shots);
-        assertEquals(shots, timeline.getShots());
+        timeline.clearDirectorShots();
+        assertEquals(0, timeline.getShots().size());
     }
 
     @Test
-    public void getDescription() throws Exception {
+    public void getDescriptionTest() {
         assertEquals("A test director timeline", timeline.getDescription());
     }
 
