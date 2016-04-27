@@ -1,5 +1,6 @@
 package xml;
 
+import data.DirectorShot;
 import data.DirectorTimeline;
 import data.ScriptingProject;
 import org.junit.Test;
@@ -25,7 +26,9 @@ public class XmlWriterTest {
     public void writeProject() throws Exception {
         ScriptingProject project = new ScriptingProject("A test project");
         XmlWriter writer = new XmlWriter("src/test/java/xml/test_files/test-write.xml");
-        project.setDirectorTimeline(new DirectorTimeline("A test director timeline"));
+        DirectorTimeline dt = new DirectorTimeline("A test director timeline");
+        dt.addDirectorShot(new DirectorShot("shot-1", "A test director shot"));
+        project.setDirectorTimeline(dt);
 
         writer.writeProject(project);
 
@@ -33,7 +36,11 @@ public class XmlWriterTest {
 
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n" +
                 "<scripting-project description=\"A test project\">\r\n" +
-                "    <director-timeline description=\"A test director timeline\"/>\r\n" +
+                "    <director-timeline description=\"A test director timeline\">\r\n" +
+                "        <director-shots number-of-shots=\"1\">\r\n" +
+                "            <director-shot description=\"A test director shot\" instance=\"0\" name=\"shot-1\"/>\r\n" +
+                "        </director-shots>\r\n" +
+                "    </director-timeline>\r\n" +
                 "</scripting-project>\r\n", file);
     }
 
