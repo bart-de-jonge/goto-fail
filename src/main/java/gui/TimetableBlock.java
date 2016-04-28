@@ -20,6 +20,7 @@ class TimetableBlock extends Region {
 
     private TimetableBlock thisBlock;
     private Pane dummyPane;
+    private Pane feedbackPane;
 
     private double dragXOffset;
     private double dragYOffset;
@@ -48,12 +49,20 @@ class TimetableBlock extends Region {
         this.dragging = false;
         this.thisBlock = this;
 
+        feedbackPane = new Pane();
+        feedbackPane.setPrefHeight(100);
+        feedbackPane.setPrefWidth(200);
+        feedbackPane.setStyle("-fx-background-color: red");
+        feedbackPane.setVisible(false);
+
         dummyPane = new Pane();
         dummyPane.setPrefHeight(100);
         dummyPane.setPrefWidth(200);
         dummyPane.setStyle("-fx-background-color: green");
-        pane.getParentPane().getChildren().add(dummyPane);
         dummyPane.setVisible(false);
+
+        pane.getParentPane().getChildren().add(dummyPane);
+        pane.getGrid().add(feedbackPane, 0, 0);
 
         this.normalStyle = "-fx-border-style: solid inside;"
                 + "-fx-border-width: 3;"
@@ -85,6 +94,12 @@ class TimetableBlock extends Region {
             draggingType = findEdgeZone(e);
             dummyPane.setLayoutX(getLayoutX());
             dummyPane.setLayoutY(getLayoutY());
+
+            feedbackPane.setLayoutY(getLayoutY());
+            feedbackPane.setLayoutX(getLayoutX());
+            feedbackPane.setPrefWidth(getWidth());
+            feedbackPane.setPrefHeight(getHeight());
+            feedbackPane.setVisible(true);
         };
     }
 
@@ -118,32 +133,9 @@ class TimetableBlock extends Region {
             if (dragging) {
                 dummyPane.setVisible(false);
                 thisBlock.setVisible(true);
+                feedbackPane.setVisible(false);
                 dragging = false;
-
-                if (draggingType == DraggingTypes.Move) {
-
-                    double yCoordinate = e.getSceneY() - thisBlock.getHeight() / 2;
-                    SnappingPane myPane = pane.getMyPane(e.getSceneX(), yCoordinate);
-                    if (myPane != null) {
-                        pane.getGrid().getChildren().remove(thisBlock);
-                        pane.getGrid().add(thisBlock, myPane.getColumn(), myPane.getRow());
-                    }
-                } else if (draggingType == DraggingTypes.Resize_Top) {
-                    int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
-                    SnappingPane myPane = pane.getMyPane(e.getSceneX(), e.getSceneY());
-                    if (myPane != null) {
-                        if (myPane.isBottomHalf()) {
-                            GridPane.setRowIndex(thisBlock, myPane.getRow() + 1);
-                        } else {
-                            GridPane.setRowIndex(thisBlock, myPane.getRow());
-                        }
-
-                        GridPane.setRowSpan(thisBlock, numCounts);
-                    }
-                } else if (draggingType == DraggingTypes.Resize_Bottom) {
-                    int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
-                    GridPane.setRowSpan(thisBlock, numCounts);
-                }
+                snapPane(thisBlock, dummyPane, e.getSceneX(), e.getSceneY(), draggingType);
             }
 
         };
@@ -170,8 +162,15 @@ class TimetableBlock extends Region {
                 || draggingType == DraggingTypes.Resize_Top) {
             // handle vertical drags in helper.
             onMouseDraggedHelperVertical(event);
-        } else { // handle just general dragging
+        } else if (draggingType == DraggingTypes.Move) { // handle just general dragging
             onMouseDraggedHelperNormal(event);
+        }
+
+        // set feedbackpane
+        if (snapPane(feedbackPane, dummyPane, event.getSceneX(), event.getSceneY(), draggingType)) {
+            feedbackPane.setVisible(true);
+        } else {
+            feedbackPane.setVisible(false);
         }
 
         // store current mouse position for next mouse movement calculation
@@ -180,11 +179,60 @@ class TimetableBlock extends Region {
     }
 
     /**
+     * Snap the targetregion to a grid using the model provided by the mappingPane.
+     * @param targetRegion - the target region to snap
+     * @param mappingPane - the model mappingPane to follow while snapping
+     * @param x - the X coordinate of the mouse during this snap
+     * @param y - the Y coordinate of the mouse during this snap
+     * @param dragType - The type of drag used while snapping (move, resize)
+     * @return - boolean that indicates if the snap was possible and completed
+     */
+    private boolean snapPane(Region targetRegion, Pane mappingPane,
+                             double x, double y, DraggingTypes dragType) {
+        // set feedback pane
+        double yCoordinate;
+        double xCoordinate;
+
+        if (dragType == DraggingTypes.Move) {
+            yCoordinate = y - dragYOffset;
+            xCoordinate = mappingPane.localToScene(mappingPane.getBoundsInLocal()).getMinX()
+                    + mappingPane.getWidth() / 2;
+        } else {
+            Bounds bounds = mappingPane.localToScene(mappingPane.getBoundsInLocal());
+            yCoordinate = bounds.getMinY();
+            xCoordinate = mappingPane.getLayoutX() + mappingPane.getWidth() / 2;
+            yCoordinate++;
+            System.out.println(yCoordinate);
+        }
+
+        SnappingPane myPane = pane.getMyPane(xCoordinate, yCoordinate);
+        if (myPane != null) {
+            int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
+            if (myPane.isBottomHalf() && dragType == DraggingTypes.Resize_Top) {
+                numCounts = (int) Math.round((dummyPane.getHeight() - 5) / pane.getCountHeight());
+            }
+
+            if ((dragType == DraggingTypes.Resize_Top
+                    || dragType == DraggingTypes.Move)
+                    && myPane.isBottomHalf()) {
+                GridPane.setRowIndex(targetRegion, myPane.getRow() + 1);
+            } else {
+                GridPane.setRowIndex(targetRegion, myPane.getRow());
+            }
+            GridPane.setColumnIndex(targetRegion, myPane.getColumn());
+            GridPane.setRowSpan(targetRegion, Math.max(numCounts, 1));
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Helper function for MouseDragged event. Normal (actual dragging) part.
      * @param event the mousedrag event in question.
      */
     private void onMouseDraggedHelperNormal(MouseEvent event) {
-
         AnchorPane parentPane = pane.getParentPane();
         Bounds parentBounds = parentPane.localToScene(parentPane.getBoundsInLocal());
 
