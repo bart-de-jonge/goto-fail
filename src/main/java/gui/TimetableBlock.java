@@ -55,13 +55,11 @@ class TimetableBlock extends Region {
         feedbackPane.setStyle("-fx-background-color: red");
         feedbackPane.setVisible(false);
 
-
         dummyPane = new Pane();
         dummyPane.setPrefHeight(100);
         dummyPane.setPrefWidth(200);
         dummyPane.setStyle("-fx-background-color: green");
         dummyPane.setVisible(false);
-
 
         pane.getParentPane().getChildren().add(dummyPane);
         pane.getGrid().add(feedbackPane, 0, 0);
@@ -214,7 +212,8 @@ class TimetableBlock extends Region {
                 numCounts = (int) Math.round((dummyPane.getHeight() - 5) / pane.getCountHeight());
             }
 
-            if ((dragType == DraggingTypes.Resize_Top || dragType == DraggingTypes.Move)
+            if ((dragType == DraggingTypes.Resize_Top
+                    || dragType == DraggingTypes.Move)
                     && myPane.isBottomHalf()) {
                 GridPane.setRowIndex(targetRegion, myPane.getRow() + 1);
             } else {
@@ -234,13 +233,11 @@ class TimetableBlock extends Region {
      * @param event the mousedrag event in question.
      */
     private void onMouseDraggedHelperNormal(MouseEvent event) {
-
         AnchorPane parentPane = pane.getParentPane();
         Bounds parentBounds = parentPane.localToScene(parentPane.getBoundsInLocal());
 
         dummyPane.setLayoutX(event.getSceneX() - parentBounds.getMinX() - dragXOffset);
         dummyPane.setLayoutY(event.getSceneY() - parentBounds.getMinY() - dragYOffset);
-
     }
 
     /**
