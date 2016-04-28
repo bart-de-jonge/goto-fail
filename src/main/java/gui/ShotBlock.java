@@ -37,10 +37,33 @@ public abstract class ShotBlock {
     /**
      * Set the begin count of this shotblock.
      * @param count - the new begincount
+     * @param recompute - should we recompute after setting
+     */
+    public void setBeginCount(double count, boolean recompute) {
+        this.beginCount = count;
+        if (recompute) {
+            this.recompute();
+        }
+    }
+
+    /**
+     * Set the begin count of this shotblock.
+     * @param count - the new begincount
      */
     public void setBeginCount(double count) {
-        this.beginCount = count;
-        this.repaint();
+        this.setBeginCount(count, true);
+    }
+
+    /**
+     * Set the end count of this shotblock.
+     * @param count - the new endcount
+     * @param recompute - should we recompute after setting
+     */
+    public void setEndCount(double count, boolean recompute) {
+        this.endCount = count;
+        if (recompute) {
+            this.recompute();
+        }
     }
 
     /**
@@ -48,22 +71,13 @@ public abstract class ShotBlock {
      * @param count - the new endcount
      */
     public void setEndCount(double count) {
-        this.endCount = count;
-        this.repaint();;
-    }
-
-    protected void unpaintedSetEndCount(double count) {
-        this.endCount = count;
-    }
-
-    protected void unpaintedSetBeginCount(double count) {
-        this.beginCount = count;
+        this.setEndCount(count, true);
     }
 
     /**
      * Recompute position in grid and repaint with these settings.
      */
-    public void repaint() {
+    public void recompute() {
         TimelinesGridPane.setRowIndex(this.timetableBlock,
                 (int) Math.round(beginCount));
         TimelinesGridPane.setRowSpan(this.timetableBlock,
