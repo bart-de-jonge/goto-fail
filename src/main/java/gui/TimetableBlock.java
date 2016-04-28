@@ -16,6 +16,8 @@ import javafx.scene.layout.Region;
  */
 class TimetableBlock extends Region {
 
+    public enum DraggingTypes { Move, Resize_Top, Resize_Right, Resize_Bottom, Resize_Left }
+
     private TimetableBlock thisBlock;
     private Pane dummyPane;
 
@@ -28,7 +30,7 @@ class TimetableBlock extends Region {
 
     private RootCenterArea pane;
     private boolean dragging;
-    private int  draggingNumber;
+    private DraggingTypes draggingType;
     private double margin;
 
     private double mouseCurrentXPosition;
@@ -80,7 +82,7 @@ class TimetableBlock extends Region {
         return e -> {
 
             setStyle(dragStyle);
-            draggingNumber = findEdgeZone(e);
+            draggingType = findEdgeZone(e);
             dummyPane.setLayoutX(getLayoutX());
             dummyPane.setLayoutY(getLayoutY());
         };
@@ -118,7 +120,7 @@ class TimetableBlock extends Region {
                 thisBlock.setVisible(true);
                 dragging = false;
 
-                if (draggingNumber == 0) {
+                if (draggingType == DraggingTypes.Move) {
 
                     double yCoordinate = e.getSceneY() - thisBlock.getHeight() / 2;
                     SnappingPane myPane = pane.getMyPane(e.getSceneX(), yCoordinate);
@@ -126,24 +128,21 @@ class TimetableBlock extends Region {
                         pane.getGrid().getChildren().remove(thisBlock);
                         pane.getGrid().add(thisBlock, myPane.getColumn(), myPane.getRow());
                     }
-                } else if (draggingNumber == 1 || draggingNumber == 3) {
+                } else if (draggingType == DraggingTypes.Resize_Top) {
                     int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
-
-                    if (draggingNumber == 3) {
-                        GridPane.setRowSpan(thisBlock, numCounts);
-                    } else {
-                        SnappingPane myPane = pane.getMyPane(e.getSceneX(), e.getSceneY());
-                        if (myPane != null) {
-                            if (myPane.isBottomHalf()) {
-                                GridPane.setRowIndex(thisBlock, myPane.getRow() + 1);
-                            } else {
-                                GridPane.setRowIndex(thisBlock, myPane.getRow());
-                            }
-
-                            GridPane.setRowSpan(thisBlock, numCounts);
+                    SnappingPane myPane = pane.getMyPane(e.getSceneX(), e.getSceneY());
+                    if (myPane != null) {
+                        if (myPane.isBottomHalf()) {
+                            GridPane.setRowIndex(thisBlock, myPane.getRow() + 1);
+                        } else {
+                            GridPane.setRowIndex(thisBlock, myPane.getRow());
                         }
-                    }
 
+                        GridPane.setRowSpan(thisBlock, numCounts);
+                    }
+                } else if (draggingType == DraggingTypes.Resize_Bottom) {
+                    int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
+                    GridPane.setRowSpan(thisBlock, numCounts);
                 }
             }
 
@@ -167,7 +166,9 @@ class TimetableBlock extends Region {
                 event.getSceneX(), event.getSceneY());
 
         // determine what kind of dragging we're going to do.
-        if (draggingNumber == 1 || draggingNumber == 3) { // handle vertical drags in helper.
+        if (draggingType == DraggingTypes.Resize_Bottom
+                || draggingType == DraggingTypes.Resize_Top) {
+            // handle vertical drags in helper.
             onMouseDraggedHelperVertical(event);
         } else { // handle just general dragging
             onMouseDraggedHelperNormal(event);
@@ -202,7 +203,7 @@ class TimetableBlock extends Region {
         double viewHeight = pane.getHeight();
         // current number of pixels from top that are invisible due to scrolling.
         double viewTop = (totalHeight - viewHeight) * pane.getVvalue();
-        if (draggingNumber == 1) { // drag from top edge
+        if (draggingType == DraggingTypes.Resize_Top) { // drag from top edge
             double oldLayoutY = getLayoutY() - (scrollMouse.getY() - pane.getLayoutY());
             double newLayout = event.getSceneY() + viewTop - pane.getLayoutY();
             double newPrefHeight = oldLayoutY - viewTop + getPrefHeight();
@@ -269,17 +270,17 @@ class TimetableBlock extends Region {
      @param event The MouseEvent to read for this.
      @return int to what area of a block mouse is pressed in.
      */
-    private int findEdgeZone(MouseEvent event) {
+    private DraggingTypes findEdgeZone(MouseEvent event) {
         if (event.getY() < margin) {
-            return 1;
+            return DraggingTypes.Resize_Top;
         } else if (event.getX() > getWidth() - margin) {
-            return 2;
+            return DraggingTypes.Resize_Right;
         } else if (event.getY() > getHeight() - margin) {
-            return 3;
+            return DraggingTypes.Resize_Bottom;
         } else if (event.getX() < margin) {
-            return 4;
+            return DraggingTypes.Resize_Left;
         } else {
-            return 0;
+            return DraggingTypes.Move;
         }
     }
 
