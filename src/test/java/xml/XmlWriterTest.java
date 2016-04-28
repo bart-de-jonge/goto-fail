@@ -27,16 +27,16 @@ public class XmlWriterTest {
         ScriptingProject project = new ScriptingProject("A test project", 2.00);
         XmlWriter writer = new XmlWriter("src/test/java/xml/test_files/test-write.xml");
         DirectorTimeline dt = new DirectorTimeline("A test director timeline");
-        DirectorShot directorShot = new DirectorShot("shot-1", "A test director shot");
+        DirectorShot directorShot = new DirectorShot("shot-1", "A test director shot", 1, 2);
         int directorShotInstance = directorShot.getInstance();
-        dt.addDirectorShot(directorShot);
+        dt.addShot(directorShot);
         project.setDirectorTimeline(dt);
 
         writer.writeProject(project);
 
         String file = readFile("src/test/java/xml/test_files/test-write.xml", StandardCharsets.UTF_8);
 
-        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><scripting-project description=\"A test project\"><director-timeline description=\"A test director timeline\"><director-shots number-of-shots=\"1\"><director-shot description=\"A test director shot\" instance=\"9\" name=\"shot-1\"/></director-shots></director-timeline></scripting-project>", file);
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><scripting-project description=\"A test project\"><director-timeline description=\"A test director timeline\"><director-shots number-of-shots=\"1\"><director-shot description=\"A test director shot\" instance=\"" + directorShotInstance + "\" name=\"shot-1\"/></director-shots></director-timeline></scripting-project>", file);
     }
 
     @Test

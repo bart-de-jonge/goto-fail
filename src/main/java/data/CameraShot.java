@@ -14,9 +14,11 @@ public class CameraShot extends Shot {
     /**
      * The constructor for the Shot.
      * @param name the name of the Shot
+     * @param startCount the count the Shot starts
+     * @param endCount the count the Shot ends
      */
-    public CameraShot(String name) {
-        super(instanceCounter, name);
+    public CameraShot(String name, int startCount, int endCount) {
+        super(instanceCounter, name, startCount, endCount);
         instanceCounter++;
     }
 }

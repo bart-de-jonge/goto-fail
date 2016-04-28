@@ -1,17 +1,14 @@
 package xml;
 
-import data.Camera;
 import data.DirectorShot;
 import data.DirectorTimeline;
 import data.ScriptingProject;
 
 import java.io.File;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -98,7 +95,7 @@ public class XmlWriter {
      * @param doc - the document to write to
      * @return - the written element
      */
-    private Element writeDirectorShots(ArrayList<DirectorShot> shots, Document doc) {
+    private Element writeDirectorShots(LinkedList<DirectorShot> shots, Document doc) {
         Element shotsElement = doc.createElement("director-shots");
         shotsElement.setAttribute("number-of-shots", String.format("%d", shots.size()));
 

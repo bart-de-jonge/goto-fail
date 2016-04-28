@@ -20,9 +20,11 @@ public class DirectorShot extends Shot {
      * The constructor for the Shot.
      * @param name the name of the Shot
      * @param description the description of the Shot
+     * @param startCount the start count of the Shot
+     * @param endCount the end count of the Shot
      */
-    public DirectorShot(String name, String description) {
-        super(instanceCounter, name);
+    public DirectorShot(String name, String description, int startCount, int endCount) {
+        super(instanceCounter, name, startCount, endCount);
         instanceCounter++;
         this.description = description;
     }
