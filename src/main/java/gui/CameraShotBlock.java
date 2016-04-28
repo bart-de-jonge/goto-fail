@@ -29,7 +29,11 @@ public class CameraShotBlock extends ShotBlock {
         thisBlock = this;
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED,
-                e -> System.out.println("Block updated"));
+                e -> {
+                    this.unpaintedSetBeginCount(TimelinesGridPane.getRowIndex(this.getTimetableBlock()));
+                    this.unpaintedSetEndCount(TimelinesGridPane.getRowSpan(this.getTimetableBlock()) + this.getBeginCount());
+                    this.timetableNumber = TimelinesGridPane.getColumnIndex(this.getTimetableBlock());
+                });
     }
 
     /**

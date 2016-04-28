@@ -52,6 +52,14 @@ public abstract class ShotBlock {
         this.repaint();;
     }
 
+    protected void unpaintedSetEndCount(double count) {
+        this.endCount = count;
+    }
+
+    protected void unpaintedSetBeginCount(double count) {
+        this.beginCount = count;
+    }
+
     /**
      * Recompute position in grid and repaint with these settings.
      */
