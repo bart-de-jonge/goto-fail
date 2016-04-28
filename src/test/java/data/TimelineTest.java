@@ -16,8 +16,8 @@ public class TimelineTest {
     @Before
     public void initialize() {
         timeline = new CameraTimeline(new Camera("", "", new CameraType("", "", 0.0)), "Timeline");
-        timeline.addShot("", 1, 3);
-        timeline.addShot("", 2, 4);
+        timeline.addShot("", "", 1, 3);
+        timeline.addShot("", "", 2, 4);
     }
 
     @Test

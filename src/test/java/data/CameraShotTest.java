@@ -3,6 +3,7 @@ package data;
 import org.junit.Before;
 import org.junit.Test;
 
+import static javax.swing.text.html.HTML.Tag.HEAD;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -12,7 +13,7 @@ public class CameraShotTest {
     CameraShot cameraShot;
     @Before
     public void initializeTest() {
-        cameraShot = new CameraShot("camerashot-1", 1, 2);
+        cameraShot = new CameraShot("camerashot-1", "some-description", 1, 2);
     }
 
     @Test
@@ -23,7 +24,7 @@ public class CameraShotTest {
     @Test
     public void getInstanceTest() {
         int oldInstance = cameraShot.getInstance();
-        CameraShot newShot = new CameraShot("name", 1, 2);
+        CameraShot newShot = new CameraShot("name", "another-description", 1, 2);
         assertEquals(oldInstance + 1, newShot.getInstance());
     }
 
@@ -31,6 +32,18 @@ public class CameraShotTest {
     public void setNameTest() {
         cameraShot.setName("testname");
         assertEquals("testname", cameraShot.getName());
+    }
+    
+    @Test
+    public void getDescriptionTest() {
+        assertEquals("some-description", cameraShot.getDescription());
+        
+    }
+    
+    @Test
+    public void setDescriptionTest() {
+        cameraShot.setDescription("a");
+        assertEquals("a", cameraShot.getDescription());
     }
 
 }

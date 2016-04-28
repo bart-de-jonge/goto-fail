@@ -17,9 +17,9 @@ public class ShotTest {
 
     @Before
     public void initialize() {
-        shot1 = new CameraShot("s1", 1, 3);
-        shot2 = new CameraShot("s2", 2, 4);
-        shot3 = new CameraShot("s3", 2, 3);
+        shot1 = new CameraShot("s1", "d", 1, 3);
+        shot2 = new CameraShot("s2", "d", 2, 4);
+        shot3 = new CameraShot("s3", "d", 2, 3);
     }
 
     @Test
@@ -28,9 +28,14 @@ public class ShotTest {
     }
 
     @Test
+    public void getDescriptionTest() {
+        assertEquals("d", shot1.getDescription());
+    }
+
+    @Test
     public void setInstanceTest() {
         int instance = shot3.getInstance();
-        CameraShot shot = new CameraShot("test", 1 ,2);
+        CameraShot shot = new CameraShot("test", "d", 1 ,2);
         assertEquals(instance + 1, shot.getInstance());
     }
 

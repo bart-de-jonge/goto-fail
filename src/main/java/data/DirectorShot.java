@@ -12,10 +12,6 @@ public class DirectorShot extends Shot {
     // Counter that ensures no shots with duplicate numbers will be created.
     private static int instanceCounter = 0;
 
-    // The description provides additional information for the director.
-    @Getter @Setter
-    private String description;
-
     /**
      * The constructor for the Shot.
      * @param name the name of the Shot
@@ -24,8 +20,7 @@ public class DirectorShot extends Shot {
      * @param endCount the end count of the Shot
      */
     public DirectorShot(String name, String description, int startCount, int endCount) {
-        super(instanceCounter, name, startCount, endCount);
+        super(instanceCounter, name, description, startCount, endCount);
         instanceCounter++;
-        this.description = description;
     }
 }

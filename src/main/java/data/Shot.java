@@ -13,6 +13,10 @@ public abstract class Shot {
     @Getter @Setter
     private String name;
 
+    // The description provides additional information for the director.
+    @Getter @Setter
+    private String description;
+
     // The instancenumber of the Shot.
     @Getter
     private int instance;
@@ -34,13 +38,15 @@ public abstract class Shot {
      *
      * @param instance the instance number of the Shot
      * @param name the name of the Shot
+     * @param description the description of the Shot
      * @param startCount the start count of the Shot
      * @param endCount the end count of the Shot
      */
-    public Shot(int instance, String name, int startCount, int endCount) {
+    public Shot(int instance, String name, String description, int startCount, int endCount) {
         assert (startCount <= endCount);
 
         this.name = name;
+        this.description = description;
         this.instance = instance;
         this.startCount = startCount;
         this.endCount = endCount;

@@ -16,7 +16,7 @@ public class CameraTimeline extends Timeline {
     @Getter
     @Setter
     private Camera camera;
-
+    
     // Collection of all Shot elements in this Timeline.
     @Getter
     private LinkedList<CameraShot> shots;
@@ -37,13 +37,15 @@ public class CameraTimeline extends Timeline {
      * {@code addShot} defaults to {@link CameraShot}.
      *
      * @param name the name of the Shot to add
+     * @param description the description of the Shot
      * @param startCount the start count of the Shot
      * @param endCount the end count of the Shot
      *
      * @see CameraTimeline#addShot(CameraShot)
      */
-    public ArrayList<CameraShot> addShot(String name, int startCount, int endCount) {
-        return addShot(new CameraShot(name, startCount, endCount));
+    public ArrayList<CameraShot> addShot(String name, String description,
+                                         int startCount, int endCount) {
+        return addShot(new CameraShot(name, description, startCount, endCount));
     }
 
     /**

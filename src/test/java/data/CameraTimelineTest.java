@@ -35,14 +35,14 @@ public class CameraTimelineTest {
 
     @Test
     public void addShotTest() {
-        timeline.addShot("testname", 1, 2);
+        timeline.addShot("testname", "", 1, 2);
         assertEquals(1, timeline.getShots().size());
         assertEquals("testname", timeline.getShots().getFirst().getName());
     }
 
     @Test
     public void addCameraShotTest() {
-        CameraShot shot = new CameraShot("testname", 1, 2);
+        CameraShot shot = new CameraShot("testname", "", 1, 2);
         timeline.addShot(shot);
         assertEquals(1, timeline.getShots().size());
         assertEquals(shot, timeline.getShots().get(0));
@@ -50,29 +50,29 @@ public class CameraTimelineTest {
 
     @Test
     public void addBeforeCameraShotTest() {
-        timeline.addShot("last", 2, 4);
-        timeline.addShot("first", 1, 3);
+        timeline.addShot("last", "", 2, 4);
+        timeline.addShot("first", "", 1, 3);
         assertEquals("first", timeline.getShots().getFirst().getName());
     }
 
     @Test
     public void addAfterCameraShotTest() {
-        timeline.addShot("first", 1, 3);
-        timeline.addShot("last", 2, 4);
+        timeline.addShot("first", "", 1, 3);
+        timeline.addShot("last", "", 2, 4);
         assertEquals("last", timeline.getShots().getLast().getName());
     }
 
     @Test
     public void addFullOverlapCameraShotTest() {
-        timeline.addShot("first", 2, 3);
-        timeline.addShot("last", 1, 4);
+        timeline.addShot("first", "", 2, 3);
+        timeline.addShot("last", "", 1, 4);
         assertEquals("last", timeline.getShots().getFirst().getName());
     }
 
     @Test
     public void addSameTimeCameraShotTest() {
-        timeline.addShot("first", 1, 3);
-        timeline.addShot("last", 1, 3);
+        timeline.addShot("first", "", 1, 3);
+        timeline.addShot("last", "", 1, 3);
         assertEquals("last", timeline.getShots().getFirst().getName());
     }
 }
