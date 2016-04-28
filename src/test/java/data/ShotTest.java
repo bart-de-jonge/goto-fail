@@ -36,12 +36,12 @@ public class ShotTest {
 
     @Test
     public void getStartCountTest() {
-        assertEquals(1, shot1.getStartCount());
+        assertEquals(1, shot1.getStartCount(), 0);
     }
 
     @Test
     public void getEndCountTest() {
-        assertEquals(3, shot1.getEndCount());
+        assertEquals(3, shot1.getEndCount(), 0);
     }
 
     @Test

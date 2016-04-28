@@ -19,11 +19,11 @@ public abstract class Shot {
 
     // The start count of the Shot.
     @Getter @Setter
-    private int startCount;
+    private double startCount;
 
     // The end count of the Shot.
     @Getter @Setter
-    private int endCount;
+    private double endCount;
 
     // True if the shot is overlapping with another Shot.
     @Getter @Setter
@@ -49,14 +49,14 @@ public abstract class Shot {
     /**
      * Compares the two shots.
      * @param other the other shot to compare with
-     * @return if the Shot starts earlier than the other Shot -1 is returned. If the shots have equal
-     * start times, the end times are compared.
+     * @return if the Shot starts earlier than the other Shot -1 is returned. If the shots have
+     * equal start times, the end times are compared.
      */
     public int compareTo(Shot other) {
-        int result = Integer.compare(getStartCount(), other.getStartCount());
+        int result = Double.compare(getStartCount(), other.getStartCount());
 
         if (result == 0) {
-            result = Integer.compare(getEndCount(), other.getEndCount());
+            result = Double.compare(getEndCount(), other.getEndCount());
         }
 
         return result;
