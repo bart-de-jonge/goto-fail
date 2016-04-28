@@ -3,7 +3,8 @@ package control;
 import gui.RootPane;
 
 /**
- * Created by alexandergeenen on 28/04/16.
+ * Class wrapper for model management controllers.
+ * @author alex
  */
 public class ControllerManager {
 
@@ -11,6 +12,10 @@ public class ControllerManager {
 
     private TimelineController timelineControl;
 
+    /**
+     * Constructor.
+     * @param rootPane Root Window
+     */
     public ControllerManager(RootPane rootPane) {
         this.rootPane = rootPane;
         initializeControllers();
