@@ -14,8 +14,7 @@ public abstract class Timeline {
     @Getter
     private String description;
 
-    // Collection of all Shot elements in this Timeline.
-    private ArrayList<Shot> shots;
+   
 
     /**
      * Constructor.
@@ -23,6 +22,5 @@ public abstract class Timeline {
      */
     public Timeline(String description) {
         this.description = description;
-        this.shots = new ArrayList<>();
     }
 }
