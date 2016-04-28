@@ -112,7 +112,6 @@ class RootCenterArea extends ScrollPane {
             Bounds bounds = pane.localToScene(pane.getBoundsInLocal());
             if (bounds.contains(x, y)) {
                 if (((y - bounds.getMinY()) * 2) > pane.getHeight()) {
-                    System.out.println("DEBUG SHI T = " + ((y - bounds.getMinY()) * 2));
                     pane.setBottomHalf(true);
                 } else {
                     pane.setBottomHalf(false);
