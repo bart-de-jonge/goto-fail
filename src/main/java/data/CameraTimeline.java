@@ -75,7 +75,7 @@ public class CameraTimeline extends Timeline {
                     added = true;
                 }
             }
-            if (shot.areOverlapping(other)) {
+            if (checkOverlap(shot, other)) {
                 result.add(other);
             }
         }
