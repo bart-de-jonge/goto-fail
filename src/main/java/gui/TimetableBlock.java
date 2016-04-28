@@ -128,7 +128,7 @@ class TimetableBlock extends Region {
                 } else if (draggingNumber == 1 || draggingNumber == 3) {
                     System.out.println("Vertical drag releaseds");
                     int numCounts = (int) Math.round(dummyPane.getHeight() / pane.countHeight);
-                  git add  System.out.println(numCounts);
+                    System.out.println(numCounts);
 
                     if(draggingNumber == 3) {
                         GridPane.setRowSpan(thisBlock, numCounts);
