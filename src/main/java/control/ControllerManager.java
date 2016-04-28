@@ -9,7 +9,7 @@ public class ControllerManager {
 
     private RootPane rootPane;
 
-    private TimelineController timelineController;
+    private TimelineController timelineControl;
 
     public ControllerManager(RootPane rootPane) {
         this.rootPane = rootPane;
@@ -17,6 +17,6 @@ public class ControllerManager {
     }
 
     private void initializeControllers() {
-       timelineController = new TimelineController(rootPane.getRootCenterArea().getGrid(), rootPane);
+        timelineControl = new TimelineController(rootPane.getRootCenterArea().getGrid(), rootPane);
     }
 }

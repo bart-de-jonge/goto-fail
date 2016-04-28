@@ -5,6 +5,7 @@ import gui.TimelinesGridPane;
 import gui.RootPane;
 
 /**
+ * Class that controls the timeline.
  * @author alex
  */
 public class TimelineController {
@@ -12,12 +13,13 @@ public class TimelineController {
     private TimelinesGridPane timelinePane;
     private RootPane rootPane;
 
+    /**
+     * Constructor.
+     * @param timelinePane Timeline view to be controlled.
+     * @param rootPane Root Pane.
+     */
     public TimelineController(TimelinesGridPane timelinePane, RootPane rootPane) {
         this.timelinePane = timelinePane;
         this.rootPane = rootPane;
-
-        // Add a few test shots
-        timelinePane.addCamerShotBlock(new CameraShotBlock(1, rootPane.getRootCenterArea(), 2, 3));
-        timelinePane.addCamerShotBlock(new CameraShotBlock(0, rootPane.getRootCenterArea(), 1, 5));
     }
 }
