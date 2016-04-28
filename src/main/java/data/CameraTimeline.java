@@ -92,4 +92,12 @@ public class CameraTimeline extends Timeline {
     public void clearShots() {
         shots.clear();
     }
+
+    /**
+     * Removes shot from the Timeline if it exists.
+     * @param shot Shot to be removed.
+     */
+    public void removeShot(CameraShot shot) {
+        shots.remove(shot);
+    }
 }

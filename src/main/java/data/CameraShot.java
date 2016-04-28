@@ -1,6 +1,5 @@
 package data;
 
-import lombok.Getter;
 
 /**
  * This class extends the Shot class, this one is specific for the CameraTimeline.
@@ -11,9 +10,7 @@ public class CameraShot extends Shot {
     // Counter that ensures no shots with duplicate numbers will be created.
     private static int instanceCounter = 0;
 
-    @Getter
-    private int cameraShotId;
-    
+
     /**
      * The constructor for the Shot.
      * @param name the name of the Shot
@@ -23,7 +20,6 @@ public class CameraShot extends Shot {
      */
     public CameraShot(String name, String description, int startCount, int endCount) {
         super(instanceCounter, name, description, startCount, endCount);
-        cameraShotId = instanceCounter;
         instanceCounter++;
     }
 }
