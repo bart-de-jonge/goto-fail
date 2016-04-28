@@ -29,7 +29,7 @@ public class ShotTest {
 
     @Test
     public void setInstanceTest() {
-        int instance = shot2.getInstance();
+        int instance = shot3.getInstance();
         CameraShot shot = new CameraShot("test", 1 ,2);
         assertEquals(instance + 1, shot.getInstance());
     }

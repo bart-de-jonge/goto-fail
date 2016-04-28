@@ -19,6 +19,11 @@ public class DirectorTimelineTest {
     }
 
     @Test
+    public void getDescriptionTest() {
+        assertEquals("A test director timeline", timeline.getDescription());
+    }
+
+    @Test
     public void addShotTest() {
         timeline.addShot("testname", "testdescription", 1, 2);
         assertEquals(1, timeline.getShots().size());
@@ -31,6 +36,34 @@ public class DirectorTimelineTest {
         timeline.addShot(shot);
         assertEquals(1, timeline.getShots().size());
         assertEquals(shot, timeline.getShots().get(0));
+    }
+
+    @Test
+    public void addBeforeDirectorShotTest() {
+        timeline.addShot("last", "", 2, 4);
+        timeline.addShot("first", "", 1, 3);
+        assertEquals("first", timeline.getShots().getFirst().getName());
+    }
+
+    @Test
+    public void addAfterDirectorShotTest() {
+        timeline.addShot("first", "", 1, 3);
+        timeline.addShot("last", "", 2, 4);
+        assertEquals("last", timeline.getShots().getLast().getName());
+    }
+
+    @Test
+    public void addFullOverlapDirectorShotTest() {
+        timeline.addShot("first", "", 2, 3);
+        timeline.addShot("last", "", 1, 4);
+        assertEquals("last", timeline.getShots().getFirst().getName());
+    }
+
+    @Test
+    public void addSameTimeDirectorShotTest() {
+        timeline.addShot("first", "", 1, 3);
+        timeline.addShot("last", "", 1, 3);
+        assertEquals("last", timeline.getShots().getFirst().getName());
     }
 
     @Test
@@ -50,10 +83,5 @@ public class DirectorTimelineTest {
         shots.add(shot);
         timeline.clearShots();
         assertEquals(0, timeline.getShots().size());
-    }
-
-    @Test
-    public void getDescriptionTest() {
-        assertEquals("A test director timeline", timeline.getDescription());
     }
 }
