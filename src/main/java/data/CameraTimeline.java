@@ -1,5 +1,7 @@
 package data;
 
+import java.util.ArrayList;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +14,9 @@ public class CameraTimeline extends Timeline {
     // The camera that is associated with this timeline.
     @Getter @Setter
     private Camera camera;
+    
+    @Getter
+    private ArrayList<CameraShot> shots;
 
     /**
      * Constructor.

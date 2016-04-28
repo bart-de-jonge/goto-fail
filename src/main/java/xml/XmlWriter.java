@@ -1,27 +1,33 @@
 package xml;
 
 import data.Camera;
+import data.CameraShot;
+import data.CameraTimeline;
+import data.CameraType;
 import data.DirectorShot;
 import data.DirectorTimeline;
 import data.ScriptingProject;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+
 import lombok.Getter;
 import lombok.Setter;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+
 
 /**
  * Created by Bart.
@@ -56,6 +62,11 @@ public class XmlWriter {
 
             // Add childs
             projectElement.appendChild(writeDirectorTimeline(project.getDirectorTimeline(), doc));
+            
+            ArrayList<CameraTimeline> cameraTimelines = project.getCameraTimelines();
+            for (CameraTimeline c : cameraTimelines) {
+                projectElement.appendChild(writeCameraTimeline(c, doc));
+            }
 
 
             // Write document to file
@@ -75,6 +86,85 @@ public class XmlWriter {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    /**
+     * Write a camera timeline to an element.
+     * @param cameraTimeline the camera timeline to write
+     * @param doc the document to write with
+     * @return an element for this camera timeline
+     */
+    private Element writeCameraTimeline(CameraTimeline cameraTimeline, Document doc) {
+        Element cameraTimelineElement = doc.createElement("camera-timeline");
+        cameraTimelineElement.setAttribute("description", cameraTimeline.getDescription());
+        cameraTimelineElement.appendChild(writeCamera(cameraTimeline.getCamera(), doc));
+        cameraTimelineElement.appendChild(writeCameraShots(cameraTimeline.getShots(), doc));
+        return cameraTimelineElement;
+    }
+    
+    /**
+     * Write a camera to an element.
+     * @param camera the camera to write
+     * @param doc the document to write with
+     * @return an element for this camera
+     */
+    private Element writeCamera(Camera camera, Document doc) {
+        Element cameraElement = doc.createElement("camera");
+        cameraElement.setAttribute("name", camera.getName());
+        cameraElement.setAttribute("description", camera.getDescription());
+        cameraElement.setAttribute("movement-margin", Double.toString(camera.getMovementMargin()));
+        cameraElement.appendChild(writeCameraType(camera.getCameraType(), doc));
+        return cameraElement;
+    }
+    
+    /**
+     * Write a camera type to an element.
+     * @param type the camera type to write
+     * @param doc the document to write with
+     * @return an element for this camera type
+     */
+    private Element writeCameraType(CameraType type, Document doc) {
+        Element cameraTypeElement = doc.createElement("camera-type");
+        cameraTypeElement.setAttribute("name", type.getName());
+        cameraTypeElement.setAttribute("description", type.getDescription());
+        cameraTypeElement.setAttribute("movement-margin",
+                Double.toString(type.getMovementMargin()));
+        return cameraTypeElement;
+    }
+    
+    /**
+     * Write a list of camera shots to an element.
+     * @param shots the list of camera shots to write
+     * @param doc the document to write with
+     * @return an element for this lists of camera shots
+     */
+    private Element writeCameraShots(ArrayList<CameraShot> shots, Document doc) {
+        Element shotsElement = doc.createElement("camera-shots");
+        shotsElement.setAttribute("number-of-shots", String.format("%d", shots.size()));
+
+        for (CameraShot shot : shots) {
+            shotsElement.appendChild(writeCameraShot(shot, doc));
+        }
+
+        return shotsElement;
+    }
+    
+    /**
+     * Write a camera shot to an element.
+     * @param shot the camera shot to write
+     * @param doc the document to write with
+     * @return an element for this camera shot
+     */
+    private Element writeCameraShot(CameraShot shot, Document doc) {
+        Element shotElement = doc.createElement("camera-shot");
+        
+        shotElement.setAttribute("name", shot.getName());
+        shotElement.setAttribute("description", shot.getDescription());
+        shotElement.setAttribute("instance", String.format("%d", shot.getInstance()));
+        
+        return shotElement;
+
+        
     }
 
     /**

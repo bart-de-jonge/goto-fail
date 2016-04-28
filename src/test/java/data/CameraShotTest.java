@@ -12,7 +12,7 @@ public class CameraShotTest {
     CameraShot cameraShot;
     @Before
     public void initializeTest() {
-        cameraShot = new CameraShot("camerashot-1");
+        cameraShot = new CameraShot("camerashot-1", "some-description");
     }
 
     @Test
@@ -23,7 +23,7 @@ public class CameraShotTest {
     @Test
     public void getInstanceTest() {
         int oldInstance = cameraShot.getInstance();
-        CameraShot newShot = new CameraShot("name");
+        CameraShot newShot = new CameraShot("name", "another-description");
         assertEquals(oldInstance + 1, newShot.getInstance());
     }
 
@@ -31,6 +31,18 @@ public class CameraShotTest {
     public void setNameTest() {
         cameraShot.setName("testname");
         assertEquals("testname", cameraShot.getName());
+    }
+    
+    @Test
+    public void getDescriptionTest() {
+        assertEquals("some-description", cameraShot.getDescription());
+        
+    }
+    
+    @Test
+    public void setDescriptionTest() {
+        cameraShot.setDescription("a");
+        assertEquals("a", cameraShot.getDescription());
     }
 
 }
