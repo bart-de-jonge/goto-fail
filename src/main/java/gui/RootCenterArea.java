@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Class representing the center (main section) of the gui.
  * In other words, the time line view goes here.
  */
-class RootCenterArea extends ScrollPane {
+public class RootCenterArea extends ScrollPane {
 
     //private double width, height;
 
@@ -56,13 +56,6 @@ class RootCenterArea extends ScrollPane {
         parentPane.setMinHeight(1000);
         parentPane.setMinWidth(1000);
         setContent(parentPane);
-
-        CameraShotBlock block1 = new CameraShotBlock(0, this, 0, 3);
-        grid.addCamerShotBlock(block1);
-        CameraShotBlock block2 = new CameraShotBlock(3, this, 2, 8);
-        grid.addCamerShotBlock(block2);
-        testBlock = new CameraShotBlock(1, this, 1, 4);
-        grid.addCamerShotBlock(testBlock);
     }
 
 
