@@ -54,8 +54,9 @@ public class TimelineController {
     public void addCameraShot(int cameraIndex, String name, String description,
                               int startCount, int endCount) {
         System.out.println("shot added?");
-        this.cameraTimelines.get(cameraIndex).addShot(name, description, startCount, endCount);
-        CameraShotBlock shotBlock = new CameraShotBlock(name, cameraIndex,
+        CameraShot newShot = new CameraShot(name,description, startCount, endCount);
+        this.cameraTimelines.get(cameraIndex).addShot(newShot);
+        CameraShotBlock shotBlock = new CameraShotBlock(newShot.getCameraShotId(), cameraIndex,
                                                         rootPane.getRootCenterArea(),
                                                         startCount, endCount);
         shotBlock.attachEventHandler(this::shotChangedHandler);
@@ -71,9 +72,11 @@ public class TimelineController {
         TimetableBlock timetableBlock = (TimetableBlock) event.getSource();
         CameraShotBlock changedBlock = (CameraShotBlock) timetableBlock.getParentBlock();
         CameraTimeline modTimeline = this.cameraTimelines.get(changedBlock.getTimetableNumber());
-        CameraShot shot = modTimeline.getShots()
-                .stream()
-                .filter(s -> s.getName().equals(changedBlock.getName())).findFirst().get();
+        CameraShot shot = this.cameraTimelines.stream()
+                .flatMap(cameraTimeline -> cameraTimeline.getShots().stream())
+                .filter(s -> s.getCameraShotId() == changedBlock.getShotId())
+                .findFirst()
+                .get();
         shot.setStartCount(changedBlock.getBeginCount());
         shot.setEndCount(changedBlock.getEndCount());
     }

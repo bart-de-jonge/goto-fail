@@ -13,22 +13,22 @@ public class CameraShotBlock extends ShotBlock {
     @Getter
     private int timetableNumber;
     @Getter
-    private String name;
+    private int shotId;
 
     private CameraShotBlock thisBlock;
 
     /**
      * Constructor.
-     * @param shotName the shot title
+     * @param shotId the shot's unique id
      * @param timetableNumber - the timeTableNumber this shot belongs to
      * @param rootCenterArea - the rootCenterArea this shot belongs to
      * @param beginCount - the begin count of this shot
      * @param endCount - the end count of this shot
      */
-    public CameraShotBlock(String shotName, int timetableNumber, RootCenterArea rootCenterArea,
+    public CameraShotBlock(int shotId, int timetableNumber, RootCenterArea rootCenterArea,
                            double beginCount, double endCount) {
         super(rootCenterArea, beginCount, endCount);
-        this.name = shotName;
+        this.shotId = shotId;
         this.timetableNumber = timetableNumber;
         thisBlock = this;
 
