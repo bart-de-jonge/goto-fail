@@ -90,11 +90,6 @@ class RootCenterArea extends ScrollPane {
         for (int i = 0; i < numberOfCounts; i++) {
             for (int j = 0; j < numberOfTimelines; j++) {
                 SnappingPane pane = new SnappingPane(i, j, 200, 50);
-//                pane.setVisible(true);
-//                pane.setStyle("-fx-border-style: solid inside;"
-//                        + "-fx-border-width: 3;"
-//                        + "-fx-border-color: red;"
-//                        + "-fx-background-color: green;");
                 grid.add(pane, j, i);
                 panes.add(pane);
             }
