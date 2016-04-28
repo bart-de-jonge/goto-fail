@@ -3,12 +3,12 @@ package gui;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.*;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import lombok.Getter;
-
-import java.sql.RowIdLifetime;
+import lombok.Setter;
 import java.util.ArrayList;
 
 /**
@@ -19,10 +19,17 @@ class RootCenterArea extends ScrollPane {
 
     //private double width, height;
 
-    int countHeight = 50;
-    int timelineWidth = 200;
-    int numberOfTimelines = 5;
-    int numberOfCounts = 10;
+    @Getter @Setter
+    private int countHeight = 50;
+    @Getter @Setter
+    private int timelineWidth = 200;
+    @Getter @Setter
+    private int numberOfTimelines = 5;
+    @Getter @Setter
+    private int numberOfCounts = 10;
+
+    @Getter
+    private RootPane rootPane;
 
     @Getter
     private GridPane grid;
@@ -30,14 +37,14 @@ class RootCenterArea extends ScrollPane {
     @Getter
     private AnchorPane parentPane;
 
-    private ArrayList<MyPane> panes;
+    private ArrayList<SnappingPane> panes;
 
     /**
      * Constructor class
      * @param rootPane parent pane passed through.
      */
     RootCenterArea(RootPane rootPane) {
-
+        this.rootPane = rootPane;
         parentPane = new AnchorPane();
         grid = new GridPane();
         parentPane.getChildren().add(grid);
@@ -74,27 +81,35 @@ class RootCenterArea extends ScrollPane {
         grid.add(rect2, 1, 1, 1, 3);
     }
 
+    /**
+     * Add snapping panes to grid.
+     */
     private void addPanes() {
-        panes = new ArrayList<MyPane>();
+        panes = new ArrayList<>();
 
-        for(int i = 0; i < numberOfCounts; i++) {
+        for (int i = 0; i < numberOfCounts; i++) {
             for (int j = 0; j < numberOfTimelines; j++) {
-                MyPane pane = new MyPane(i, j, 200, 50);
+                SnappingPane pane = new SnappingPane(i, j, 200, 50);
                 grid.add(pane, j, i);
                 panes.add(pane);
             }
         }
     }
 
-    public MyPane getMyPane(double x, double y) {
-        for (MyPane pane : panes) {
+    /**
+     * Get the pane in which the scene coordinates lie.
+     * @param x - the x coordinate
+     * @param y - the y coordinate
+     * @return - the SnappingPane, null if none applicable
+     */
+    public SnappingPane getMyPane(double x, double y) {
+        for (SnappingPane pane : panes) {
             Bounds bounds = pane.localToScene(pane.getBoundsInLocal());
             if (bounds.contains(x, y)) {
                 if (((y - bounds.getMinY()) * 2) > pane.getHeight()) {
-                    pane.bottomHalf = true;
-                    System.out.println("Bottom half");
+                    pane.setBottomHalf(true);
                 } else {
-                    pane.bottomHalf = false;
+                    pane.setBottomHalf(false);
                 }
                 return pane;
             }
@@ -103,15 +118,3 @@ class RootCenterArea extends ScrollPane {
     }
 }
 
-class MyPane extends Pane {
-    int row, column;
-    boolean bottomHalf;
-
-    public MyPane(int row, int column, double width, double height) {
-        this.row = row;
-        this.column = column;
-        this.setWidth(width);
-        this.setHeight(height);
-        this.bottomHalf = false;
-    }
-}
