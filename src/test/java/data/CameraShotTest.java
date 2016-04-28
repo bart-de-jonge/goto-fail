@@ -3,7 +3,7 @@ package data;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Bart.
@@ -12,7 +12,7 @@ public class CameraShotTest {
     CameraShot cameraShot;
     @Before
     public void initializeTest() {
-        cameraShot = new CameraShot("camerashot-1", "some-description");
+        cameraShot = new CameraShot("camerashot-1", "some-description", 1, 2);
     }
 
     @Test
@@ -23,7 +23,7 @@ public class CameraShotTest {
     @Test
     public void getInstanceTest() {
         int oldInstance = cameraShot.getInstance();
-        CameraShot newShot = new CameraShot("name", "another-description");
+        CameraShot newShot = new CameraShot("name", "another-description", 1, 2);
         assertEquals(oldInstance + 1, newShot.getInstance());
     }
 

@@ -8,9 +8,9 @@ import data.DirectorShot;
 import data.DirectorTimeline;
 import data.ScriptingProject;
 
-
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -174,7 +174,7 @@ public class XmlWriter {
      * @param doc the document to write with
      * @return an element for this lists of camera shots
      */
-    private Element writeCameraShots(ArrayList<CameraShot> shots, Document doc) {
+    private Element writeCameraShots(LinkedList<CameraShot> shots, Document doc) {
         Element shotsElement = doc.createElement("camera-shots");
         shotsElement.setAttribute("number-of-shots", String.format("%d", shots.size()));
 
@@ -224,7 +224,7 @@ public class XmlWriter {
      * @param doc - the document to write to
      * @return - the written element
      */
-    private Element writeDirectorShots(ArrayList<DirectorShot> shots, Document doc) {
+    private Element writeDirectorShots(LinkedList<DirectorShot> shots, Document doc) {
         Element shotsElement = doc.createElement("director-shots");
         shotsElement.setAttribute("number-of-shots", String.format("%d", shots.size()));
 

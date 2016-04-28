@@ -23,11 +23,8 @@ public class Camera {
     @Getter @Setter
     private CameraType cameraType;
 
-    /* Number of counts this camera needs at maximum to move to a new position.
-     * This defines the minimum margin between two consecutive shots
-     * Defined in seconds
-     * If set to a negative value the default margin in the cameraType is used */
-    @Getter @Setter
+    // The movementMargin, the time it takes for the Camera to move to a new position
+    @Setter
     private double movementMargin;
 
     /**
@@ -41,6 +38,19 @@ public class Camera {
         this.description = description;
         this.cameraType = cameraType;
         this.movementMargin = -1;
+    }
+
+    /**
+     * Number of counts this camera needs at maximum to move to a new position.
+     * This defines the minimum margin between the two consecutive shots defined in
+     * seconds. If set to a negative value the default margin in the cameraType is used.
+     * @return the time it takes for the camera to move to a new position in seconds
+     */
+    public double getMovementMargin() {
+        if (movementMargin < 0) {
+            return cameraType.getMovementMargin();
+        }
+        return movementMargin;
     }
 
     /**
