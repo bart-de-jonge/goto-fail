@@ -138,31 +138,6 @@ class TimetableBlock extends Region {
                 feedbackPane.setVisible(false);
                 dragging = false;
                 snapPane(thisBlock, dummyPane, e.getSceneX(), e.getSceneY(), draggingType);
-//
-//                if (draggingType == DraggingTypes.Move) {
-//
-//                    double yCoordinate = e.getSceneY() - thisBlock.getHeight() / 2;
-//                    SnappingPane myPane = pane.getMyPane(e.getSceneX(), yCoordinate);
-//                    if (myPane != null) {
-//                        pane.getGrid().getChildren().remove(thisBlock);
-//                        pane.getGrid().add(thisBlock, myPane.getColumn(), myPane.getRow());
-//                    }
-//                } else if (draggingType == DraggingTypes.Resize_Top) {
-//                    int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
-//                    SnappingPane myPane = pane.getMyPane(e.getSceneX(), e.getSceneY());
-//                    if (myPane != null) {
-//                        if (myPane.isBottomHalf()) {
-//                            GridPane.setRowIndex(thisBlock, myPane.getRow() + 1);
-//                        } else {
-//                            GridPane.setRowIndex(thisBlock, myPane.getRow());
-//                        }
-//
-//                        GridPane.setRowSpan(thisBlock, Math.max(numCounts, 1));
-//                    }
-//                } else if (draggingType == DraggingTypes.Resize_Bottom) {
-//                    int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
-//                    GridPane.setRowSpan(thisBlock, Math.max(numCounts, 1));
-//                }
             }
 
         };
@@ -189,7 +164,7 @@ class TimetableBlock extends Region {
                 || draggingType == DraggingTypes.Resize_Top) {
             // handle vertical drags in helper.
             onMouseDraggedHelperVertical(event);
-        } else if (draggingType == DraggingTypes.Move){ // handle just general dragging
+        } else if (draggingType == DraggingTypes.Move) { // handle just general dragging
             onMouseDraggedHelperNormal(event);
         }
 
@@ -205,13 +180,25 @@ class TimetableBlock extends Region {
         mouseCurrentYPosition = event.getSceneY();
     }
 
-    private boolean snapPane(Region targetRegion, Pane mappingPane, double x, double y, DraggingTypes dragType) {
+    /**
+     * Snap tha targetregion to a grid using the model provided by the mappingPane.
+     * @param targetRegion - the target region to snap
+     * @param mappingPane - the model mappingPane to follow while snapping
+     * @param x - the X coordinate of the mouse during this snap
+     * @param y - the Y coordinate of the mouse during this snap
+     * @param dragType - The type of drag used while snapping (move, resize)
+     * @return - boolean that indicates if the snap was possible and completed
+     */
+    private boolean snapPane(Region targetRegion, Pane mappingPane,
+                             double x, double y, DraggingTypes dragType) {
         // set feedback pane
-        double yCoordinate, xCoordinate;
+        double yCoordinate;
+        double xCoordinate;
 
         if (dragType == DraggingTypes.Move) {
             yCoordinate = y - dragYOffset;
-            xCoordinate = mappingPane.localToScene(mappingPane.getBoundsInLocal()).getMinX() + mappingPane.getWidth() / 2;
+            xCoordinate = mappingPane.localToScene(mappingPane.getBoundsInLocal()).getMinX()
+                    + mappingPane.getWidth() / 2;
         } else {
             Bounds bounds = mappingPane.localToScene(mappingPane.getBoundsInLocal());
             yCoordinate = bounds.getMinY();
@@ -220,8 +207,6 @@ class TimetableBlock extends Region {
             System.out.println(yCoordinate);
         }
 
-        System.out.println("XCORD = " + xCoordinate);
-        System.out.println("YCORD = " + yCoordinate);
         SnappingPane myPane = pane.getMyPane(xCoordinate, yCoordinate);
         if (myPane != null) {
             int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
@@ -229,9 +214,8 @@ class TimetableBlock extends Region {
                 numCounts = (int) Math.round((dummyPane.getHeight() - 5) / pane.getCountHeight());
             }
 
-            System.out.println(numCounts);
-
-            if ((dragType == DraggingTypes.Resize_Top || dragType == DraggingTypes.Move) && myPane.isBottomHalf()) {
+            if ((dragType == DraggingTypes.Resize_Top || dragType == DraggingTypes.Move)
+                    && myPane.isBottomHalf()) {
                 GridPane.setRowIndex(targetRegion, myPane.getRow() + 1);
             } else {
                 GridPane.setRowIndex(targetRegion, myPane.getRow());
