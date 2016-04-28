@@ -179,7 +179,7 @@ class TimetableBlock extends Region {
     }
 
     /**
-     * Snap tha targetregion to a grid using the model provided by the mappingPane.
+     * Snap the targetregion to a grid using the model provided by the mappingPane.
      * @param targetRegion - the target region to snap
      * @param mappingPane - the model mappingPane to follow while snapping
      * @param x - the X coordinate of the mouse during this snap
