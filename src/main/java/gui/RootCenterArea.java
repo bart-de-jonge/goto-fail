@@ -1,5 +1,6 @@
 package gui;
 
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
@@ -18,10 +19,10 @@ class RootCenterArea extends ScrollPane {
 
     //private double width, height;
 
-    private int countHeight = 50;
-    private int timelineWidth = 200;
-    private int numberOfTimelines = 5;
-    private int numberOfCounts = 10;
+    int countHeight = 50;
+    int timelineWidth = 200;
+    int numberOfTimelines = 5;
+    int numberOfCounts = 10;
 
     @Getter
     private GridPane grid;
@@ -86,8 +87,15 @@ class RootCenterArea extends ScrollPane {
     }
 
     public MyPane getMyPane(double x, double y) {
-        for(MyPane pane : panes) {
-            if(pane.localToScene(pane.getBoundsInLocal()).contains(x, y)) {
+        for (MyPane pane : panes) {
+            Bounds bounds = pane.localToScene(pane.getBoundsInLocal());
+            if (bounds.contains(x, y)) {
+                if (((y - bounds.getMinY()) * 2) > pane.getHeight()) {
+                    pane.bottomHalf = true;
+                    System.out.println("Bottom half");
+                } else {
+                    pane.bottomHalf = false;
+                }
                 return pane;
             }
         }
@@ -97,11 +105,13 @@ class RootCenterArea extends ScrollPane {
 
 class MyPane extends Pane {
     int row, column;
+    boolean bottomHalf;
 
     public MyPane(int row, int column, double width, double height) {
         this.row = row;
         this.column = column;
         this.setWidth(width);
         this.setHeight(height);
+        this.bottomHalf = false;
     }
 }
