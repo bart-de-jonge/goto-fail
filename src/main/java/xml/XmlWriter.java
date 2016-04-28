@@ -1,13 +1,5 @@
 package xml;
 
-import data.Camera;
-import data.CameraShot;
-import data.CameraTimeline;
-import data.CameraType;
-import data.DirectorShot;
-import data.DirectorTimeline;
-import data.ScriptingProject;
-
 import java.io.File;
 import java.util.ArrayList;
 
@@ -20,12 +12,18 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-
-import lombok.Getter;
-import lombok.Setter;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import data.Camera;
+import data.CameraShot;
+import data.CameraTimeline;
+import data.CameraType;
+import data.DirectorShot;
+import data.DirectorTimeline;
+import data.ScriptingProject;
+import lombok.Getter;
+import lombok.Setter;
 
 
 
@@ -59,15 +57,19 @@ public class XmlWriter {
             Element projectElement = doc.createElement("scripting-project");
             doc.appendChild(projectElement);
             projectElement.setAttribute("description", project.getDescription());
+            projectElement.setAttribute("seconds-per-count",
+                    Double.toString(project.getSecondsPerCount()));
 
             // Add childs
             projectElement.appendChild(writeDirectorTimeline(project.getDirectorTimeline(), doc));
             
             ArrayList<CameraTimeline> cameraTimelines = project.getCameraTimelines();
-            for (CameraTimeline c : cameraTimelines) {
-                projectElement.appendChild(writeCameraTimeline(c, doc));
-            }
-
+            projectElement.appendChild(writeCameraTimelines(cameraTimelines, doc));
+            
+            
+            ArrayList<Camera> cameras = project.getCameras();
+            projectElement.appendChild(writeCameras(cameras, doc));
+            
 
             // Write document to file
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -86,6 +88,34 @@ public class XmlWriter {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    /**
+     * Write a list of cameras to an element.
+     * @param cameras the list of cameras to write
+     * @param doc the document to write with
+     * @return an element for this list of cameras
+     */
+    private Element writeCameras(ArrayList<Camera> cameras, Document doc) {
+        Element camerasElement = doc.createElement("cameras");
+        for (Camera c: cameras) {
+            camerasElement.appendChild(writeCamera(c, doc));
+        }
+        return camerasElement;
+    }
+    
+    /**
+     * Write a list of camera timelines to an element.
+     * @param timelines the list of timelines to write
+     * @param doc the document to write with
+     * @return an element for this list of cameras
+     */
+    private Element writeCameraTimelines(ArrayList<CameraTimeline> timelines, Document doc) {
+        Element timelinesElement = doc.createElement("camera-timelines");
+        for (CameraTimeline c: timelines) {
+            timelinesElement.appendChild(writeCameraTimeline(c, doc));
+        }
+        return timelinesElement;
     }
     
     /**
