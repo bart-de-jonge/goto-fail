@@ -20,6 +20,7 @@ class TimetableBlock extends Region {
 
     private TimetableBlock thisBlock;
     private Pane dummyPane;
+    private Pane feedbackPane;
 
     private double dragXOffset;
     private double dragYOffset;
@@ -47,6 +48,15 @@ class TimetableBlock extends Region {
     TimetableBlock(RootCenterArea pane) {
         this.dragging = false;
         this.thisBlock = this;
+
+        feedbackPane = new Pane();
+        feedbackPane.setPrefHeight(100);
+        feedbackPane.setPrefWidth(200);
+        feedbackPane.setStyle("-fx-background-color: red");
+//        pane.getParentPane().getChildren().add(feedbackPane);
+        pane.getGrid().add(feedbackPane, 0, 0);
+        feedbackPane.setVisible(false);
+
 
         dummyPane = new Pane();
         dummyPane.setPrefHeight(100);
@@ -85,6 +95,12 @@ class TimetableBlock extends Region {
             draggingType = findEdgeZone(e);
             dummyPane.setLayoutX(getLayoutX());
             dummyPane.setLayoutY(getLayoutY());
+
+            feedbackPane.setLayoutY(getLayoutY());
+            feedbackPane.setLayoutX(getLayoutX());
+            feedbackPane.setPrefWidth(getWidth());
+            feedbackPane.setPrefHeight(getHeight());
+            feedbackPane.setVisible(true);
         };
     }
 
@@ -118,6 +134,7 @@ class TimetableBlock extends Region {
             if (dragging) {
                 dummyPane.setVisible(false);
                 thisBlock.setVisible(true);
+                feedbackPane.setVisible(false);
                 dragging = false;
 
                 if (draggingType == DraggingTypes.Move) {
@@ -170,8 +187,23 @@ class TimetableBlock extends Region {
                 || draggingType == DraggingTypes.Resize_Top) {
             // handle vertical drags in helper.
             onMouseDraggedHelperVertical(event);
-        } else { // handle just general dragging
+        } else if (draggingType == DraggingTypes.Move){ // handle just general dragging
             onMouseDraggedHelperNormal(event);
+        }
+
+        // set feedback pane
+        double yCoordinate = event.getSceneY() - thisBlock.getHeight() / 2;
+        SnappingPane myPane = pane.getMyPane(event.getSceneX(), yCoordinate);
+        if (myPane != null) {
+            feedbackPane.setVisible(true);
+            int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
+
+            GridPane.setRowIndex(feedbackPane, myPane.getRow());
+            GridPane.setColumnIndex(feedbackPane, myPane.getColumn());
+            GridPane.setRowSpan(feedbackPane, numCounts);
+//            pane.getGrid().add(thisBlock, myPane.getColumn(), myPane.getRow());
+        } else {
+            feedbackPane.setVisible(false);
         }
 
         // store current mouse position for next mouse movement calculation
@@ -190,6 +222,7 @@ class TimetableBlock extends Region {
 
         dummyPane.setLayoutX(event.getSceneX() - parentBounds.getMinX() - dragXOffset);
         dummyPane.setLayoutY(event.getSceneY() - parentBounds.getMinY() - dragYOffset);
+
     }
 
     /**
