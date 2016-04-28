@@ -1,5 +1,14 @@
 package xml;
 
+import data.Camera;
+import data.CameraShot;
+import data.CameraTimeline;
+import data.CameraType;
+import data.DirectorShot;
+import data.DirectorTimeline;
+import data.ScriptingProject;
+
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -12,18 +21,13 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import data.Camera;
-import data.CameraShot;
-import data.CameraTimeline;
-import data.CameraType;
-import data.DirectorShot;
-import data.DirectorTimeline;
-import data.ScriptingProject;
-import lombok.Getter;
-import lombok.Setter;
+
 
 
 
