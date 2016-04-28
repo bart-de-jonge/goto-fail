@@ -33,10 +33,11 @@ public class XmlWriterTest {
         project.setDirectorTimeline(dt);
 
         writer.writeProject(project);
+        
 
         String file = readFile("src/test/java/xml/test_files/test-write.xml", StandardCharsets.UTF_8);
 
-        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><scripting-project description=\"A test project\"><director-timeline description=\"A test director timeline\"><director-shots number-of-shots=\"1\"><director-shot description=\"A test director shot\" instance=\"9\" name=\"shot-1\"/></director-shots></director-timeline></scripting-project>", file);
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><scripting-project description=\"A test project\" seconds-per-count=\"2.0\"><director-timeline description=\"A test director timeline\"><director-shots number-of-shots=\"1\"><director-shot description=\"A test director shot\" instance=\"" + directorShot.getInstance() + "\" name=\"shot-1\"/></director-shots></director-timeline><camera-timelines/><cameras/></scripting-project>", file);
     }
 
     @Test
