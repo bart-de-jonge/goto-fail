@@ -56,7 +56,7 @@ public abstract class Shot {
      * Compares the two shots.
      * @param other the other shot to compare with
      * @return if the Shot starts earlier than the other Shot -1 is returned. If the shots have
-     * equal start times, the end times are compared.
+       equal start times, the end times are compared.
      */
     public int compareTo(Shot other) {
         int result = Double.compare(getStartCount(), other.getStartCount());

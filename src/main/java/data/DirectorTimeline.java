@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
- * @author Bart.
  * Class to store information about a directors timeline.
+ * @author Bart.
  */
 public class DirectorTimeline extends Timeline {
 
@@ -32,7 +32,9 @@ public class DirectorTimeline extends Timeline {
      * @param description the description of the Shot
      * @param startCount the start count of the Shot
      * @param endCount the end count of the Shot
-     *
+     * @return If no overlap is found, only the newly added shot will be returned. If any
+       overlapping shots are found, all overlapping shots will be returned. If any overlapping
+       shots are found, the shot that was added will be the last one in the list.
      * @see DirectorTimeline#addShot(DirectorShot)
      */
     public ArrayList<DirectorShot> addShot(String name, String description,
@@ -49,8 +51,8 @@ public class DirectorTimeline extends Timeline {
      *
      * @param shot the Shot to add to the timeline
      * @return If no overlap is found, only the newly added shot will be returned. If any
-     * overlapping shots are found, all overlapping shots will be returned. If any overlapping
-     * shots are found, the shot that was added will be the last one in the list.
+       overlapping shots are found, all overlapping shots will be returned. If any overlapping
+       shots are found, the shot that was added will be the last one in the list.
      */
     public ArrayList<DirectorShot> addShot(DirectorShot shot) {
         ArrayList<DirectorShot> result = new ArrayList<>();
