@@ -53,8 +53,6 @@ class TimetableBlock extends Region {
         feedbackPane.setPrefHeight(100);
         feedbackPane.setPrefWidth(200);
         feedbackPane.setStyle("-fx-background-color: red");
-//        pane.getParentPane().getChildren().add(feedbackPane);
-        pane.getGrid().add(feedbackPane, 0, 0);
         feedbackPane.setVisible(false);
 
 
@@ -62,8 +60,11 @@ class TimetableBlock extends Region {
         dummyPane.setPrefHeight(100);
         dummyPane.setPrefWidth(200);
         dummyPane.setStyle("-fx-background-color: green");
-        pane.getParentPane().getChildren().add(dummyPane);
         dummyPane.setVisible(false);
+
+
+        pane.getParentPane().getChildren().add(dummyPane);
+        pane.getGrid().add(feedbackPane, 0, 0);
 
         this.normalStyle = "-fx-border-style: solid inside;"
                 + "-fx-border-width: 3;"
@@ -136,31 +137,32 @@ class TimetableBlock extends Region {
                 thisBlock.setVisible(true);
                 feedbackPane.setVisible(false);
                 dragging = false;
-
-                if (draggingType == DraggingTypes.Move) {
-
-                    double yCoordinate = e.getSceneY() - thisBlock.getHeight() / 2;
-                    SnappingPane myPane = pane.getMyPane(e.getSceneX(), yCoordinate);
-                    if (myPane != null) {
-                        pane.getGrid().getChildren().remove(thisBlock);
-                        pane.getGrid().add(thisBlock, myPane.getColumn(), myPane.getRow());
-                    }
-                } else if (draggingType == DraggingTypes.Resize_Top) {
-                    int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
-                    SnappingPane myPane = pane.getMyPane(e.getSceneX(), e.getSceneY());
-                    if (myPane != null) {
-                        if (myPane.isBottomHalf()) {
-                            GridPane.setRowIndex(thisBlock, myPane.getRow() + 1);
-                        } else {
-                            GridPane.setRowIndex(thisBlock, myPane.getRow());
-                        }
-
-                        GridPane.setRowSpan(thisBlock, numCounts);
-                    }
-                } else if (draggingType == DraggingTypes.Resize_Bottom) {
-                    int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
-                    GridPane.setRowSpan(thisBlock, numCounts);
-                }
+                snapPane(thisBlock, dummyPane, e.getSceneX(), e.getSceneY(), draggingType);
+//
+//                if (draggingType == DraggingTypes.Move) {
+//
+//                    double yCoordinate = e.getSceneY() - thisBlock.getHeight() / 2;
+//                    SnappingPane myPane = pane.getMyPane(e.getSceneX(), yCoordinate);
+//                    if (myPane != null) {
+//                        pane.getGrid().getChildren().remove(thisBlock);
+//                        pane.getGrid().add(thisBlock, myPane.getColumn(), myPane.getRow());
+//                    }
+//                } else if (draggingType == DraggingTypes.Resize_Top) {
+//                    int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
+//                    SnappingPane myPane = pane.getMyPane(e.getSceneX(), e.getSceneY());
+//                    if (myPane != null) {
+//                        if (myPane.isBottomHalf()) {
+//                            GridPane.setRowIndex(thisBlock, myPane.getRow() + 1);
+//                        } else {
+//                            GridPane.setRowIndex(thisBlock, myPane.getRow());
+//                        }
+//
+//                        GridPane.setRowSpan(thisBlock, Math.max(numCounts, 1));
+//                    }
+//                } else if (draggingType == DraggingTypes.Resize_Bottom) {
+//                    int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
+//                    GridPane.setRowSpan(thisBlock, Math.max(numCounts, 1));
+//                }
             }
 
         };
@@ -191,17 +193,9 @@ class TimetableBlock extends Region {
             onMouseDraggedHelperNormal(event);
         }
 
-        // set feedback pane
-        double yCoordinate = event.getSceneY() - thisBlock.getHeight() / 2;
-        SnappingPane myPane = pane.getMyPane(event.getSceneX(), yCoordinate);
-        if (myPane != null) {
+        // set feedbackpane
+        if (snapPane(feedbackPane, dummyPane, event.getSceneX(), event.getSceneY(), draggingType)) {
             feedbackPane.setVisible(true);
-            int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
-
-            GridPane.setRowIndex(feedbackPane, myPane.getRow());
-            GridPane.setColumnIndex(feedbackPane, myPane.getColumn());
-            GridPane.setRowSpan(feedbackPane, numCounts);
-//            pane.getGrid().add(thisBlock, myPane.getColumn(), myPane.getRow());
         } else {
             feedbackPane.setVisible(false);
         }
@@ -209,6 +203,46 @@ class TimetableBlock extends Region {
         // store current mouse position for next mouse movement calculation
         mouseCurrentXPosition = event.getSceneX();
         mouseCurrentYPosition = event.getSceneY();
+    }
+
+    private boolean snapPane(Region targetRegion, Pane mappingPane, double x, double y, DraggingTypes dragType) {
+        // set feedback pane
+        double yCoordinate, xCoordinate;
+
+        if (dragType == DraggingTypes.Move) {
+            yCoordinate = y - dragYOffset;
+            xCoordinate = mappingPane.localToScene(mappingPane.getBoundsInLocal()).getMinX() + mappingPane.getWidth() / 2;
+        } else {
+            Bounds bounds = mappingPane.localToScene(mappingPane.getBoundsInLocal());
+            yCoordinate = bounds.getMinY();
+            xCoordinate = mappingPane.getLayoutX() + mappingPane.getWidth() / 2;
+            yCoordinate++;
+            System.out.println(yCoordinate);
+        }
+
+        System.out.println("XCORD = " + xCoordinate);
+        System.out.println("YCORD = " + yCoordinate);
+        SnappingPane myPane = pane.getMyPane(xCoordinate, yCoordinate);
+        if (myPane != null) {
+            int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
+            if (myPane.isBottomHalf() && dragType == DraggingTypes.Resize_Top) {
+                numCounts = (int) Math.round((dummyPane.getHeight() - 5) / pane.getCountHeight());
+            }
+
+            System.out.println(numCounts);
+
+            if ((dragType == DraggingTypes.Resize_Top || dragType == DraggingTypes.Move) && myPane.isBottomHalf()) {
+                GridPane.setRowIndex(targetRegion, myPane.getRow() + 1);
+            } else {
+                GridPane.setRowIndex(targetRegion, myPane.getRow());
+            }
+            GridPane.setColumnIndex(targetRegion, myPane.getColumn());
+            GridPane.setRowSpan(targetRegion, Math.max(numCounts, 1));
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

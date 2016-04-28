@@ -60,8 +60,10 @@ class RootCenterArea extends ScrollPane {
         grid.setMinHeight(1000.0);
         setContent(parentPane);
 
+        addPanes();
+
         grid.setGridLinesVisible(true);
-        grid.setHgap(10);
+        grid.setHgap(50);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
         // set constraints
@@ -74,8 +76,6 @@ class RootCenterArea extends ScrollPane {
 
         TimetableBlock rect1 = new TimetableBlock(this);
         TimetableBlock rect2 = new TimetableBlock(this);
-
-        addPanes();
 
         grid.add(rect1, 0, 0, 1, 2);
         grid.add(rect2, 1, 1, 1, 3);
@@ -90,6 +90,11 @@ class RootCenterArea extends ScrollPane {
         for (int i = 0; i < numberOfCounts; i++) {
             for (int j = 0; j < numberOfTimelines; j++) {
                 SnappingPane pane = new SnappingPane(i, j, 200, 50);
+//                pane.setVisible(true);
+//                pane.setStyle("-fx-border-style: solid inside;"
+//                        + "-fx-border-width: 3;"
+//                        + "-fx-border-color: red;"
+//                        + "-fx-background-color: green;");
                 grid.add(pane, j, i);
                 panes.add(pane);
             }
@@ -107,6 +112,7 @@ class RootCenterArea extends ScrollPane {
             Bounds bounds = pane.localToScene(pane.getBoundsInLocal());
             if (bounds.contains(x, y)) {
                 if (((y - bounds.getMinY()) * 2) > pane.getHeight()) {
+                    System.out.println("DEBUG SHI T = " + ((y - bounds.getMinY()) * 2));
                     pane.setBottomHalf(true);
                 } else {
                     pane.setBottomHalf(false);
