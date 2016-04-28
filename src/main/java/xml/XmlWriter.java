@@ -33,6 +33,8 @@ import org.w3c.dom.Element;
 
 /**
  * Created by Bart.
+ * This class contains all the methods to write a ScriptingProject
+ * to an XML file.
  */
 public class XmlWriter {
 

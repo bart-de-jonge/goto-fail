@@ -26,5 +26,6 @@ public class CameraTimeline extends Timeline {
     public CameraTimeline(Camera camera, String description) {
         super(description);
         this.camera = camera;
+        this.shots = new ArrayList<CameraShot>();
     }
 }
