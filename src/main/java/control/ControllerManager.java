@@ -1,6 +1,7 @@
 package control;
 
 import gui.RootPane;
+import lombok.Getter;
 
 /**
  * Class wrapper for model management controllers.
@@ -10,6 +11,7 @@ public class ControllerManager {
 
     private RootPane rootPane;
 
+    @Getter
     private TimelineController timelineControl;
 
     /**

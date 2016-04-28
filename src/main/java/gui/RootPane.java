@@ -27,7 +27,7 @@ public class RootPane extends Application {
     private RootFooterArea rootFooterArea;
     @Getter
     private RootCenterArea rootCenterArea;
-
+    @Getter
     private ControllerManager controllerManager;
 
     @Override

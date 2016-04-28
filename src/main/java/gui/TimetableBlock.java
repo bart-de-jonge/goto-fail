@@ -10,12 +10,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import lombok.Getter;
 
 /**
  * Class that resembles a draggable, resiable block inside the timetable.
  * Highly volatile. Do not poke too much.
  */
-class TimetableBlock extends Region {
+public class TimetableBlock extends Region {
 
     public enum DraggingTypes { Move, Resize_Top, Resize_Right, Resize_Bottom, Resize_Left }
 
@@ -42,14 +43,18 @@ class TimetableBlock extends Region {
 
     private Point2D scrollMouse;
 
+    @Getter
+    private ShotBlock parentBlock;
+
     /**
      * Constructor for TimetableBlock class.
      * @param pane - the parent pane.
-     * @parem parent - the parent node
+     * @param parent - the parent node
      */
-    TimetableBlock(RootCenterArea pane) {
+    TimetableBlock(RootCenterArea pane, ShotBlock parent) {
         this.dragging = false;
         this.thisBlock = this;
+        this.parentBlock = parent;
 
         feedbackPane = new Pane();
         feedbackPane.setPrefHeight(100);

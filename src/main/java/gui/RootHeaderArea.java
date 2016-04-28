@@ -1,13 +1,10 @@
 package gui;
 
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -58,7 +55,8 @@ class RootHeaderArea extends VBox {
         topButtonBar.setSpacing(15);
         topButtonBar.setPadding(new Insets(5, 10, 5, 10));
 
-        Button btn1 = new Button("A button");
+        // Crashes (no bueno)
+        Button btn1 = new Button("DO NOT CLICK");
 
         EventHandler eventHandler = evt -> {
             String text = "";
@@ -85,9 +83,24 @@ class RootHeaderArea extends VBox {
         btn1.setOnMouseEntered(eventHandler);
         btn1.setOnMouseExited(eventHandler);
 
-        Button btn2 = new Button("Another button");
-        topButtonBar.getChildren().addAll(btn1, btn2);
+        Button shotCreation = createShotButton();
+        topButtonBar.getChildren().addAll(btn1, shotCreation);
         return topButtonBar;
+    }
+
+    /**
+     * Create camera shot creation button.
+     * TODO: Replace mocked object
+     * @return Creation Button.
+     */
+    private Button createShotButton() {
+        Button shotCreation = new Button("Add Camera Shot");
+
+        shotCreation.setOnMouseClicked(e ->
+            rootPane.getControllerManager().getTimelineControl().addCameraShot(1, "BOOM", "", 1, 2)
+        );
+
+        return shotCreation;
     }
 
 }

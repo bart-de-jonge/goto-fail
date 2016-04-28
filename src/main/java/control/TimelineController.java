@@ -1,12 +1,15 @@
 package control;
 
 import data.Camera;
+import data.CameraShot;
 import data.CameraTimeline;
 import data.CameraType;
 import data.ScriptingProject;
 import gui.CameraShotBlock;
+import gui.ShotblockUpdatedEvent;
 import gui.TimelinesGridPane;
 import gui.RootPane;
+import gui.TimetableBlock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +53,29 @@ public class TimelineController {
      */
     public void addCameraShot(int cameraIndex, String name, String description,
                               int startCount, int endCount) {
+        System.out.println("shot added?");
         this.cameraTimelines.get(cameraIndex).addShot(name, description, startCount, endCount);
+        CameraShotBlock shotBlock = new CameraShotBlock(name, cameraIndex,
+                                                        rootPane.getRootCenterArea(),
+                                                        startCount, endCount);
+        shotBlock.attachEventHandler(this::shotChangedHandler);
+        timelinePane.addCamerShotBlock(shotBlock);
+    }
+
+    /**
+     * Handle updated camera shot.
+     * @param event Camera shot change event.
+     */
+    private void shotChangedHandler(ShotblockUpdatedEvent event) {
+        System.out.println("SHOTS FIRED");
+        TimetableBlock timetableBlock = (TimetableBlock) event.getSource();
+        CameraShotBlock changedBlock = (CameraShotBlock) timetableBlock.getParentBlock();
+        CameraTimeline modTimeline = this.cameraTimelines.get(changedBlock.getTimetableNumber());
+        CameraShot shot = modTimeline.getShots()
+                .stream()
+                .filter(s -> s.getName().equals(changedBlock.getName())).findFirst().get();
+        shot.setStartCount(changedBlock.getBeginCount());
+        shot.setEndCount(changedBlock.getEndCount());
     }
 
     /**
