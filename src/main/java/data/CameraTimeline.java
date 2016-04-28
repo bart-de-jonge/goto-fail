@@ -13,8 +13,7 @@ import java.util.LinkedList;
 public class CameraTimeline extends Timeline {
 
     // The camera that is associated with this timeline.
-    @Getter
-    @Setter
+    @Getter @Setter
     private Camera camera;
     
     // Collection of all Shot elements in this Timeline.
