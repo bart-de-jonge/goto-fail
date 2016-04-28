@@ -3,6 +3,7 @@ package gui;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -43,7 +44,8 @@ class TimetableBlock extends Region {
 
     /**
      * Constructor for TimetableBlock class.
-     * @param pane the parent pane.
+     * @param pane - the parent pane.
+     * @parem parent - the parent node
      */
     TimetableBlock(RootCenterArea pane) {
         this.dragging = false;
@@ -136,6 +138,7 @@ class TimetableBlock extends Region {
                 feedbackPane.setVisible(false);
                 dragging = false;
                 snapPane(thisBlock, dummyPane, e.getSceneX(), e.getSceneY(), draggingType);
+                this.fireEvent(new ShotblockUpdatedEvent());
             }
 
         };
@@ -205,7 +208,7 @@ class TimetableBlock extends Region {
             System.out.println(yCoordinate);
         }
 
-        SnappingPane myPane = pane.getMyPane(xCoordinate, yCoordinate);
+        SnappingPane myPane = pane.getGrid().getMyPane(xCoordinate, yCoordinate);
         if (myPane != null) {
             int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
             if (myPane.isBottomHalf() && dragType == DraggingTypes.Resize_Top) {

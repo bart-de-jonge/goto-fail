@@ -24,6 +24,8 @@ public class RootPane extends Application {
     private RootHeaderArea rootHeaderArea;
     @Getter
     private RootFooterArea rootFooterArea;
+    @Getter
+    private RootCenterArea rootCenterArea;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -50,7 +52,7 @@ public class RootPane extends Application {
         rootFooterArea = new RootFooterArea();
         topLevelPane.setBottom(rootFooterArea);
 
-        RootCenterArea rootCenterArea = new RootCenterArea(this);
+        rootCenterArea = new RootCenterArea(this);
         topLevelPane.setCenter(rootCenterArea);
 
 
