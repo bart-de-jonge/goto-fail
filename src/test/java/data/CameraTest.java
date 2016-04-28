@@ -14,6 +14,7 @@ public class CameraTest {
     public void initializeTest() {
         CameraType type = new CameraType("cameratype-1", "A test cameratype", 2.00);
         camera = new Camera("camera-1", "A test camera", type);
+        camera.setMovementMargin(-0.5);
     }
 
     @Test
@@ -21,7 +22,7 @@ public class CameraTest {
         camera.setMovementMargin(3.00);
         assertEquals(3.00, camera.getMovementMargin(), 0);
         camera.resetMovementMargin();
-        assertEquals(-1, camera.getMovementMargin(), 0);
+        assertEquals(2.0, camera.getMovementMargin(), 0);
     }
 
     @Test
@@ -42,7 +43,13 @@ public class CameraTest {
 
     @Test
     public void getMovementMarginTest() {
-        assertEquals(-1, camera.getMovementMargin(), 0);
+        camera.setMovementMargin(5.5);
+        assertEquals(5.5, camera.getMovementMargin(), 0);
+    }
+
+    @Test
+    public void getDefaultMovementMarginTest() {
+        assertEquals(2.00, camera.getMovementMargin(), 0);
     }
 
     @Test
@@ -81,7 +88,7 @@ public class CameraTest {
 
     @Test
     public void testHashCodeTest() {
-        assertEquals(-2059658920, camera.hashCode());
+        assertEquals(88873304, camera.hashCode());
     }
 
     @Test

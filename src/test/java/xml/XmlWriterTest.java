@@ -32,17 +32,17 @@ public class XmlWriterTest {
     public void writeProject() throws Exception {
         ScriptingProject project = new ScriptingProject("A test project", 2.00);
         XmlWriter writer = new XmlWriter("src/test/java/xml/test_files/test-write.xml");
-        DirectorTimeline dt = new DirectorTimeline("A test director timeline");
+        DirectorTimeline dt = new DirectorTimeline("A test director timeline", new ScriptingProject("test", 1));
         DirectorShot directorShot = new DirectorShot("shot-1", "A test director shot", 1, 2);
         int directorShotInstance = directorShot.getInstance();
         dt.addShot(directorShot);
         project.setDirectorTimeline(dt);
         
-        CameraTimeline ct1 = new CameraTimeline(new Camera("Some camera", "some camera description", new CameraType("a", "b", 4)), "Test camera line 1");
+        CameraTimeline ct1 = new CameraTimeline(new Camera("Some camera", "some camera description", new CameraType("a", "b", 4)), "Test camera line 1", new ScriptingProject("test", 1));
         CameraShot cs1 = new CameraShot("shot-2", "A camera shot", 1, 2);
         ct1.getShots().add(cs1);
         
-        CameraTimeline ct2 = new CameraTimeline(new Camera("Another camera", "another description", new CameraType("c", "d", 5)), "Test camera line 2");
+        CameraTimeline ct2 = new CameraTimeline(new Camera("Another camera", "another description", new CameraType("c", "d", 5)), "Test camera line 2", new ScriptingProject("test", 1));
         CameraShot cs2 = new CameraShot("shot-3", "Another camera shot", 1, 2);
         ct2.getShots().add(cs2);
         int cameraShotInstance1 = cs1.getInstance();
@@ -66,7 +66,8 @@ public class XmlWriterTest {
 
         String file = readFile("src/test/java/xml/test_files/test-write.xml", StandardCharsets.UTF_8);
 
-        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><scripting-project description=\"A test project\" seconds-per-count=\"2.0\"><director-timeline description=\"A test director timeline\"><director-shots number-of-shots=\"1\"><director-shot description=\"A test director shot\" instance=\"" + directorShotInstance + "\" name=\"shot-1\"/></director-shots></director-timeline><camera-timelines><camera-timeline description=\"Test camera line 1\"><camera description=\"some camera description\" movement-margin=\"-1.0\" name=\"Some camera\"><camera-type description=\"b\" movement-margin=\"4.0\" name=\"a\"/></camera><camera-shots number-of-shots=\"1\"><camera-shot description=\"A camera shot\" instance=\"" + cameraShotInstance1 + "\" name=\"shot-2\"/></camera-shots></camera-timeline><camera-timeline description=\"Test camera line 2\"><camera description=\"another description\" movement-margin=\"-1.0\" name=\"Another camera\"><camera-type description=\"d\" movement-margin=\"5.0\" name=\"c\"/></camera><camera-shots number-of-shots=\"1\"><camera-shot description=\"Another camera shot\" instance=\"" + cameraShotInstance2 + "\" name=\"shot-3\"/></camera-shots></camera-timeline></camera-timelines><cameras><camera description=\"Camera description\" movement-margin=\"-1.0\" name=\"Camera\"><camera-type description=\"y\" movement-margin=\"4.0\" name=\"x\"/></camera></cameras></scripting-project>", file);
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><scripting-project description=\"A test project\" seconds-per-count=\"2.0\"><director-timeline description=\"A test director timeline\"><director-shots number-of-shots=\"1\"><director-shot description=\"A test director shot\" instance=\"" + directorShotInstance + "\" name=\"shot-1\"/></director-shots></director-timeline><camera-timelines><camera-timeline description=\"Test camera line 1\"><camera description=\"some camera description\" movement-margin=\"4.0\" name=\"Some camera\"><camera-type description=\"b\" movement-margin=\"4.0\" name=\"a\"/></camera><camera-shots number-of-shots=\"1\"><camera-shot description=\"A camera shot\" instance=\"" + cameraShotInstance1 + "\" name=\"shot-2\"/></camera-shots></camera-timeline><camera-timeline description=\"Test camera line 2\"><camera description=\"another description\" movement-margin=\"5.0\" name=\"Another camera\"><camera-type description=\"d\" movement-margin=\"5.0\" name=\"c\"/></camera><camera-shots number-of-shots=\"1\"><camera-shot description=\"Another camera shot\" instance=\"" + cameraShotInstance2 + "\" name=\"shot-3\"/></camera-shots></camera-timeline></camera-timelines><cameras><camera description=\"Camera description\" movement-margin=\"4.0\" name=\"Camera\"><camera-type description=\"y\" movement-margin=\"4.0\" name=\"x\"/></camera></cameras></scripting-project>", file);
+
     }
 
     @Test

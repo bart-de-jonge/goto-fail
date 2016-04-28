@@ -24,11 +24,12 @@ public class CameraTimeline extends Timeline {
     /**
      * Constructor.
      *
-     * @param camera      the camera belonging to this timeline
+     * @param camera the camera belonging to this timeline
      * @param description the description of this timeline
+     * @param project the project that contains this timeline
      */
-    public CameraTimeline(Camera camera, String description) {
-        super(description);
+    public CameraTimeline(Camera camera, String description, ScriptingProject project) {
+        super(description, project);
         this.camera = camera;
         shots = new LinkedList<>();
     }
@@ -75,7 +76,7 @@ public class CameraTimeline extends Timeline {
                     added = true;
                 }
             }
-            if (checkOverlap(shot, other)) {
+            if (checkOverlap(shot, other, camera.getMovementMargin())) {
                 result.add(other);
             }
         }

@@ -104,6 +104,7 @@ public class ScriptingProject {
      * @param cameraTimeline - the cameraTimeline to add
      */
     public void addCameraTimeline(CameraTimeline cameraTimeline) {
+        cameraTimeline.setProject(this);
         cameraTimelines.add(cameraTimeline);
     }
 }

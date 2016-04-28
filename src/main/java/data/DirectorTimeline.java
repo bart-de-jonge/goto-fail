@@ -19,9 +19,10 @@ public class DirectorTimeline extends Timeline {
      * Constructor.
      *
      * @param description the description of this timeline
+     * @param project the project that contains this timeline
      */
-    public DirectorTimeline(String description) {
-        super(description);
+    public DirectorTimeline(String description, ScriptingProject project) {
+        super(description, project);
         shots = new LinkedList<>();
     }
 
@@ -67,7 +68,7 @@ public class DirectorTimeline extends Timeline {
                     added = true;
                 }
             }
-            if (checkOverlap(shot, other)) {
+            if (checkOverlap(shot, other, 0)) {
                 result.add(other);
             }
         }

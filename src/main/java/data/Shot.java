@@ -68,18 +68,20 @@ public abstract class Shot {
         return result;
     }
 
-    // TODO: 28-4-16 Implement the offset due to setup of cameras
     /**
      * Checks whether the two Shots are overlapping.
      *
      * @param other the other Shot the check the overlap with
+     * @param movementOffset the offset the camera needs to move to the shot.
      * @return true when shots are overlapping, false when there are not overlapping
      */
-    public boolean areOverlapping(Shot other) {
-        if (other.getStartCount() > getStartCount() &&  other.getStartCount() < getEndCount()) {
+    public boolean areOverlapping(Shot other, double movementOffset) {
+        if (other.getStartCount() > getStartCount() - movementOffset
+                && other.getStartCount() < getEndCount()) {
             return true;
         }
-        if (other.getEndCount() > getStartCount() && other.getEndCount() < getEndCount()) {
+        if (other.getEndCount() > getStartCount() - movementOffset
+                && other.getEndCount() < getEndCount()) {
             return true;
         }
         if (other.getStartCount() <= getStartCount() && other.getEndCount() >= getEndCount()

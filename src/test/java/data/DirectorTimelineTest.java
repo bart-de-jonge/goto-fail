@@ -15,7 +15,7 @@ public class DirectorTimelineTest {
     DirectorTimeline timeline;
     @Before
     public void initializeTest() {
-        timeline = new DirectorTimeline("A test director timeline");
+        timeline = new DirectorTimeline("A test director timeline", new ScriptingProject("test", 1));
     }
 
     @Test

@@ -73,22 +73,22 @@ public class ShotTest {
 
     @Test
     public void oneSideOverlapTest() {
-        assertTrue(shot1.areOverlapping(shot2));
-        assertTrue(shot2.areOverlapping(shot1));
+        assertTrue(shot1.areOverlapping(shot2, 0));
+        assertTrue(shot2.areOverlapping(shot1, 0));
     }
 
     @Test
     public void fullOverlapTest() {
         shot2.setStartCount(0);
-        assertTrue(shot1.areOverlapping(shot2));
-        assertTrue(shot2.areOverlapping(shot1));
-        assertTrue(shot1.areOverlapping(shot1));
+        assertTrue(shot1.areOverlapping(shot2, 0));
+        assertTrue(shot2.areOverlapping(shot1, 0));
+        assertTrue(shot1.areOverlapping(shot1, 0));
     }
 
     @Test
     public void noOverlapTest() {
         shot2.setStartCount(3);
-        assertFalse(shot1.areOverlapping(shot2));
-        assertFalse(shot2.areOverlapping(shot1));
+        assertFalse(shot1.areOverlapping(shot2, 0));
+        assertFalse(shot2.areOverlapping(shot1, 0));
     }
 }
