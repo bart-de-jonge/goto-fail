@@ -20,12 +20,12 @@ import java.util.List;
  */
 public class TimelineController {
 
-    private TimelinesGridPane timelinePane;
     private RootPane rootPane;
 
-    private List<CameraTimeline> cameraTimelines;
+//    private List<CameraTimeline> cameraTimelines;
 
     // Placeholder camera type until GUI allows personalized entry
+    // TODO: Replace Camera Type and Scripting Project when XML functionality is available
     private final CameraType defType = new CameraType("AW-HE130 HD PTZ", "It's an IP Camera", 0.5);
 
     // Placeholder project in lieu of XML loading
@@ -33,18 +33,15 @@ public class TimelineController {
 
     /**
      * Constructor.
-     * @param timelinePane Timeline view to be controlled.
      * @param rootPane Root Pane.
      */
-    public TimelineController(TimelinesGridPane timelinePane, RootPane rootPane) {
-        this.timelinePane = timelinePane;
+    public TimelineController(RootPane rootPane) {
         this.rootPane = rootPane;
-
         initializeCameraTimelines();
     }
 
     /**
-     * Add a camera shot to the corresponding timeline
+     * Add a camera shot to the corresponding timeline.
      * @param cameraIndex Index of the camera track.
      * @param name Name of the shot.
      * @param description Shot description.
@@ -53,26 +50,30 @@ public class TimelineController {
      */
     public void addCameraShot(int cameraIndex, String name, String description,
                               int startCount, int endCount) {
-        System.out.println("shot added?");
         CameraShot newShot = new CameraShot(name,description, startCount, endCount);
-        this.cameraTimelines.get(cameraIndex).addShot(newShot);
+        this.scriptingProject.getCameraTimelines().get(cameraIndex).addShot(newShot);
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex,
                                                         rootPane.getRootCenterArea(),
                                                         startCount, endCount);
         shotBlock.attachEventHandler(this::shotChangedHandler);
-        timelinePane.addCamerShotBlock(shotBlock);
+        this.rootPane.getRootCenterArea().getGrid().addCamerShotBlock(shotBlock);
     }
 
     /**
-     * Handle updated camera shot.
+     * Handle updated camera shot. As original location is not passed using event,
+     * the entire (flattened) list of shots must be searched for the corresponding shot.
+     * The correct {@link CameraShot} is then updated using the latest {@link CameraShotBlock}
+     * position and counts. As the event is unclear as to whether the shot has switched timelines,
+     * it is removed from the previous timeline and added to the new one.
      * @param event Camera shot change event.
      */
     private void shotChangedHandler(ShotblockUpdatedEvent event) {
         // Tunnel through timetableblock to retrieve shotblock
         TimetableBlock timetableBlock = (TimetableBlock) event.getSource();
         CameraShotBlock changedBlock = (CameraShotBlock) timetableBlock.getParentBlock();
+        List<CameraTimeline> camTimelines = this.scriptingProject.getCameraTimelines();
         // Locate shot to be updated using id
-        CameraShot shot = this.cameraTimelines.stream()
+        CameraShot shot = camTimelines.stream()
                 .flatMap(cameraTimeline -> cameraTimeline.getShots().stream())
                 .filter(s -> s.getInstance() == changedBlock.getShotId())
                 .findFirst()
@@ -82,8 +83,8 @@ public class TimelineController {
         shot.setStartCount(changedBlock.getBeginCount());
         shot.setEndCount(changedBlock.getEndCount());
         // Remove shot from previous timeline and add to new one
-        this.cameraTimelines.forEach(tl -> tl.removeShot(shot));
-        this.cameraTimelines.get(changedBlock.getTimetableNumber()).addShot(shot);
+        camTimelines.forEach(tl -> tl.removeShot(shot));
+        camTimelines.get(changedBlock.getTimetableNumber()).addShot(shot);
     }
 
     /**
@@ -91,12 +92,11 @@ public class TimelineController {
      * TODO: Replace this with proper XML based project creation
      */
     private void initializeCameraTimelines() {
-        cameraTimelines = new ArrayList<>();
-
-        for (int i = 0; i < this.timelinePane.getNumberOfTimelines(); i++) {
+        int timelinesN = this.rootPane.getRootCenterArea().getGrid().getNumberOfTimelines();
+        for (int i = 0; i < timelinesN; i++) {
             Camera defCam = new Camera("IP Cam " + i, "", defType);
             CameraTimeline timelineN = new CameraTimeline(defCam, "", scriptingProject);
-            cameraTimelines.add(timelineN);
+            scriptingProject.addCameraTimeline(timelineN);
         }
     }
 }

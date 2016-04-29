@@ -24,6 +24,6 @@ public class ControllerManager {
     }
 
     private void initializeControllers() {
-        timelineControl = new TimelineController(rootPane.getRootCenterArea().getGrid(), rootPane);
+        timelineControl = new TimelineController(rootPane);
     }
 }

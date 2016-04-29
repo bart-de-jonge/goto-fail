@@ -1,6 +1,5 @@
 package data;
 
-
 /**
  * This class extends the Shot class, this one is specific for the CameraTimeline.
  * Created by martijn.
@@ -9,7 +8,6 @@ public class CameraShot extends Shot {
 
     // Counter that ensures no shots with duplicate numbers will be created.
     private static int instanceCounter = 0;
-
 
     /**
      * The constructor for the Shot.
