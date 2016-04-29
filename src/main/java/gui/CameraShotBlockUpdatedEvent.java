@@ -22,7 +22,8 @@ public class CameraShotBlockUpdatedEvent extends ShotblockUpdatedEvent {
     /**
      * Constructor.
      *
-     * @param shotBlock
+     * @param shotBlock - The shotblock belonging to this event
+     * @param oldTimelineNumber - the old timelinenumber (for controller logic)
      */
     public CameraShotBlockUpdatedEvent(ShotBlock shotBlock, int oldTimelineNumber) {
         super(shotBlock);
