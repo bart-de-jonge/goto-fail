@@ -14,6 +14,8 @@ public class CameraShotBlock extends ShotBlock {
     private int timetableNumber;
     @Getter
     private int shotId;
+    @Getter
+    private TimelinesGridPane grid;
 
     private CameraShotBlock thisBlock;
 
@@ -31,6 +33,7 @@ public class CameraShotBlock extends ShotBlock {
         this.shotId = shotId;
         this.timetableNumber = timetableNumber;
         thisBlock = this;
+        this.grid = rootCenterArea.getGrid();
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
                 this.setBeginCount(TimelinesGridPane.getRowIndex(
@@ -40,6 +43,10 @@ public class CameraShotBlock extends ShotBlock {
                 this.timetableNumber = TimelinesGridPane.getColumnIndex(
                         this.getTimetableBlock());
             });
+
+        this.getTimetableBlock().setPrefWidth(grid.getTimelineWidth());
+        this.getTimetableBlock().setPrefHeight(grid.getNumberOfCounts() * grid.getCountHeight());
+        grid.addCameraShotBlock(this);
     }
 
     /**

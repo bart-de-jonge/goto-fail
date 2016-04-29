@@ -1,6 +1,7 @@
 package gui;
 
 import javafx.event.EventHandler;
+import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -45,6 +46,8 @@ public class TimetableBlock extends Region {
 
     @Getter
     private ShotBlock parentBlock;
+
+    private double startingY;
 
     /**
      * Constructor for TimetableBlock class.
@@ -97,16 +100,27 @@ public class TimetableBlock extends Region {
     private EventHandler<MouseEvent> getOnPressedHandler() {
         return e -> {
 
+            // init dummypane
             setStyle(dragStyle);
             draggingType = findEdgeZone(e);
             dummyPane.setLayoutX(getLayoutX());
             dummyPane.setLayoutY(getLayoutY());
 
-            feedbackPane.setLayoutY(getLayoutY());
-            feedbackPane.setLayoutX(getLayoutX());
-            feedbackPane.setPrefWidth(getWidth());
-            feedbackPane.setPrefHeight(getHeight());
+            // Init feedbackpane
             feedbackPane.setVisible(true);
+            TimelinesGridPane.setColumnIndex(feedbackPane,
+                    TimelinesGridPane.getColumnIndex(thisBlock));
+            TimelinesGridPane.setRowIndex(feedbackPane, TimelinesGridPane.getRowIndex(thisBlock));
+            TimelinesGridPane.setRowSpan(feedbackPane, TimelinesGridPane.getRowSpan(thisBlock));
+
+            // Set startingY if dragging
+            double blockY = pane.getGrid().localToScene(thisBlock.getLayoutX(),
+                    thisBlock.getLayoutY()).getY();
+            if (draggingType == DraggingTypes.Resize_Top) {
+                startingY = blockY + thisBlock.getHeight();
+            } else if (draggingType == DraggingTypes.Resize_Bottom) {
+                startingY = blockY;
+            }
         };
     }
 
@@ -137,15 +151,12 @@ public class TimetableBlock extends Region {
      */
     private EventHandler<MouseEvent> getOnreleaseHandler() {
         return e -> {
-            if (dragging) {
-                dummyPane.setVisible(false);
-                thisBlock.setVisible(true);
-                feedbackPane.setVisible(false);
-                dragging = false;
-                snapPane(thisBlock, dummyPane, e.getSceneX(), e.getSceneY(), draggingType);
-                this.fireEvent(new ShotblockUpdatedEvent());
-            }
-
+            dummyPane.setVisible(false);
+            thisBlock.setVisible(true);
+            feedbackPane.setVisible(false);
+            dragging = false;
+            snapPane(thisBlock, dummyPane, e.getSceneX(), e.getSceneY(), draggingType);
+            this.fireEvent(new ShotblockUpdatedEvent());
         };
     }
 
@@ -195,7 +206,7 @@ public class TimetableBlock extends Region {
      * @param dragType - The type of drag used while snapping (move, resize)
      * @return - boolean that indicates if the snap was possible and completed
      */
-    private boolean snapPane(Region targetRegion, Pane mappingPane,
+    private boolean snapPane(Region targetRegion, Region mappingPane,
                              double x, double y, DraggingTypes dragType) {
         // set feedback pane
         double yCoordinate;
@@ -210,14 +221,13 @@ public class TimetableBlock extends Region {
             yCoordinate = bounds.getMinY();
             xCoordinate = mappingPane.getLayoutX() + mappingPane.getWidth() / 2;
             yCoordinate++;
-            System.out.println(yCoordinate);
         }
 
         SnappingPane myPane = pane.getGrid().getMyPane(xCoordinate, yCoordinate);
         if (myPane != null) {
-            int numCounts = (int) Math.round(dummyPane.getHeight() / pane.getCountHeight());
+            int numCounts = (int) Math.round(mappingPane.getHeight() / pane.getCountHeight());
             if (myPane.isBottomHalf() && dragType == DraggingTypes.Resize_Top) {
-                numCounts = (int) Math.round((dummyPane.getHeight() - 5) / pane.getCountHeight());
+                numCounts = (int) Math.round((mappingPane.getHeight() - 5) / pane.getCountHeight());
             }
 
             if ((dragType == DraggingTypes.Resize_Top
@@ -229,7 +239,6 @@ public class TimetableBlock extends Region {
             }
             GridPane.setColumnIndex(targetRegion, myPane.getColumn());
             GridPane.setRowSpan(targetRegion, Math.max(numCounts, 1));
-
             return true;
         } else {
             return false;
@@ -253,71 +262,29 @@ public class TimetableBlock extends Region {
      * @param event the mousedrag event in question.
      */
     private void onMouseDraggedHelperVertical(MouseEvent event) {
-        // current height of total scrollable area
-        double totalHeight = pane.getContent().getBoundsInLocal().getHeight();
-        // current height of visible part of scrollable area.
-        double viewHeight = pane.getHeight();
-        // current number of pixels from top that are invisible due to scrolling.
-        double viewTop = (totalHeight - viewHeight) * pane.getVvalue();
-        if (draggingType == DraggingTypes.Resize_Top) { // drag from top edge
-            double oldLayoutY = getLayoutY() - (scrollMouse.getY() - pane.getLayoutY());
-            double newLayout = event.getSceneY() + viewTop - pane.getLayoutY();
-            double newPrefHeight = oldLayoutY - viewTop + getPrefHeight();
-            if (newLayout < 0.0) {
-                newLayout = 0.0;
-                newPrefHeight = getPrefHeight();
-                if (getLayoutY() != 0.0) {
-                    newPrefHeight += getLayoutY();
-                }
-            }
-            newPrefHeight += getHeight();
+        double newLayoutY = 0;
+        double newPrefHeight = 0;
+        Point2D bounds = pane.getParentPane().sceneToLocal(event.getSceneX(), event.getSceneY());
 
-            dummyPane.setLayoutY(newLayout);
-            dummyPane.setPrefHeight(newPrefHeight);
-        } else { // drag from bottom edge
-            double newHeight = scrollMouse.getY() - getLayoutY() + viewTop - pane.getLayoutY();
-            dummyPane.setPrefHeight(newHeight);
-            if (getLayoutY() + getPrefHeight() > totalHeight) { // cap off beyond border
-                dummyPane.setPrefHeight(totalHeight - getLayoutY());
+        if (thisBlock.draggingType == DraggingTypes.Resize_Top) {
+            newPrefHeight = startingY - event.getSceneY();
+            newLayoutY = bounds.getY();
+        } else if (thisBlock.draggingType == DraggingTypes.Resize_Bottom) {
+            newLayoutY = pane.getParentPane().sceneToLocal(0, startingY).getY();
+            newPrefHeight = bounds.getY() - newLayoutY;
+        }
+
+        if (newPrefHeight < pane.getGrid().getCountHeight()) {
+            newPrefHeight = pane.getGrid().getCountHeight();
+            if (draggingType == DraggingTypes.Resize_Top) {
+                newLayoutY = pane.getParentPane().sceneToLocal(0, startingY).getY() - newPrefHeight;
             }
         }
-    }
 
-    // Commented because we dont support horizontal resizing yet
-//    /**
-//     * Helper function for MouseDragged event. Horizontal part.
-//     * @param event the mousedrag event in question.
-//     */
-//    private void onMouseDraggedHelperHorizontal(MouseEvent event) {
-//        // current  width of total scrollable area
-//        double totalWidth = pane.getContent().getBoundsInLocal().getWidth();
-//        // current width of visible part of scrollable area.
-//        double viewWidth = pane.getWidth();
-//        // current number of pixels from left that are invisible due to scrolling.
-//        double viewLeft = (totalWidth - viewWidth) * pane.getHvalue();
-//        if (dragging == 2) { // drag from right edge
-//            setPrefWidth(scrollMouse.getX() - getLayoutX() + viewLeft - pane.getLayoutX());
-//            if (getLayoutX() + getPrefWidth() > totalWidth) { // cap off beyond border
-//                setPrefWidth(totalWidth - getLayoutX());
-//            }
-//        } else { // drag from left edge
-//            double oldLayoutX = getLayoutX() - (scrollMouse.getX() - pane.getLayoutX());
-//            if (getPrefWidth() > getMinWidth()
-//                    || (mouseCurrentXMovement < 0.0 && mouseCurrentXPosition < getLayoutX())) {
-//                double newLayout = event.getSceneX() + viewLeft - pane.getLayoutX();
-//                double newPrefWidth = oldLayoutX - viewLeft + getPrefWidth();
-//                if (newLayout < 0.0) {
-//                    newLayout = 0.0;
-//                    newPrefWidth = getPrefWidth();
-//                    if (getLayoutX() != 0.0) {
-//                        newPrefWidth += getLayoutX();
-//                    }
-//                }
-//                setLayoutX(newLayout);
-//                setPrefWidth(newPrefWidth);
-//            }
-//        }
-//    }
+        dummyPane.setLayoutY(newLayoutY);
+        dummyPane.setPrefHeight(newPrefHeight);
+
+    }
 
     /**
      Find out in what area of a block (0,1,2,3,4) the mouse is pressed.

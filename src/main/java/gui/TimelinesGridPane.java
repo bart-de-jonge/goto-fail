@@ -24,6 +24,12 @@ public class TimelinesGridPane extends GridPane {
 
     private ArrayList<SnappingPane> panes;
 
+    //////////// Mock variables, update this with project settings
+    @Getter
+    private double countHeight = 50;
+    @Getter
+    private double timelineWidth = 100;
+
     /**
      * Constructor.
      * @param numberOfTimelines - The number of timelines in this gridpane
@@ -52,10 +58,10 @@ public class TimelinesGridPane extends GridPane {
 
         // set constraints
         for (int i = 0; i < numberOfTimelines; i++) {
-            this.getColumnConstraints().add(new ColumnConstraints(width / numberOfTimelines));
+            this.getColumnConstraints().add(new ColumnConstraints(timelineWidth));
         }
         for (int i = 0; i < numberOfCounts; i++) {
-            this.getRowConstraints().add(new RowConstraints(50));
+            this.getRowConstraints().add(new RowConstraints(countHeight));
         }
     }
 
@@ -63,7 +69,7 @@ public class TimelinesGridPane extends GridPane {
      * Add a camerashotblock to this gridpane.
      * @param block - the block to add
      */
-    public void addCamerShotBlock(CameraShotBlock block) {
+    public void addCameraShotBlock(CameraShotBlock block) {
         this.add(block.getTimetableBlock(), block.getTimetableNumber(),
                 (int) Math.round(block.getBeginCount()), 1,
                 (int) Math.round(block.getEndCount() - block.getBeginCount()));
