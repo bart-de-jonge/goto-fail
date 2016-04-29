@@ -69,8 +69,10 @@ class RootHeaderArea extends VBox {
     private Button createShotButton() {
         Button shotCreation = new Button("Add Camera Shot");
 
-        TimelineController tlController = rootPane.getControllerManager().getTimelineControl();
-        shotCreation.setOnMouseClicked(e -> tlController.addCameraShot(1, "BOOM", "", 1, 2));
+        shotCreation.setOnMouseClicked(e -> {
+                rootPane.getControllerManager().getTimelineControl()
+                    .addCameraShot(1, "BOOM", "", 1, 2);
+            });
 
         return shotCreation;
     }
