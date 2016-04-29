@@ -60,7 +60,6 @@ public class RootPane extends Application {
 
         controllerManager = new ControllerManager(this);
 
-
         primaryStage.centerOnScreen();
         primaryStage.show();
     }
