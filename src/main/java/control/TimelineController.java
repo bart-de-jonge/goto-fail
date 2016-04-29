@@ -8,6 +8,8 @@ import data.ScriptingProject;
 import gui.CameraShotBlock;
 import gui.CameraShotBlockUpdatedEvent;
 import gui.RootPane;
+import lombok.Getter;
+
 import java.util.List;
 
 /**
@@ -18,13 +20,15 @@ public class TimelineController {
 
     private RootPane rootPane;
 
-//    private List<CameraTimeline> cameraTimelines;
+    // TODO: replace number of timelines with xml data
+    private final int numTimelines = 8;
 
     // Placeholder camera type until GUI allows personalized entry
     // TODO: Replace Camera Type and Scripting Project when XML functionality is available
     private final CameraType defType = new CameraType("AW-HE130 HD PTZ", "It's an IP Camera", 0.5);
 
     // Placeholder project in lieu of XML loading
+    @Getter
     private final ScriptingProject scriptingProject = new ScriptingProject("BOSS Project", 1.0);
 
     /**
@@ -53,19 +57,18 @@ public class TimelineController {
     }
 
     /**
-     * Handle updated camera shot. As original location is not passed using event,
-     * the entire (flattened) list of shots must be searched for the corresponding shot.
-     * The correct {@link CameraShot} is then updated using the latest {@link CameraShotBlock}
+     * Handle updated camera shot. The previous timeline is used to retrieve the corresponding
+     * shot. The correct {@link CameraShot} is then updated using the latest {@link CameraShotBlock}
      * position and counts. As the event is unclear as to whether the shot has switched timelines,
      * it is removed from the previous timeline and added to the new one.
      * @param event Camera shot change event.
      */
-    private void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
+    public void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
         CameraShotBlock changedBlock = event.getCameraShotBlock();
-        List<CameraTimeline> camTimelines = this.scriptingProject.getCameraTimelines();
+        CameraTimeline previousTimeline = this.scriptingProject.getCameraTimelines()
+                .get(event.getOldTimelineNumber());
         // Locate shot to be updated using id
-        CameraShot shot = camTimelines.stream()
-                .flatMap(cameraTimeline -> cameraTimeline.getShots().stream())
+        CameraShot shot = previousTimeline.getShots().stream()
                 .filter(s -> s.getInstance() == changedBlock.getShotId())
                 .findFirst()
                 .get();
@@ -74,8 +77,9 @@ public class TimelineController {
         shot.setStartCount(changedBlock.getBeginCount());
         shot.setEndCount(changedBlock.getEndCount());
         // Remove shot from previous timeline and add to new one
-        camTimelines.forEach(tl -> tl.removeShot(shot));
-        camTimelines.get(changedBlock.getTimetableNumber()).addShot(shot);
+        previousTimeline.removeShot(shot);
+        this.scriptingProject.getCameraTimelines()
+                .get(changedBlock.getTimetableNumber()).addShot(shot);
     }
 
     /**
@@ -83,8 +87,7 @@ public class TimelineController {
      * TODO: Replace this with proper XML based project creation
      */
     private void initializeCameraTimelines() {
-        int timelinesN = this.rootPane.getRootCenterArea().getGrid().getNumberOfTimelines();
-        for (int i = 0; i < timelinesN; i++) {
+        for (int i = 0; i < numTimelines; i++) {
             Camera defCam = new Camera("IP Cam " + i, "", defType);
             CameraTimeline timelineN = new CameraTimeline(defCam, "", scriptingProject);
             scriptingProject.addCameraTimeline(timelineN);
