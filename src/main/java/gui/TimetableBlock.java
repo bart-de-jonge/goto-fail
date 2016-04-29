@@ -1,6 +1,5 @@
 package gui;
 
-import com.sun.deploy.security.BlacklistedCerts;
 import javafx.event.EventHandler;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
@@ -107,12 +106,14 @@ public class TimetableBlock extends Region {
 
             // Init feedbackpane
             feedbackPane.setVisible(true);
-            TimelinesGridPane.setColumnIndex(feedbackPane, TimelinesGridPane.getColumnIndex(thisBlock));
+            TimelinesGridPane.setColumnIndex(feedbackPane,
+                    TimelinesGridPane.getColumnIndex(thisBlock));
             TimelinesGridPane.setRowIndex(feedbackPane, TimelinesGridPane.getRowIndex(thisBlock));
             TimelinesGridPane.setRowSpan(feedbackPane, TimelinesGridPane.getRowSpan(thisBlock));
 
             // Set startingY if dragging
-            double blockY = pane.getGrid().localToScene(thisBlock.getLayoutX(), thisBlock.getLayoutY()).getY();
+            double blockY = pane.getGrid().localToScene(thisBlock.getLayoutX(),
+                    thisBlock.getLayoutY()).getY();
             if (draggingType == DraggingTypes.Resize_Top) {
                 startingY = blockY + thisBlock.getHeight();
             } else if (draggingType == DraggingTypes.Resize_Bottom) {
@@ -232,15 +233,12 @@ public class TimetableBlock extends Region {
             if ((dragType == DraggingTypes.Resize_Top
                     || dragType == DraggingTypes.Move)
                     && myPane.isBottomHalf()) {
-                System.out.println("NOt bottom hoALD");
-                System.out.println("ROW INDEX = " + (myPane.getRow() + 1));
                 GridPane.setRowIndex(targetRegion, myPane.getRow() + 1);
             } else {
                 GridPane.setRowIndex(targetRegion, myPane.getRow());
             }
             GridPane.setColumnIndex(targetRegion, myPane.getColumn());
             GridPane.setRowSpan(targetRegion, Math.max(numCounts, 1));
-
             return true;
         } else {
             return false;
@@ -268,7 +266,7 @@ public class TimetableBlock extends Region {
         double newPrefHeight = 0;
         Point2D bounds = pane.getParentPane().sceneToLocal(event.getSceneX(), event.getSceneY());
 
-        if(thisBlock.draggingType == DraggingTypes.Resize_Top) {
+        if (thisBlock.draggingType == DraggingTypes.Resize_Top) {
             newPrefHeight = startingY - event.getSceneY();
             newLayoutY = bounds.getY();
         } else if (thisBlock.draggingType == DraggingTypes.Resize_Bottom) {
@@ -278,7 +276,7 @@ public class TimetableBlock extends Region {
 
         if (newPrefHeight < pane.getGrid().getCountHeight()) {
             newPrefHeight = pane.getGrid().getCountHeight();
-            if(draggingType == DraggingTypes.Resize_Top) {
+            if (draggingType == DraggingTypes.Resize_Top) {
                 newLayoutY = pane.getParentPane().sceneToLocal(0, startingY).getY() - newPrefHeight;
             }
         }
