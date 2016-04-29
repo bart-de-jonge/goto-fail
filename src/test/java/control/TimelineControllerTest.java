@@ -40,9 +40,9 @@ public class TimelineControllerTest {
         when(shotBlock.getEndCount()).thenReturn(5.0);
         when(shotBlock.getTimetableNumber()).thenReturn(0);
 
-        timelineController.shotChangedHandler(new CameraShotBlockUpdatedEvent(
-                shotBlock, 0
-        ));
+        timelineController.shotChangedHandler(
+                new CameraShotBlockUpdatedEvent(shotBlock, 0)
+        );
 
         assertEquals(shot.getEndCount(), 5.0, 0);
     }
@@ -53,9 +53,9 @@ public class TimelineControllerTest {
         when(shotBlock.getEndCount()).thenReturn(2.0);
         when(shotBlock.getTimetableNumber()).thenReturn(0);
 
-        timelineController.shotChangedHandler(new CameraShotBlockUpdatedEvent(
-                shotBlock, 0
-        ));
+        timelineController.shotChangedHandler(
+                new CameraShotBlockUpdatedEvent(shotBlock, 0)
+        );
 
         assertEquals(shot.getStartCount(), 0.0, 0);
     }
@@ -66,9 +66,9 @@ public class TimelineControllerTest {
         when(shotBlock.getEndCount()).thenReturn(2.0);
         when(shotBlock.getTimetableNumber()).thenReturn(1);
 
-        timelineController.shotChangedHandler(new CameraShotBlockUpdatedEvent(
-                shotBlock, 0
-        ));
+        timelineController.shotChangedHandler(
+                new CameraShotBlockUpdatedEvent(shotBlock, 0)
+        );
 
         // Verify movement between timelines
         assertEquals(project.getCameraTimelines().get(0).getShots().size(), 0);
