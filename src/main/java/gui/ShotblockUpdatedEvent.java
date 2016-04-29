@@ -4,14 +4,18 @@ import javafx.beans.NamedArg;
 import javafx.event.Event;
 import javafx.event.EventTarget;
 import javafx.event.EventType;
+import lombok.Getter;
 
 /**
  * Created by Bart.
  */
-public class ShotblockUpdatedEvent extends Event {
+public abstract class ShotblockUpdatedEvent extends Event {
+
+    @Getter
+    private ShotBlock shotBlock;
 
     /**
-     * The only valid EventType for the CustomEvent.
+     * The eventtype.
      */
     public static final EventType<ShotblockUpdatedEvent> SHOTBLOCK_UPDATED =
             new EventType<>(Event.ANY, "SHOTBLOCK_UPDATED");
@@ -19,16 +23,9 @@ public class ShotblockUpdatedEvent extends Event {
     /**
      * Constructor.
      */
-    public ShotblockUpdatedEvent() {
+    public ShotblockUpdatedEvent(ShotBlock shotBlock) {
         super(SHOTBLOCK_UPDATED);
+        this.shotBlock = shotBlock;
     }
 
-    /**
-     * Constructor.
-     * @param source - the source
-     * @param target - the target
-     */
-    public ShotblockUpdatedEvent(Object source, EventTarget target) {
-        super(source, target, SHOTBLOCK_UPDATED);
-    }
 }
