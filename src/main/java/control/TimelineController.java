@@ -8,6 +8,8 @@ import data.ScriptingProject;
 import gui.CameraShotBlock;
 import gui.CameraShotBlockUpdatedEvent;
 import gui.RootPane;
+import lombok.Getter;
+
 import java.util.List;
 
 /**
@@ -26,6 +28,7 @@ public class TimelineController {
     private final CameraType defType = new CameraType("AW-HE130 HD PTZ", "It's an IP Camera", 0.5);
 
     // Placeholder project in lieu of XML loading
+    @Getter
     private final ScriptingProject scriptingProject = new ScriptingProject("BOSS Project", 1.0);
 
     /**
