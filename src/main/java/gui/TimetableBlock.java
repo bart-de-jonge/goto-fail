@@ -96,19 +96,18 @@ public class TimetableBlock extends Region {
         this.pane = pane;
         setStyle(normalStyle);
 
-        VBox contentPane = new VBox();
-        VBox dummyContentPane = new VBox();
-
-        Rectangle clipRegion = new Rectangle();
+        VBox contentPane = new VBox(); // content pane for our block.
+        Rectangle clipRegion = new Rectangle(); // clip region to restrict content from exiting content pane.
         clipRegion.widthProperty().bind(widthProperty());
-        clipRegion.heightProperty().bind(heightProperty().subtract(10.0));
-        Rectangle dummyClipRegion = new Rectangle();
-        dummyClipRegion.widthProperty().bind(widthProperty());
-        dummyClipRegion.heightProperty().bind(heightProperty().subtract(10.0));
-
+        clipRegion.heightProperty().bind(heightProperty());
         contentPane.setClip(clipRegion);
-        dummyContentPane.setClip(dummyClipRegion);
         getChildren().add(contentPane);
+
+        VBox dummyContentPane = new VBox(); // content pane for dummy block
+        Rectangle dummyClipRegion = new Rectangle();// clip region to restrict content from exiting dummy pane.
+        dummyClipRegion.widthProperty().bind(dummyPane.widthProperty());
+        dummyClipRegion.heightProperty().bind(dummyPane.heightProperty());
+        dummyContentPane.setClip(dummyClipRegion);
         dummyPane.getChildren().add(dummyContentPane);
 
         Label label1 = new Label(title);

@@ -24,9 +24,9 @@ public class RootCenterArea extends ScrollPane {
     @Getter @Setter
     private int timelineWidth = 200;
     @Getter @Setter
-    private int numberOfTimelines = 5;
+    private int numberOfTimelines = 8;
     @Getter @Setter
-    private int numberOfCounts = 10;
+    private int numberOfCounts = 20;
 
     @Getter
     private RootPane rootPane;
@@ -47,14 +47,19 @@ public class RootCenterArea extends ScrollPane {
      */
     RootCenterArea(RootPane rootPane) {
         this.rootPane = rootPane;
-        parentPane = new AnchorPane();
-        grid = new TimelinesGridPane(5, 20, 1000, 1000);
-        parentPane.getChildren().add(grid);
+        //setFitToWidth(true);
 
-        parentPane.setMaxWidth(1000);
-        parentPane.setMinWidth(1000);
+        parentPane = new AnchorPane();
+        grid = new TimelinesGridPane(numberOfTimelines, numberOfCounts, 1000, 1000);
+
+        parentPane.setLeftAnchor(grid, 0.0);
+        parentPane.setRightAnchor(grid, 0.0);
+
+        parentPane.getChildren().add(grid);
         parentPane.setMinHeight(1000);
         parentPane.setMinWidth(1000);
+
+        setFitToWidth(true);
         setContent(parentPane);
     }
 

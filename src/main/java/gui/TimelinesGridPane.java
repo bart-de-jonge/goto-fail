@@ -4,6 +4,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import lombok.Getter;
 
@@ -41,24 +42,27 @@ public class TimelinesGridPane extends GridPane {
                              double width, double height) {
         this.numberOfTimelines = numberOfTimelines;
         this.numberOfCounts = numberOfCounts;
-        this.setWidth(width);
-        this.setMinHeight(height);
+       // this.setWidth(width);
         this.panes = new ArrayList<>();
-
-        this.setMaxWidth(width);
-        this.setMinWidth(width);
-        this.setMaxHeight(height);
-        this.setMinHeight(height);
+        setMaxWidth(Double.MAX_VALUE);
+        //this.setMaxWidth(width);
+       // this.setMinWidth(width);
+       // this.setMaxHeight(height);
+       // this.setMinHeight(height);
 
         addPanes();
 
         this.setGridLinesVisible(true);
-//        this.setHgap(50);
-        this.setPadding(new Insets(25, 25, 25, 25));
+//        this.setHgap(50); // uncomment to add gaps between timeliens.
+       // this.setPadding(new Insets(25, 25, 25, 25));
 
         // set constraints
         for (int i = 0; i < numberOfTimelines; i++) {
-            this.getColumnConstraints().add(new ColumnConstraints(timelineWidth));
+            ColumnConstraints columConstraint = new ColumnConstraints();
+            columConstraint.setMinWidth(100.0);
+            columConstraint.setPercentWidth(100.0 / numberOfTimelines);
+            columConstraint.setHgrow(Priority.ALWAYS);
+            this.getColumnConstraints().add(columConstraint);
         }
         for (int i = 0; i < numberOfCounts; i++) {
             this.getRowConstraints().add(new RowConstraints(countHeight));
