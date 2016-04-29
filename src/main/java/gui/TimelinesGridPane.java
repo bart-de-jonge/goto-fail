@@ -1,5 +1,6 @@
 package gui;
 
+import java.util.ArrayList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.layout.ColumnConstraints;
@@ -8,7 +9,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import lombok.Getter;
 
-import java.util.ArrayList;
 
 /**
  * Created by Bart.
@@ -50,7 +50,6 @@ public class TimelinesGridPane extends GridPane {
         addPanes();
 
         this.setGridLinesVisible(true);
-        //this.setHgap(50); // uncomment to add gaps between timelines.
         this.setPadding(new Insets(5, 5, 5, 5));
 
         // set constraints, with minimum size 100x100, and maximum size infinite.
