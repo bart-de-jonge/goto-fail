@@ -53,10 +53,8 @@ public class TimelineController {
         CameraShot newShot = new CameraShot(name,description, startCount, endCount);
         this.scriptingProject.getCameraTimelines().get(cameraIndex).addShot(newShot);
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex,
-                                                        rootPane.getRootCenterArea(),
-                                                        startCount, endCount);
+                rootPane.getRootCenterArea(), startCount, endCount, this.rootPane.getRootCenterArea().getGrid());
         shotBlock.attachEventHandler(this::shotChangedHandler);
-        this.rootPane.getRootCenterArea().getGrid().addCamerShotBlock(shotBlock);
     }
 
     /**
