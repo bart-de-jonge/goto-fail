@@ -1,5 +1,6 @@
 package gui;
 
+import control.ControllerManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -26,6 +27,8 @@ public class RootPane extends Application {
     private RootFooterArea rootFooterArea;
     @Getter
     private RootCenterArea rootCenterArea;
+    @Getter
+    private ControllerManager controllerManager;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -55,6 +58,7 @@ public class RootPane extends Application {
         rootCenterArea = new RootCenterArea(this);
         topLevelPane.setCenter(rootCenterArea);
 
+        controllerManager = new ControllerManager(this);
 
         primaryStage.centerOnScreen();
         primaryStage.show();
