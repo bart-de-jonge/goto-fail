@@ -28,8 +28,9 @@ public class SnappingPane extends Pane {
     public SnappingPane(int row, int column, double width, double height) {
         this.row = row;
         this.column = column;
-        this.setWidth(width);
-        this.setHeight(height);
+        // don't enforce width, let grid handle this - Mark
+        //this.setWidth(width);
+        //this.setHeight(height);
         this.bottomHalf = false;
     }
 }

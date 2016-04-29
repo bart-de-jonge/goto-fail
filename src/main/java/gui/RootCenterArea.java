@@ -1,15 +1,9 @@
 package gui;
 
-import javafx.geometry.Bounds;
-import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.ArrayList;
 
 /**
  * Class representing the center (main section) of the gui.
@@ -47,19 +41,21 @@ public class RootCenterArea extends ScrollPane {
      */
     RootCenterArea(RootPane rootPane) {
         this.rootPane = rootPane;
-        //setFitToWidth(true);
 
         parentPane = new AnchorPane();
         grid = new TimelinesGridPane(numberOfTimelines, numberOfCounts, 1000, 1000);
 
         parentPane.setLeftAnchor(grid, 0.0);
         parentPane.setRightAnchor(grid, 0.0);
+       // parentPane.setBottomAnchor(grid, 0.0);
+        parentPane.setTopAnchor(grid, 0.0);
 
         parentPane.getChildren().add(grid);
         parentPane.setMinHeight(1000);
         parentPane.setMinWidth(1000);
 
         setFitToWidth(true);
+        //setFitToHeight(true);
         setContent(parentPane);
     }
 

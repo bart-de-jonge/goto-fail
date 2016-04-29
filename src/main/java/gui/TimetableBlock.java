@@ -1,5 +1,7 @@
 package gui;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.*;
 import javafx.scene.Node;
@@ -70,8 +72,8 @@ public class TimetableBlock extends Region {
         this.parentBlock = parent;
 
         feedbackPane = new Pane();
-        feedbackPane.setPrefHeight(100);
-        feedbackPane.setPrefWidth(200);
+        //feedbackPane.setPrefHeight(100);
+        //feedbackPane.setPrefWidth(200);
         feedbackPane.setStyle("-fx-background-color: red");
         feedbackPane.setVisible(false);
 
@@ -110,41 +112,19 @@ public class TimetableBlock extends Region {
         dummyContentPane.setClip(dummyClipRegion);
         dummyPane.getChildren().add(dummyContentPane);
 
-        Label label1 = new Label(title);
-        label1.setMaxWidth(pane.getGrid().getTimelineWidth());
-        label1.setPadding(new Insets(5,5,5,5));
-        Label label2 = new Label(title);
-        label2.setMaxWidth(pane.getGrid().getTimelineWidth());
-        label2.setPadding(new Insets(5,5,5,5));
-        Label label3 = new Label(title);
-        label3.setMaxWidth(pane.getGrid().getTimelineWidth());
-        label3.setPadding(new Insets(5,5,5,5));
-        Label label4 = new Label(title);
-        label4.setMaxWidth(pane.getGrid().getTimelineWidth());
-        label4.setPadding(new Insets(5,5,5,5));
-
-        Label label5 = new Label(title);
-        label5.setMaxWidth(pane.getGrid().getTimelineWidth());
-        label5.setPadding(new Insets(5,5,5,5));
-        Label label6 = new Label(title);
-        label6.setMaxWidth(pane.getGrid().getTimelineWidth());
-        label6.setPadding(new Insets(5,5,5,5));
-        Label label7 = new Label(title);
-        label7.setMaxWidth(pane.getGrid().getTimelineWidth());
-        label7.setPadding(new Insets(5,5,5,5));
-        Label label8 = new Label(title);
-        label8.setMaxWidth(pane.getGrid().getTimelineWidth());
-        label8.setPadding(new Insets(5,5,5,5));
-
-        contentPane.getChildren().add(label1);
-        contentPane.getChildren().add(label2);
-        contentPane.getChildren().add(label3);
-        contentPane.getChildren().add(label4);
-
-        dummyContentPane.getChildren().add(label5);
-        dummyContentPane.getChildren().add(label6);
-        dummyContentPane.getChildren().add(label7);
-        dummyContentPane.getChildren().add(label8);
+        // test labels, please ignore.
+        for (int i = 0; i < 6; i++) {
+            Label label = new Label(title);
+            label.setPrefWidth(pane.getGrid().getTimelineWidth());
+            label.setPadding(new Insets(5,5,5,5));
+            contentPane.getChildren().add(label);
+        }
+        for (int i = 0; i < 6; i++) {
+            Label label = new Label(title);
+            label.setPrefWidth(pane.getGrid().getTimelineWidth());
+            label.setPadding(new Insets(5,5,5,5));
+            dummyContentPane.getChildren().add(label);
+        }
 
         this.margin = 15;
 
