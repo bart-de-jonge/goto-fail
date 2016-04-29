@@ -48,7 +48,7 @@ public class RootCenterArea extends ScrollPane {
     RootCenterArea(RootPane rootPane) {
         this.rootPane = rootPane;
         parentPane = new AnchorPane();
-        grid = new TimelinesGridPane(5, 20, 1000, 1000);
+        grid = new TimelinesGridPane(8, 20, 1000, 1000);
         parentPane.getChildren().add(grid);
 
         parentPane.setMaxWidth(1000);
