@@ -6,12 +6,8 @@ import data.CameraTimeline;
 import data.CameraType;
 import data.ScriptingProject;
 import gui.CameraShotBlock;
-import gui.ShotblockUpdatedEvent;
-import gui.TimelinesGridPane;
+import gui.CameraShotBlockUpdatedEvent;
 import gui.RootPane;
-import gui.TimetableBlock;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,8 +49,7 @@ public class TimelineController {
         CameraShot newShot = new CameraShot(name,description, startCount, endCount);
         this.scriptingProject.getCameraTimelines().get(cameraIndex).addShot(newShot);
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex,
-                rootPane.getRootCenterArea(), startCount, endCount);
-        shotBlock.attachEventHandler(this::shotChangedHandler);
+                rootPane.getRootCenterArea(), startCount, endCount, this::shotChangedHandler);
     }
 
     /**
@@ -65,10 +60,8 @@ public class TimelineController {
      * it is removed from the previous timeline and added to the new one.
      * @param event Camera shot change event.
      */
-    private void shotChangedHandler(ShotblockUpdatedEvent event) {
-        // Tunnel through timetableblock to retrieve shotblock
-        TimetableBlock timetableBlock = (TimetableBlock) event.getSource();
-        CameraShotBlock changedBlock = (CameraShotBlock) timetableBlock.getParentBlock();
+    private void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
+        CameraShotBlock changedBlock = event.getCameraShotBlock();
         List<CameraTimeline> camTimelines = this.scriptingProject.getCameraTimelines();
         // Locate shot to be updated using id
         CameraShot shot = camTimelines.stream()

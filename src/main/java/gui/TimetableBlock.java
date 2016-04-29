@@ -156,7 +156,8 @@ public class TimetableBlock extends Region {
             feedbackPane.setVisible(false);
             dragging = false;
             snapPane(thisBlock, dummyPane, e.getSceneX(), e.getSceneY(), draggingType);
-            this.fireEvent(new ShotblockUpdatedEvent());
+
+            this.fireEvent(parentBlock.getShotBlockUpdatedEvent());
         };
     }
 
