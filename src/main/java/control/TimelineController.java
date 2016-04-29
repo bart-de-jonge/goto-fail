@@ -18,7 +18,8 @@ public class TimelineController {
 
     private RootPane rootPane;
 
-//    private List<CameraTimeline> cameraTimelines;
+    // TODO: replace number of timelines with xml data
+    private final int numTimelines = 8;
 
     // Placeholder camera type until GUI allows personalized entry
     // TODO: Replace Camera Type and Scripting Project when XML functionality is available
@@ -83,8 +84,7 @@ public class TimelineController {
      * TODO: Replace this with proper XML based project creation
      */
     private void initializeCameraTimelines() {
-        int timelinesN = this.rootPane.getRootCenterArea().getGrid().getNumberOfTimelines();
-        for (int i = 0; i < timelinesN; i++) {
+        for (int i = 0; i < numTimelines; i++) {
             Camera defCam = new Camera("IP Cam " + i, "", defType);
             CameraTimeline timelineN = new CameraTimeline(defCam, "", scriptingProject);
             scriptingProject.addCameraTimeline(timelineN);
