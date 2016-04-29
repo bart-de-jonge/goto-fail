@@ -26,9 +26,11 @@ public class CameraShotBlock extends ShotBlock {
      * @param rootCenterArea - the rootCenterArea this shot belongs to
      * @param beginCount - the begin count of this shot
      * @param endCount - the end count of this shot
+     * @param handler - The handler for this camerashotblock
      */
     public CameraShotBlock(int shotId, int timetableNumber, RootCenterArea rootCenterArea,
-                           double beginCount, double endCount) {
+                           double beginCount, double endCount,
+                           EventHandler<CameraShotBlockUpdatedEvent> handler) {
         super(rootCenterArea, beginCount, endCount);
         this.shotId = shotId;
         this.timetableNumber = timetableNumber;
@@ -42,10 +44,15 @@ public class CameraShotBlock extends ShotBlock {
                         this.getTimetableBlock()) + this.getBeginCount(), false);
                 this.timetableNumber = TimelinesGridPane.getColumnIndex(
                         this.getTimetableBlock());
+
+                if (e instanceof CameraShotBlockUpdatedEvent) {
+                    handler.handle((CameraShotBlockUpdatedEvent) e);
+                }
             });
 
         this.getTimetableBlock().setPrefWidth(grid.getTimelineWidth());
-        this.getTimetableBlock().setPrefHeight(grid.getNumberOfCounts() * grid.getCountHeight());
+        this.getTimetableBlock().setPrefHeight(grid.getNumberOfCounts()
+                * grid.getCountHeight());
         grid.addCameraShotBlock(this);
     }
 
@@ -65,5 +72,10 @@ public class CameraShotBlock extends ShotBlock {
     public void recompute() {
         TimelinesGridPane.setColumnIndex(this.getTimetableBlock(), timetableNumber);
         super.recompute();
+    }
+
+    @Override
+    public ShotblockUpdatedEvent getShotBlockUpdatedEvent() {
+        return new CameraShotBlockUpdatedEvent(this, timetableNumber);
     }
 }
