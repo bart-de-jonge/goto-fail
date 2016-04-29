@@ -19,7 +19,7 @@ public class DirectorTimeline extends Timeline {
     // Collection of all Shot elements in this Timeline.
     @Getter
     @XmlElementWrapper(name = "shotList")
-    @XmlElement(name = "book")
+    @XmlElement(name = "shot")
     private LinkedList<DirectorShot> shots;
     
     /**

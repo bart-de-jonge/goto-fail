@@ -2,6 +2,8 @@ package data;
 
 import java.util.ArrayList;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -19,6 +21,7 @@ import xml.XmlWriter;
  * Class to store top-level properties of a scripting project.
  */
 @XmlRootElement(name = "scriptingProject")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ScriptingProject {
 
     // Description of this project
@@ -37,7 +40,7 @@ public class ScriptingProject {
 
     // The camera timelines of this project
     @Getter @Setter
-    @XmlElementWrapper(name = "cameraTimelines")
+    @XmlElementWrapper(name = "camera-timelines")
     @XmlElement(name = "cameraTimeline")
     private ArrayList<CameraTimeline> cameraTimelines;
 

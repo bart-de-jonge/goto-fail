@@ -1,6 +1,7 @@
 package data;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,7 @@ public abstract class Timeline {
 
     // The project this timeline is currently in
     @Setter
+    @XmlTransient
     private ScriptingProject project;
     
     /**
@@ -54,7 +56,8 @@ public abstract class Timeline {
         }
         return false;
     }
-
+    
+    @XmlTransient
     public ScriptingProject getProject() {
         return project;
     }

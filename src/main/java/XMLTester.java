@@ -18,7 +18,8 @@ public class XMLTester {
     public static void main(String[] args) {
         ScriptingProject project = new ScriptingProject("A test project", 2.00);
         XmlWriter writer = new XmlWriter("src/test/java/xml/test_files/test-write.xml");
-        DirectorTimeline dt = new DirectorTimeline("A test director timeline", new ScriptingProject("test", 1));
+        DirectorTimeline dt = new DirectorTimeline("A test director timeline", project);
+        
         DirectorShot directorShot = new DirectorShot("shot-1", "A test director shot", 1, 2);
         int directorShotInstance = directorShot.getInstance();
         dt.addShot(directorShot);
@@ -46,12 +47,20 @@ public class XMLTester {
         cameras.add(c);
         
         project.setCameras(cameras);
+
+        
         try {
+            System.out.println("-----------------------------------------------------------------");
+            System.out.println("CameraType");
+            System.out.println();
             JAXBContext context = JAXBContext.newInstance(ScriptingProject.class);
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             
             m.marshal(project, System.out);
+           
+            
+            
         } catch (JAXBException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
