@@ -157,10 +157,7 @@ public class TimetableBlock extends Region {
             dragging = false;
             snapPane(thisBlock, dummyPane, e.getSceneX(), e.getSceneY(), draggingType);
 
-            if (parentBlock instanceof CameraShotBlock) {
-                this.fireEvent(new CameraShotBlockUpdatedEvent(parentBlock,
-                        ((CameraShotBlock) parentBlock).getTimetableNumber()));
-            }
+            this.fireEvent(parentBlock.getShotBlockUpdatedEvent());
         };
     }
 

@@ -93,6 +93,12 @@ public abstract class ShotBlock {
     }
 
     /**
+     * Return correct event for the specific shotblock.
+     * @return - the event
+     */
+    public abstract ShotblockUpdatedEvent getShotBlockUpdatedEvent();
+
+    /**
      * Set style of this ShotBlock.
      * @param style - the style to set
      */

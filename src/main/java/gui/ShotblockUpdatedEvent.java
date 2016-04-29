@@ -15,7 +15,7 @@ public abstract class ShotblockUpdatedEvent extends Event {
     private ShotBlock shotBlock;
 
     /**
-     * The eventtype.
+     * The EventType.
      */
     public static final EventType<ShotblockUpdatedEvent> SHOTBLOCK_UPDATED =
             new EventType<>(Event.ANY, "SHOTBLOCK_UPDATED");

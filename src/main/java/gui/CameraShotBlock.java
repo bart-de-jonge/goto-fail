@@ -73,4 +73,9 @@ public class CameraShotBlock extends ShotBlock {
         TimelinesGridPane.setColumnIndex(this.getTimetableBlock(), timetableNumber);
         super.recompute();
     }
+
+    @Override
+    public ShotblockUpdatedEvent getShotBlockUpdatedEvent() {
+        return new CameraShotBlockUpdatedEvent(this, timetableNumber);
+    }
 }
