@@ -63,7 +63,7 @@ public class TimelineController {
      * it is removed from the previous timeline and added to the new one.
      * @param event Camera shot change event.
      */
-    private void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
+    public void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
         CameraShotBlock changedBlock = event.getCameraShotBlock();
         CameraTimeline previousTimeline = this.scriptingProject.getCameraTimelines()
                 .get(event.getOldTimelineNumber());
