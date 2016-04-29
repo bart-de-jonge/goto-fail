@@ -68,15 +68,20 @@ public class TimelineController {
      * @param event Camera shot change event.
      */
     private void shotChangedHandler(ShotblockUpdatedEvent event) {
+        // Tunnel through timetableblock to retrieve shotblock
         TimetableBlock timetableBlock = (TimetableBlock) event.getSource();
         CameraShotBlock changedBlock = (CameraShotBlock) timetableBlock.getParentBlock();
+        // Locate shot to be updated using id
         CameraShot shot = this.cameraTimelines.stream()
                 .flatMap(cameraTimeline -> cameraTimeline.getShots().stream())
                 .filter(s -> s.getInstance() == changedBlock.getShotId())
                 .findFirst()
                 .get();
+
+        // Adjust model
         shot.setStartCount(changedBlock.getBeginCount());
         shot.setEndCount(changedBlock.getEndCount());
+        // Remove shot from previous timeline and add to new one
         this.cameraTimelines.forEach(tl -> tl.removeShot(shot));
         this.cameraTimelines.get(changedBlock.getTimetableNumber()).addShot(shot);
     }
