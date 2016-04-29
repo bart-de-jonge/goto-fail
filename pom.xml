@@ -6,16 +6,17 @@
 
     <groupId>net.gotofail</groupId>
     <artifactId>ContextProject</artifactId>
-    <version>1.0-SNAPSHOT</version>
+        <version>1.0-SNAPSHOT</version>
 
-     <properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<targetJdk>1.8</targetJdk>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<checkstyle.plugin.version>2.15</checkstyle.plugin.version>
-		<pmd.plugin.version>3.5</pmd.plugin.version>
-		<findbugs.version>3.0.0</findbugs.version>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <targetJdk>1.8</targetJdk>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <checkstyle.plugin.version>2.15</checkstyle.plugin.version>
+        <pmd.plugin.version>3.5</pmd.plugin.version>
+        <findbugs.version>3.0.0</findbugs.version>
+        <log4j.configurationFile></log4j.configurationFile>
 	</properties>
 
     <build>
