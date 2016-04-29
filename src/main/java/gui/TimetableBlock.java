@@ -97,12 +97,19 @@ public class TimetableBlock extends Region {
         setStyle(normalStyle);
 
         VBox contentPane = new VBox();
-        contentPane.setMaxHeight(100.0);
+        VBox dummyContentPane = new VBox();
+
         Rectangle clipRegion = new Rectangle();
         clipRegion.widthProperty().bind(widthProperty());
-        clipRegion.heightProperty().bind(heightProperty());
+        clipRegion.heightProperty().bind(heightProperty().subtract(10.0));
+        Rectangle dummyClipRegion = new Rectangle();
+        dummyClipRegion.widthProperty().bind(widthProperty());
+        dummyClipRegion.heightProperty().bind(heightProperty().subtract(10.0));
+
         contentPane.setClip(clipRegion);
+        dummyContentPane.setClip(dummyClipRegion);
         getChildren().add(contentPane);
+        dummyPane.getChildren().add(dummyContentPane);
 
         Label label1 = new Label(title);
         label1.setMaxWidth(pane.getGrid().getTimelineWidth());
@@ -116,15 +123,29 @@ public class TimetableBlock extends Region {
         Label label4 = new Label(title);
         label4.setMaxWidth(pane.getGrid().getTimelineWidth());
         label4.setPadding(new Insets(5,5,5,5));
+
         Label label5 = new Label(title);
         label5.setMaxWidth(pane.getGrid().getTimelineWidth());
         label5.setPadding(new Insets(5,5,5,5));
+        Label label6 = new Label(title);
+        label6.setMaxWidth(pane.getGrid().getTimelineWidth());
+        label6.setPadding(new Insets(5,5,5,5));
+        Label label7 = new Label(title);
+        label7.setMaxWidth(pane.getGrid().getTimelineWidth());
+        label7.setPadding(new Insets(5,5,5,5));
+        Label label8 = new Label(title);
+        label8.setMaxWidth(pane.getGrid().getTimelineWidth());
+        label8.setPadding(new Insets(5,5,5,5));
 
         contentPane.getChildren().add(label1);
         contentPane.getChildren().add(label2);
         contentPane.getChildren().add(label3);
         contentPane.getChildren().add(label4);
-        contentPane.getChildren().add(label5);
+
+        dummyContentPane.getChildren().add(label5);
+        dummyContentPane.getChildren().add(label6);
+        dummyContentPane.getChildren().add(label7);
+        dummyContentPane.getChildren().add(label8);
 
         this.margin = 15;
 
