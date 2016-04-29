@@ -78,8 +78,10 @@ public class TimetableBlock extends Region {
                 + "-fx-border-width: 3;"
                 + "-fx-border-color: yellow;"
                 + "-fx-background-color: orange;";
-        this.dragStyle = "-fx-border-width: 3;"
-                + "-fx-border-color: red;";
+        this.dragStyle = "-fx-border-style: solid inside;"
+                + "-fx-border-width: 3;"
+                + "-fx-border-color: red;"
+                + "-fx-background-color: orange;";
 
         this.pane = pane;
         setStyle(normalStyle);
@@ -206,7 +208,6 @@ public class TimetableBlock extends Region {
      */
     private boolean snapPane(Region targetRegion, Region mappingPane,
                              double x, double y, DraggingTypes dragType) {
-        System.out.println(mappingPane.toString());
         // set feedback pane
         double yCoordinate;
         double xCoordinate;
@@ -225,7 +226,6 @@ public class TimetableBlock extends Region {
         SnappingPane myPane = pane.getGrid().getMyPane(xCoordinate, yCoordinate);
         if (myPane != null) {
             int numCounts = (int) Math.round(mappingPane.getHeight() / pane.getCountHeight());
-            System.out.println(numCounts);
             if (myPane.isBottomHalf() && dragType == DraggingTypes.Resize_Top) {
                 numCounts = (int) Math.round((mappingPane.getHeight() - 5) / pane.getCountHeight());
             }
