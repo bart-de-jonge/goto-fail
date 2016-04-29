@@ -1,6 +1,11 @@
 package data;
 
 import java.util.ArrayList;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import lombok.Getter;
 import lombok.Setter;
 import xml.XmlReader;
@@ -13,6 +18,7 @@ import xml.XmlWriter;
  * Created by Bart.
  * Class to store top-level properties of a scripting project.
  */
+@XmlRootElement(name = "scriptingProject")
 public class ScriptingProject {
 
     // Description of this project
@@ -21,6 +27,8 @@ public class ScriptingProject {
 
     // List of cameras that are available in this project
     @Getter @Setter
+    @XmlElementWrapper(name = "cameraList")
+    @XmlElement(name = "camera")
     private ArrayList<Camera> cameras;
 
     // The director timeline of this project
@@ -29,11 +37,23 @@ public class ScriptingProject {
 
     // The camera timelines of this project
     @Getter @Setter
+    @XmlElementWrapper(name = "cameraTimelines")
+    @XmlElement(name = "cameraTimeline")
     private ArrayList<CameraTimeline> cameraTimelines;
 
     // The number of seconds per count;
     @Getter @Setter
     private double secondsPerCount;
+    
+    /**
+     * Default constructor.
+     */
+    public ScriptingProject() {
+        description = "";
+        secondsPerCount = 0;
+        cameras = null;
+        cameraTimelines = null;
+    }
 
     /**
      * Constructor.

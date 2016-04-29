@@ -1,15 +1,20 @@
 package data;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Class to store information about a camera timeline.
  * @author Bart.
  */
+@XmlRootElement(name = "cameraTimeline")
 public class CameraTimeline extends Timeline {
 
     // The camera that is associated with this timeline.
@@ -17,8 +22,19 @@ public class CameraTimeline extends Timeline {
     private Camera camera;
     
     // Collection of all Shot elements in this Timeline.
+    @XmlElementWrapper(name = "shotList")
+    @XmlElement(name = "shot")
     @Getter
     private LinkedList<CameraShot> shots;
+    
+    /**
+     * Default constructor.
+     */
+    public CameraTimeline() {
+        super("", null);
+        camera = null;
+        shots = null;
+    }
 
     /**
      * Constructor.

@@ -1,5 +1,7 @@
 package data;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +10,7 @@ import lombok.Setter;
  * Created by Bart.
  */
 @EqualsAndHashCode
+@XmlRootElement(name = "cameraType")
 public class CameraType {
 
     // Name of the cameraType
@@ -23,6 +26,15 @@ public class CameraType {
      * Defined in seconds */
     @Getter @Setter
     private double movementMargin;
+    
+    /**
+     * Default constructor.
+     */
+    public CameraType() {
+        name = "";
+        description = "";
+        movementMargin = -1;
+    }
 
     /**
      * Constructor.

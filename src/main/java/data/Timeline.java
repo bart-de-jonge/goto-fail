@@ -1,5 +1,7 @@
 package data;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,6 +9,7 @@ import lombok.Setter;
  * Created by Bart.
  * Abstract class for timelines.
  */
+@XmlRootElement(name = "timeline")
 public abstract class Timeline {
 
     // Description of this Timeline.
@@ -16,6 +19,14 @@ public abstract class Timeline {
     // The project this timeline is currently in
     @Setter
     private ScriptingProject project;
+    
+    /**
+     * Default constructor.
+     */
+    public Timeline() {
+        description = "";
+        project = null;
+    }
 
     /**
      * Constructor.
