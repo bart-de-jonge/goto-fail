@@ -1,17 +1,16 @@
 package gui;
 
 import javafx.event.EventHandler;
-import javafx.geometry.BoundingBox;
-import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
+import javafx.geometry.*;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import lombok.Getter;
+import org.w3c.dom.css.Rect;
 
 /**
  * Class that resembles a draggable, resiable block inside the timetable.
@@ -21,16 +20,27 @@ public class TimetableBlock extends Region {
 
     public enum DraggingTypes { Move, Resize_Top, Resize_Right, Resize_Bottom, Resize_Left }
 
+    /*
+        Styling variables.
+        For styling and displayable content.
+     */
+
+    private String normalStyle;
+    private String dragStyle;
+
+    private String title = "dummyTitle with some extension";
+
+    /*
+        Misc variables.
+        For dragging, interaction, etc.
+     */
+
     private TimetableBlock thisBlock;
     private Pane dummyPane;
     private Pane feedbackPane;
 
     private double dragXOffset;
     private double dragYOffset;
-
-    private String normalStyle;
-    private String dragStyle;
-
 
     private RootCenterArea pane;
     private boolean dragging;
@@ -85,6 +95,37 @@ public class TimetableBlock extends Region {
 
         this.pane = pane;
         setStyle(normalStyle);
+
+        VBox contentPane = new VBox();
+        contentPane.setMaxHeight(100.0);
+        Rectangle clipRegion = new Rectangle();
+        clipRegion.widthProperty().bind(widthProperty());
+        clipRegion.heightProperty().bind(heightProperty());
+        contentPane.setClip(clipRegion);
+        getChildren().add(contentPane);
+
+        Label label1 = new Label(title);
+        label1.setMaxWidth(pane.getGrid().getTimelineWidth());
+        label1.setPadding(new Insets(5,5,5,5));
+        Label label2 = new Label(title);
+        label2.setMaxWidth(pane.getGrid().getTimelineWidth());
+        label2.setPadding(new Insets(5,5,5,5));
+        Label label3 = new Label(title);
+        label3.setMaxWidth(pane.getGrid().getTimelineWidth());
+        label3.setPadding(new Insets(5,5,5,5));
+        Label label4 = new Label(title);
+        label4.setMaxWidth(pane.getGrid().getTimelineWidth());
+        label4.setPadding(new Insets(5,5,5,5));
+        Label label5 = new Label(title);
+        label5.setMaxWidth(pane.getGrid().getTimelineWidth());
+        label5.setPadding(new Insets(5,5,5,5));
+
+        contentPane.getChildren().add(label1);
+        contentPane.getChildren().add(label2);
+        contentPane.getChildren().add(label3);
+        contentPane.getChildren().add(label4);
+        contentPane.getChildren().add(label5);
+
         this.margin = 15;
 
         // mouse event handlers
