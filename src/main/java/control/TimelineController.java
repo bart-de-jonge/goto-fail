@@ -53,9 +53,8 @@ public class TimelineController {
     }
 
     /**
-     * Handle updated camera shot. As original location is not passed using event,
-     * the entire (flattened) list of shots must be searched for the corresponding shot.
-     * The correct {@link CameraShot} is then updated using the latest {@link CameraShotBlock}
+     * Handle updated camera shot. The previous timeline is used to retrieve the corresponding
+     * shot. The correct {@link CameraShot} is then updated using the latest {@link CameraShotBlock}
      * position and counts. As the event is unclear as to whether the shot has switched timelines,
      * it is removed from the previous timeline and added to the new one.
      * @param event Camera shot change event.
