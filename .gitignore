@@ -4,6 +4,7 @@ site/
 ContextProject.iml
 logs/*
 .classpath
+.DS_Store
 .project
 .settings/
 .checkstyle
