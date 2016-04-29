@@ -14,5 +14,4 @@ public class MainClass {
         // Keep this statement at the bottom of this method, it is blocking
         Application.launch(RootPane.class, args);
     }
-    
 }
