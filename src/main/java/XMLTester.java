@@ -65,6 +65,7 @@ public class XMLTester {
             Unmarshaller um = context.createUnmarshaller();
             ScriptingProject a = (ScriptingProject) um.unmarshal(new File("eenFile.txt"));
             System.out.println("kek");
+            System.out.println(a);
            
             
             
