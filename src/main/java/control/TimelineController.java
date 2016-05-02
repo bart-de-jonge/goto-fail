@@ -2,6 +2,10 @@ package control;
 
 import java.io.File;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -104,6 +108,18 @@ public class TimelineController {
         File file = fileChooser.showSaveDialog(rootPane.getPrimaryStage());
         if (file != null) {
             System.out.println(file.toString());
+            writeToFile(file);
+        }
+    }
+    
+    private void writeToFile(File file) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(ScriptingProject.class);
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            m.marshal(scriptingProject, file);
+        } catch (JAXBException e)  {
+            e.printStackTrace();
         }
     }
 }
