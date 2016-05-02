@@ -28,14 +28,21 @@ public class TimetableBlock extends Pane {
         For styling and displayable content.
      */
 
-    private String normalStyle = "-fx-border-style: solid inside;"
-            + "-fx-border-width: 3;"
+    private double verticalBorderSize = 3.0;
+
+    private String normalStyle =
+            "-fx-border-style: solid inside;"
+            + "-fx-border-width: 0;"
             + "-fx-border-color: yellow;"
-            + "-fx-background-color: orange;";
-    private String dragStyle = "-fx-border-style: solid inside;"
-            + "-fx-border-width: 3;"
-            + "-fx-border-color: red;"
-            + "-fx-background-color: orange;";
+            + "-fx-background-color: green;";
+
+    private String dragStyle =
+            "-fx-padding: " + verticalBorderSize + " 0 " + verticalBorderSize + " 0;"
+            + "-fx-border-style: solid inside;"
+            + "-fx-border-width: 0;"
+            + "-fx-border-color: orange;"
+            + "-fx-background-color: blue;"
+            + "-fx-background-insets: " + verticalBorderSize + " 0 " + verticalBorderSize + " 0;";
 
     private String title = "dummyTitle with some extension";
 
@@ -82,11 +89,11 @@ public class TimetableBlock extends Pane {
         this.parentBlock = parent;
 
         feedbackPane = new Pane();
-        feedbackPane.setStyle("-fx-background-color: red");
+        //feedbackPane.setStyle("-fx-background-color: red");
         feedbackPane.setVisible(false);
 
         dummyPane = new Pane();
-        dummyPane.setStyle("-fx-background-color: green");
+        //dummyPane.setStyle("-fx-background-color: green");
         dummyPane.setVisible(false);
 
         pane.getParentPane().getChildren().add(dummyPane);
@@ -94,10 +101,18 @@ public class TimetableBlock extends Pane {
 
         this.pane = pane;
         setStyle(normalStyle);
+        //setPadding(new Insets(35,35,35,35));
 
         // content pane for our pane, and our dummy pane
         contentPane = new VBox();
         addClipRegion(contentPane, this);
+        contentPane.minWidthProperty().bind(widthProperty());
+        contentPane.maxWidthProperty().bind(widthProperty());
+        contentPane.minHeightProperty().bind(heightProperty());
+        contentPane.maxHeightProperty().bind(heightProperty());
+        contentPane.setStyle(dragStyle);
+
+        // dummy content pane which mirrors our content pane, shown when dragging.
         dummyContentPane = new VBox();
         addClipRegion(dummyContentPane, dummyPane);
 
@@ -121,7 +136,7 @@ public class TimetableBlock extends Pane {
     private void addClipRegion(VBox vbox, Pane pane) {
         Rectangle clipRegion = new Rectangle(); // clip region to restrict content
         clipRegion.widthProperty().bind(pane.widthProperty());
-        clipRegion.heightProperty().bind(pane.heightProperty());
+        clipRegion.heightProperty().bind(pane.heightProperty().subtract(verticalBorderSize));
         vbox.setClip(clipRegion);
         pane.getChildren().add(vbox);
     }
@@ -133,7 +148,7 @@ public class TimetableBlock extends Pane {
     private void addTestLabels(VBox vbox) {
         for (int i = 0; i < 6; i++) {
             Label label = new Label(title);
-            label.setPrefWidth(pane.getGrid().getTimelineWidth());
+            label.maxWidthProperty().bind(this.widthProperty());
             label.setPadding(new Insets(5,5,5,5));
             vbox.getChildren().add(label);
         }
@@ -147,7 +162,7 @@ public class TimetableBlock extends Pane {
         return e -> {
 
             // init dummypane
-            setStyle(dragStyle);
+            //setStyle(dragStyle);
             draggingType = findEdgeZone(e);
             dummyPane.setLayoutX(getLayoutX());
             dummyPane.setLayoutY(getLayoutY());

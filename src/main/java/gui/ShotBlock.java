@@ -29,7 +29,6 @@ public abstract class ShotBlock {
      */
     public ShotBlock(RootCenterArea rootCenterArea, double beginCount, double endCount) {
         this.timetableBlock = new TimetableBlock(rootCenterArea, this);
-        this.timetableBlock.setStyle("-fx-background-color: orange");
         this.beginCount = beginCount;
         this.endCount = endCount;
     }
