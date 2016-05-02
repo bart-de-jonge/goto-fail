@@ -5,6 +5,10 @@ import java.io.File;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
+
+
 
 import data.Camera;
 import data.CameraShot;
@@ -14,6 +18,8 @@ import data.ScriptingProject;
 import gui.CameraShotBlock;
 import gui.CameraShotBlockUpdatedEvent;
 import gui.RootPane;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Getter;
@@ -35,7 +41,7 @@ public class TimelineController {
 
     // Placeholder project in lieu of XML loading
     @Getter
-    private final ScriptingProject scriptingProject = new ScriptingProject("BOSS Project", 1.0);
+    private ScriptingProject scriptingProject = new ScriptingProject("BOSS Project", 1.0);
 
     /**
      * Constructor.
@@ -102,7 +108,7 @@ public class TimelineController {
     
     public void save() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
+        fileChooser.setTitle("Save");
         ExtensionFilter extFilter = new ExtensionFilter("txt files", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(rootPane.getPrimaryStage());
@@ -120,6 +126,36 @@ public class TimelineController {
             m.marshal(scriptingProject, file);
         } catch (JAXBException e)  {
             e.printStackTrace();
+        }
+    }
+    
+    public void load() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Load");
+        ExtensionFilter extFilter = new ExtensionFilter("txt files", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showOpenDialog(rootPane.getPrimaryStage());
+        if (file != null) {
+            System.out.println(file.toString());
+            boolean loadSucceed = loadFromFile(file);
+            if (!loadSucceed) {
+               Alert alert = new Alert(AlertType.ERROR); 
+               alert.setTitle("Load Failed");
+               alert.setContentText("The format in the selected file was not recognized");
+               alert.showAndWait();
+            }
+        }
+    }
+    
+    private boolean loadFromFile (File file) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(ScriptingProject.class);
+            Unmarshaller um = context.createUnmarshaller();
+            scriptingProject = (ScriptingProject) um.unmarshal(file);
+            return true;
+        } catch (JAXBException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }
