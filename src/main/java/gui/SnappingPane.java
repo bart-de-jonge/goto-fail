@@ -29,5 +29,7 @@ public class SnappingPane extends Pane {
         this.row = row;
         this.column = column;
         this.bottomHalf = false;
+        setStyle("-fx-border-color: gray;"
+                + "-fx-border-width: 0.1px 1px 0.2px 1px;");
     }
 }
