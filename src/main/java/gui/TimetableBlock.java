@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -111,6 +112,8 @@ public class TimetableBlock extends Pane {
         setOnMousePressed(getOnPressedHandler());
         setOnMouseDragged(getOnDraggedHandler());
         setOnMouseReleased(getOnreleaseHandler());
+
+        setOnMouseMoved(getOnMouseMovedHandler());
     }
 
     /**
@@ -137,6 +140,36 @@ public class TimetableBlock extends Pane {
             label.setPadding(new Insets(5,5,5,5));
             vbox.getChildren().add(label);
         }
+    }
+
+    /**
+     * Get handler for on mouse moved (handling cursors).
+     * @return - the handler
+     */
+    private EventHandler<MouseEvent> getOnMouseMovedHandler() {
+        return e -> {
+            DraggingTypes dragType = findEdgeZone(e);
+            Cursor newCursor = null;
+            switch (dragType) {
+                case Move:
+                    newCursor = Cursor.CLOSED_HAND;
+                    break;
+                case Resize_Bottom:
+                case Resize_Top:
+                    newCursor = Cursor.N_RESIZE;
+                    break;
+                case Resize_Left:
+                case Resize_Right:
+                    newCursor = Cursor.E_RESIZE;
+                    break;
+                default:
+                    newCursor = Cursor.DEFAULT;
+            }
+
+            if (getCursor() != newCursor) {
+                setCursor(newCursor);
+            }
+        };
     }
 
     /**
@@ -344,11 +377,15 @@ public class TimetableBlock extends Pane {
         if (event.getY() < margin) {
             return DraggingTypes.Resize_Top;
         } else if (event.getX() > getWidth() - margin) {
-            return DraggingTypes.Resize_Right;
+            // Horizontal resizing disabled for now.
+//            return DraggingTypes.Resize_Right;
+            return DraggingTypes.Move;
         } else if (event.getY() > getHeight() - margin) {
             return DraggingTypes.Resize_Bottom;
         } else if (event.getX() < margin) {
-            return DraggingTypes.Resize_Left;
+            // Horizontal resizing disabled for now.
+//            return DraggingTypes.Resize_Left;
+            return DraggingTypes.Move;
         } else {
             return DraggingTypes.Move;
         }
