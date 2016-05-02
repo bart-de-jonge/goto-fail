@@ -1,14 +1,19 @@
 package data;
 
-        import lombok.EqualsAndHashCode;
-        import lombok.Getter;
-        import lombok.Setter;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Created by Bart.
  * Class to store information about cameras.
  */
+@XmlRootElement(name = "camera")
 @EqualsAndHashCode
+@ToString
 public class Camera {
 
     // Name of the camera
@@ -26,6 +31,16 @@ public class Camera {
     // The movementMargin, the time it takes for the Camera to move to a new position
     @Setter
     private double movementMargin;
+    
+    /**
+     * Default constructor.
+     */
+    public Camera() {
+        name = "";
+        description = "";
+        cameraType = null;
+        movementMargin = -1;
+    }
 
     /**
      * Constructor.

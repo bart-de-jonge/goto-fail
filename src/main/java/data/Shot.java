@@ -1,12 +1,17 @@
 package data;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Created by martijn.
  * This class contains information about a Shot.
  */
+@XmlRootElement(name = "shot")
+@ToString
 public abstract class Shot {
 
     // The name of the Shot.
@@ -32,6 +37,17 @@ public abstract class Shot {
     // True if the shot is overlapping with another Shot.
     @Getter @Setter
     private boolean overlapping;
+    
+    /**
+     * Default Constructor.
+     */
+    public Shot() {
+        name = "";
+        description = "";
+        instance = 0;
+        startCount = 0;
+        endCount = 0;
+    }
 
     /**
      * The constructor for the Shot.

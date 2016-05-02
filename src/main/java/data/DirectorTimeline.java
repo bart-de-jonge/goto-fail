@@ -1,19 +1,36 @@
 package data;
 
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * Class to store information about a directors timeline.
  * @author Bart.
  */
+@XmlRootElement(name = "directorTimeline")
+@ToString
 public class DirectorTimeline extends Timeline {
 
     // Collection of all Shot elements in this Timeline.
     @Getter
+    @XmlElementWrapper(name = "shotList")
+    @XmlElement(name = "shot")
     private LinkedList<DirectorShot> shots;
+    
+    /**
+     * Default constructor.
+     */
+    public DirectorTimeline() {
+        super("", null);
+        shots = null;
+    }
 
     /**
      * Constructor.

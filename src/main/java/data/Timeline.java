@@ -1,12 +1,18 @@
 package data;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Created by Bart.
  * Abstract class for timelines.
  */
+@XmlRootElement(name = "timeline")
+@ToString
 public abstract class Timeline {
 
     // Description of this Timeline.
@@ -15,7 +21,16 @@ public abstract class Timeline {
 
     // The project this timeline is currently in
     @Setter
+    @XmlTransient
     private ScriptingProject project;
+    
+    /**
+     * Default constructor.
+     */
+    public Timeline() {
+        description = "";
+        project = null;
+    }
 
     /**
      * Constructor.
@@ -43,7 +58,8 @@ public abstract class Timeline {
         }
         return false;
     }
-
+    
+    @XmlTransient
     public ScriptingProject getProject() {
         return project;
     }
