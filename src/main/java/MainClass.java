@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 public class MainClass {
     /**
      * Add a logger to the application to keep track of all the things happening in the
-     * code. This logger has different levels and is able to distingguish between error
+     * code. This logger has different levels and is able to distinguish between error
      * levels.
      */
     static final Logger logger = LogManager.getLogger();
