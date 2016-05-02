@@ -1,7 +1,7 @@
 package gui;
 
-import control.TimelineController;
-import javafx.event.EventHandler;
+import javafx.scene.control.MenuItem;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
@@ -39,11 +39,18 @@ class RootHeaderArea extends VBox {
      */
     private MenuBar initMenus() {
         MenuBar topMenuBar = new MenuBar();
-        Menu menu1 = new Menu("File");
-        Menu menu2 = new Menu("Edit");
-        Menu menu3 = new Menu("View");
-        Menu menu4 = new Menu("Help");
-        topMenuBar.getMenus().addAll(menu1, menu2, menu3, menu4);
+        
+        Menu fileMenu = new Menu("File");
+        MenuItem saveItem = new MenuItem("Save");
+        fileMenu.getItems().add(saveItem);
+        saveItem.setOnAction(e -> {
+            rootPane.getControllerManager().getTimelineControl().save();
+        });
+        
+        Menu editMenu = new Menu("Edit");
+        Menu viewMenu = new Menu("View");
+        Menu helpMenu = new Menu("Help");
+        topMenuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
         return topMenuBar;
     }
 

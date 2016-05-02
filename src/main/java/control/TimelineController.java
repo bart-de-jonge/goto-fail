@@ -1,5 +1,7 @@
 package control;
 
+import java.io.File;
+
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -8,9 +10,9 @@ import data.ScriptingProject;
 import gui.CameraShotBlock;
 import gui.CameraShotBlockUpdatedEvent;
 import gui.RootPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Getter;
-
-import java.util.List;
 
 /**
  * Class that controls the timeline.
@@ -91,6 +93,17 @@ public class TimelineController {
             Camera defCam = new Camera("IP Cam " + i, "", defType);
             CameraTimeline timelineN = new CameraTimeline(defCam, "", scriptingProject);
             scriptingProject.addCameraTimeline(timelineN);
+        }
+    }
+    
+    public void save() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        ExtensionFilter extFilter = new ExtensionFilter("txt files", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showSaveDialog(rootPane.getPrimaryStage());
+        if (file != null) {
+            System.out.println(file.toString());
         }
     }
 }
