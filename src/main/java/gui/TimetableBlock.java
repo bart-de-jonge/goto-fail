@@ -113,32 +113,7 @@ public class TimetableBlock extends Pane {
         setOnMouseDragged(getOnDraggedHandler());
         setOnMouseReleased(getOnreleaseHandler());
 
-        setOnMouseMoved(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                DraggingTypes dragType = findEdgeZone(event);
-                Cursor currentCursor = getCursor();
-                Cursor newCursor = null;
-                switch (dragType) {
-                    case Move:
-                        newCursor = Cursor.CLOSED_HAND;
-                        break;
-                    case Resize_Bottom:
-                    case Resize_Top:
-                        newCursor = Cursor.N_RESIZE;
-                        break;
-                    case Resize_Left:
-                    case Resize_Right:
-                        newCursor = Cursor.E_RESIZE;
-                        break;
-
-                }
-
-                if (currentCursor != newCursor) {
-                    setCursor(newCursor);
-                }
-            }
-        });
+        setOnMouseMoved(getOnMouseMovedHandler());
     }
 
     /**
@@ -165,6 +140,37 @@ public class TimetableBlock extends Pane {
             label.setPadding(new Insets(5,5,5,5));
             vbox.getChildren().add(label);
         }
+    }
+
+    /**
+     * Get handler for on mouse moved (handling cursors).
+     * @return - the handler
+     */
+    private EventHandler<MouseEvent> getOnMouseMovedHandler() {
+        return e -> {
+            DraggingTypes dragType = findEdgeZone(e);
+            Cursor currentCursor = getCursor();
+            Cursor newCursor = null;
+            switch (dragType) {
+                case Move:
+                    newCursor = Cursor.CLOSED_HAND;
+                    break;
+                case Resize_Bottom:
+                case Resize_Top:
+                    newCursor = Cursor.N_RESIZE;
+                    break;
+                case Resize_Left:
+                case Resize_Right:
+                    newCursor = Cursor.E_RESIZE;
+                    break;
+                default:
+                    newCursor = Cursor.DEFAULT;
+            }
+
+            if (currentCursor != newCursor) {
+                setCursor(newCursor);
+            }
+        };
     }
 
     /**
