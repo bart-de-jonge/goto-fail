@@ -26,23 +26,29 @@ public class TimetableBlock extends Pane {
 
     /*
         Styling variables.
-        For styling and displayable content.
+        For styling, tweaking and displayable content.
      */
 
-    private double verticalBorderSize = 3.0;
+    private double verticalBorderSize = 3.0; // tweaks size of visible blocks above and below content.
+
+    private double margin = 4.0;
+
+    private String colorBlockBackground = "#b5e6ff";
+    private String colorBlockBorders = "#1bc7ff";
 
     private String normalStyle =
-            "-fx-border-style: solid inside;"
-            + "-fx-border-width: 0;"
-            + "-fx-border-color: yellow;"
-            + "-fx-background-color: green;";
+            "-fx-border-style: solid outside;"
+            + "-fx-border-width: 1;"
+            + "-fx-border-color: " + colorBlockBackground + ";"
+            + "-fx-background-color:" + colorBlockBorders + ";";
 
     private String dragStyle =
             "-fx-padding: " + verticalBorderSize + " 0 " + verticalBorderSize + " 0;"
             + "-fx-border-style: solid inside;"
-            + "-fx-border-width: 0;"
+            + "-fx-border-width: 0;"// + verticalBorderSize + ";"
             + "-fx-border-color: orange;"
-            + "-fx-background-color: blue;"
+            + "-fx-background-color: " + colorBlockBackground + ";"
+            + "-fx-background-radius: 5 5 5 5;"
             + "-fx-background-insets: " + verticalBorderSize + " 0 " + verticalBorderSize + " 0;";
 
     private String title = "dummyTitle with some extension";
@@ -65,7 +71,6 @@ public class TimetableBlock extends Pane {
     private RootCenterArea pane;
     private boolean dragging;
     private DraggingTypes draggingType;
-    private double margin;
 
     private double mouseCurrentXPosition;
     private double mouseCurrentYPosition;
@@ -90,11 +95,9 @@ public class TimetableBlock extends Pane {
         this.parentBlock = parent;
 
         feedbackPane = new Pane();
-        //feedbackPane.setStyle("-fx-background-color: red");
         feedbackPane.setVisible(false);
 
         dummyPane = new Pane();
-        //dummyPane.setStyle("-fx-background-color: green");
         dummyPane.setVisible(false);
 
         pane.getParentPane().getChildren().add(dummyPane);
@@ -102,7 +105,6 @@ public class TimetableBlock extends Pane {
 
         this.pane = pane;
         setStyle(normalStyle);
-        //setPadding(new Insets(35,35,35,35));
 
         // content pane for our pane, and our dummy pane
         contentPane = new VBox();
@@ -119,9 +121,7 @@ public class TimetableBlock extends Pane {
 
         // test labels, please ignore.
         addTestLabels(contentPane);
-        addTestLabels((dummyContentPane));
-
-        this.margin = 15;
+       // addTestLabels((dummyContentPane));
 
         // mouse event handlers
         setOnMousePressed(getOnPressedHandler());
