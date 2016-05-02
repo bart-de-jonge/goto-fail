@@ -75,4 +75,14 @@ public class CameraTimelineTest {
         timeline.addShot("last", "", 1, 3);
         assertEquals("last", timeline.getShots().getFirst().getName());
     }
+
+    @Test
+    public void removeCameraShotTest() {
+        CameraShot shot = new CameraShot("", "", 0, 2);
+        timeline.addShot(shot);
+        timeline.addShot("", "", 2, 3);
+        assertTrue(timeline.getShots().contains(shot));
+        timeline.removeShot(shot);
+        assertFalse(timeline.getShots().contains(shot));
+    }
 }

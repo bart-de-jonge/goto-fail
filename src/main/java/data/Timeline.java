@@ -3,6 +3,9 @@ package data;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,6 +17,9 @@ import lombok.ToString;
 @XmlRootElement(name = "timeline")
 @ToString
 public abstract class Timeline {
+
+    // Logger
+    private static Logger logger = LogManager.getLogger();
 
     // Description of this Timeline.
     @Getter
@@ -38,6 +44,7 @@ public abstract class Timeline {
      * @param project the project that contains this timeline
      */
     public Timeline(String description, ScriptingProject project) {
+        logger.info("Creating new Timeline.");
         this.description = description;
         this.project = project;
     }
@@ -51,11 +58,14 @@ public abstract class Timeline {
      * @return true when the two shots are overlapping, false if not
      */
     public boolean checkOverlap(Shot s1, Shot s2, double seconds) {
+        logger.info("Checking overlap between '{}' and '{}'", s1.getName(), s2.getName());
         if (s1.areOverlapping(s2, project.secondsToCounts(seconds))) {
+            logger.info("Shots overlap.");
             s1.setOverlapping(true);
             s2.setOverlapping(true);
             return true;
         }
+        logger.info("Shots don't overlap.");
         return false;
     }
     

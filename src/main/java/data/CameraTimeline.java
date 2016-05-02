@@ -1,5 +1,8 @@
 package data;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -19,16 +22,19 @@ import lombok.ToString;
 @ToString
 public class CameraTimeline extends Timeline {
 
+    // Logger
+    private static Logger logger = LogManager.getLogger();
+
     // The camera that is associated with this timeline.
     @Getter @Setter
     private Camera camera;
-    
+
     // Collection of all Shot elements in this Timeline.
     @XmlElementWrapper(name = "shotList")
     @XmlElement(name = "shot")
     @Getter
     private LinkedList<CameraShot> shots;
-    
+
     /**
      * Default constructor.
      */
@@ -47,6 +53,7 @@ public class CameraTimeline extends Timeline {
      */
     public CameraTimeline(Camera camera, String description, ScriptingProject project) {
         super(description, project);
+        logger.info("Creating new CameraTimeline.");
         this.camera = camera;
         shots = new LinkedList<>();
     }
@@ -60,7 +67,7 @@ public class CameraTimeline extends Timeline {
      * @param endCount the end count of the Shot
      * @return If no overlap is found, only the newly added shot will be returned. If any
        overlapping shots are found, all overlapping shots will be returned. If any overlapping
-       shots are found, the shot that was added will be the last one in the list. 
+       shots are found, the shot that was added will be the last one in the list.
      * @see CameraTimeline#addShot(CameraShot)
      */
     public ArrayList<CameraShot> addShot(String name, String description,
@@ -81,6 +88,7 @@ public class CameraTimeline extends Timeline {
        shots are found, the shot that was added will be the last one in the list.
      */
     public ArrayList<CameraShot> addShot(CameraShot shot) {
+        logger.info("Adding shot to CameraTimeline.", getDescription());
         ArrayList<CameraShot> result = new ArrayList<>();
         boolean added = false;
 
@@ -108,6 +116,7 @@ public class CameraTimeline extends Timeline {
      * Removes all shots from the Timeline.
      */
     public void clearShots() {
+        logger.info("Removing all shots from CameraTimeline '{}'.", getDescription());
         shots.clear();
     }
 
@@ -116,6 +125,8 @@ public class CameraTimeline extends Timeline {
      * @param shot Shot to be removed.
      */
     public void removeShot(CameraShot shot) {
+        logger.info("Removing shot '{}' from CameraTimeLine '{}'.",
+                shot.getName(), getDescription());
         shots.remove(shot);
     }
 }

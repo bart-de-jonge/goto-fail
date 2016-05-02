@@ -73,15 +73,23 @@ public class DirectorTimelineTest {
         shots.add(shot);
         timeline.addShot(shot);
         assertEquals(shots, timeline.getShots());
-
     }
 
     @Test
     public void clearShotsTest() {
         DirectorShot shot = new DirectorShot("testname", "testdescription", 1, 2);
-        ArrayList<DirectorShot> shots = new ArrayList<DirectorShot>();
-        shots.add(shot);
+        timeline.addShot(shot);
         timeline.clearShots();
         assertEquals(0, timeline.getShots().size());
+    }
+
+    @Test
+    public void removeDirectorShotTest() {
+        DirectorShot shot = new DirectorShot("", "", 0, 2);
+        timeline.addShot(shot);
+        timeline.addShot("", "", 2, 3);
+        assertTrue(timeline.getShots().contains(shot));
+        timeline.removeShot(shot);
+        assertFalse(timeline.getShots().contains(shot));
     }
 }
