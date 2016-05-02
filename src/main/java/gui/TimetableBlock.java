@@ -149,7 +149,6 @@ public class TimetableBlock extends Pane {
     private EventHandler<MouseEvent> getOnMouseMovedHandler() {
         return e -> {
             DraggingTypes dragType = findEdgeZone(e);
-            Cursor currentCursor = getCursor();
             Cursor newCursor = null;
             switch (dragType) {
                 case Move:
@@ -167,7 +166,7 @@ public class TimetableBlock extends Pane {
                     newCursor = Cursor.DEFAULT;
             }
 
-            if (currentCursor != newCursor) {
+            if (getCursor() != newCursor) {
                 setCursor(newCursor);
             }
         };
