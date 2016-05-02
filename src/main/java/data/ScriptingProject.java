@@ -1,7 +1,12 @@
 package data;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -78,11 +83,26 @@ public class ScriptingProject {
      * @return          - boolean indicating if the write was successful
      */
     public boolean write(String fileName) {
-
-        // Write using XML, change if writing with another
-        // module is necessary
-        XmlWriter writer = new XmlWriter(fileName);
-        return writer.writeProject(this);
+        File file = new File(fileName);
+        return write(file);
+    }
+    
+    /**
+     * Write the current project to file.
+     * @param file the file to write to
+     * @return true if write succeeded, false otherwise
+     */
+    public boolean write(File file) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(ScriptingProject.class);
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            m.marshal(this, file);
+            return true;
+        } catch (JAXBException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
@@ -91,11 +111,25 @@ public class ScriptingProject {
      * @return          - boolean indicating if the write was successful
      */
     public static ScriptingProject read(String fileName) {
-
-        // Read using XML, change if reading with another
-        // module is necessary
-        XmlReader reader = new XmlReader(fileName);
-        return reader.readProject();
+        File file = new File(fileName);
+        return read(file);
+        
+    }
+    
+    /**
+     * Read a project from file.
+     * @param file the file to read from
+     * @return null if read failed, the read project otherwise
+     */
+    public static ScriptingProject read(File file) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(ScriptingProject.class);
+            Unmarshaller um = context.createUnmarshaller();
+            return (ScriptingProject) um.unmarshal(file);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**

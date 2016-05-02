@@ -115,22 +115,8 @@ public class TimelineController {
         File file = fileChooser.showSaveDialog(rootPane.getPrimaryStage());
         if (file != null) {
             System.out.println(file.toString());
-            writeToFile(file);
-        }
-    }
-    
-    /**
-     * Write current project state to file.
-     * @param file the file to write to
-     */
-    private void writeToFile(File file) {
-        try {
-            JAXBContext context = JAXBContext.newInstance(ScriptingProject.class);
-            Marshaller m = context.createMarshaller();
-            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            m.marshal(scriptingProject, file);
-        } catch (JAXBException e)  {
-            e.printStackTrace();
+            scriptingProject.write(file);
+            
         }
     }
     
@@ -146,30 +132,18 @@ public class TimelineController {
         File file = fileChooser.showOpenDialog(rootPane.getPrimaryStage());
         if (file != null) {
             System.out.println(file.toString());
-            boolean loadSucceed = loadFromFile(file);
-            if (!loadSucceed) {
+            ScriptingProject temp  = ScriptingProject.read(file);
+            if (temp == null) {
                 Alert alert = new Alert(AlertType.ERROR); 
                 alert.setTitle("Load Failed");
                 alert.setContentText("The format in the selected file was not recognized");
                 alert.showAndWait();
+            } else {
+                scriptingProject = temp;
             }
         }
     }
     
-    /**
-     * Load a project from file.
-     * @param file the file to load from 
-     * @return true if everything went well, false if something went wrong.
-     */
-    private boolean loadFromFile(File file) {
-        try {
-            JAXBContext context = JAXBContext.newInstance(ScriptingProject.class);
-            Unmarshaller um = context.createUnmarshaller();
-            scriptingProject = (ScriptingProject) um.unmarshal(file);
-            return true;
-        } catch (JAXBException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+   
+    
 }
