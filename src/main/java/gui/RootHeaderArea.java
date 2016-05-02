@@ -38,24 +38,26 @@ class RootHeaderArea extends VBox {
      * @return MenuBar containing menus.
      */
     private MenuBar initMenus() {
-        MenuBar topMenuBar = new MenuBar();
+        
         
         Menu fileMenu = new Menu("File");
         MenuItem saveItem = new MenuItem("Save");
         fileMenu.getItems().add(saveItem);
         saveItem.setOnAction(e -> {
-            rootPane.getControllerManager().getTimelineControl().save();
-        });
+                rootPane.getControllerManager().getTimelineControl().save();
+            });
         
         MenuItem loadItem = new MenuItem("Load");
         fileMenu.getItems().add(loadItem);
         loadItem.setOnAction(e -> {
-            rootPane.getControllerManager().getTimelineControl().load();
-        });
+                rootPane.getControllerManager().getTimelineControl().load();
+            });
         
         Menu editMenu = new Menu("Edit");
         Menu viewMenu = new Menu("View");
         Menu helpMenu = new Menu("Help");
+
+        MenuBar topMenuBar = new MenuBar();
         topMenuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
         return topMenuBar;
     }

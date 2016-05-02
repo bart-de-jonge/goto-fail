@@ -7,9 +7,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-
-
-
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -106,6 +103,10 @@ public class TimelineController {
         }
     }
     
+    /**
+     * Save the current project state to file.
+     * A file chooser window will be opened to select a file
+     */
     public void save() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save");
@@ -118,6 +119,10 @@ public class TimelineController {
         }
     }
     
+    /**
+     * Write current project state to file.
+     * @param file the file to write to
+     */
     private void writeToFile(File file) {
         try {
             JAXBContext context = JAXBContext.newInstance(ScriptingProject.class);
@@ -129,6 +134,10 @@ public class TimelineController {
         }
     }
     
+    /**
+     * Load a project from file.
+     * A file chooser window will be opened to select the file.
+     */
     public void load() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load");
@@ -139,15 +148,20 @@ public class TimelineController {
             System.out.println(file.toString());
             boolean loadSucceed = loadFromFile(file);
             if (!loadSucceed) {
-               Alert alert = new Alert(AlertType.ERROR); 
-               alert.setTitle("Load Failed");
-               alert.setContentText("The format in the selected file was not recognized");
-               alert.showAndWait();
+                Alert alert = new Alert(AlertType.ERROR); 
+                alert.setTitle("Load Failed");
+                alert.setContentText("The format in the selected file was not recognized");
+                alert.showAndWait();
             }
         }
     }
     
-    private boolean loadFromFile (File file) {
+    /**
+     * Load a project from file.
+     * @param file the file to load from 
+     * @return true if everything went well, false if something went wrong.
+     */
+    private boolean loadFromFile(File file) {
         try {
             JAXBContext context = JAXBContext.newInstance(ScriptingProject.class);
             Unmarshaller um = context.createUnmarshaller();
