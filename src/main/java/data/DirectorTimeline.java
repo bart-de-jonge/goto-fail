@@ -1,6 +1,8 @@
 package data;
 
 import lombok.Getter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -10,6 +12,9 @@ import java.util.LinkedList;
  * @author Bart.
  */
 public class DirectorTimeline extends Timeline {
+
+    // Logger
+    private static Logger logger = LogManager.getLogger();
 
     // Collection of all Shot elements in this Timeline.
     @Getter
@@ -23,6 +28,7 @@ public class DirectorTimeline extends Timeline {
      */
     public DirectorTimeline(String description, ScriptingProject project) {
         super(description, project);
+        logger.info("Creating new DirectorTimeline.");
         shots = new LinkedList<>();
     }
 
@@ -56,6 +62,7 @@ public class DirectorTimeline extends Timeline {
        shots are found, the shot that was added will be the last one in the list.
      */
     public ArrayList<DirectorShot> addShot(DirectorShot shot) {
+        logger.info("Adding shot to DirectorTimeline {}.", getDescription());
         ArrayList<DirectorShot> result = new ArrayList<>();
         boolean added = false;
 
@@ -83,6 +90,17 @@ public class DirectorTimeline extends Timeline {
      * Removes all shots from the Timeline.
      */
     public void clearShots() {
+        logger.info("Removing all shots from DirectorTimeline '{}'.", getDescription());
         shots.clear();
+    }
+
+    /**
+     * Removes shot from the Timeline if it exists.
+     * @param shot Shot to be removed.
+     */
+    public void removeShot(DirectorShot shot) {
+        logger.info("Removing shot '{}' from DirectorTimeLine '{}'.",
+                shot.getName(), getDescription());
+        shots.remove(shot);
     }
 }

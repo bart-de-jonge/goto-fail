@@ -2,6 +2,8 @@ package data;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -11,6 +13,9 @@ import java.util.LinkedList;
  * @author Bart.
  */
 public class CameraTimeline extends Timeline {
+
+    // Logger
+    private static Logger logger = LogManager.getLogger();
 
     // The camera that is associated with this timeline.
     @Getter @Setter
@@ -29,6 +34,7 @@ public class CameraTimeline extends Timeline {
      */
     public CameraTimeline(Camera camera, String description, ScriptingProject project) {
         super(description, project);
+        logger.info("Creating new CameraTimeline.");
         this.camera = camera;
         shots = new LinkedList<>();
     }
@@ -63,6 +69,7 @@ public class CameraTimeline extends Timeline {
        shots are found, the shot that was added will be the last one in the list.
      */
     public ArrayList<CameraShot> addShot(CameraShot shot) {
+        logger.info("Adding shot to CameraTimeline.", getDescription());
         ArrayList<CameraShot> result = new ArrayList<>();
         boolean added = false;
 
@@ -90,6 +97,7 @@ public class CameraTimeline extends Timeline {
      * Removes all shots from the Timeline.
      */
     public void clearShots() {
+        logger.info("Removing all shots from CameraTimeline '{}'.", getDescription());
         shots.clear();
     }
 
@@ -98,6 +106,8 @@ public class CameraTimeline extends Timeline {
      * @param shot Shot to be removed.
      */
     public void removeShot(CameraShot shot) {
+        logger.info("Removing shot '{}' from CameraTimeLine '{}'.",
+                shot.getName(), getDescription());
         shots.remove(shot);
     }
 }
