@@ -15,10 +15,9 @@ public class MainClass {
      *  @param args - the main arguments.
      */
     public static void main(String[] args) {
-        logger.error("Starting application!");
-        logger.warn("test warnlog");
-        logger.info("test infolog");
-
+        logger.error("-------------------------------------------------------------------");
+        logger.error("| Starting application.");
+        logger.error("-------------------------------------------------------------------");
 
         // Keep this statement at the bottom of this method, it is blocking
         Application.launch(RootPane.class, args);
