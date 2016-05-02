@@ -1,17 +1,25 @@
 package data;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * Class to store information about a camera timeline.
  * @author Bart.
  */
+@XmlRootElement(name = "cameraTimeline")
+@ToString
 public class CameraTimeline extends Timeline {
 
     // Logger
@@ -20,10 +28,21 @@ public class CameraTimeline extends Timeline {
     // The camera that is associated with this timeline.
     @Getter @Setter
     private Camera camera;
-    
+
     // Collection of all Shot elements in this Timeline.
+    @XmlElementWrapper(name = "shotList")
+    @XmlElement(name = "shot")
     @Getter
     private LinkedList<CameraShot> shots;
+
+    /**
+     * Default constructor.
+     */
+    public CameraTimeline() {
+        super("", null);
+        camera = null;
+        shots = null;
+    }
 
     /**
      * Constructor.
@@ -48,7 +67,7 @@ public class CameraTimeline extends Timeline {
      * @param endCount the end count of the Shot
      * @return If no overlap is found, only the newly added shot will be returned. If any
        overlapping shots are found, all overlapping shots will be returned. If any overlapping
-       shots are found, the shot that was added will be the last one in the list. 
+       shots are found, the shot that was added will be the last one in the list.
      * @see CameraTimeline#addShot(CameraShot)
      */
     public ArrayList<CameraShot> addShot(String name, String description,

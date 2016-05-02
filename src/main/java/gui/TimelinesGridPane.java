@@ -1,13 +1,14 @@
 package gui;
 
+import java.util.ArrayList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import lombok.Getter;
 
-import java.util.ArrayList;
 
 /**
  * Created by Bart.
@@ -41,27 +42,30 @@ public class TimelinesGridPane extends GridPane {
                              double width, double height) {
         this.numberOfTimelines = numberOfTimelines;
         this.numberOfCounts = numberOfCounts;
-        this.setWidth(width);
-        this.setMinHeight(height);
         this.panes = new ArrayList<>();
-
-        this.setMaxWidth(width);
         this.setMinWidth(width);
-        this.setMaxHeight(height);
         this.setMinHeight(height);
+        this.setMaxHeight(height);
 
         addPanes();
 
         this.setGridLinesVisible(true);
-//        this.setHgap(50);
-        this.setPadding(new Insets(25, 25, 25, 25));
+        this.setPadding(new Insets(5, 5, 5, 5));
 
-        // set constraints
+        // set constraints, with minimum size 100x100, and maximum size infinite.
         for (int i = 0; i < numberOfTimelines; i++) {
-            this.getColumnConstraints().add(new ColumnConstraints(timelineWidth));
+            ColumnConstraints rc = new ColumnConstraints();
+            rc.setMinWidth(100.0);
+            rc.setPercentWidth(100.0 / numberOfTimelines);
+            rc.setHgrow(Priority.ALWAYS);
+            this.getColumnConstraints().add(rc);
         }
         for (int i = 0; i < numberOfCounts; i++) {
-            this.getRowConstraints().add(new RowConstraints(countHeight));
+            RowConstraints rc = new RowConstraints();
+            rc.setMinHeight(100.0);
+            rc.setPercentHeight(100.0 / numberOfCounts);
+            rc.setVgrow(Priority.ALWAYS);
+            this.getRowConstraints().add(rc);
         }
     }
 

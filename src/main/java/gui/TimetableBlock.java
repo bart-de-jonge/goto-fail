@@ -1,36 +1,59 @@
 package gui;
 
 import javafx.event.EventHandler;
-import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 
 /**
  * Class that resembles a draggable, resiable block inside the timetable.
  * Highly volatile. Do not poke too much.
  */
-public class TimetableBlock extends Region {
+public class TimetableBlock extends Pane {
 
     public enum DraggingTypes { Move, Resize_Top, Resize_Right, Resize_Bottom, Resize_Left }
+
+    /*
+        Styling variables.
+        For styling and displayable content.
+     */
+
+    private String normalStyle = "-fx-border-style: solid inside;"
+            + "-fx-border-width: 3;"
+            + "-fx-border-color: yellow;"
+            + "-fx-background-color: orange;";
+    private String dragStyle = "-fx-border-style: solid inside;"
+            + "-fx-border-width: 3;"
+            + "-fx-border-color: red;"
+            + "-fx-background-color: orange;";
+
+    private String title = "dummyTitle with some extension";
+
+    /*
+        Misc variables.
+        For dragging, interaction, etc.
+     */
 
     private TimetableBlock thisBlock;
     private Pane dummyPane;
     private Pane feedbackPane;
 
+    private VBox contentPane;
+    private VBox dummyContentPane;
+
     private double dragXOffset;
     private double dragYOffset;
-
-    private String normalStyle;
-    private String dragStyle;
-
 
     private RootCenterArea pane;
     private boolean dragging;
@@ -60,37 +83,93 @@ public class TimetableBlock extends Region {
         this.parentBlock = parent;
 
         feedbackPane = new Pane();
-        feedbackPane.setPrefHeight(100);
-        feedbackPane.setPrefWidth(200);
         feedbackPane.setStyle("-fx-background-color: red");
         feedbackPane.setVisible(false);
 
         dummyPane = new Pane();
-        dummyPane.setPrefHeight(100);
-        dummyPane.setPrefWidth(200);
         dummyPane.setStyle("-fx-background-color: green");
         dummyPane.setVisible(false);
 
         pane.getParentPane().getChildren().add(dummyPane);
         pane.getGrid().add(feedbackPane, 0, 0);
 
-        this.normalStyle = "-fx-border-style: solid inside;"
-                + "-fx-border-width: 3;"
-                + "-fx-border-color: yellow;"
-                + "-fx-background-color: orange;";
-        this.dragStyle = "-fx-border-style: solid inside;"
-                + "-fx-border-width: 3;"
-                + "-fx-border-color: red;"
-                + "-fx-background-color: orange;";
-
         this.pane = pane;
         setStyle(normalStyle);
+
+        // content pane for our pane, and our dummy pane
+        contentPane = new VBox();
+        addClipRegion(contentPane, this);
+        dummyContentPane = new VBox();
+        addClipRegion(dummyContentPane, dummyPane);
+
+        // test labels, please ignore.
+        addTestLabels(contentPane);
+        addTestLabels((dummyContentPane));
+
         this.margin = 15;
 
         // mouse event handlers
         setOnMousePressed(getOnPressedHandler());
         setOnMouseDragged(getOnDraggedHandler());
         setOnMouseReleased(getOnreleaseHandler());
+
+        setOnMouseMoved(getOnMouseMovedHandler());
+    }
+
+    /**
+     * Add clip region to pane (pane0 and its content (vbox).
+     * @param vbox the VBox in which content is located.
+     * @param pane the Pane in which the vbox is located.
+     */
+    private void addClipRegion(VBox vbox, Pane pane) {
+        Rectangle clipRegion = new Rectangle(); // clip region to restrict content
+        clipRegion.widthProperty().bind(pane.widthProperty());
+        clipRegion.heightProperty().bind(pane.heightProperty());
+        vbox.setClip(clipRegion);
+        pane.getChildren().add(vbox);
+    }
+
+    /**
+     * Temporary helper function to add test labels to panes.
+     * @param vbox pane to add to
+     */
+    private void addTestLabels(VBox vbox) {
+        for (int i = 0; i < 6; i++) {
+            Label label = new Label(title);
+            label.setPrefWidth(pane.getGrid().getTimelineWidth());
+            label.setPadding(new Insets(5,5,5,5));
+            vbox.getChildren().add(label);
+        }
+    }
+
+    /**
+     * Get handler for on mouse moved (handling cursors).
+     * @return - the handler
+     */
+    private EventHandler<MouseEvent> getOnMouseMovedHandler() {
+        return e -> {
+            DraggingTypes dragType = findEdgeZone(e);
+            Cursor newCursor = null;
+            switch (dragType) {
+                case Move:
+                    newCursor = Cursor.CLOSED_HAND;
+                    break;
+                case Resize_Bottom:
+                case Resize_Top:
+                    newCursor = Cursor.N_RESIZE;
+                    break;
+                case Resize_Left:
+                case Resize_Right:
+                    newCursor = Cursor.E_RESIZE;
+                    break;
+                default:
+                    newCursor = Cursor.DEFAULT;
+            }
+
+            if (getCursor() != newCursor) {
+                setCursor(newCursor);
+            }
+        };
     }
 
     /**
@@ -298,11 +377,15 @@ public class TimetableBlock extends Region {
         if (event.getY() < margin) {
             return DraggingTypes.Resize_Top;
         } else if (event.getX() > getWidth() - margin) {
-            return DraggingTypes.Resize_Right;
+            // Horizontal resizing disabled for now.
+//            return DraggingTypes.Resize_Right;
+            return DraggingTypes.Move;
         } else if (event.getY() > getHeight() - margin) {
             return DraggingTypes.Resize_Bottom;
         } else if (event.getX() < margin) {
-            return DraggingTypes.Resize_Left;
+            // Horizontal resizing disabled for now.
+//            return DraggingTypes.Resize_Left;
+            return DraggingTypes.Move;
         } else {
             return DraggingTypes.Move;
         }

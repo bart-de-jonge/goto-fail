@@ -1,14 +1,21 @@
 package data;
 
-import lombok.Getter;
-import lombok.Setter;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Created by Bart.
  * Abstract class for timelines.
  */
+@XmlRootElement(name = "timeline")
+@ToString
 public abstract class Timeline {
 
     // Logger
@@ -20,7 +27,16 @@ public abstract class Timeline {
 
     // The project this timeline is currently in
     @Setter
+    @XmlTransient
     private ScriptingProject project;
+    
+    /**
+     * Default constructor.
+     */
+    public Timeline() {
+        description = "";
+        project = null;
+    }
 
     /**
      * Constructor.
@@ -52,7 +68,8 @@ public abstract class Timeline {
         logger.info("Shots don't overlap.");
         return false;
     }
-
+    
+    @XmlTransient
     public ScriptingProject getProject() {
         return project;
     }
