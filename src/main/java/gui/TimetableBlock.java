@@ -17,8 +17,9 @@ import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 
 /**
- * Class that resembles a draggable, resiable block inside the timetable.
- * Highly volatile. Do not poke too much.
+ * Class that resembles a draggable, resiable block inside the timetable,
+ * whose sole purpose is to display information.
+ * Highly volatile. Do not poke the dragging-dragon too much.
  */
 public class TimetableBlock extends Pane {
 
@@ -31,27 +32,33 @@ public class TimetableBlock extends Pane {
 
     private double verticalBorderSize = 3.0; // tweaks size of visible blocks above and below content.
 
-    private double margin = 4.0;
+    private double margin = 3.5;
 
-    private String colorBlockBackground = "#b5e6ff";
-    private String colorBlockBorders = "#1bc7ff";
+    private String colorBlockBackground = "#B1E2FA";
+    private String colorBlockBorders = "#DDF2FC";
+    private String colorBlockBorderHighlight = "#005482";
+    private String colorText = "#047FB7";
 
-    private String normalStyle =
-            "-fx-border-style: solid outside;"
-            + "-fx-border-width: 1;"
-            + "-fx-border-color: " + colorBlockBackground + ";"
-            + "-fx-background-color:" + colorBlockBorders + ";";
-
-    private String dragStyle =
+    private String normalStyleBackground =
+            "-fx-background-color:" + colorBlockBorders + ";";
+    private String normalStyleForeground =
             "-fx-padding: " + verticalBorderSize + " 0 " + verticalBorderSize + " 0;"
             + "-fx-border-style: solid inside;"
-            + "-fx-border-width: 0;"// + verticalBorderSize + ";"
-            + "-fx-border-color: orange;"
+            + "-fx-border-insets: " + verticalBorderSize + " 0 " + verticalBorderSize + " 0;"
+            + "-fx-border-width: 2 0 0 0;"
+            + "-fx-border-color: " + colorBlockBorderHighlight + ";"
             + "-fx-background-color: " + colorBlockBackground + ";"
-            + "-fx-background-radius: 5 5 5 5;"
             + "-fx-background-insets: " + verticalBorderSize + " 0 " + verticalBorderSize + " 0;";
 
-    private String title = "dummyTitle with some extension";
+    private String textTitleStyle =
+            "-fx-text-fill: " + colorBlockBorderHighlight + ";";
+    private String textNormalStyle =
+            "-fx-text-fill: " + colorText + ";";
+
+    //private String
+
+    private String title = "Camblock title";
+    private String shots = "15 - 20";
 
     /*
         Misc variables.
@@ -96,7 +103,6 @@ public class TimetableBlock extends Pane {
 
         feedbackPane = new Pane();
         feedbackPane.setVisible(false);
-
         dummyPane = new Pane();
         dummyPane.setVisible(false);
 
@@ -104,24 +110,31 @@ public class TimetableBlock extends Pane {
         pane.getGrid().add(feedbackPane, 0, 0);
 
         this.pane = pane;
-        setStyle(normalStyle);
+        setStyle(normalStyleBackground);
 
-        // content pane for our pane, and our dummy pane
+        // content pane for our pane, which holds content (text and stuff)
         contentPane = new VBox();
         addClipRegion(contentPane, this);
         contentPane.minWidthProperty().bind(widthProperty());
         contentPane.maxWidthProperty().bind(widthProperty());
         contentPane.minHeightProperty().bind(heightProperty());
         contentPane.maxHeightProperty().bind(heightProperty());
-        contentPane.setStyle(dragStyle);
+        contentPane.setStyle(normalStyleForeground);
 
         // dummy content pane which mirrors our content pane, shown when dragging.
         dummyContentPane = new VBox();
         addClipRegion(dummyContentPane, dummyPane);
+        dummyContentPane.minWidthProperty().bind(widthProperty());
+        dummyContentPane.maxWidthProperty().bind(widthProperty());
+        //dummyContentPane.minHeightProperty().bind(heightProperty());
+        //dummyContentPane.maxHeightProperty().bind(heightProperty());
+        dummyContentPane.setStyle(normalStyleForeground);
 
         // test labels, please ignore.
+        addTestTitleLabel(contentPane);
         addTestLabels(contentPane);
-       // addTestLabels((dummyContentPane));
+        addTestTitleLabel(dummyContentPane);
+        addTestLabels((dummyContentPane));
 
         // mouse event handlers
         setOnMousePressed(getOnPressedHandler());
@@ -145,6 +158,18 @@ public class TimetableBlock extends Pane {
     }
 
     /**
+     * Temporary helper function to add test title labels to panes.
+     * @param vbox pane to add to
+     */
+    private void addTestTitleLabel(VBox vbox) {
+        Label label = new Label(title);
+        label.maxWidthProperty().bind(this.widthProperty());
+        label.setPadding(new Insets(5,5,5,5));
+        label.setStyle(textTitleStyle);
+        vbox.getChildren().add(label);
+    }
+
+    /**
      * Temporary helper function to add test labels to panes.
      * @param vbox pane to add to
      */
@@ -153,6 +178,7 @@ public class TimetableBlock extends Pane {
             Label label = new Label(title);
             label.maxWidthProperty().bind(this.widthProperty());
             label.setPadding(new Insets(5,5,5,5));
+            label.setStyle(textNormalStyle);
             vbox.getChildren().add(label);
         }
     }
@@ -195,7 +221,7 @@ public class TimetableBlock extends Pane {
         return e -> {
 
             // init dummypane
-            //setStyle(dragStyle);
+            //setStyle(normalStyleForeground);
             draggingType = findEdgeZone(e);
             dummyPane.setLayoutX(getLayoutX());
             dummyPane.setLayoutY(getLayoutY());

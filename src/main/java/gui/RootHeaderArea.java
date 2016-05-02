@@ -25,7 +25,8 @@ class RootHeaderArea extends VBox {
         this.rootPane = rootPane;
         // border style to mark it, for debugging for now.
         setStyle("-fx-border-style: solid inside;"
-                + "-fx-border-width: 1;");
+                + "-fx-border-width: 1;" +
+                "-fx-background-color: green;");
 
         getChildren().add(initMenus());
 
