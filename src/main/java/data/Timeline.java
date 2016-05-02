@@ -5,12 +5,14 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Created by Bart.
  * Abstract class for timelines.
  */
 @XmlRootElement(name = "timeline")
+@ToString
 public abstract class Timeline {
 
     // Description of this Timeline.

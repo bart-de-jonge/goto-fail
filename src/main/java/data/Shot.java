@@ -4,12 +4,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Created by martijn.
  * This class contains information about a Shot.
  */
 @XmlRootElement(name = "shot")
+@ToString
 public abstract class Shot {
 
     // The name of the Shot.

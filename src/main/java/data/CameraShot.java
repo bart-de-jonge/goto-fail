@@ -2,11 +2,14 @@ package data;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import lombok.ToString;
+
 /**
  * This class extends the Shot class, this one is specific for the CameraTimeline.
  * Created by martijn.
  */
 @XmlRootElement(name = "cameraShot")
+@ToString
 public class CameraShot extends Shot {
 
     // Counter that ensures no shots with duplicate numbers will be created.

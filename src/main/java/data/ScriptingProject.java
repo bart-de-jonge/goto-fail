@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import xml.XmlReader;
 import xml.XmlWriter;
 
@@ -22,6 +23,7 @@ import xml.XmlWriter;
  */
 @XmlRootElement(name = "scriptingProject")
 @XmlAccessorType(XmlAccessType.FIELD)
+@ToString
 public class ScriptingProject {
 
     // Description of this project

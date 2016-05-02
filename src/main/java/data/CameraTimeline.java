@@ -9,12 +9,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Class to store information about a camera timeline.
  * @author Bart.
  */
 @XmlRootElement(name = "cameraTimeline")
+@ToString
 public class CameraTimeline extends Timeline {
 
     // The camera that is associated with this timeline.
