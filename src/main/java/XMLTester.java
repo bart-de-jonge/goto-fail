@@ -1,8 +1,10 @@
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import data.Camera;
 import data.CameraShot;
@@ -57,7 +59,12 @@ public class XMLTester {
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             
-            m.marshal(project, System.out);
+            
+            m.marshal(project, new File("eenFile.txt"));
+            
+            Unmarshaller um = context.createUnmarshaller();
+            ScriptingProject a = (ScriptingProject) um.unmarshal(new File("eenFile.txt"));
+            System.out.println("kek");
            
             
             
