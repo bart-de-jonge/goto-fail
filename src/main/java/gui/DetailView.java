@@ -48,6 +48,10 @@ public class DetailView extends VBox {
         descriptionField.setText(description);
     }
 
+    public void setName(String name) {
+        nameField.setText(name);
+    }
+
     private void initName() {
         nameField = new TextField("Placeholder");
         HBox nameBox = new HBox();
@@ -55,18 +59,10 @@ public class DetailView extends VBox {
         Label specifierLabel = new Label("Name:");
         nameBox.getChildren().addAll(specifierLabel, nameField);
         grid.add(nameBox, 0, 0);
-
-        nameField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                System.out.println("Name changed from " + oldValue + " to " + newValue);
-            }
-        });
     }
 
     private void initDescription() {
-        descriptionField = new TextField("placehoasdlkfjaskldjfaslkdfjaslkdfjalskdfjlaksdlder");
-        System.out.println("hoi");
+        descriptionField = new TextField("");
 
         HBox descriptionBox = new HBox();
 

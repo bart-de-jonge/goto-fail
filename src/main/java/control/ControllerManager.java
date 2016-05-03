@@ -1,7 +1,10 @@
 package control;
 
+import data.ScriptingProject;
 import gui.RootPane;
+import gui.ShotBlock;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Class wrapper for model management controllers.
@@ -18,6 +21,13 @@ public class ControllerManager {
     @Getter
     private DetailViewController detailViewController;
 
+    @Getter
+    private ShotBlock activeBlock;
+
+    // Placeholder project in lieu of XML loading
+    @Getter
+    private final ScriptingProject scriptingProject = new ScriptingProject("BOSS Project", 1.0);
+
     /**
      * Constructor.
      * @param rootPane Root Window
@@ -28,7 +38,12 @@ public class ControllerManager {
     }
 
     private void initializeControllers() {
-        timelineControl = new TimelineController(rootPane);
+        timelineControl = new TimelineController(this);
         detailViewController = new DetailViewController(this);
+    }
+
+    public void setActiveBlock(ShotBlock block) {
+        this.activeBlock = block;
+        detailViewController.activeBlockChanged();
     }
 }

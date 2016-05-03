@@ -93,7 +93,7 @@ public class RootHeaderArea extends VBox {
 
         shotCreation.setOnMouseClicked(e -> {
                 rootPane.getControllerManager().getTimelineControl()
-                    .addCameraShot(1, "BOOM", "", 1, 2);
+                    .addCameraShot(1, "BOOM", "Een description", 1, 2);
             });
 
         return shotCreation;

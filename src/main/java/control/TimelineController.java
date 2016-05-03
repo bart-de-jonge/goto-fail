@@ -27,16 +27,21 @@ public class TimelineController {
     // TODO: Replace Camera Type and Scripting Project when XML functionality is available
     private final CameraType defType = new CameraType("AW-HE130 HD PTZ", "It's an IP Camera", 0.5);
 
-    // Placeholder project in lieu of XML loading
     @Getter
-    private final ScriptingProject scriptingProject = new ScriptingProject("BOSS Project", 1.0);
+    private ControllerManager manager;
+
+    @Getter
+    private ScriptingProject project;
 
     /**
      * Constructor.
-     * @param rootPane Root Pane.
+     * @param manager Root Pane.
+     *                TODO: alsdkjalksdjf
      */
-    public TimelineController(RootPane rootPane) {
-        this.rootPane = rootPane;
+    public TimelineController(ControllerManager manager) {
+        this.manager = manager;
+        this.rootPane = manager.getRootPane();
+        this.project = manager.getScriptingProject();
         initializeCameraTimelines();
     }
 
@@ -51,10 +56,13 @@ public class TimelineController {
     public void addCameraShot(int cameraIndex, String name, String description,
                               int startCount, int endCount) {
         CameraShot newShot = new CameraShot(name,description, startCount, endCount);
-        this.scriptingProject.getCameraTimelines().get(cameraIndex).addShot(newShot);
+        this.project.getCameraTimelines().get(cameraIndex).addShot(newShot);
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex,
-                rootPane.getRootCenterArea(), startCount, endCount, description, name, this::shotChangedHandler);
+                rootPane.getRootCenterArea(), startCount, endCount, description, name, this::shotChangedHandler, newShot);
+
+        manager.setActiveBlock(shotBlock);
     }
+
 
     /**
      * Handle updated camera shot. The previous timeline is used to retrieve the corresponding
@@ -65,20 +73,20 @@ public class TimelineController {
      */
     public void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
         CameraShotBlock changedBlock = event.getCameraShotBlock();
-        CameraTimeline previousTimeline = this.scriptingProject.getCameraTimelines()
+
+        manager.setActiveBlock(changedBlock);
+
+        CameraTimeline previousTimeline = this.project.getCameraTimelines()
                 .get(event.getOldTimelineNumber());
         // Locate shot to be updated using id
-        CameraShot shot = previousTimeline.getShots().stream()
-                .filter(s -> s.getInstance() == changedBlock.getShotId())
-                .findFirst()
-                .get();
+        CameraShot shot = changedBlock.getShot();
 
         // Adjust model
         shot.setStartCount(changedBlock.getBeginCount());
         shot.setEndCount(changedBlock.getEndCount());
         // Remove shot from previous timeline and add to new one
         previousTimeline.removeShot(shot);
-        this.scriptingProject.getCameraTimelines()
+        this.project.getCameraTimelines()
                 .get(changedBlock.getTimetableNumber()).addShot(shot);
     }
 
@@ -89,8 +97,8 @@ public class TimelineController {
     private void initializeCameraTimelines() {
         for (int i = 0; i < numTimelines; i++) {
             Camera defCam = new Camera("IP Cam " + i, "", defType);
-            CameraTimeline timelineN = new CameraTimeline(defCam, "", scriptingProject);
-            scriptingProject.addCameraTimeline(timelineN);
+            CameraTimeline timelineN = new CameraTimeline(defCam, "", project);
+            project.addCameraTimeline(timelineN);
         }
     }
 }

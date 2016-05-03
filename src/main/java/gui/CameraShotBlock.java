@@ -1,5 +1,6 @@
 package gui;
 
+import data.CameraShot;
 import javafx.event.EventHandler;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,9 @@ public class CameraShotBlock extends ShotBlock {
     @Getter
     private TimelinesGridPane grid;
 
-    private CameraShotBlock thisBlock;
+    @Getter
+    private CameraShot shot;
+
 
     /**
      * Constructor.
@@ -30,12 +33,12 @@ public class CameraShotBlock extends ShotBlock {
      */
     public CameraShotBlock(int shotId, int timetableNumber, RootCenterArea rootCenterArea,
                            double beginCount, double endCount, String description, String name,
-                           EventHandler<CameraShotBlockUpdatedEvent> handler) {
+                           EventHandler<CameraShotBlockUpdatedEvent> handler, CameraShot shot) {
         super(rootCenterArea, beginCount, endCount, description, name);
         this.shotId = shotId;
         this.timetableNumber = timetableNumber;
-        thisBlock = this;
         this.grid = rootCenterArea.getGrid();
+        this.shot = shot;
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
                 this.setBeginCount(TimelinesGridPane.getRowIndex(

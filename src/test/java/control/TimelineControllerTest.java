@@ -21,11 +21,10 @@ public class TimelineControllerTest {
     private CameraShot shot;
     private CameraShotBlock shotBlock;
 
-    @Before
     public void initialize() {
         RootPane rootPane = Mockito.mock(RootPane.class);
-        timelineController = new TimelineController(rootPane);
-        project = timelineController.getScriptingProject();
+        timelineController = new TimelineController(new ControllerManager(rootPane));
+        project = timelineController.getProject();
 
         shot = new CameraShot("Shot test", "", 1, 2);
         project.getCameraTimelines().get(0).addShot(shot);
