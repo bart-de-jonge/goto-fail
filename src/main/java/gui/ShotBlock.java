@@ -21,13 +21,24 @@ public abstract class ShotBlock {
     @Getter @Setter
     private double endCount;
 
+    // The description of this shotblock
+    @Getter @Setter
+    private String description;
+
+    // The name of this shotblock
+    @Getter @Setter
+    private String name;
+
     /**
      * Constructor.
      * @param rootCenterArea - the rootCenterArea this shot belongs to
      * @param beginCount - the begin count of this shot
      * @param endCount = the end count of this shot
      */
-    public ShotBlock(RootCenterArea rootCenterArea, double beginCount, double endCount) {
+    public ShotBlock(RootCenterArea rootCenterArea, double beginCount, double endCount,
+                     String description, String name) {
+        this.description = description;
+        this.name = name;
         this.timetableBlock = new TimetableBlock(rootCenterArea, this);
         this.timetableBlock.setStyle("-fx-background-color: orange");
         this.beginCount = beginCount;

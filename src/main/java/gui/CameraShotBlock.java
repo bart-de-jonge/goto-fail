@@ -29,9 +29,9 @@ public class CameraShotBlock extends ShotBlock {
      * @param handler - The handler for this camerashotblock
      */
     public CameraShotBlock(int shotId, int timetableNumber, RootCenterArea rootCenterArea,
-                           double beginCount, double endCount,
+                           double beginCount, double endCount, String description, String name,
                            EventHandler<CameraShotBlockUpdatedEvent> handler) {
-        super(rootCenterArea, beginCount, endCount);
+        super(rootCenterArea, beginCount, endCount, description, name);
         this.shotId = shotId;
         this.timetableNumber = timetableNumber;
         thisBlock = this;

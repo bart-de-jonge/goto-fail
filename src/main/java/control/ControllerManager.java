@@ -9,10 +9,14 @@ import lombok.Getter;
  */
 public class ControllerManager {
 
+    @Getter
     private RootPane rootPane;
 
     @Getter
     private TimelineController timelineControl;
+
+    @Getter
+    private DetailViewController detailViewController;
 
     /**
      * Constructor.
@@ -25,5 +29,6 @@ public class ControllerManager {
 
     private void initializeControllers() {
         timelineControl = new TimelineController(rootPane);
+        detailViewController = new DetailViewController(this);
     }
 }

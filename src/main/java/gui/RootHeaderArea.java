@@ -4,18 +4,29 @@ import control.TimelineController;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.xml.soap.Detail;
+
+import static javafx.scene.input.KeyCode.H;
 
 /**
  * Class that represents the whole of top-level elements in the gui.
  * In other words, the file-edit-view-help menus and any buttons below that.
  */
-class RootHeaderArea extends VBox {
+public class RootHeaderArea extends VBox {
 
     private RootPane rootPane;
+    private HBox headerBar;
+
+    @Getter
+    private DetailView detailView;
 
     /**
      * RootHeaderArea Constructor.
@@ -29,8 +40,19 @@ class RootHeaderArea extends VBox {
 
         getChildren().add(initMenus());
 
-        getChildren().add(initButtons());
+        getChildren().add(initHeaderBar());
         this.setPrefHeight(50);
+    }
+
+    private HBox initHeaderBar() {
+        headerBar = new HBox();
+
+        detailView = new DetailView();
+
+        headerBar.getChildren().add(detailView);
+        headerBar.getChildren().add(initButtons());
+
+        return headerBar;
     }
 
     /**
