@@ -1,6 +1,5 @@
 package control;
 
-import gui.RootPane;
 import gui.ToolButton;
 import javafx.scene.input.MouseEvent;
 
@@ -14,7 +13,7 @@ public class ToolViewController {
 
     /**
      * Constructor.
-     * @param rootPane Root Pane of Application.
+     * @param controllerManager Manager of the controllers.
      */
     public ToolViewController(ControllerManager controllerManager) {
         this.controllerManager = controllerManager;
@@ -34,9 +33,11 @@ public class ToolViewController {
 
     /**
      * When triggered, this initializes and displays the modal view for the creation of a new block.
+     * TODO: Add modal and get rid of placeholder block
      * @param event mouse event
      */
     private void showBlockCreationWindow(MouseEvent event) {
-        System.out.println("ZOMGERD");
+        this.controllerManager.getTimelineControl()
+                .addCameraShot(1, "BOOM", "Een description", 1, 2);
     }
 }

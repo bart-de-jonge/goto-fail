@@ -99,21 +99,4 @@ public class RootHeaderArea extends VBox {
         this.toolView = new ToolView();
         return this.toolView;
     }
-
-    /**
-     * Create camera shot creation button.
-     * TODO: Replace mocked object
-     * @return Creation Button.
-     */
-    private Button createShotButton() {
-        Button shotCreation = new Button("Add Camera Shot");
-
-        shotCreation.setOnMouseClicked(e -> {
-                rootPane.getControllerManager().getTimelineControl()
-                    .addCameraShot(1, "BOOM", "Een description", 1, 2);
-            });
-
-        return shotCreation;
-    }
-
 }
