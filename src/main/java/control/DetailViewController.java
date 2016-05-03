@@ -38,10 +38,13 @@ public class DetailViewController {
 
         detailView.getBeginCountField().textProperty().addListener((
                 observable, oldValue, newValue) -> {
-                int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
-                manager.getActiveBlock().setBeginCount(newVal);
-                if (manager.getActiveBlock() instanceof CameraShotBlock) {
-                    ((CameraShotBlock) manager.getActiveBlock()).getShot().setBeginCount(newVal);
+                if (manager.getActiveBlock() != null) {
+                    int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
+                    manager.getActiveBlock().setBeginCount(newVal);
+                    if (manager.getActiveBlock() instanceof CameraShotBlock) {
+                        ((CameraShotBlock) manager.getActiveBlock()).getShot()
+                                .setBeginCount(newVal);
+                    }
                 }
             });
     }
@@ -54,11 +57,13 @@ public class DetailViewController {
 
         detailView.getEndCountField().textProperty().addListener((
                 observable, oldValue, newValue) -> {
-                int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
-                ShotBlock block = manager.getActiveBlock();
-                block.setEndCount(newVal);
-                if (manager.getActiveBlock() instanceof CameraShotBlock) {
-                    ((CameraShotBlock) manager.getActiveBlock()).getShot().setEndCount(newVal);
+                if (manager.getActiveBlock() != null) {
+                    int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
+                    ShotBlock block = manager.getActiveBlock();
+                    block.setEndCount(newVal);
+                    if (manager.getActiveBlock() instanceof CameraShotBlock) {
+                        ((CameraShotBlock) manager.getActiveBlock()).getShot().setEndCount(newVal);
+                    }
                 }
             });
     }
@@ -71,9 +76,12 @@ public class DetailViewController {
 
         detailView.getDescriptionField().textProperty().addListener((
                 observable, oldValue, newValue) -> {
-                manager.getActiveBlock().setDescription(newValue);
-                if (manager.getActiveBlock() instanceof CameraShotBlock) {
-                    ((CameraShotBlock) manager.getActiveBlock()).getShot().setDescription(newValue);
+                if (manager.getActiveBlock() != null) {
+                    manager.getActiveBlock().setDescription(newValue);
+                    if (manager.getActiveBlock() instanceof CameraShotBlock) {
+                        ((CameraShotBlock) manager.getActiveBlock()).getShot()
+                                .setDescription(newValue);
+                    }
                 }
             });
     }
@@ -86,9 +94,11 @@ public class DetailViewController {
 
         detailView.getNameField().textProperty().addListener((
                 observable, oldValue, newValue) -> {
-                manager.getActiveBlock().setName(newValue);
-                if (manager.getActiveBlock() instanceof CameraShotBlock) {
-                    ((CameraShotBlock) manager.getActiveBlock()).getShot().setName(newValue);
+                if (manager.getActiveBlock() != null) {
+                    manager.getActiveBlock().setName(newValue);
+                    if (manager.getActiveBlock() instanceof CameraShotBlock) {
+                        ((CameraShotBlock) manager.getActiveBlock()).getShot().setName(newValue);
+                    }
                 }
             });
     }
