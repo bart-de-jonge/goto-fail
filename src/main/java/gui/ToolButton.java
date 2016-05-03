@@ -32,7 +32,6 @@ public class ToolButton {
 
     /**
      * Instantiates the button and adds it to the tool view.
-     * TODO: add event handler to button
      * @param headerArea Area in which the tool view is found.
      */
     private void initializeButton(RootHeaderArea headerArea) {
