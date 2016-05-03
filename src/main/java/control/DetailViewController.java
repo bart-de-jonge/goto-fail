@@ -3,6 +3,7 @@ package control;
 import data.ScriptingProject;
 import gui.CameraShotBlock;
 import gui.DetailView;
+import gui.ShotBlock;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
@@ -29,9 +30,10 @@ public class DetailViewController {
         detailView.setStartCount(0);
 
         detailView.getStartCountField().textProperty().addListener((observable, oldValue, newValue) -> {
-            manager.getActiveBlock().setBeginCount(Integer.parseInt(newValue));
+            int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
+            manager.getActiveBlock().setBeginCount(newVal);
             if (manager.getActiveBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveBlock()).getShot().setStartCount(Integer.parseInt(newValue));
+                ((CameraShotBlock) manager.getActiveBlock()).getShot().setStartCount(newVal);
             }
         });
     }
@@ -40,9 +42,11 @@ public class DetailViewController {
         detailView.setEndCount(0);
 
         detailView.getEndCountField().textProperty().addListener((observable, oldValue, newValue) -> {
-            manager.getActiveBlock().setEndCount(Integer.parseInt(newValue));
+            int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
+            ShotBlock block = manager.getActiveBlock();
+            block.setEndCount(newVal);
             if (manager.getActiveBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveBlock()).getShot().setEndCount(Integer.parseInt(newValue));
+                ((CameraShotBlock) manager.getActiveBlock()).getShot().setEndCount(newVal);
             }
         });
     }
@@ -70,11 +74,13 @@ public class DetailViewController {
     }
 
     public void activeBlockChanged() {
-        detailView.setDescription(manager.getActiveBlock().getDescription());
-        detailView.setName(manager.getActiveBlock().getName());
+        if (manager.getActiveBlock() != null) {
+            detailView.setDescription(manager.getActiveBlock().getDescription());
+            detailView.setName(manager.getActiveBlock().getName());
 
-        // TODO: Make doubles possible in detailview
-        detailView.setStartCount((int) manager.getActiveBlock().getBeginCount());
-        detailView.setEndCount((int) manager.getActiveBlock().getEndCount());
+            // TODO: Make doubles possible in detailview
+            detailView.setStartCount((int) manager.getActiveBlock().getBeginCount());
+            detailView.setEndCount((int) manager.getActiveBlock().getEndCount());
+        }
     }
 }

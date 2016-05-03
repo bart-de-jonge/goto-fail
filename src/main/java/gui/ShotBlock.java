@@ -51,7 +51,10 @@ public abstract class ShotBlock {
      * @param recompute - should we recompute after setting
      */
     public void setBeginCount(double count, boolean recompute) {
-        this.beginCount = count;
+
+        if (count <= this.endCount - 1) {
+            this.beginCount = count;
+        }
         if (recompute) {
             this.recompute();
         }
@@ -71,7 +74,9 @@ public abstract class ShotBlock {
      * @param recompute - should we recompute after setting
      */
     public void setEndCount(double count, boolean recompute) {
-        this.endCount = count;
+        if (count >= this.beginCount + 1) {
+            this.endCount = count;
+        }
         if (recompute) {
             this.recompute();
         }
