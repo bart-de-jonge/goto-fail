@@ -37,6 +37,9 @@ public class BlurHelper {
     @Getter @Setter
     private boolean hideNode;
 
+    @Getter @Setter
+    private Point2D offset;
+
 
     /**
      * Constructor of class.
@@ -68,6 +71,7 @@ public class BlurHelper {
         parameters = new SnapshotParameters();
         imageView = new ImageView();
         imageView.setEffect(gaussianBlur);
+        offset = new Point2D(0,0);
     }
 
     /**
@@ -80,6 +84,13 @@ public class BlurHelper {
     }
 
     /**
+     * Resets the directional blur offset to 0 x and 0 y pixels.
+     */
+    public void resetOffset() {
+        offset = new Point2D(0,0);
+    }
+
+    /**
      * Process blur for this BlurHelper, by using the bounds of the node.
      * WARNING: if the node is being dragged or resized, make sure this is called AFTER
      * the node has moved or resized. It may prevent jittering!
@@ -87,7 +98,8 @@ public class BlurHelper {
     public void processBlurUsingBounds() {
         // get information on current size of object in scene, and set proper parameters
         bounds = node.localToScene(node.getBoundsInLocal());
-        Rectangle2D rekt = new Rectangle2D(bounds.getMinX(), bounds.getMinY(),
+        Rectangle2D rekt = new Rectangle2D(bounds.getMinX() + offset.getX() ,
+                bounds.getMinY() + offset.getY(),
                 bounds.getWidth(), bounds.getHeight());
         parameters.setViewport(rekt);
 

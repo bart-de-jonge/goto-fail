@@ -56,6 +56,14 @@ public abstract class ShotBlock {
     }
 
     /**
+     * Set name of this shotblock. No Lombok because it does some extra work for the GUI.
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
      * Set the begin count of this shotblock.
      * @param count - the new begincount
      * @param recompute - should we recompute after setting

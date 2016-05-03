@@ -2,6 +2,7 @@ package gui;
 
 import data.CameraShot;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -79,6 +80,8 @@ public class CameraShotBlock extends ShotBlock {
         TimelinesGridPane.setColumnIndex(this.getTimetableBlock(),
                 timetableNumber);
         super.recompute();
+        
+        this.getTimetableBlock().getTitleNormalLabel().setText(this.getName());
     }
 
     @Override
