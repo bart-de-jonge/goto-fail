@@ -28,6 +28,9 @@ public class RootHeaderArea extends VBox {
     @Getter
     private DetailView detailView;
 
+    @Getter
+    private ToolView toolView;
+
     /**
      * RootHeaderArea Constructor.
      * @param rootPane the root pane this pane itself is located in.
@@ -93,29 +96,7 @@ public class RootHeaderArea extends VBox {
      * @return HBox box containing buttons.
      */
     private HBox initButtons() {
-        HBox topButtonBar = new HBox();
-        topButtonBar.setSpacing(15);
-        topButtonBar.setPadding(new Insets(5, 10, 5, 10));
-
-        Button shotCreation = createShotButton();
-        topButtonBar.getChildren().add(shotCreation);
-        return topButtonBar;
+        this.toolView = new ToolView();
+        return this.toolView;
     }
-
-    /**
-     * Create camera shot creation button.
-     * TODO: Replace mocked object
-     * @return Creation Button.
-     */
-    private Button createShotButton() {
-        Button shotCreation = new Button("Add Camera Shot");
-
-        shotCreation.setOnMouseClicked(e -> {
-                rootPane.getControllerManager().getTimelineControl()
-                    .addCameraShot(1, "BOOM", "Een description", 1, 2);
-            });
-
-        return shotCreation;
-    }
-
 }

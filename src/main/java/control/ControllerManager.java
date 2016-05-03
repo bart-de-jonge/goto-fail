@@ -18,6 +18,9 @@ public class ControllerManager {
     private TimelineController timelineControl;
 
     @Getter
+    private ToolViewController toolViewController;
+
+    @Getter
     private DetailViewController detailViewController;
 
     @Getter
@@ -41,17 +44,24 @@ public class ControllerManager {
      * @param rootPane - the root window of the application
      * @param timelineController - the controller that controls the timelines
      * @param detailViewController - the controller that controls the detailview
+     * @param toolViewController  - the controller that controls the toolview
      */
     public ControllerManager(RootPane rootPane, TimelineController timelineController,
-                             DetailViewController detailViewController) {
+                             DetailViewController detailViewController,
+                             ToolViewController toolViewController) {
         this.rootPane = rootPane;
         this.timelineControl = timelineController;
         this.detailViewController = detailViewController;
+        this.toolViewController = toolViewController;
     }
 
+    /**
+     * Initialize all necessary controllers.
+     */
     private void initializeControllers() {
         timelineControl = new TimelineController(this);
         detailViewController = new DetailViewController(this);
+        toolViewController = new ToolViewController(this);
     }
 
     public void setActiveShotBlock(ShotBlock block) {
