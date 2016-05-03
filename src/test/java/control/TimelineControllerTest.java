@@ -26,7 +26,9 @@ public class TimelineControllerTest {
         RootPane rootPane = Mockito.mock(RootPane.class);
         TimelineController timelineControllerMock = Mockito.mock(TimelineController.class);
         DetailViewController detailViewController = Mockito.mock(DetailViewController.class);
-        ControllerManager controllerManager = new ControllerManager(rootPane, timelineControllerMock, detailViewController);
+        ToolViewController toolViewController = Mockito.mock(ToolViewController.class);
+        ControllerManager controllerManager = new ControllerManager(rootPane, timelineControllerMock,
+                                                                    detailViewController, toolViewController);
 
         timelineController = new TimelineController(controllerManager);
         project = timelineController.getProject();

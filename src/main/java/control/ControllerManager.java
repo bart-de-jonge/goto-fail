@@ -44,12 +44,15 @@ public class ControllerManager {
      * @param rootPane - the root window of the application
      * @param timelineController - the controller that controls the timelines
      * @param detailViewController - the controller that controls the detailview
+     * @param toolViewController  - the controller that controls the toolview
      */
     public ControllerManager(RootPane rootPane, TimelineController timelineController,
-                             DetailViewController detailViewController) {
+                             DetailViewController detailViewController,
+                             ToolViewController toolViewController) {
         this.rootPane = rootPane;
         this.timelineControl = timelineController;
         this.detailViewController = detailViewController;
+        this.toolViewController = toolViewController;
     }
 
     /**
