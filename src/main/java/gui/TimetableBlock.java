@@ -176,7 +176,7 @@ public class TimetableBlock extends Pane {
         contentPane.setStyle(normalStyleForeground);
 
         // add some labels etc
-        initTitleLabel(titleNormalLabel, contentPane);
+        titleNormalLabel = initTitleLabel(contentPane);
         addCountLabel(contentPane);
 
         addWithClipRegion(contentPane, this);
@@ -214,7 +214,7 @@ public class TimetableBlock extends Pane {
         addWithClipRegion(behindPanelBlur.getImageView(), draggedPane);
 
         // add some labels etc
-        initTitleLabel(titleDraggedLabel, draggedContentPane);
+        titleDraggedLabel = initTitleLabel(draggedContentPane);
         addCountLabel((draggedContentPane));
 
         addWithClipRegion(draggedContentPane, draggedPane);
@@ -247,16 +247,16 @@ public class TimetableBlock extends Pane {
 
     /**
      * Temporary helper function to add test title labels to panes.
-     * @param label the label to initialize;
      * @param vbox pane to add to
      */
-    private void initTitleLabel(Label label, VBox vbox) {
-        label = new Label();
-        label.setText("dede");
-        label.maxWidthProperty().bind(this.widthProperty());
-        label.setPadding(new Insets(0,0,0,5));
-        label.setStyle(textTitleStyle);
-        vbox.getChildren().add(label);
+    private Label initTitleLabel(VBox vbox) {
+        Label res = new Label();
+        res.setText("dede");
+        res.maxWidthProperty().bind(this.widthProperty());
+        res.setPadding(new Insets(0,0,0,5));
+        res.setStyle(textTitleStyle);
+        vbox.getChildren().add(res);
+        return res;
     }
 
     /**
