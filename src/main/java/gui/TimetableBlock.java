@@ -151,9 +151,9 @@ public class TimetableBlock extends Pane {
 
         // test labels, please ignore.
         addTestTitleLabel(contentPane);
-        addTestLabels(contentPane);
+        addCountLabel(contentPane);
         addTestTitleLabel(dummyContentPane);
-        addTestLabels((dummyContentPane));
+        addCountLabel((dummyContentPane));
 
         // mouse event handlers
         setOnMousePressed(getOnPressedHandler());
@@ -184,6 +184,19 @@ public class TimetableBlock extends Pane {
         label.maxWidthProperty().bind(this.widthProperty());
         label.setPadding(new Insets(0,0,0,5));
         label.setStyle(textTitleStyle);
+        vbox.getChildren().add(label);
+    }
+
+    /**
+     * Temporary helper function to add test count labels to panes.
+     * @param vbox pane to add to
+     */
+    private void addCountLabel(VBox vbox) {
+        Label label = new Label();
+        label.setText(getParentBlock().getBeginCount() + " - " + parentBlock.getEndCount());
+        label.maxWidthProperty().bind(this.widthProperty());
+        label.setPadding(new Insets(5,5,5,5));
+        label.setStyle(textNormalStyle);
         vbox.getChildren().add(label);
     }
 
