@@ -1,5 +1,7 @@
 package control;
 
+import gui.CreationModalView;
+import gui.ModalView;
 import gui.ToolButton;
 import javafx.scene.input.MouseEvent;
 
@@ -39,5 +41,6 @@ public class ToolViewController {
     private void showBlockCreationWindow(MouseEvent event) {
         this.controllerManager.getTimelineControl()
                 .addCameraShot(1, "BOOM", "Een description", 1, 2);
+        new CreationModalView(this.controllerManager.getRootPane());
     }
 }
