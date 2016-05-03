@@ -84,24 +84,13 @@ public class TimelinesGridPane extends GridPane {
      */
     private void addPanes() {
         panes = new ArrayList<>();
-        int count;
         for (int i = 0; i < numberOfTimelines; i++) {
-            count = 0;
             for (int j = 0; j < numberOfCounts; j++) {
                 SnappingPane pane = new SnappingPane(j, i, 200, countHeight);
                 this.add(pane, i, j);
                 panes.add(pane);
                 pane.setStyle("-fx-border-color: gray;"
                         + "-fx-border-width: 0.1px 1px 0.1px 1px;");;
-//                if (count == 2) {
-//                    count = 0;
-//                    pane.setStyle("-fx-border-color: gray;"
-//                            + "-fx-border-width: 0.1px 1px 0px 1px;");;
-//                } else {
-//                    count++;
-//                    pane.setStyle("-fx-border-color: gray;"
-//                            + "-fx-border-width: 0px 1px 0px 1px;");
-//                }
             }
         }
     }
