@@ -14,6 +14,9 @@ public class ControllerManager {
     @Getter
     private TimelineController timelineControl;
 
+    @Getter
+    private ToolViewController toolViewController;
+
     /**
      * Constructor.
      * @param rootPane Root Window
@@ -25,5 +28,6 @@ public class ControllerManager {
 
     private void initializeControllers() {
         timelineControl = new TimelineController(rootPane);
+        toolViewController = new ToolViewController(rootPane);
     }
 }
