@@ -45,7 +45,7 @@ public abstract class Shot {
         name = "";
         description = "";
         instance = 0;
-        startCount = 0;
+        beginCount = 0;
         endCount = 0;
     }
 

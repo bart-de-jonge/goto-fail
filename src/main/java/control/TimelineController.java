@@ -123,7 +123,7 @@ public class TimelineController {
         File file = fileChooser.showSaveDialog(rootPane.getPrimaryStage());
         if (file != null) {
             System.out.println(file.toString());
-            scriptingProject.write(file);
+            project.write(file);
             
         }
     }
@@ -147,7 +147,7 @@ public class TimelineController {
                 alert.setContentText("The format in the selected file was not recognized");
                 alert.showAndWait();
             } else {
-                scriptingProject = temp;
+                project = temp;
             }
         }
     }
