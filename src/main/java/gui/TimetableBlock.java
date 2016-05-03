@@ -148,8 +148,8 @@ public class TimetableBlock extends Pane {
         // dragged content pane which mirrors our content pane, shown when dragging.
         draggedContentPane = new VBox();
         addClipRegion(draggedContentPane, draggedPane);
-        draggedContentPane.minWidthProperty().bind(widthProperty());
-        draggedContentPane.maxWidthProperty().bind(widthProperty());
+        draggedContentPane.minWidthProperty().bind(draggedPane.widthProperty());
+        draggedContentPane.maxWidthProperty().bind(draggedPane.widthProperty());
         draggedContentPane.minHeightProperty().bind(draggedPane.heightProperty());
         draggedContentPane.maxHeightProperty().bind(draggedPane.heightProperty());
         draggedContentPane.setStyle(normalStyleForeground);
