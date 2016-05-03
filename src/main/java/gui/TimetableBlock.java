@@ -39,7 +39,7 @@ public class TimetableBlock extends Pane {
 
     private double verticalBorderSize = 4.0; // tweaks size of visible blocks above and below content.
 
-    private double margin = 4.0;
+    private double margin = 5.0;
 
     private String colorBlockBackground = "#B1E2FA";
     private String colorBlockBorders = "#DDF2FC";
@@ -160,10 +160,6 @@ public class TimetableBlock extends Pane {
         setOnMouseDragged(getOnDraggedHandler());
         setOnMouseReleased(getOnreleaseHandler());
         setOnMouseMoved(getOnMouseMovedHandler());
-
-        //WritableImage snapshot = contentPane.snapshot(new SnapshotParameters(), null);
-       // dummyPane.getChildren().add(new ImageView(snapshot));
-       // dummyImage
     }
 
     /**

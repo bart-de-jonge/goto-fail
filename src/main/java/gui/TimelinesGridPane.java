@@ -50,7 +50,7 @@ public class TimelinesGridPane extends GridPane {
         addPanes();
 
         this.setGridLinesVisible(false);
-        this.setPadding(new Insets(5, 5, 5, 5));
+        //this.setPadding(new Insets(5, 5, 5, 5));
 
         // set constraints, with minimum size 100x100, and maximum size infinite.
         for (int i = 0; i < numberOfTimelines; i++) {
