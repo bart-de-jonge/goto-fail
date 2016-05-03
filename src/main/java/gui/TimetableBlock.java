@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
@@ -56,6 +57,16 @@ public class TimetableBlock extends Pane {
             + "-fx-border-color: " + colorBlockBorderHighlight + ";"
             + "-fx-background-color: " + colorBlockBackground + ";"
             + "-fx-background-insets: " + verticalBorderSize + " 2 " + verticalBorderSize + " 2;";
+
+    private String draggedStyleForeground =
+            "-fx-padding: " + verticalBorderSize + " 0 " + verticalBorderSize + " 0;"
+            + "-fx-border-style: solid inside;"
+            + "-fx-border-insets: " + verticalBorderSize + " 0 " + verticalBorderSize + " 0;"
+            + "-fx-border-width: 2 0 0 0;"
+            + "-fx-border-color: " + colorBlockBorderHighlight + ";"
+            + "-fx-background-color: " + colorBlockBackground + ";"
+            + "-fx-background-insets: " + verticalBorderSize + " 2 " + verticalBorderSize + " 2;"
+            + "-fx-opacity: 0.75";
 
     private String textTitleStyle =
             "-fx-text-fill: " + colorBlockBorderHighlight + ";"
@@ -122,6 +133,7 @@ public class TimetableBlock extends Pane {
         feedbackPane.setVisible(false);
         draggedPane = new Pane();
         draggedPane.setVisible(false);
+        setBlendMode(BlendMode.MULTIPLY);
 
         pane.getParentPane().getChildren().add(draggedPane);
         pane.getGrid().add(feedbackPane, 0, 0);
@@ -133,7 +145,7 @@ public class TimetableBlock extends Pane {
         gaussianBlur = new GaussianBlur(15.0);
         DropShadow ds = new DropShadow(15.0, 5.0, 5.0, Color.GRAY);
         darken = new ColorAdjust(0, 0, -0.1, 0);
-       // draggedPane.setEffect(ds);
+        draggedPane.setEffect(ds);
 
         // content pane for our pane, which holds content (text and stuff)
         contentPane = new VBox();
@@ -144,6 +156,16 @@ public class TimetableBlock extends Pane {
         contentPane.maxHeightProperty().bind(heightProperty());
         contentPane.setStyle(normalStyleForeground);
 
+        // blurring stuff
+        behindPaneView = new ImageView();
+        behindPaneView.setEffect(gaussianBlur);
+        //addWithClipRegion(behindPaneView, draggedPane);
+        behindPanelBlur = new BlurHelper(draggedPane);
+        addWithClipRegion(behindPanelBlur.getImageView(), draggedPane);
+        behindPanelBlur.getImageView().setBlendMode(BlendMode.MULTIPLY);
+        behindPanelBlur.getImageView().setOpacity(0.6);
+        behindPanelBlur.setRadius(20.0);
+
         // dragged content pane which mirrors our content pane, shown when dragging.
         draggedContentPane = new VBox();
         addWithClipRegion(draggedContentPane, draggedPane);
@@ -151,14 +173,8 @@ public class TimetableBlock extends Pane {
         draggedContentPane.maxWidthProperty().bind(draggedPane.widthProperty());
         draggedContentPane.minHeightProperty().bind(draggedPane.heightProperty());
         draggedContentPane.maxHeightProperty().bind(draggedPane.heightProperty());
-        draggedContentPane.setStyle(normalStyleForeground);
-
-        // blurring stuff
-        behindPaneView = new ImageView();
-        behindPaneView.setEffect(gaussianBlur);
-        //addWithClipRegion(behindPaneView, draggedPane);
-        behindPanelBlur = new BlurHelper(draggedPane);
-        addWithClipRegion(behindPanelBlur.getImageView(), draggedPane);
+        draggedContentPane.setStyle(draggedStyleForeground);
+        draggedContentPane.setBlendMode(BlendMode.MULTIPLY);
 
         // test labels, please ignore.
         addTestTitleLabel(contentPane);
@@ -299,7 +315,7 @@ public class TimetableBlock extends Pane {
             darken.setInput(gaussianBlur);
             image.setEffect(darken);
             feedbackPane.getChildren().add(image);*/
-            feedbackPane.setStyle("-fx-background-color: rgb(255,0,0)");
+            //feedbackPane.setStyle("-fx-background-color: rgb(255,0,0)");
             feedbackPane.setVisible(true);
             TimelinesGridPane.setColumnIndex(feedbackPane,
                     TimelinesGridPane.getColumnIndex(thisBlock));
