@@ -10,14 +10,14 @@ import javafx.scene.input.MouseEvent;
  */
 public class ToolViewController {
 
-    private RootPane rootPane;
+    private ControllerManager controllerManager;
 
     /**
      * Constructor.
      * @param rootPane Root Pane of Application.
      */
-    public ToolViewController(RootPane rootPane) {
-        this.rootPane = rootPane;
+    public ToolViewController(ControllerManager controllerManager) {
+        this.controllerManager = controllerManager;
         initializeTools();
     }
 
@@ -27,7 +27,8 @@ public class ToolViewController {
      */
     private void initializeTools() {
         ToolButton blockCreationTool = new ToolButton("Add a block",
-                                                      this.rootPane.getRootHeaderArea(),
+                                                      this.controllerManager
+                                                              .getRootPane().getRootHeaderArea(),
                                                       this::showBlockCreationWindow);
     }
 

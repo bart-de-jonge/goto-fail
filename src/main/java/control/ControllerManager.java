@@ -52,10 +52,13 @@ public class ControllerManager {
         this.detailViewController = detailViewController;
     }
 
+    /**
+     * Initialize all necessary controllers.
+     */
     private void initializeControllers() {
         timelineControl = new TimelineController(this);
         detailViewController = new DetailViewController(this);
-        toolViewController = new ToolViewController(rootPane);
+        toolViewController = new ToolViewController(this);
     }
 
     public void setActiveShotBlock(ShotBlock block) {

@@ -21,8 +21,10 @@ public class ToolButton {
      * Constructor.
      * @param toolName the tool's name
      * @param headerArea Header area to which to add this tool button
+     * @param clickHandler Event handler for click on the tool button
      */
-    public ToolButton(String toolName, RootHeaderArea headerArea, EventHandler<MouseEvent> clickHandler) {
+    public ToolButton(String toolName, RootHeaderArea headerArea,
+                      EventHandler<MouseEvent> clickHandler) {
         this.name = toolName;
         this.clickHandler = clickHandler;
         initializeButton(headerArea);
