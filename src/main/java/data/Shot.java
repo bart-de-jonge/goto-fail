@@ -28,7 +28,7 @@ public abstract class Shot {
 
     // The start count of the Shot.
     @Getter @Setter
-    private double startCount;
+    private double beginCount;
 
     // The end count of the Shot.
     @Getter @Setter
@@ -45,7 +45,7 @@ public abstract class Shot {
         name = "";
         description = "";
         instance = 0;
-        startCount = 0;
+        beginCount = 0;
         endCount = 0;
     }
 
@@ -55,16 +55,16 @@ public abstract class Shot {
      * @param instance the instance number of the Shot
      * @param name the name of the Shot
      * @param description the description of the Shot
-     * @param startCount the start count of the Shot
+     * @param beginCount the start count of the Shot
      * @param endCount the end count of the Shot
      */
-    public Shot(int instance, String name, String description, int startCount, int endCount) {
-        assert (startCount <= endCount);
+    public Shot(int instance, String name, String description, int beginCount, int endCount) {
+        assert (beginCount <= endCount);
 
         this.name = name;
         this.description = description;
         this.instance = instance;
-        this.startCount = startCount;
+        this.beginCount = beginCount;
         this.endCount = endCount;
     }
 
@@ -75,7 +75,7 @@ public abstract class Shot {
        equal start times, the end times are compared.
      */
     public int compareTo(Shot other) {
-        int result = Double.compare(getStartCount(), other.getStartCount());
+        int result = Double.compare(getBeginCount(), other.getBeginCount());
 
         if (result == 0) {
             result = Double.compare(getEndCount(), other.getEndCount());
@@ -92,16 +92,16 @@ public abstract class Shot {
      * @return true when shots are overlapping, false when there are not overlapping
      */
     public boolean areOverlapping(Shot other, double movementOffset) {
-        if (other.getStartCount() > getStartCount() - movementOffset
-                && other.getStartCount() < getEndCount()) {
+        if (other.getBeginCount() > getBeginCount() - movementOffset
+                && other.getBeginCount() < getEndCount()) {
             return true;
         }
-        if (other.getEndCount() > getStartCount() - movementOffset
+        if (other.getEndCount() > getBeginCount() - movementOffset
                 && other.getEndCount() < getEndCount()) {
             return true;
         }
-        if (other.getStartCount() <= getStartCount() && other.getEndCount() >= getEndCount()
-            || getStartCount() < other.getStartCount() && getEndCount() > other.getEndCount()) {
+        if (other.getBeginCount() <= getBeginCount() && other.getEndCount() >= getEndCount()
+            || getBeginCount() < other.getBeginCount() && getEndCount() > other.getEndCount()) {
             return true;
         }
         return false;

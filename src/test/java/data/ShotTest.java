@@ -41,7 +41,7 @@ public class ShotTest {
 
     @Test
     public void getStartCountTest() {
-        assertEquals(1, shot1.getStartCount(), 0);
+        assertEquals(1, shot1.getBeginCount(), 0);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class ShotTest {
 
     @Test
     public void equalCompareTest() {
-        shot3.setStartCount(1);
+        shot3.setBeginCount(1);
         assertEquals(0, shot1.compareTo(shot3));
     }
 
@@ -79,7 +79,7 @@ public class ShotTest {
 
     @Test
     public void fullOverlapTest() {
-        shot2.setStartCount(0);
+        shot2.setBeginCount(0);
         assertTrue(shot1.areOverlapping(shot2, 0));
         assertTrue(shot2.areOverlapping(shot1, 0));
         assertTrue(shot1.areOverlapping(shot1, 0));
@@ -87,7 +87,7 @@ public class ShotTest {
 
     @Test
     public void noOverlapTest() {
-        shot2.setStartCount(3);
+        shot2.setBeginCount(3);
         assertFalse(shot1.areOverlapping(shot2, 0));
         assertFalse(shot2.areOverlapping(shot1, 0));
     }
