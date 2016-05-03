@@ -32,7 +32,7 @@ public class RootHeaderArea extends VBox {
      * RootHeaderArea Constructor.
      * @param rootPane the root pane this pane itself is located in.
      */
-    RootHeaderArea(RootPane rootPane) {
+    public RootHeaderArea(RootPane rootPane) {
         this.rootPane = rootPane;
         // border style to mark it, for debugging for now.
         setStyle("-fx-border-style: solid inside;"
