@@ -1,7 +1,9 @@
 package gui;
 
+import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,7 +14,14 @@ public class ToolView extends HBox {
 
     private List<ToolButton> buttonList;
 
+    /**
+     * Constructor.
+     */
     public ToolView() {
+        this.setSpacing(15);
+        this.setPadding(new Insets(5, 10, 5, 10));
+
+        buttonList = new ArrayList<>();
     }
 
     /**
@@ -20,5 +29,7 @@ public class ToolView extends HBox {
      * @param tool Tool to be displayed.
      */
     public void addToolButton(ToolButton tool) {
+        this.buttonList.add(tool);
+        this.getChildren().add(tool.getButton());
     }
 }

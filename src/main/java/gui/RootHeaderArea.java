@@ -8,6 +8,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
 
 /**
  * Class that represents the whole of top-level elements in the gui.
@@ -16,6 +17,9 @@ import javafx.scene.layout.VBox;
 class RootHeaderArea extends VBox {
 
     private RootPane rootPane;
+
+    @Getter
+    private ToolView toolView;
 
     /**
      * RootHeaderArea Constructor.
@@ -67,13 +71,8 @@ class RootHeaderArea extends VBox {
      * @return HBox box containing buttons.
      */
     private HBox initButtons() {
-        HBox topButtonBar = new HBox();
-        topButtonBar.setSpacing(15);
-        topButtonBar.setPadding(new Insets(5, 10, 5, 10));
-
-        Button shotCreation = createShotButton();
-        topButtonBar.getChildren().add(shotCreation);
-        return topButtonBar;
+        this.toolView = new ToolView();
+        return this.toolView;
     }
 
     /**
