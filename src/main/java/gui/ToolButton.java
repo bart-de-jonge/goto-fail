@@ -1,6 +1,8 @@
 package gui;
 
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import lombok.Getter;
 
 /**
@@ -13,13 +15,16 @@ public class ToolButton {
     @Getter
     private Button button;
 
+    private EventHandler<MouseEvent> clickHandler;
+
     /**
      * Constructor.
      * @param toolName the tool's name
      * @param headerArea Header area to which to add this tool button
      */
-    public ToolButton(String toolName, RootHeaderArea headerArea) {
+    public ToolButton(String toolName, RootHeaderArea headerArea, EventHandler<MouseEvent> clickHandler) {
         this.name = toolName;
+        this.clickHandler = clickHandler;
         initializeButton(headerArea);
     }
 
@@ -31,7 +36,7 @@ public class ToolButton {
     private void initializeButton(RootHeaderArea headerArea) {
         this.button = new Button(this.name);
 
-        this.button.setOnMouseClicked(e -> System.out.println("ZOMG"));
+        this.button.setOnMouseClicked(clickHandler);
 
         headerArea.getToolView().addToolButton(this);
     }

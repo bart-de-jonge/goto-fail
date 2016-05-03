@@ -2,6 +2,7 @@ package control;
 
 import gui.RootPane;
 import gui.ToolButton;
+import javafx.scene.input.MouseEvent;
 
 /**
  * Controller that manages the tool menu (e.g. shot creation menu).
@@ -26,6 +27,15 @@ public class ToolViewController {
      */
     private void initializeTools() {
         ToolButton blockCreationTool = new ToolButton("Add a block",
-                                                      this.rootPane.getRootHeaderArea());
+                                                      this.rootPane.getRootHeaderArea(),
+                                                      this::showBlockCreationWindow);
+    }
+
+    /**
+     * When triggered, this initializes and displays the modal view for the creation of a new block.
+     * @param event mouse event
+     */
+    private void showBlockCreationWindow(MouseEvent event) {
+        System.out.println("ZOMGERD");
     }
 }
