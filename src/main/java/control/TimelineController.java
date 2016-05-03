@@ -1,6 +1,12 @@
 package control;
 
-import data.*;
+
+import java.io.File;
+import data.Camera;
+import data.CameraShot;
+import data.CameraTimeline;
+import data.CameraType;
+import data.ScriptingProject;
 import gui.CameraShotBlock;
 import gui.CameraShotBlockUpdatedEvent;
 import gui.RootPane;
@@ -27,16 +33,20 @@ public class TimelineController {
     // TODO: Replace Camera Type and Scripting Project when XML functionality is available
     private final CameraType defType = new CameraType("AW-HE130 HD PTZ", "It's an IP Camera", 0.5);
 
-    // Placeholder project in lieu of XML loading
     @Getter
-    private ScriptingProject scriptingProject = new ScriptingProject("BOSS Project", 1.0);
+    private ControllerManager controllerManager;
+
+    @Getter
+    private ScriptingProject project;
 
     /**
      * Constructor.
-     * @param rootPane Root Pane.
+     * @param controllerManager Root Pane.
      */
-    public TimelineController(RootPane rootPane) {
-        this.rootPane = rootPane;
+    public TimelineController(ControllerManager controllerManager) {
+        this.controllerManager = controllerManager;
+        this.rootPane = controllerManager.getRootPane();
+        this.project = controllerManager.getScriptingProject();
         initializeCameraTimelines();
     }
 
@@ -51,10 +61,14 @@ public class TimelineController {
     public void addCameraShot(int cameraIndex, String name, String description,
                               int startCount, int endCount) {
         CameraShot newShot = new CameraShot(name,description, startCount, endCount);
-        this.scriptingProject.getCameraTimelines().get(cameraIndex).addShot(newShot);
+        this.project.getCameraTimelines().get(cameraIndex).addShot(newShot);
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex,
-                rootPane.getRootCenterArea(), startCount, endCount, this::shotChangedHandler);
+                rootPane.getRootCenterArea(), startCount, endCount, description,
+                name, this::shotChangedHandler, newShot);
+
+        controllerManager.setActiveShotBlock(shotBlock);
     }
+
 
     /**
      * Handle updated camera shot. The previous timeline is used to retrieve the corresponding
@@ -65,20 +79,20 @@ public class TimelineController {
      */
     public void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
         CameraShotBlock changedBlock = event.getCameraShotBlock();
-        CameraTimeline previousTimeline = this.scriptingProject.getCameraTimelines()
+
+        controllerManager.setActiveShotBlock(changedBlock);
+
+        CameraTimeline previousTimeline = this.project.getCameraTimelines()
                 .get(event.getOldTimelineNumber());
         // Locate shot to be updated using id
-        CameraShot shot = previousTimeline.getShots().stream()
-                .filter(s -> s.getInstance() == changedBlock.getShotId())
-                .findFirst()
-                .get();
+        CameraShot shot = changedBlock.getShot();
 
         // Adjust model
-        shot.setStartCount(changedBlock.getBeginCount());
+        shot.setBeginCount(changedBlock.getBeginCount());
         shot.setEndCount(changedBlock.getEndCount());
         // Remove shot from previous timeline and add to new one
         previousTimeline.removeShot(shot);
-        this.scriptingProject.getCameraTimelines()
+        this.project.getCameraTimelines()
                 .get(changedBlock.getTimetableNumber()).addShot(shot);
     }
 
@@ -89,8 +103,8 @@ public class TimelineController {
     private void initializeCameraTimelines() {
         for (int i = 0; i < numTimelines; i++) {
             Camera defCam = new Camera("IP Cam " + i, "", defType);
-            CameraTimeline timelineN = new CameraTimeline(defCam, "", scriptingProject);
-            scriptingProject.addCameraTimeline(timelineN);
+            CameraTimeline timelineN = new CameraTimeline(defCam, "", project);
+            project.addCameraTimeline(timelineN);
         }
     }
     
@@ -105,9 +119,7 @@ public class TimelineController {
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(rootPane.getPrimaryStage());
         if (file != null) {
-            System.out.println(file.toString());
-            scriptingProject.write(file);
-            
+            project.write(file);
         }
     }
     
@@ -122,7 +134,6 @@ public class TimelineController {
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showOpenDialog(rootPane.getPrimaryStage());
         if (file != null) {
-            System.out.println(file.toString());
             ScriptingProject temp  = ScriptingProject.read(file);
             if (temp == null) {
                 Alert alert = new Alert(AlertType.ERROR); 
@@ -130,7 +141,7 @@ public class TimelineController {
                 alert.setContentText("The format in the selected file was not recognized");
                 alert.showAndWait();
             } else {
-                scriptingProject = temp;
+                project = temp;
             }
         }
     }
