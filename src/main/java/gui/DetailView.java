@@ -2,7 +2,11 @@ package gui;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 /**
@@ -25,19 +29,22 @@ public class DetailView extends VBox {
     private TextField descriptionField;
 
     @Getter
-    private NumberTextField startCountField;
+    private NumberTextField beginCountField;
 
     @Getter
     private NumberTextField endCountField;
 
+    /**
+     * Constructor.
+     */
     public DetailView() {
         this.grid = new GridPane();
         this.getChildren().addAll(grid);
 
-        for(int i = 0; i < numberOfColumns; i++) {
+        for (int i = 0; i < numberOfColumns; i++) {
             grid.getColumnConstraints().add(new ColumnConstraints(columnWidth));
         }
-        for(int i = 0; i < numberOfRows; i++) {
+        for (int i = 0; i < numberOfRows; i++) {
             grid.getRowConstraints().add(new RowConstraints(rowHeight));
         }
 
@@ -45,38 +52,60 @@ public class DetailView extends VBox {
 
         initName();
         initDescription();
-        initStartCount();
+        initBeginCount();
         initEndCount();
     }
 
+    /**
+     * Set the description of the detailview.
+     * @param description - the description to set
+     */
     public void setDescription(String description) {
         descriptionField.setText(description);
     }
 
+    /**
+     * Set the name of the detailview.
+     * @param name - the name to set
+     */
     public void setName(String name) {
         nameField.setText(name);
     }
 
-    public void setStartCount(int count) {
-        startCountField.setText(String.format("%d", count));
+    /**
+     * Set the begincount of the detailview.
+     * @param count - the count to set
+     */
+    public void setBeginCount(int count) {
+        beginCountField.setText(String.format("%d", count));
     }
 
+    /**
+     * Set the endcount of the detailview.
+     * @param count - the count to set
+     */
     public void setEndCount(int count) {
         endCountField.setText(String.format("%d", count));
     }
 
-    private  void initStartCount() {
-        startCountField = new NumberTextField();
-        startCountField.setText("123");
-        startCountField.setPrefWidth(50);
+    /**
+     * Init the begincount part of the detailview.
+     */
+    private  void initBeginCount() {
+        beginCountField = new NumberTextField();
+        beginCountField.setText("123");
+        beginCountField.setPrefWidth(50);
 
         HBox startCountBox = new HBox();
 
         Label specifierLabel = new Label("Start Count:");
-        startCountBox.getChildren().addAll(specifierLabel, startCountField);
+        startCountBox.getChildren().addAll(specifierLabel, beginCountField);
         grid.add(startCountBox, 1, 0);
     }
 
+    /**
+     * Init the endcount part of the detailview.
+     */
     private  void initEndCount() {
         endCountField = new NumberTextField();
         endCountField.setText("123");
@@ -89,6 +118,9 @@ public class DetailView extends VBox {
         grid.add(endCountBox, 2, 0);
     }
 
+    /**
+     * Init the name part of the detailview.
+     */
     private void initName() {
         nameField = new TextField("Placeholder");
         HBox nameBox = new HBox();
@@ -98,6 +130,9 @@ public class DetailView extends VBox {
         grid.add(nameBox, 0, 0);
     }
 
+    /**
+     * Init the description part of the detailview.
+     */
     private void initDescription() {
         descriptionField = new TextField("");
         descriptionField.setPrefWidth(300);

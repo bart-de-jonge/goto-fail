@@ -5,7 +5,6 @@ import data.ScriptingProject;
 import gui.CameraShotBlock;
 import gui.CameraShotBlockUpdatedEvent;
 import gui.RootPane;
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -56,7 +55,7 @@ public class TimelineControllerTest {
                 new CameraShotBlockUpdatedEvent(shotBlock, 0)
         );
 
-        assertEquals(shot.getStartCount(), 0.0, 0);
+        assertEquals(shot.getBeginCount(), 0.0, 0);
     }
 
     @Test

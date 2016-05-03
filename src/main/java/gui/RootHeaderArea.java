@@ -44,6 +44,10 @@ public class RootHeaderArea extends VBox {
         this.setPrefHeight(50);
     }
 
+    /**
+     * Init the header bar of the RootHeaderArea.
+     * @return - the hbox displaying the headerbar
+     */
     private HBox initHeaderBar() {
         headerBar = new HBox();
 

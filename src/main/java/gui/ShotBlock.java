@@ -1,5 +1,7 @@
 package gui;
 
+import data.CameraShot;
+import data.Shot;
 import javafx.event.EventHandler;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,20 +31,29 @@ public abstract class ShotBlock {
     @Getter @Setter
     private String name;
 
+    // The actual shot in the model that belongs to this shotblock
+    // For updating the model using the controller o eventss
+    @Getter
+    private Shot shot;
+
     /**
      * Constructor.
      * @param rootCenterArea - the rootCenterArea this shot belongs to
      * @param beginCount - the begin count of this shot
-     * @param endCount = the end count of this shot
+     * @param endCount - the end count of this shot
+     * @param description - the description of this shot
+     * @param name - the name of this shot
+     * @param shot - the shot of this shotblock
      */
     public ShotBlock(RootCenterArea rootCenterArea, double beginCount, double endCount,
-                     String description, String name) {
+                     String description, String name, Shot shot) {
         this.description = description;
         this.name = name;
         this.timetableBlock = new TimetableBlock(rootCenterArea, this);
         this.timetableBlock.setStyle("-fx-background-color: orange");
         this.beginCount = beginCount;
         this.endCount = endCount;
+        this.shot = shot;
     }
 
     /**

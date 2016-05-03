@@ -16,70 +16,93 @@ public class DetailViewController {
     private ControllerManager manager;
     private ScriptingProject project;
 
+    /**
+     * Constructor.
+     * @param manager - the controller manager this controller belongs to
+     */
     public DetailViewController(ControllerManager manager) {
         this.detailView = manager.getRootPane().getRootHeaderArea().getDetailView();
         this.manager = manager;
         this.project = manager.getScriptingProject();
         initDescription();
         initName();
-        initStartCount();
+        initBeginCount();
         initEndCount();
     }
 
-    private void initStartCount() {
-        detailView.setStartCount(0);
+    /**
+     * Init the begincount handlers.
+     */
+    private void initBeginCount() {
+        detailView.setBeginCount(0);
 
-        detailView.getStartCountField().textProperty().addListener((observable, oldValue, newValue) -> {
-            int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
-            manager.getActiveBlock().setBeginCount(newVal);
-            if (manager.getActiveBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveBlock()).getShot().setStartCount(newVal);
-            }
-        });
+        detailView.getBeginCountField().textProperty().addListener((
+                observable, oldValue, newValue) -> {
+                int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
+                manager.getActiveBlock().setBeginCount(newVal);
+                if (manager.getActiveBlock() instanceof CameraShotBlock) {
+                    ((CameraShotBlock) manager.getActiveBlock()).getShot().setBeginCount(newVal);
+                }
+            });
     }
 
+    /**
+     * Init the endcuont handlers.
+     */
     private void initEndCount() {
         detailView.setEndCount(0);
 
-        detailView.getEndCountField().textProperty().addListener((observable, oldValue, newValue) -> {
-            int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
-            ShotBlock block = manager.getActiveBlock();
-            block.setEndCount(newVal);
-            if (manager.getActiveBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveBlock()).getShot().setEndCount(newVal);
-            }
-        });
+        detailView.getEndCountField().textProperty().addListener((
+                observable, oldValue, newValue) -> {
+                int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
+                ShotBlock block = manager.getActiveBlock();
+                block.setEndCount(newVal);
+                if (manager.getActiveBlock() instanceof CameraShotBlock) {
+                    ((CameraShotBlock) manager.getActiveBlock()).getShot().setEndCount(newVal);
+                }
+            });
     }
 
+    /**
+     * Init the description handlers.
+     */
     private void initDescription() {
         detailView.setDescription("");
 
-        detailView.getDescriptionField().textProperty().addListener((observable, oldValue, newValue) -> {
-            manager.getActiveBlock().setDescription(newValue);
-            if (manager.getActiveBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveBlock()).getShot().setDescription(newValue);
-            }
-        });
+        detailView.getDescriptionField().textProperty().addListener((
+                observable, oldValue, newValue) -> {
+                manager.getActiveBlock().setDescription(newValue);
+                if (manager.getActiveBlock() instanceof CameraShotBlock) {
+                    ((CameraShotBlock) manager.getActiveBlock()).getShot().setDescription(newValue);
+                }
+            });
     }
 
+    /**
+     * Init the name handler.
+     */
     private void initName() {
         detailView.setName("");
 
-        detailView.getNameField().textProperty().addListener((observable, oldValue, newValue) -> {
-            manager.getActiveBlock().setName(newValue);
-            if (manager.getActiveBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveBlock()).getShot().setName(newValue);
-            }
-        });
+        detailView.getNameField().textProperty().addListener((
+                observable, oldValue, newValue) -> {
+                manager.getActiveBlock().setName(newValue);
+                if (manager.getActiveBlock() instanceof CameraShotBlock) {
+                    ((CameraShotBlock) manager.getActiveBlock()).getShot().setName(newValue);
+                }
+            });
     }
 
+    /**
+     * Method to signal that the active block is changed so we can update it.
+     */
     public void activeBlockChanged() {
         if (manager.getActiveBlock() != null) {
             detailView.setDescription(manager.getActiveBlock().getDescription());
             detailView.setName(manager.getActiveBlock().getName());
 
             // TODO: Make doubles possible in detailview
-            detailView.setStartCount((int) manager.getActiveBlock().getBeginCount());
+            detailView.setBeginCount((int) manager.getActiveBlock().getBeginCount());
             detailView.setEndCount((int) manager.getActiveBlock().getEndCount());
         }
     }

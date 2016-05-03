@@ -13,13 +13,14 @@ public class CameraShotBlock extends ShotBlock {
     // The number of the timetable this shot belongs to
     @Getter
     private int timetableNumber;
+
+    // The id of the shot
     @Getter
     private int shotId;
+
+    // THe grid this camershotblock belongs to
     @Getter
     private TimelinesGridPane grid;
-
-    @Getter
-    private CameraShot shot;
 
 
     /**
@@ -30,15 +31,17 @@ public class CameraShotBlock extends ShotBlock {
      * @param beginCount - the begin count of this shot
      * @param endCount - the end count of this shot
      * @param handler - The handler for this camerashotblock
+     * @param description - the description of this camerashotblock
+     * @param name - the name of this camerashotblock
+     * @param shot - The shot in the model belonging to this camerashotblock
      */
     public CameraShotBlock(int shotId, int timetableNumber, RootCenterArea rootCenterArea,
                            double beginCount, double endCount, String description, String name,
                            EventHandler<CameraShotBlockUpdatedEvent> handler, CameraShot shot) {
-        super(rootCenterArea, beginCount, endCount, description, name);
+        super(rootCenterArea, beginCount, endCount, description, name, shot);
         this.shotId = shotId;
         this.timetableNumber = timetableNumber;
         this.grid = rootCenterArea.getGrid();
-        this.shot = shot;
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
                 this.setBeginCount(TimelinesGridPane.getRowIndex(
@@ -73,12 +76,18 @@ public class CameraShotBlock extends ShotBlock {
      */
     @Override
     public void recompute() {
-        TimelinesGridPane.setColumnIndex(this.getTimetableBlock(), timetableNumber);
+        TimelinesGridPane.setColumnIndex(this.getTimetableBlock(),
+                timetableNumber);
         super.recompute();
     }
 
     @Override
     public ShotblockUpdatedEvent getShotBlockUpdatedEvent() {
         return new CameraShotBlockUpdatedEvent(this, timetableNumber);
+    }
+
+    @Override
+    public CameraShot getShot() {
+        return (CameraShot) super.getShot();
     }
 }

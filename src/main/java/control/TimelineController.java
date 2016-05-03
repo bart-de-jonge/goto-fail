@@ -10,8 +10,6 @@ import gui.CameraShotBlockUpdatedEvent;
 import gui.RootPane;
 import lombok.Getter;
 
-import java.util.List;
-
 /**
  * Class that controls the timeline.
  * @author alex
@@ -36,7 +34,6 @@ public class TimelineController {
     /**
      * Constructor.
      * @param manager Root Pane.
-     *                TODO: alsdkjalksdjf
      */
     public TimelineController(ControllerManager manager) {
         this.manager = manager;
@@ -58,7 +55,8 @@ public class TimelineController {
         CameraShot newShot = new CameraShot(name,description, startCount, endCount);
         this.project.getCameraTimelines().get(cameraIndex).addShot(newShot);
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex,
-                rootPane.getRootCenterArea(), startCount, endCount, description, name, this::shotChangedHandler, newShot);
+                rootPane.getRootCenterArea(), startCount, endCount, description,
+                name, this::shotChangedHandler, newShot);
 
         manager.setActiveBlock(shotBlock);
     }
@@ -82,7 +80,7 @@ public class TimelineController {
         CameraShot shot = changedBlock.getShot();
 
         // Adjust model
-        shot.setStartCount(changedBlock.getBeginCount());
+        shot.setBeginCount(changedBlock.getBeginCount());
         shot.setEndCount(changedBlock.getEndCount());
         // Remove shot from previous timeline and add to new one
         previousTimeline.removeShot(shot);
