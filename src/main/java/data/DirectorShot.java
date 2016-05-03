@@ -1,16 +1,27 @@
 package data;
 
-import lombok.Getter;
-import lombok.Setter;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import lombok.ToString;
 
 /**
  * The DirectorShot class has more elaborate information for the Director, like the description.
  * Created by martijn.
  */
+@XmlRootElement(name = "directorShot")
+@ToString
 public class DirectorShot extends Shot {
 
     // Counter that ensures no shots with duplicate numbers will be created.
     private static int instanceCounter = 0;
+    
+    /**
+     * Default Constructor.
+     */
+    public DirectorShot() {
+        super(instanceCounter, "", "", 0, 0);
+        instanceCounter++;
+    }
 
     /**
      * The constructor for the Shot.

@@ -1,5 +1,12 @@
 package control;
 
+import java.io.File;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -8,6 +15,10 @@ import data.ScriptingProject;
 import gui.CameraShotBlock;
 import gui.CameraShotBlockUpdatedEvent;
 import gui.RootPane;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Getter;
 
 /**
@@ -99,4 +110,48 @@ public class TimelineController {
             project.addCameraTimeline(timelineN);
         }
     }
+    
+    /**
+     * Save the current project state to file.
+     * A file chooser window will be opened to select a file
+     */
+    public void save() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save");
+        ExtensionFilter extFilter = new ExtensionFilter("txt files", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showSaveDialog(rootPane.getPrimaryStage());
+        if (file != null) {
+            System.out.println(file.toString());
+            scriptingProject.write(file);
+            
+        }
+    }
+    
+    /**
+     * Load a project from file.
+     * A file chooser window will be opened to select the file.
+     */
+    public void load() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Load");
+        ExtensionFilter extFilter = new ExtensionFilter("txt files", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showOpenDialog(rootPane.getPrimaryStage());
+        if (file != null) {
+            System.out.println(file.toString());
+            ScriptingProject temp  = ScriptingProject.read(file);
+            if (temp == null) {
+                Alert alert = new Alert(AlertType.ERROR); 
+                alert.setTitle("Load Failed");
+                alert.setContentText("The format in the selected file was not recognized");
+                alert.showAndWait();
+            } else {
+                scriptingProject = temp;
+            }
+        }
+    }
+    
+   
+    
 }

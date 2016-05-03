@@ -10,6 +10,9 @@ In IntelliJ, this can be done in your settings under: `Build, Execution, Deploym
 ### Eclipse
 In Eclipse this can also be done. If you are interested, please let us know. We'll happily provide instructions if this is necessary.
 
+## JRE Version
+The minimum required JRE version is 1.8.0_40
+
 ## Git hooks
 To add git hooks necessary for this project run:
 ```shell
