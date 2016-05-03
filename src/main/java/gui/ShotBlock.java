@@ -62,7 +62,6 @@ public abstract class ShotBlock {
      * @param recompute - should we recompute after setting
      */
     public void setBeginCount(double count, boolean recompute) {
-
         if (count <= this.endCount - 1) {
             this.beginCount = count;
         }

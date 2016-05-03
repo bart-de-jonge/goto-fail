@@ -4,7 +4,6 @@ import data.ScriptingProject;
 import gui.RootPane;
 import gui.ShotBlock;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Class wrapper for model management controllers.
@@ -22,7 +21,7 @@ public class ControllerManager {
     private DetailViewController detailViewController;
 
     @Getter
-    private ShotBlock activeBlock;
+    private ShotBlock activeShotBlock;
 
     // Placeholder project in lieu of XML loading
     @Getter
@@ -55,8 +54,8 @@ public class ControllerManager {
         detailViewController = new DetailViewController(this);
     }
 
-    public void setActiveBlock(ShotBlock block) {
-        this.activeBlock = block;
+    public void setActiveShotBlock(ShotBlock block) {
+        this.activeShotBlock = block;
         detailViewController.activeBlockChanged();
     }
 }

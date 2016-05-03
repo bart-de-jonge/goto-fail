@@ -33,19 +33,19 @@ public class TimelineController {
     private final CameraType defType = new CameraType("AW-HE130 HD PTZ", "It's an IP Camera", 0.5);
 
     @Getter
-    private ControllerManager manager;
+    private ControllerManager controllerManager;
 
     @Getter
     private ScriptingProject project;
 
     /**
      * Constructor.
-     * @param manager Root Pane.
+     * @param controllerManager Root Pane.
      */
-    public TimelineController(ControllerManager manager) {
-        this.manager = manager;
-        this.rootPane = manager.getRootPane();
-        this.project = manager.getScriptingProject();
+    public TimelineController(ControllerManager controllerManager) {
+        this.controllerManager = controllerManager;
+        this.rootPane = controllerManager.getRootPane();
+        this.project = controllerManager.getScriptingProject();
         initializeCameraTimelines();
     }
 
@@ -65,7 +65,7 @@ public class TimelineController {
                 rootPane.getRootCenterArea(), startCount, endCount, description,
                 name, this::shotChangedHandler, newShot);
 
-        manager.setActiveBlock(shotBlock);
+        controllerManager.setActiveShotBlock(shotBlock);
     }
 
 
@@ -79,7 +79,7 @@ public class TimelineController {
     public void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
         CameraShotBlock changedBlock = event.getCameraShotBlock();
 
-        manager.setActiveBlock(changedBlock);
+        controllerManager.setActiveShotBlock(changedBlock);
 
         CameraTimeline previousTimeline = this.project.getCameraTimelines()
                 .get(event.getOldTimelineNumber());
@@ -118,9 +118,7 @@ public class TimelineController {
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(rootPane.getPrimaryStage());
         if (file != null) {
-            System.out.println(file.toString());
             project.write(file);
-            
         }
     }
     
@@ -135,7 +133,6 @@ public class TimelineController {
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showOpenDialog(rootPane.getPrimaryStage());
         if (file != null) {
-            System.out.println(file.toString());
             ScriptingProject temp  = ScriptingProject.read(file);
             if (temp == null) {
                 Alert alert = new Alert(AlertType.ERROR); 
