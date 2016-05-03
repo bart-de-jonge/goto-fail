@@ -28,7 +28,7 @@ public abstract class ShotBlock {
     private String description;
 
     // The name of this shotblock
-    @Getter @Setter
+    @Getter
     private String name;
 
     // The actual shot in the model that belongs to this shotblock
@@ -56,14 +56,6 @@ public abstract class ShotBlock {
     }
 
     /**
-     * Set name of this shotblock. No Lombok because it does some extra work for the GUI.
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * Set the begin count of this shotblock.
      * @param count - the new begincount
      * @param recompute - should we recompute after setting
@@ -75,6 +67,7 @@ public abstract class ShotBlock {
         if (recompute) {
             this.recompute();
         }
+        redrawCounts();
     }
 
     /**
@@ -97,6 +90,7 @@ public abstract class ShotBlock {
         if (recompute) {
             this.recompute();
         }
+        redrawCounts();
     }
 
     /**
@@ -105,6 +99,34 @@ public abstract class ShotBlock {
      */
     public void setEndCount(double count) {
         this.setEndCount(count, true);
+    }
+
+    /**
+     * Set name of this shotblock. No Lombok because it does some extra work for the GUI.
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+        timetableBlock.getTitleNormalLabel().setText(name);
+        timetableBlock.getTitleDraggedLabel().setText(name);
+    }
+
+    /**
+     * Set description of this shotBlock. No Lombok because it does some extra work for the GUI.
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+        timetableBlock.getDescriptionNormalLabel().setText(description);
+        timetableBlock.getDescriptionDraggedLabel().setText(description);
+    }
+
+    /**
+     * Helper function to redraw block counts.
+     */
+    private void redrawCounts() {
+        timetableBlock.getCountNormalLabel().setText(beginCount + " - " + endCount);
+        timetableBlock.getCountDraggedLabel().setText(beginCount + " - " + endCount);
     }
 
     /**

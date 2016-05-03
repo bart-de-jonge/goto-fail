@@ -80,8 +80,6 @@ public class CameraShotBlock extends ShotBlock {
         TimelinesGridPane.setColumnIndex(this.getTimetableBlock(),
                 timetableNumber);
         super.recompute();
-        
-        this.getTimetableBlock().getTitleNormalLabel().setText(this.getName());
     }
 
     @Override

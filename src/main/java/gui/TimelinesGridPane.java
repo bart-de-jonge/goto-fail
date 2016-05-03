@@ -44,13 +44,13 @@ public class TimelinesGridPane extends GridPane {
         this.numberOfCounts = numberOfCounts;
         this.panes = new ArrayList<>();
         this.setMinWidth(width);
-        this.setMinHeight(height);
-        this.setMaxHeight(height);
+        this.setMinHeight(countHeight * numberOfCounts);
+        this.setMaxHeight(countHeight * numberOfCounts);
 
         addPanes();
 
         this.setGridLinesVisible(false);
-        //this.setPadding(new Insets(5, 5, 5, 5));
+        //this.setPadding(new Insets(5, 5, 5, 5)); // don't remove this. - Mark
 
         // set constraints, with minimum size 100x100, and maximum size infinite.
         for (int i = 0; i < numberOfTimelines; i++) {
@@ -84,12 +84,24 @@ public class TimelinesGridPane extends GridPane {
      */
     private void addPanes() {
         panes = new ArrayList<>();
-
-        for (int i = 0; i < numberOfCounts; i++) {
-            for (int j = 0; j < numberOfTimelines; j++) {
-                SnappingPane pane = new SnappingPane(i, j, 200, 50);
-                this.add(pane, j, i);
+        int count;
+        for (int i = 0; i < numberOfTimelines; i++) {
+            count = 0;
+            for (int j = 0; j < numberOfCounts; j++) {
+                SnappingPane pane = new SnappingPane(j, i, 200, countHeight);
+                this.add(pane, i, j);
                 panes.add(pane);
+                pane.setStyle("-fx-border-color: gray;"
+                        + "-fx-border-width: 0.1px 1px 0.1px 1px;");;
+//                if (count == 2) {
+//                    count = 0;
+//                    pane.setStyle("-fx-border-color: gray;"
+//                            + "-fx-border-width: 0.1px 1px 0px 1px;");;
+//                } else {
+//                    count++;
+//                    pane.setStyle("-fx-border-color: gray;"
+//                            + "-fx-border-width: 0px 1px 0px 1px;");
+//                }
             }
         }
     }

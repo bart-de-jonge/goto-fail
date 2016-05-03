@@ -100,6 +100,12 @@ public class TimetableBlock extends Pane {
     @Getter
     private Label countDraggedLabel;
 
+    @Getter
+    private Label descriptionNormalLabel;
+
+    @Getter
+    private Label descriptionDraggedLabel;
+
     /*
         Misc variables.
         For dragging, panes etc
@@ -177,7 +183,9 @@ public class TimetableBlock extends Pane {
 
         // add some labels etc
         titleNormalLabel = initTitleLabel(contentPane);
-        addCountLabel(contentPane);
+        countNormalLabel = initCountLabel(contentPane);
+        descriptionNormalLabel = initCountLabel(contentPane);
+        descriptionNormalLabel.setWrapText(true);
 
         addWithClipRegion(contentPane, this);
     }
@@ -215,7 +223,9 @@ public class TimetableBlock extends Pane {
 
         // add some labels etc
         titleDraggedLabel = initTitleLabel(draggedContentPane);
-        addCountLabel((draggedContentPane));
+        countDraggedLabel = initCountLabel(draggedContentPane);
+        descriptionDraggedLabel = initCountLabel(draggedContentPane);
+        descriptionDraggedLabel.setWrapText(true);
 
         addWithClipRegion(draggedContentPane, draggedPane);
         pane.getParentPane().getChildren().add(draggedPane);
@@ -246,12 +256,13 @@ public class TimetableBlock extends Pane {
     }
 
     /**
-     * Temporary helper function to add test title labels to panes.
+     * Helper function to add title labels to panes.
      * @param vbox pane to add to
+     * @return the label in question.
      */
     private Label initTitleLabel(VBox vbox) {
         Label res = new Label();
-        res.setText("dede");
+        res.setText("Block Title");
         res.maxWidthProperty().bind(this.widthProperty());
         res.setPadding(new Insets(0,0,0,5));
         res.setStyle(textTitleStyle);
@@ -260,31 +271,46 @@ public class TimetableBlock extends Pane {
     }
 
     /**
-     * Temporary helper function to add test count labels to panes.
+     * Helper function to add count labels to panes.
      * @param vbox pane to add to
+     * @return the label in question.
      */
-    private void addCountLabel(VBox vbox) {
-        Label label = new Label();
-        label.setText(getParentBlock().getBeginCount() + " - " + parentBlock.getEndCount());
-        label.maxWidthProperty().bind(this.widthProperty());
-        label.setPadding(new Insets(5,5,5,5));
-        label.setStyle(textNormalStyle);
-        vbox.getChildren().add(label);
+    private Label initCountLabel(VBox vbox) {
+        Label res = new Label();
+        res.setText("0 - 0");
+        res.maxWidthProperty().bind(this.widthProperty());
+        res.setPadding(new Insets(0,5,5,5));
+        res.setStyle(textNormalStyle);
+        vbox.getChildren().add(res);
+        return res;
     }
 
-    /**
-     * Temporary helper function to add test labels to panes.
-     * @param vbox pane to add to
-     */
-    private void addTestLabels(VBox vbox) {
-        for (int i = 0; i < 6; i++) {
-            Label label = new Label(shots);
-            label.maxWidthProperty().bind(this.widthProperty());
-            label.setPadding(new Insets(5,5,5,5));
-            label.setStyle(textNormalStyle);
-            vbox.getChildren().add(label);
-        }
-    }
+//    /**
+//     * Temporary helper function to add test count labels to panes.
+//     * @param vbox pane to add to
+//     */
+//    private void addCountLabel(VBox vbox) {
+//        Label label = new Label();
+//        label.setText(getParentBlock().getBeginCount() + " - " + parentBlock.getEndCount());
+//        label.maxWidthProperty().bind(this.widthProperty());
+//        label.setPadding(new Insets(5,5,5,5));
+//        label.setStyle(textNormalStyle);
+//        vbox.getChildren().add(label);
+//    }
+//
+//    /**
+//     * Temporary helper function to add test labels to panes.
+//     * @param vbox pane to add to
+//     */
+//    private void addTestLabels(VBox vbox) {
+//        for (int i = 0; i < 6; i++) {
+//            Label label = new Label(shots);
+//            label.maxWidthProperty().bind(this.widthProperty());
+//            label.setPadding(new Insets(5,5,5,5));
+//            label.setStyle(textNormalStyle);
+//            vbox.getChildren().add(label);
+//        }
+//    }
 
     /**
      * Get handler for on mouse moved (handling cursors).
@@ -389,11 +415,9 @@ public class TimetableBlock extends Pane {
      */
     private EventHandler<MouseEvent> getOnreleaseHandler() {
         return e -> {
-            //draggedPane.getChildren().remove(0);
             draggedPane.setVisible(false);
             thisBlock.setVisible(true);
             feedbackPane.setVisible(false);
-            //TODO: enable this again
             feedbackPane.getChildren().remove(0);
             dragging = false;
             snapPane(thisBlock, draggedPane, e.getSceneX(), e.getSceneY(), draggingType);
