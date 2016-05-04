@@ -12,10 +12,9 @@ import data.CameraTimeline;
 import data.CameraType;
 import data.ScriptingProject;
 import data.Shot;
-import gui.CameraShotBlock;
-import gui.CameraShotBlockUpdatedEvent;
-import gui.RootPane;
-import gui.ShotBlock;
+import gui.centerarea.CameraShotBlock;
+import gui.events.CameraShotBlockUpdatedEvent;
+import gui.root.RootPane;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
@@ -32,7 +31,7 @@ public class TimelineController {
 
     private RootPane rootPane;
 
-    // TODO: replace number of timelines with xml data
+    // TODO: replace number of centerarea with xml data
     private final int numTimelines = 8;
 
     // Placeholder camera type until GUI allows personalized entry
@@ -108,7 +107,7 @@ public class TimelineController {
     /**
      * Handle updated camera shot. The previous timeline is used to retrieve the corresponding
      * shot. The correct {@link CameraShot} is then updated using the latest {@link CameraShotBlock}
-     * position and counts. As the event is unclear as to whether the shot has switched timelines,
+     * position and counts. As the event is unclear as to whether the shot has switched centerarea,
      * it is removed from the previous timeline and added to the new one.
      * @param event Camera shot change event.
      */
@@ -215,7 +214,7 @@ public class TimelineController {
     }
 
     /**
-     * Create camera timelines based on GUI. (Anti-pattern)
+     * Create camera centerarea based on GUI. (Anti-pattern)
      * TODO: Replace this with proper XML based project creation
      */
     private void initializeCameraTimelines() {

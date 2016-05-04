@@ -1,4 +1,4 @@
-package gui;
+package gui.root;
 
 /**
  * Created by markv on 4/26/2016.

@@ -1,4 +1,4 @@
-package gui;
+package gui.centerarea;
 
 /**
  * Class that represents the grid pane in the scrollable director timeline.

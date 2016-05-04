@@ -1,5 +1,7 @@
-package gui;
+package gui.centerarea;
 
+import gui.misc.BlurHelper;
+import gui.root.RootCenterArea;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;

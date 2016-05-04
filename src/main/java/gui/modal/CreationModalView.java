@@ -1,5 +1,8 @@
-package gui;
+package gui.modal;
 
+import gui.root.RootPane;
+import gui.events.DirectorShotCreationEvent;
+import gui.headerarea.NumberTextField;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -219,7 +222,7 @@ public class CreationModalView extends ModalView {
     }
 
     /**
-     * Builds a list of which camera timelines are in the shot.
+     * Builds a list of which camera centerarea are in the shot.
      * @return list of cameras in shot
      */
     private List<Integer> getCamerasInShot() {

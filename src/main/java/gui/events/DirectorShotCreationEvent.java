@@ -1,4 +1,4 @@
-package gui;
+package gui.events;
 
 import lombok.Getter;
 

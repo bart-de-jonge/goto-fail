@@ -1,4 +1,4 @@
-package gui;
+package gui.root;
 
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;

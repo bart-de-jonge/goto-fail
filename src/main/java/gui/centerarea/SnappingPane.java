@@ -1,4 +1,4 @@
-package gui;
+package gui.centerarea;
 
 import javafx.scene.layout.Pane;
 import lombok.Getter;

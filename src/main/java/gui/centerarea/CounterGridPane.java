@@ -1,10 +1,6 @@
-package gui;
+package gui.centerarea;
 
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
-import lombok.Getter;
+import gui.centerarea.ScrollableGridPane;
 
 /**
  * Class that represents the grid pane in the scrollable counter bar.

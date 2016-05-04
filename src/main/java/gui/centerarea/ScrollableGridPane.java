@@ -1,4 +1,4 @@
-package gui;
+package gui.centerarea;
 
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;

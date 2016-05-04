@@ -1,5 +1,8 @@
-package gui;
+package gui.root;
 
+import gui.centerarea.CounterGridPane;
+import gui.centerarea.DirectorGridPane;
+import gui.centerarea.TimelinesGridPane;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;

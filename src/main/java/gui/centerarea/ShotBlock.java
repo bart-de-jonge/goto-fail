@@ -1,6 +1,8 @@
-package gui;
+package gui.centerarea;
 
 import data.Shot;
+import gui.root.RootCenterArea;
+import gui.events.ShotblockUpdatedEvent;
 import javafx.event.EventHandler;
 import lombok.Getter;
 import lombok.Setter;

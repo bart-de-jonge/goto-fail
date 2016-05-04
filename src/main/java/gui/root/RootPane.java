@@ -1,4 +1,4 @@
-package gui;
+package gui.root;
 
 import control.ControllerManager;
 import javafx.application.Application;

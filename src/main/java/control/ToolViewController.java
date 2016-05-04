@@ -1,12 +1,11 @@
 package control;
 
 import data.ScriptingProject;
-import gui.CameraShotBlock;
-import gui.CreationModalView;
-import gui.DirectorShotCreationEvent;
-import gui.ModalView;
-import gui.ShotBlock;
-import gui.ToolButton;
+import gui.centerarea.CameraShotBlock;
+import gui.modal.CreationModalView;
+import gui.events.DirectorShotCreationEvent;
+import gui.centerarea.ShotBlock;
+import gui.headerarea.ToolButton;
 import javafx.scene.input.MouseEvent;
 
 /**

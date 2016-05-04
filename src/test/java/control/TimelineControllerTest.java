@@ -2,9 +2,9 @@ package control;
 
 import data.CameraShot;
 import data.ScriptingProject;
-import gui.CameraShotBlock;
-import gui.CameraShotBlockUpdatedEvent;
-import gui.RootPane;
+import gui.centerarea.CameraShotBlock;
+import gui.events.CameraShotBlockUpdatedEvent;
+import gui.root.RootPane;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -65,7 +65,7 @@ public class TimelineControllerTest {
                 new CameraShotBlockUpdatedEvent(shotBlock, 0)
         );
 
-        // Verify movement between timelines
+        // Verify movement between centerarea
         assertEquals(1, project.getCameraTimelines().get(0).getShots().size());
         assertEquals(0, project.getCameraTimelines().get(1).getShots().size());
     }
