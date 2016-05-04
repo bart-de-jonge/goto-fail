@@ -10,6 +10,7 @@ import data.ScriptingProject;
 import gui.CameraShotBlock;
 import gui.CameraShotBlockUpdatedEvent;
 import gui.RootPane;
+import gui.ShotBlock;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
@@ -91,6 +92,22 @@ public class TimelineController {
         previousTimeline.removeShot(shot);
         this.project.getCameraTimelines()
                 .get(changedBlock.getTimetableNumber()).addShot(shot);
+    }
+
+    /**
+     * Remove a camera shot from both the display and the timeline.
+     * @param shotBlock CameraShotBlock to be removed
+     */
+    public void removeCameraShot(CameraShotBlock shotBlock) {
+        // If we are removing the active shot, then this must be updated accordingly
+        if (this.controllerManager.getActiveShotBlock().equals(shotBlock)) {
+            this.controllerManager.setActiveShotBlock(null);
+        }
+        System.out.println("Removing the shot");
+
+        CameraTimeline cameraTimeline = this.project.getCameraTimelines()
+                .get(shotBlock.getTimetableNumber());
+        cameraTimeline.removeShot(shotBlock.getShot());
     }
 
     /**
