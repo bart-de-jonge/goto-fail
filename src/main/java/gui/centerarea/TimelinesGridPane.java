@@ -63,7 +63,7 @@ public class TimelinesGridPane extends ScrollableGridPane {
         for (int i = 0; i < getNumberOfHorizontalGrids(); i++) {
             c = 1;
             for (int j = 0; j < getNumberOfVerticalGrids(); j++) {
-                SnappingPane pane = new SnappingPane(j, i, 200, getVerticalElementSize());
+                SnappingPane pane = new SnappingPane(j, i);
                 this.add(pane, i, j);
                 panes.add(pane);
                 if (c > gridLineSkips) {

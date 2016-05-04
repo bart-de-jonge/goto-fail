@@ -22,10 +22,8 @@ public class SnappingPane extends Pane {
      * Constructor.
      * @param row - the row number of this snapping pane
      * @param column - the column number of this snapping pane
-     * @param width - the width of this snapping pane
-     * @param height - the height of this snapping pane
      */
-    public SnappingPane(int row, int column, double width, double height) {
+    public SnappingPane(int row, int column) {
         this.row = row;
         this.column = column;
         this.bottomHalf = false;

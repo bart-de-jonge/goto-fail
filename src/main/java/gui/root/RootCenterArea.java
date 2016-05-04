@@ -25,8 +25,11 @@ public class RootCenterArea extends StackPane {
     @Getter
     private int directorAndCounterPaneMaxWidth = 200;
     @Getter
+    private int countHeight = 10; // 10 works well, if you've changed this.
+    @Getter
+    private int timelineWidth = 100; // 100 works well, if you've changed this.
+    @Getter
     private RootPane rootPane;
-
 
     /**
      * Trio of panes necessary for the main timeline.
@@ -88,14 +91,12 @@ public class RootCenterArea extends StackPane {
         // main timeline panes
         mainTimelineScrollpane = new ScrollPane();
         mainTimeLineAnchorPane = new AnchorPane();
-        mainTimeLineGridPane = new TimelinesGridPane(numberOfTimelines, numberOfCounts, 100, 10,
+        mainTimeLineGridPane = new TimelinesGridPane(numberOfTimelines, numberOfCounts, timelineWidth, countHeight,
                 directorAndCounterPaneMaxWidth);
         mainTimeLineAnchorPane.setLeftAnchor(mainTimeLineGridPane, 0.0);
         mainTimeLineAnchorPane.setRightAnchor(mainTimeLineGridPane, 0.0);
         mainTimeLineAnchorPane.setTopAnchor(mainTimeLineGridPane, 0.0);
         mainTimeLineAnchorPane.getChildren().add(mainTimeLineGridPane);
-        mainTimeLineAnchorPane.setMinHeight(1000);
-        mainTimeLineAnchorPane.setMinWidth(1000);
         mainTimelineScrollpane.setFitToWidth(true);
         mainTimelineScrollpane.setContent(mainTimeLineAnchorPane);
         mainTimelineScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -108,7 +109,7 @@ public class RootCenterArea extends StackPane {
     private void initCounterPane() {
         counterScrollpane = new ScrollPane();
         counterAnchorPane = new AnchorPane();
-        counterGridPane = new CounterGridPane(numberOfCounts, 100, 10);
+        counterGridPane = new CounterGridPane(numberOfCounts, timelineWidth, countHeight);
         counterAnchorPane.setLeftAnchor(counterGridPane, 0.0);
         counterAnchorPane.setRightAnchor(counterGridPane, 0.0);
         counterAnchorPane.setTopAnchor(counterGridPane, 0.0);
@@ -116,7 +117,6 @@ public class RootCenterArea extends StackPane {
         counterScrollpane.setContent(counterAnchorPane);
         counterScrollpane.setFitToWidth(true);
         counterScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        counterAnchorPane.setMinHeight(1000);
         counterScrollpane.setStyle("-fx-background-color: yellow"); // debugcolor for now
         counterScrollpane.vvalueProperty().bindBidirectional(
                 mainTimelineScrollpane.vvalueProperty());
@@ -129,7 +129,7 @@ public class RootCenterArea extends StackPane {
     private void initDirectorPane() {
         directorScrollpane = new ScrollPane();
         directorAnchorPane = new AnchorPane();
-        directorGridPane = new DirectorGridPane(numberOfCounts, 100, 10);
+        directorGridPane = new DirectorGridPane(numberOfCounts, timelineWidth, countHeight);
         directorAnchorPane.setLeftAnchor(directorGridPane, 0.0);
         directorAnchorPane.setRightAnchor(directorGridPane, 0.0);
         directorAnchorPane.setTopAnchor(directorGridPane, 0.0);
@@ -137,7 +137,6 @@ public class RootCenterArea extends StackPane {
         directorScrollpane.setContent(directorAnchorPane);
         directorScrollpane.setFitToWidth(true);
         directorScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        directorAnchorPane.setMinHeight(1000);
         directorScrollpane.setStyle("-fx-background-color: orange"); // debugcolor for now
         directorScrollpane.vvalueProperty().bindBidirectional(
                 mainTimelineScrollpane.vvalueProperty());
