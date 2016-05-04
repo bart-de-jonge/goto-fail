@@ -91,8 +91,8 @@ public class RootCenterArea extends StackPane {
         // main timeline panes
         mainTimelineScrollpane = new ScrollPane();
         mainTimeLineAnchorPane = new AnchorPane();
-        mainTimeLineGridPane = new TimelinesGridPane(numberOfTimelines, numberOfCounts, timelineWidth, countHeight,
-                directorAndCounterPaneMaxWidth);
+        mainTimeLineGridPane = new TimelinesGridPane(numberOfTimelines, numberOfCounts,
+                timelineWidth,  countHeight, directorAndCounterPaneMaxWidth);
         mainTimeLineAnchorPane.setLeftAnchor(mainTimeLineGridPane, 0.0);
         mainTimeLineAnchorPane.setRightAnchor(mainTimeLineGridPane, 0.0);
         mainTimeLineAnchorPane.setTopAnchor(mainTimeLineGridPane, 0.0);
