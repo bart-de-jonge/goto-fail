@@ -14,7 +14,7 @@ public class RootCenterArea extends ScrollPane {
     @Getter @Setter
     private int numberOfTimelines = 8;
     @Getter @Setter
-    private int numberOfCounts = 20;
+    private int numberOfCounts = 100;
 
     @Getter
     private RootPane rootPane;

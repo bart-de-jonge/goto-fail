@@ -27,7 +27,7 @@ public class TimelinesGridPane extends GridPane {
 
     // Height and width of count and timelines. Note that timelineWidth is a minimum.
     @Getter
-    private double countHeight = 25;
+    private double countHeight = 10;
     @Getter
     private double timelineWidth = 100;
 
@@ -86,13 +86,22 @@ public class TimelinesGridPane extends GridPane {
      */
     private void addPanes() {
         panes = new ArrayList<>();
+        int c;
         for (int i = 0; i < numberOfTimelines; i++) {
+            c = 1;
             for (int j = 0; j < numberOfCounts; j++) {
                 SnappingPane pane = new SnappingPane(j, i, 200, countHeight);
                 this.add(pane, i, j);
                 panes.add(pane);
-                pane.setStyle("-fx-border-color: gray;"
-                        + "-fx-border-width: 0.1px 1px 0.1px 1px;");;
+                if (c > 4) {
+                    pane.setStyle("-fx-border-color: gray;"
+                            + "-fx-border-width: 0.1px 1px 0px 1px;");
+                    c = 2;
+                } else {
+                    pane.setStyle("-fx-border-color: gray;"
+                            + "-fx-border-width: 0px 1px 0px 1px;");
+                    c++;
+                }
             }
         }
     }
