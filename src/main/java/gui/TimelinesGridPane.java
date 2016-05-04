@@ -30,6 +30,8 @@ public class TimelinesGridPane extends GridPane {
     private double countHeight = 10;
     @Getter
     private double timelineWidth = 100;
+    @Getter
+    private int gridLineSkips = 4;
 
     /**
      * Constructor.
@@ -37,9 +39,10 @@ public class TimelinesGridPane extends GridPane {
      * @param numberOfCounts - The number of counts in this gridpane
      * @param width - The width of this gridpane
      * @param height - the height of this gridpane
+     * @param offsetFromLeft - how much offset from the left due to coverage by directortimeline.
      */
     public TimelinesGridPane(int numberOfTimelines, int numberOfCounts,
-                             double width, double height) {
+                             double width, double height, int offsetFromLeft) {
         this.numberOfTimelines = numberOfTimelines;
         this.numberOfCounts = numberOfCounts;
         this.panes = new ArrayList<>();
@@ -51,7 +54,7 @@ public class TimelinesGridPane extends GridPane {
 
         this.setGridLinesVisible(false);
         // offset to the left
-        this.setPadding(new Insets(0, 0, 0, 200));
+        this.setPadding(new Insets(0, 0, 0, offsetFromLeft));
 
         // set constraints, with minimum size 100x100, and maximum size infinite.
         for (int i = 0; i < numberOfTimelines; i++) {
@@ -100,7 +103,7 @@ public class TimelinesGridPane extends GridPane {
                 SnappingPane pane = new SnappingPane(j, i, 200, countHeight);
                 this.add(pane, i, j);
                 panes.add(pane);
-                if (c > 4) {
+                if (c > gridLineSkips) {
                     pane.setStyle("-fx-border-color: gray;"
                             + "-fx-border-width: 0.1px 1px 0px 1px;");
                     c = 2;

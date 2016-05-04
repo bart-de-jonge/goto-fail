@@ -16,7 +16,7 @@ public class CounterGridPane extends GridPane {
     @Getter
     private int numberOfCounts;
 
-    // Height and width of count and timelines. Note that timelineWidth is a minimum.
+    // Height of count. Value of 10 seems to work fine.
     @Getter
     private double countHeight = 10;
 
