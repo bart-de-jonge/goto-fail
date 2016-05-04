@@ -67,6 +67,24 @@ public class TimelineController {
         controllerManager.setActiveShotBlock(shotBlock);
     }
 
+    /**
+     * Remove a camera shot from both the display and the timeline.
+     * @param cameraShotBlock CameraShotBlock to be removed
+     */
+    public void removeCameraShot(CameraShotBlock cameraShotBlock) {
+        // If we are removing the active shot, then this must be updated accordingly
+        if (this.controllerManager.getActiveShotBlock().equals(cameraShotBlock)) {
+            this.controllerManager.setActiveShotBlock(null);
+        }
+
+        // Remove the shot from the model
+        CameraTimeline cameraTimeline = this.project.getCameraTimelines()
+                .get(cameraShotBlock.getTimetableNumber());
+        cameraTimeline.removeShot(cameraShotBlock.getShot());
+
+        // Then remove the shot from the view
+        cameraShotBlock.removeFromView();
+    }
 
     /**
      * Handle updated camera shot. The previous timeline is used to retrieve the corresponding
@@ -92,22 +110,6 @@ public class TimelineController {
         previousTimeline.removeShot(shot);
         this.project.getCameraTimelines()
                 .get(changedBlock.getTimetableNumber()).addShot(shot);
-    }
-
-    /**
-     * Remove a camera shot from both the display and the timeline.
-     * @param shotBlock CameraShotBlock to be removed
-     */
-    public void removeCameraShot(CameraShotBlock shotBlock) {
-        // If we are removing the active shot, then this must be updated accordingly
-        if (this.controllerManager.getActiveShotBlock().equals(shotBlock)) {
-            this.controllerManager.setActiveShotBlock(null);
-        }
-        System.out.println("Removing the shot");
-
-        CameraTimeline cameraTimeline = this.project.getCameraTimelines()
-                .get(shotBlock.getTimetableNumber());
-        cameraTimeline.removeShot(shotBlock.getShot());
     }
 
     /**
@@ -159,7 +161,4 @@ public class TimelineController {
             }
         }
     }
-    
-   
-    
 }

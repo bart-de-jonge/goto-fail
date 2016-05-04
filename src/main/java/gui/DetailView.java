@@ -16,6 +16,9 @@ public class DetailView extends VBox {
 
     private GridPane grid;
 
+    private static final String defaultEmptyString = "";
+    private static final String defaultEmptyNumber = "0";
+
     private int numberOfColumns = 3;
     private int numberOfRows = 2;
 
@@ -145,4 +148,13 @@ public class DetailView extends VBox {
         grid.setColumnSpan(descriptionBox, 2);
     }
 
+    /**
+     * Reset the detailview to its default empty values.
+     */
+    public void resetDetails() {
+        this.nameField.setText(defaultEmptyString);
+        this.descriptionField.setText(defaultEmptyString);
+        this.beginCountField.setText(defaultEmptyNumber);
+        this.endCountField.setText(defaultEmptyNumber);
+    }
 }
