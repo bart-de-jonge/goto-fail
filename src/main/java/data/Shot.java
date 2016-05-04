@@ -14,7 +14,6 @@ import java.util.ArrayList;
  * This class contains information about a Shot.
  */
 @XmlRootElement(name = "shot")
-@ToString(exclude="collidesWith")
 @Log4j2
 public abstract class Shot {
 
@@ -141,7 +140,6 @@ public abstract class Shot {
                 other.getCollidesWith().remove(this);
             }
         }
-
         return result;
     }
 }

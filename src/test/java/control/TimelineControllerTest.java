@@ -66,7 +66,7 @@ public class TimelineControllerTest {
         );
 
         // Verify movement between timelines
-        assertEquals(2, project.getCameraTimelines().get(0).getShots().size());
+        assertEquals(1, project.getCameraTimelines().get(0).getShots().size());
         assertEquals(0, project.getCameraTimelines().get(1).getShots().size());
     }
 }

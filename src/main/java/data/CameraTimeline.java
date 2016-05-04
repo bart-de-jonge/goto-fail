@@ -110,7 +110,8 @@ public class CameraTimeline extends Timeline {
 
         // check for overlapping shots
         result.addAll(shots.stream()
-                .filter(other -> shot != other && checkOverlap(shot, other, camera.getMovementMargin()))
+                .filter(other -> shot != other && checkOverlap(shot,
+                        other, camera.getMovementMargin()))
                 .collect(Collectors.toList()));
         result.add(shot);
         return result;

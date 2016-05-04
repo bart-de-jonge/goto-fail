@@ -6,7 +6,12 @@ import java.util.ArrayList;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import data.*;
+import data.Camera;
+import data.CameraShot;
+import data.CameraTimeline;
+import data.CameraType;
+import data.ScriptingProject;
+import data.Shot;
 import gui.CameraShotBlock;
 import gui.CameraShotBlockUpdatedEvent;
 import gui.RootPane;
@@ -15,6 +20,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Getter;
+
+import static javax.swing.UIManager.get;
 
 /**
  * Class that controls the timeline.
@@ -100,20 +107,22 @@ public class TimelineController {
         shot.setBeginCount(changedBlock.getBeginCount());
         shot.setEndCount(changedBlock.getEndCount());
 
-        CameraTimeline newCameraTimeline = this.project.getCameraTimelines().get(changedBlock.getTimetableNumber());
+        CameraTimeline newCameraTimeline = this.project.getCameraTimelines()
+                .get(changedBlock.getTimetableNumber());
 
         // Remove shot from previous timeline and add to new one if changed
-        if(event.getOldTimelineNumber() != changedBlock.getTimetableNumber()) {
+        if (event.getOldTimelineNumber() != changedBlock.getTimetableNumber()) {
             previousTimeline.removeShot(shot);
             newCameraTimeline.addShot(shot);
         }
 
         // check for collisions
-        checkCollisions(changedBlock.getTimetableNumber(), event.getOldTimelineNumber(), changedBlock);
+        checkCollisions(changedBlock.getTimetableNumber(),
+                event.getOldTimelineNumber(), changedBlock);
     }
 
     /**
-     * Check collisions for new camerablock
+     * Check collisions for new camerablock.
      * @param timelineNumber - the timelinenumber where the camerashotblock is added
      * @param cameraShotBlock - the camerashotblock to check collisions with
      */
@@ -124,45 +133,45 @@ public class TimelineController {
     /**
      * Check for collisions (added and removed).
      * @param timelineNumber - the current timeline number to check new collisions
-     * @param oldTimelineNumber - the old timeline number to check which collisions are not valid anymore
-     *                          should be negative when adding new block
+     * @param oldTimelineNumber - the old timeline number to check which collisions are not valid
+     *                          anymore should be negative when adding new block
      * @param cameraShotBlock - the shotblock to check collisions with
      */
-    private void checkCollisions(int timelineNumber, int oldTimelineNumber, CameraShotBlock cameraShotBlock) {
+    private void checkCollisions(int timelineNumber, int oldTimelineNumber,
+                                 CameraShotBlock cameraShotBlock) {
         // Get the correct timeline
         CameraTimeline timeline = project.getCameraTimelines().get(timelineNumber);
-
         // Remove collisions from shot if added to new timeline
         if (oldTimelineNumber >= 0) {
             removeCollisionFromCameraShotBlock(cameraShotBlock);
-
             // Remove overlaps for non-overlapping shotblocks
             ArrayList<CameraShotBlock> toRemove = new ArrayList<>();
-            this.overlappingCameraShotBlocks.stream().filter(shotBlock -> shotBlock.getShot().getCollidesWith().isEmpty()).forEach(shotBlock -> {
-                shotBlock.setColliding(false);
-                toRemove.add(shotBlock);
-            });
+            this.overlappingCameraShotBlocks.stream().filter(shotBlock -> shotBlock.getShot()
+                    .getCollidesWith().isEmpty()).forEach(shotBlock -> {
+                            shotBlock.setColliding(false);
+                            toRemove.add(shotBlock);
+                        });
             this.overlappingCameraShotBlocks.removeAll(toRemove);
         }
 
-
         // Check for collisions
-        ArrayList<CameraShot> overlappingShots = timeline.getOverlappingShots(cameraShotBlock.getShot());
+        ArrayList<CameraShot> overlappingShots = timeline
+                .getOverlappingShots(cameraShotBlock.getShot());
         if (overlappingShots.size() > 1) {
-
             // Collision detected
             ArrayList<CameraShotBlock> overlappingShotBlocks = new ArrayList<>();
             Supplier<ArrayList<Integer>> supplier = ArrayList::new;
-            ArrayList<Integer> myInts = overlappingShots.stream().map(Shot::getInstance).collect(Collectors.toCollection(supplier));
+            ArrayList<Integer> myInts = overlappingShots.stream().map(Shot::getInstance)
+                    .collect(Collectors.toCollection(supplier));
 
             // Get CameraShotBlock
-            this.cameraShotBlocks.stream().filter(shotBlock -> myInts.contains(shotBlock.getShotId())).forEach(shotBlock -> {
-                overlappingShotBlocks.add(shotBlock);
-                if (!this.overlappingCameraShotBlocks.contains(shotBlock)) {
-                    this.overlappingCameraShotBlocks.add(shotBlock);
-                }
-            });
-
+            this.cameraShotBlocks.stream().filter(shotBlock ->
+                    myInts.contains(shotBlock.getShotId())).forEach(shotBlock -> {
+                            overlappingShotBlocks.add(shotBlock);
+                            if (!this.overlappingCameraShotBlocks.contains(shotBlock)) {
+                                this.overlappingCameraShotBlocks.add(shotBlock);
+                            }
+                        });
             // Make camerashotblocks red
             for (CameraShotBlock shotBlock : overlappingShotBlocks) {
                 shotBlock.setColliding(true);
@@ -170,6 +179,11 @@ public class TimelineController {
         }
     }
 
+    /**
+     * Remove all collisions and from this shotblock.
+     * Removes the collisions from the counterpart in each collision as well
+     * @param shotBlock - the shotblock to remove the collisions from
+     */
     private void removeCollisionFromCameraShotBlock(CameraShotBlock shotBlock) {
         ArrayList<Shot> toRemove = new ArrayList<>();
         for (Shot shot : shotBlock.getShot().getCollidesWith()) {

@@ -59,6 +59,11 @@ public abstract class ShotBlock {
         this.colliding = false;
     }
 
+    /**
+     * Set colliding field of this camerashotblock.
+     * Apply styling changes here
+     * @param colliding - the new colliding value
+     */
     public void setColliding(boolean colliding) {
         // TODO: Mark do styling stuff here
         this.colliding = colliding;
