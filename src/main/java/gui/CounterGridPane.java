@@ -8,7 +8,7 @@ import lombok.Getter;
 
 /**
  * Class that represents the grid pane in the counter bar or timeline.
- * Created by markv on 5/4/2016.
+ * @author Mark
  */
 public class CounterGridPane extends GridPane {
 

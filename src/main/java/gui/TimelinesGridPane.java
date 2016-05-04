@@ -104,12 +104,10 @@ public class TimelinesGridPane extends GridPane {
                 this.add(pane, i, j);
                 panes.add(pane);
                 if (c > gridLineSkips) {
-                    pane.setStyle("-fx-border-color: gray;"
-                            + "-fx-border-width: 0.1px 1px 0px 1px;");
+                    pane.getStyleClass().add("timeline_Background_Lines");
                     c = 2;
                 } else {
-                    pane.setStyle("-fx-border-color: gray;"
-                            + "-fx-border-width: 0px 1px 0px 1px;");
+                    pane.getStyleClass().add("timeline_Background_Empty");
                     c++;
                 }
             }

@@ -8,7 +8,7 @@ import lombok.Getter;
 
 /**
  * Class that represents the grid pane in the director timeline.
- * Created by markv on 5/4/2016.
+ * @author Mark
  */
 public class DirectorGridPane extends GridPane {
 
@@ -47,7 +47,6 @@ public class DirectorGridPane extends GridPane {
             rc.setVgrow(Priority.ALWAYS);
             this.getRowConstraints().add(rc);
         }
-
     }
 
 }
