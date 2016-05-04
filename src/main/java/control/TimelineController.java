@@ -146,8 +146,8 @@ public class TimelineController {
             removeCollisionFromCameraShotBlock(cameraShotBlock);
             // Remove overlaps for non-overlapping shotblocks
             ArrayList<CameraShotBlock> toRemove = new ArrayList<>();
-            this.overlappingCameraShotBlocks.stream().filter(shotBlock -> shotBlock.getShot()
-                    .getCollidesWith().isEmpty()).forEach(shotBlock -> {
+            this.overlappingCameraShotBlocks.stream().filter(shotBlock ->
+                    shotBlock.getShot().getCollidesWith().isEmpty()).forEach(shotBlock -> {
                             shotBlock.setColliding(false);
                             toRemove.add(shotBlock);
                         });

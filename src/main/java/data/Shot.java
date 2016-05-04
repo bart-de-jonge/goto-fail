@@ -9,6 +9,8 @@ import lombok.extern.log4j.Log4j2;
 
 import java.util.ArrayList;
 
+import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other;
+
 /**
  * Created by martijn.
  * This class contains information about a Shot.
@@ -123,7 +125,17 @@ public abstract class Shot {
             result = true;
         }
 
-        if (result) {
+        editCollidesWith(result, other);
+        return result;
+    }
+
+    /**
+     * Edit the collidesWith list using the provided other shot.
+     * @param addCollisioin - identifies if we want to add or remove collisions
+     * @param other - the shot to edit the collisions with
+     */
+    private void editCollidesWith(boolean addCollisioin, Shot other) {
+        if (addCollisioin) {
             // Add to collideswith if it is not in there
             if (!this.collidesWith.contains(other)) {
                 this.collidesWith.add(other);
@@ -140,6 +152,5 @@ public abstract class Shot {
                 other.getCollidesWith().remove(this);
             }
         }
-        return result;
     }
 }
