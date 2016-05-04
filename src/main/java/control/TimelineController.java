@@ -1,11 +1,6 @@
 package control;
 
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -15,7 +10,6 @@ import data.Shot;
 import gui.CameraShotBlock;
 import gui.CameraShotBlockUpdatedEvent;
 import gui.RootPane;
-import gui.ShotBlock;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
@@ -23,7 +17,10 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
-import static javax.swing.UIManager.get;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Class that controls the timeline.

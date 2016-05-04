@@ -111,11 +111,11 @@ public abstract class Shot {
      */
     public boolean areOverlapping(Shot other, double movementOffset) {
         log.debug("Checking overlap of this(beginCount={}, endCount={}) to other(beginCount={}, "
-                + "endCount={})", beginCount, endCount, other.getBeginCount(), other.getEndCount());
+            + "endCount={})", beginCount, endCount, other.getBeginCount(), other.getEndCount());
 
-            boolean result = false;
+        boolean result = false;
 
-            // Other shot starts during this shot
+        // Other shot starts during this shot
         if (other.getBeginCount() > getBeginCount() - movementOffset
             && other.getBeginCount() - movementOffset < getEndCount()) {
             log.debug("Other shot starts during this shot");
