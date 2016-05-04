@@ -80,11 +80,16 @@ public abstract class Shot {
        equal start times, the end times are compared.
      */
     public int compareTo(Shot other) {
+        log.debug("Comparing this(beginCount={}, endCount={}) to other(beginCount={}, endCount={})",
+                beginCount, endCount, other.getBeginCount(), other.getEndCount());
+
         int result = Double.compare(getBeginCount(), other.getBeginCount());
 
         if (result == 0) {
             result = Double.compare(getEndCount(), other.getEndCount());
         }
+
+        log.debug("Compare returns {}", result);
 
         return result;
     }
@@ -97,18 +102,27 @@ public abstract class Shot {
      * @return true when shots are overlapping, false when there are not overlapping
      */
     public boolean areOverlapping(Shot other, double movementOffset) {
+        log.debug("Checking overlap of this(beginCount={}, endCount={}) to other(beginCount={}, "
+                + "endCount={})", beginCount, endCount, other.getBeginCount(), other.getEndCount());
+
         if (other.getBeginCount() > getBeginCount() - movementOffset
                 && other.getBeginCount() < getEndCount()) {
+            log.debug("Other shot starts during this shot");
             return true;
         }
         if (other.getEndCount() > getBeginCount() - movementOffset
                 && other.getEndCount() < getEndCount()) {
+            log.debug("Other shot ends during this shot");
             return true;
         }
         if (other.getBeginCount() <= getBeginCount() && other.getEndCount() >= getEndCount()
             || getBeginCount() < other.getBeginCount() && getEndCount() > other.getEndCount()) {
+            log.debug("One of the two shots completely overlaps the other");
             return true;
         }
+
+        log.debug("No overlap found");
+
         return false;
     }
 }
