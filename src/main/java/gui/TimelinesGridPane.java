@@ -3,74 +3,37 @@ package gui;
 import java.util.ArrayList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
-import lombok.Getter;
 
 
 /**
- * Created by Bart.
+ * Class that represents the grid pane in the scrollable camera timelines.
  */
-public class TimelinesGridPane extends GridPane {
+public class TimelinesGridPane extends ScrollableGridPane {
 
-    // The number of timelines in this custom gridpane
-    @Getter
-    private int numberOfTimelines;
-
-    // The number of counts in this custom gridpane
-    @Getter
-    private int numberOfCounts;
 
     private ArrayList<SnappingPane> panes;
-
-    // Height and width of count and timelines. Note that timelineWidth is a minimum.
-    @Getter
-    private double countHeight = 10;
-    @Getter
-    private double timelineWidth = 100;
-    @Getter
     private int gridLineSkips = 4;
 
     /**
      * Constructor.
-     * @param numberOfTimelines - The number of timelines in this gridpane
-     * @param numberOfCounts - The number of counts in this gridpane
-     * @param width - The width of this gridpane
-     * @param height - the height of this gridpane
+     * @param numberOfHorizontalGrids - number of horizontal grid lanes.
+     * @param numberOfVerticalGrids - number of vertical grid lanes.
+     * @param horizontalElementMinimumSize -  minimal size of horizontal grid lanes.
+     * @param verticalElementSize -  size of vertical grid lanes.
      * @param offsetFromLeft - how much offset from the left due to coverage by directortimeline.
      */
-    public TimelinesGridPane(int numberOfTimelines, int numberOfCounts,
-                             double width, double height, int offsetFromLeft) {
-        this.numberOfTimelines = numberOfTimelines;
-        this.numberOfCounts = numberOfCounts;
-        this.panes = new ArrayList<>();
-        this.setMinWidth(width);
-        this.setMinHeight(countHeight * numberOfCounts);
-        this.setMaxHeight(countHeight * numberOfCounts);
+    public TimelinesGridPane(int numberOfHorizontalGrids, int numberOfVerticalGrids,
+                             int horizontalElementMinimumSize, int verticalElementSize,
+                             int offsetFromLeft) {
 
+        super(numberOfHorizontalGrids, numberOfVerticalGrids,
+                horizontalElementMinimumSize, verticalElementSize);
+
+        // add padding to the left for overlapping sidebars
+        this.setPadding(new Insets(0,0,0,offsetFromLeft));
+
+        // add snapping panes
         addPanes();
-
-        this.setGridLinesVisible(false);
-        // offset to the left
-        this.setPadding(new Insets(0, 0, 0, offsetFromLeft));
-
-        // set constraints, with minimum size 100x100, and maximum size infinite.
-        for (int i = 0; i < numberOfTimelines; i++) {
-            ColumnConstraints rc = new ColumnConstraints();
-            rc.setMinWidth(100.0);
-            rc.setPercentWidth(100.0 / numberOfTimelines);
-            rc.setHgrow(Priority.ALWAYS);
-            this.getColumnConstraints().add(rc);
-        }
-        for (int i = 0; i < numberOfCounts; i++) {
-            RowConstraints rc = new RowConstraints();
-            rc.setMinHeight(100.0);
-            rc.setPercentHeight(100.0 / numberOfCounts);
-            rc.setVgrow(Priority.ALWAYS);
-            this.getRowConstraints().add(rc);
-        }
     }
 
     /**
@@ -97,10 +60,10 @@ public class TimelinesGridPane extends GridPane {
     private void addPanes() {
         panes = new ArrayList<>();
         int c;
-        for (int i = 0; i < numberOfTimelines; i++) {
+        for (int i = 0; i < getNumberOfHorizontalGrids(); i++) {
             c = 1;
-            for (int j = 0; j < numberOfCounts; j++) {
-                SnappingPane pane = new SnappingPane(j, i, 200, countHeight);
+            for (int j = 0; j < getNumberOfVerticalGrids(); j++) {
+                SnappingPane pane = new SnappingPane(j, i, 200, getVerticalElementSize());
                 this.add(pane, i, j);
                 panes.add(pane);
                 if (c > gridLineSkips) {

@@ -55,9 +55,9 @@ public class CameraShotBlock extends ShotBlock {
                 }
             });
 
-        this.getTimetableBlock().setPrefWidth(grid.getTimelineWidth());
-        this.getTimetableBlock().setPrefHeight(grid.getNumberOfCounts()
-                * grid.getCountHeight());
+        this.getTimetableBlock().setPrefWidth(grid.getHorizontalElementMinimumSize());
+        this.getTimetableBlock().setPrefHeight(grid.getNumberOfVerticalGrids()
+                * grid.getVerticalElementSize());
         grid.addCameraShotBlock(this);
     }
 

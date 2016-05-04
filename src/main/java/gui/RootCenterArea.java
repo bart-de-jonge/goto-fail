@@ -85,7 +85,8 @@ public class RootCenterArea extends StackPane {
         // main timeline panes
         mainTimelineScrollpane = new ScrollPane();
         mainTimeLineAnchorPane = new AnchorPane();
-        mainTimeLineGridPane = new TimelinesGridPane(numberOfTimelines, numberOfCounts, 1000, 1000);
+        mainTimeLineGridPane = new TimelinesGridPane(numberOfTimelines, numberOfCounts, 100, 10,
+                directorAndCounterPaneMaxWidth);
         mainTimeLineAnchorPane.setLeftAnchor(mainTimeLineGridPane, 0.0);
         mainTimeLineAnchorPane.setRightAnchor(mainTimeLineGridPane, 0.0);
         mainTimeLineAnchorPane.setTopAnchor(mainTimeLineGridPane, 0.0);
@@ -104,7 +105,7 @@ public class RootCenterArea extends StackPane {
     private void initCounterPane() {
         counterScrollpane = new ScrollPane();
         counterAnchorPane = new AnchorPane();
-        counterGridPane = new CounterGridPane(numberOfCounts, 100, 1000);
+        counterGridPane = new CounterGridPane(numberOfCounts, 100, 10);
         counterAnchorPane.setLeftAnchor(counterGridPane, 0.0);
         counterAnchorPane.setRightAnchor(counterGridPane, 0.0);
         counterAnchorPane.setTopAnchor(counterGridPane, 0.0);
@@ -125,7 +126,7 @@ public class RootCenterArea extends StackPane {
     private void initDirectorPane() {
         directorScrollpane = new ScrollPane();
         directorAnchorPane = new AnchorPane();
-        directorGridPane = new DirectorGridPane(numberOfCounts, 100, 1000);
+        directorGridPane = new DirectorGridPane(numberOfCounts, 100, 10);
         directorAnchorPane.setLeftAnchor(directorGridPane, 0.0);
         directorAnchorPane.setRightAnchor(directorGridPane, 0.0);
         directorAnchorPane.setTopAnchor(directorGridPane, 0.0);

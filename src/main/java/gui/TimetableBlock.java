@@ -435,10 +435,10 @@ public class TimetableBlock extends Pane {
         SnappingPane myPane = pane.getMainTimeLineGridPane().getMyPane(xCoordinate, yCoordinate);
         if (myPane != null) {
             int numCounts = (int) Math.round(mappingPane.getHeight()
-                    / pane.getMainTimeLineGridPane().getCountHeight());
+                    / pane.getMainTimeLineGridPane().getVerticalElementSize());
             if (myPane.isBottomHalf() && dragType == DraggingTypes.Resize_Top) {
                 numCounts = (int) Math.round((mappingPane.getHeight() - 5)
-                        / pane.getMainTimeLineGridPane().getCountHeight());
+                        / pane.getMainTimeLineGridPane().getVerticalElementSize());
             }
 
             if (myPane.isBottomHalf() && (dragType == DraggingTypes.Resize_Top
@@ -486,8 +486,8 @@ public class TimetableBlock extends Pane {
             newPrefHeight = bounds.getY() - newLayoutY;
         }
 
-        if (newPrefHeight < pane.getMainTimeLineGridPane().getCountHeight()) {
-            newPrefHeight = pane.getMainTimeLineGridPane().getCountHeight();
+        if (newPrefHeight < pane.getMainTimeLineGridPane().getVerticalElementSize()) {
+            newPrefHeight = pane.getMainTimeLineGridPane().getVerticalElementSize();
             if (draggingType == DraggingTypes.Resize_Top) {
                 newLayoutY = pane.getMainTimeLineAnchorPane().sceneToLocal(0,
                         startingY).getY() - newPrefHeight;
