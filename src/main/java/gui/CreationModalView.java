@@ -73,6 +73,7 @@ public class CreationModalView extends ModalView {
      * Initialize and display the modal view.
      */
     private void initializeCreationView() {
+        // Create a new VBox with spacing between children of 20
         this.viewPane = new VBox(20);
         this.viewPane.getChildren().add(new Text("Add a new shot"));
 
