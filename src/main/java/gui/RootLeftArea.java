@@ -1,13 +1,11 @@
 package gui;
 
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import lombok.Getter;
 
 /**
- * Created by markv on 4/26/2016.
- * Mwahahaha I created this class, losers.
+ * Unused for now. This class is supposed to represent an area to the left of the timeline.
+ * @author Mark
  */
 public class RootLeftArea extends ScrollPane {
 
