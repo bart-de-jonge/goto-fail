@@ -113,7 +113,8 @@ public class RootCenterArea extends StackPane {
         counterScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         counterAnchorPane.setMinHeight(1000);
         counterScrollpane.setStyle("-fx-background-color: yellow"); // debugcolor for now
-        counterScrollpane.vvalueProperty().bindBidirectional(mainTimelineScrollpane.vvalueProperty());
+        counterScrollpane.vvalueProperty().bindBidirectional(
+                mainTimelineScrollpane.vvalueProperty());
         counterAndDirectorPane.getChildren().add(counterScrollpane);
     }
 
@@ -133,7 +134,8 @@ public class RootCenterArea extends StackPane {
         directorScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         directorAnchorPane.setMinHeight(1000);
         directorScrollpane.setStyle("-fx-background-color: orange"); // debugcolor for now
-        directorScrollpane.vvalueProperty().bindBidirectional(mainTimelineScrollpane.vvalueProperty());
+        directorScrollpane.vvalueProperty().bindBidirectional(
+                mainTimelineScrollpane.vvalueProperty());
         counterAndDirectorPane.getChildren().add(directorScrollpane);
     }
 
