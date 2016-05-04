@@ -3,7 +3,6 @@ package gui;
 import data.CameraShot;
 import javafx.event.EventHandler;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Created by Bart.
@@ -41,7 +40,7 @@ public class CameraShotBlock extends ShotBlock {
         super(rootCenterArea, beginCount, endCount, description, name, shot);
         this.shotId = shotId;
         this.timetableNumber = timetableNumber;
-        this.grid = rootCenterArea.getGrid();
+        this.grid = rootCenterArea.getMainTimeLineGridPane();
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
                 this.setBeginCount(TimelinesGridPane.getRowIndex(

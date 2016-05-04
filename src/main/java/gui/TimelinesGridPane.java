@@ -50,9 +50,8 @@ public class TimelinesGridPane extends GridPane {
         addPanes();
 
         this.setGridLinesVisible(false);
-        // don't remove, will be reenabled once I start working on grid, so I can let
-        // side-panes overlap it without messing up the scrolling.
-        //this.setPadding(new Insets(5, 5, 5, 5));
+        // offset to the left
+        this.setPadding(new Insets(0, 0, 0, 200));
 
         // set constraints, with minimum size 100x100, and maximum size infinite.
         for (int i = 0; i < numberOfTimelines; i++) {

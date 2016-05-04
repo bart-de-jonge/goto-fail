@@ -28,8 +28,6 @@ public class RootPane extends Application {
     @Getter
     private RootCenterArea rootCenterArea;
     @Getter
-    private RootLeftArea rootLeftArea;
-    @Getter
     private ControllerManager controllerManager;
 
     @Override
@@ -62,9 +60,6 @@ public class RootPane extends Application {
 
         rootCenterArea = new RootCenterArea(this);
         topLevelPane.setCenter(rootCenterArea);
-
-        rootLeftArea = new RootLeftArea(this);
-        topLevelPane.setLeft(rootLeftArea);
 
         controllerManager = new ControllerManager(this);
 
