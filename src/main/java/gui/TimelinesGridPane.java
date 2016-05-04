@@ -92,7 +92,7 @@ public class TimelinesGridPane extends GridPane {
     }
 
     /**
-     * Add snapping panes to grid.
+     * Add snapping panes to grid. Also apply line separators to grid, once every few skips.
      */
     private void addPanes() {
         panes = new ArrayList<>();
