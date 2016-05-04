@@ -4,14 +4,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import lombok.Getter;
 import lombok.Setter;
-import sun.plugin.javascript.navig.Anchor;
-
-import java.awt.*;
 
 /**
  * Class representing the center (main section) of the gui.

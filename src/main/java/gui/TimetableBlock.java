@@ -429,15 +429,17 @@ public class TimetableBlock extends Pane {
 
         SnappingPane myPane = pane.getMainTimeLineGridPane().getMyPane(xCoordinate, yCoordinate);
         if (myPane != null) {
-            int numCounts = (int) Math.round(mappingPane.getHeight() / pane.getMainTimeLineGridPane().getCountHeight());
+            int numCounts = (int) Math.round(mappingPane.getHeight()
+                    / pane.getMainTimeLineGridPane().getCountHeight());
             if (myPane.isBottomHalf() && dragType == DraggingTypes.Resize_Top) {
-                numCounts = (int) Math.round((mappingPane.getHeight() - 5) / pane.getMainTimeLineGridPane().getCountHeight());
+                numCounts = (int) Math.round((mappingPane.getHeight() - 5)
+                        / pane.getMainTimeLineGridPane().getCountHeight());
             }
 
             if (myPane.isBottomHalf() && (dragType == DraggingTypes.Resize_Top
                     || dragType == DraggingTypes.Move)) {
                 GridPane.setRowIndex(targetRegion, myPane.getRow() + 1);
-            } else if (dragType == DraggingTypes.Move){
+            } else if (dragType == DraggingTypes.Move) {
                 GridPane.setRowIndex(targetRegion, myPane.getRow());
             }
 
@@ -468,7 +470,8 @@ public class TimetableBlock extends Pane {
     private void onMouseDraggedHelperVertical(MouseEvent event) {
         double newLayoutY = 0;
         double newPrefHeight = 0;
-        Point2D bounds = pane.getMainTimeLineAnchorPane().sceneToLocal(event.getSceneX(), event.getSceneY());
+        Point2D bounds = pane.getMainTimeLineAnchorPane().sceneToLocal(event.getSceneX(),
+                event.getSceneY());
 
         if (thisBlock.draggingType == DraggingTypes.Resize_Top) {
             newPrefHeight = startingY - event.getSceneY();
@@ -481,7 +484,8 @@ public class TimetableBlock extends Pane {
         if (newPrefHeight < pane.getMainTimeLineGridPane().getCountHeight()) {
             newPrefHeight = pane.getMainTimeLineGridPane().getCountHeight();
             if (draggingType == DraggingTypes.Resize_Top) {
-                newLayoutY = pane.getMainTimeLineAnchorPane().sceneToLocal(0, startingY).getY() - newPrefHeight;
+                newLayoutY = pane.getMainTimeLineAnchorPane().sceneToLocal(0,
+                        startingY).getY() - newPrefHeight;
             }
         }
 
