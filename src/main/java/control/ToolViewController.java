@@ -1,6 +1,7 @@
 package control;
 
 import gui.CreationModalView;
+import gui.DirectorShotCreationEvent;
 import gui.ModalView;
 import gui.ToolButton;
 import javafx.scene.input.MouseEvent;
@@ -43,6 +44,11 @@ public class ToolViewController {
                 .addCameraShot(1, "BOOM", "Een description", 1, 2);
         new CreationModalView(this.controllerManager.getRootPane(),
                               this.controllerManager.getScriptingProject()
-                                      .getCameraTimelines().size());
+                                      .getCameraTimelines().size(),
+                              this::createDirectorShot);
+    }
+
+    private void createDirectorShot(DirectorShotCreationEvent event) {
+        System.out.println("DO MAGIC");
     }
 }

@@ -1,5 +1,6 @@
 package gui;
 
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -32,14 +33,19 @@ public class CreationModalView extends ModalView {
     private NumberTextField endField;
     private Button creationButton;
 
+    private EventHandler<DirectorShotCreationEvent> shotCreationEventEventHandler;
+
     /**
      * Constructor.
      * @param rootPane Pane to display modal on top of
      * @param numberOfCamerasInTimeline Amount of cameras in timeline
+     * @param creationHandler Event handler for the creation of a shot
      */
-    public CreationModalView(RootPane rootPane, int numberOfCamerasInTimeline) {
+    public CreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
+                             EventHandler<DirectorShotCreationEvent> creationHandler) {
         super(rootPane, width, height);
         this.numberOfCameras = numberOfCamerasInTimeline;
+        this.shotCreationEventEventHandler = creationHandler;
         initializeCreationView();
     }
 
@@ -122,7 +128,7 @@ public class CreationModalView extends ModalView {
     private void createShot(MouseEvent event) {
         if (validateShot()) {
             super.hideModal();
-            System.out.println("Should create shot here");
+            this.shotCreationEventEventHandler.handle(this.buildCreationEvent());
         }
     }
 
@@ -174,5 +180,36 @@ public class CreationModalView extends ModalView {
         Text errText = new Text(errorString);
         errText.setFill(Color.RED);
         this.viewPane.getChildren().add(this.viewPane.getChildren().size() - 1, errText);
+    }
+
+    /**
+     * Build the shot creation event.
+     * @return the shot creation event
+     */
+    private DirectorShotCreationEvent buildCreationEvent() {
+        String shotName = this.nameField.getText();
+        String shotDescrip = this.descripField.getText();
+        List<Integer> camerasInShot = getCamerasInShot();
+        double startPoint = Double.parseDouble(this.startField.getText());
+        double endPoint = Double.parseDouble(this.endField.getText());
+
+        return new DirectorShotCreationEvent(shotName, shotDescrip, camerasInShot,
+                                             startPoint, endPoint);
+    }
+
+    /**
+     * Builds a list of which camera timelines are in the shot.
+     * @return list of cameras in shot
+     */
+    private List<Integer> getCamerasInShot() {
+        List<Integer> camsInShot = new ArrayList<>();
+
+        for (int i = 0; i < cameraCheckboxes.size(); i++) {
+            if (cameraCheckboxes.get(i).isSelected()) {
+                camsInShot.add(i);
+            }
+        }
+
+        return camsInShot;
     }
 }
