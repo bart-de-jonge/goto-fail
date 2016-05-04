@@ -40,7 +40,10 @@ public class RootPane extends Application {
         topLevelPane = new BorderPane();
         // Create scene and set the stage. This is where the window is basically
         // created. Also has some useful settings.
-        primaryStage.setScene(new Scene(topLevelPane));
+        //TODO: change this line of code.
+        Scene scene = new Scene(topLevelPane);
+        scene.getStylesheets().add("testcss.css");
+        primaryStage.setScene(scene);
         primaryStage.setTitle("Hoi ben een titel lol.");
         primaryStage.setMinHeight(minimumResolutionY);
         primaryStage.setMinWidth(minimumResolutionX);

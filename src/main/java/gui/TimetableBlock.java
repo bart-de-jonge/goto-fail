@@ -5,52 +5,126 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 
 /**
- * Class that resembles a draggable, resiable block inside the timetable.
- * Highly volatile. Do not poke too much.
+ * Class that resembles a draggable, resizable block inside the timetable,
+ * whose sole purpose is to display information.
+ * Highly volatile. Do not poke the dragging-dragon too much.
  */
 public class TimetableBlock extends Pane {
 
     public enum DraggingTypes { Move, Resize_Top, Resize_Right, Resize_Bottom, Resize_Left }
 
-    /*
-        Styling variables.
-        For styling and displayable content.
+    /**
+     *  Styling variables.
+     *  For tweaking the styling.
      */
 
-    private String normalStyle = "-fx-border-style: solid inside;"
-            + "-fx-border-width: 3;"
-            + "-fx-border-color: yellow;"
-            + "-fx-background-color: orange;";
-    private String dragStyle = "-fx-border-style: solid inside;"
-            + "-fx-border-width: 3;"
-            + "-fx-border-color: red;"
-            + "-fx-background-color: orange;";
+    private double verticalBorderSize = 4.0;
+    private double margin = 5.0;
+    private double blurRadius = 20.0;
 
-    private String title = "dummyTitle with some extension";
+    private String colorBlockBackground = "#B1E2FA";
+    private String colorBlockBorders = "#DDF2FC";
+    private String colorBlockBorderHighlight = "#005482";
+    private String colorText = "#047FB7";
 
-    /*
-        Misc variables.
-        For dragging, interaction, etc.
+    /**
+     *  Temporary variables, until they can be moved to CSS files properly.
+     */
+
+    private String normalStyleBackground =
+            "-fx-background-color:" + colorBlockBorders + ";"
+            + "-fx-background-insets: 1 1 1 1;"
+            + "-fx-border-style: solid inside;"
+            + "-fx-border-color: " + colorBlockBackground + ";"
+            + "-fx-border-width: 0.5 0 0.5 0;";
+
+    private String normalStyleForeground =
+            "-fx-padding: " + verticalBorderSize + " 0 " + verticalBorderSize + " 0;"
+            + "-fx-border-style: solid inside;"
+            + "-fx-border-insets: " + verticalBorderSize + " 0 " + verticalBorderSize + " 0;"
+            + "-fx-border-width: 2 0 0 0;"
+            + "-fx-border-color: " + colorBlockBorderHighlight + ";"
+            + "-fx-background-color: " + colorBlockBackground + ";"
+            + "-fx-background-insets: " + verticalBorderSize + " 2 " + verticalBorderSize + " 2;";
+
+    private String draggedStyleBackground =
+            "-fx-background-color:" + colorBlockBorders + ";"
+            + "-fx-background-insets: 1 1 1 1;"
+            + "-fx-background-radius: 3;";
+
+    private String textTitleStyle =
+            "-fx-text-fill: " + colorBlockBorderHighlight + ";"
+            + "-fx-font-size: 13";
+
+    private String textNormalStyle =
+            "-fx-text-fill: " + colorText + ";"
+            + "-fx-font-size: 12";
+
+    private String title = "Camblock title";
+    private String shots = "15 - 20";
+
+    /**
+     *  Content variables.
+     *  Directly displaying block content, such as the name.
+     */
+    @Getter
+    private Label titleNormalLabel;
+
+    @Getter
+    private Label titleDraggedLabel;
+
+    @Getter
+    private Label countNormalLabel;
+
+    @Getter
+    private Label countDraggedLabel;
+
+    @Getter
+    private Label descriptionNormalLabel;
+
+    @Getter
+    private Label descriptionDraggedLabel;
+
+    /**
+     * Misc variables.
+     * For dragging, panes etc
      */
 
     private TimetableBlock thisBlock;
-    private Pane dummyPane;
-    private Pane feedbackPane;
 
-    private VBox contentPane;
-    private VBox dummyContentPane;
+    private Pane draggedPane; // pane shown when dragging
+    private Pane feedbackPane; // pane shown when snapping
+    private VBox contentPane; // content of this pane
+    private VBox draggedContentPane; // content of pane shown when dragging
+
+    // for feedbackPane
+    private WritableImage feedbackImage; // content of feedbackPane (is just an image, sneaky!)
+    private GaussianBlur gaussianBlur;
+    private ColorAdjust darken;
+
+    // for glass effect
+    private BlurHelper behindPanelBlur;
 
     private double dragXOffset;
     private double dragYOffset;
@@ -58,14 +132,11 @@ public class TimetableBlock extends Pane {
     private RootCenterArea pane;
     private boolean dragging;
     private DraggingTypes draggingType;
-    private double margin;
 
     private double mouseCurrentXPosition;
     private double mouseCurrentYPosition;
     private double mouseCurrentXMovement;
     private double mouseCurrentYMovement;
-
-    private Point2D scrollMouse;
 
     @Getter
     private ShotBlock parentBlock;
@@ -81,65 +152,137 @@ public class TimetableBlock extends Pane {
         this.dragging = false;
         this.thisBlock = this;
         this.parentBlock = parent;
-
-        feedbackPane = new Pane();
-        feedbackPane.setStyle("-fx-background-color: red");
-        feedbackPane.setVisible(false);
-
-        dummyPane = new Pane();
-        dummyPane.setStyle("-fx-background-color: green");
-        dummyPane.setVisible(false);
-
-        pane.getParentPane().getChildren().add(dummyPane);
-        pane.getGrid().add(feedbackPane, 0, 0);
-
         this.pane = pane;
-        setStyle(normalStyle);
 
-        // content pane for our pane, and our dummy pane
-        contentPane = new VBox();
-        addClipRegion(contentPane, this);
-        dummyContentPane = new VBox();
-        addClipRegion(dummyContentPane, dummyPane);
-
-        // test labels, please ignore.
-        addTestLabels(contentPane);
-        addTestLabels((dummyContentPane));
-
-        this.margin = 15;
+        // pane helpers
+        initNormalPane();
+        initDraggedPane();
+        initFeedbackPane();
 
         // mouse event handlers
         setOnMousePressed(getOnPressedHandler());
         setOnMouseDragged(getOnDraggedHandler());
         setOnMouseReleased(getOnreleaseHandler());
-
         setOnMouseMoved(getOnMouseMovedHandler());
     }
 
     /**
-     * Add clip region to pane (pane0 and its content (vbox).
-     * @param vbox the VBox in which content is located.
-     * @param pane the Pane in which the vbox is located.
+     * Helper function to initialize normal (visible) blocks.
      */
-    private void addClipRegion(VBox vbox, Pane pane) {
-        Rectangle clipRegion = new Rectangle(); // clip region to restrict content
-        clipRegion.widthProperty().bind(pane.widthProperty());
-        clipRegion.heightProperty().bind(pane.heightProperty());
-        vbox.setClip(clipRegion);
-        pane.getChildren().add(vbox);
+    private void initNormalPane() {
+        setBlendMode(BlendMode.MULTIPLY);
+        setStyle(normalStyleBackground);
+
+        // content pane for our actual pane, which holds content (text and stuff)
+        contentPane = new VBox();
+        contentPane.minWidthProperty().bind(widthProperty());
+        contentPane.maxWidthProperty().bind(widthProperty());
+        contentPane.minHeightProperty().bind(heightProperty());
+        contentPane.maxHeightProperty().bind(heightProperty());
+        contentPane.setStyle(normalStyleForeground);
+
+        // add some labels etc
+        titleNormalLabel = initTitleLabel(contentPane);
+        countNormalLabel = initCountLabel(contentPane);
+        descriptionNormalLabel = initCountLabel(contentPane);
+        descriptionNormalLabel.setWrapText(true);
+
+        addWithClipRegion(contentPane, this);
     }
 
     /**
-     * Temporary helper function to add test labels to panes.
-     * @param vbox pane to add to
+     * Helper function to initialize dragged (visible when dragging) blocks.
      */
-    private void addTestLabels(VBox vbox) {
-        for (int i = 0; i < 6; i++) {
-            Label label = new Label(title);
-            label.setPrefWidth(pane.getGrid().getTimelineWidth());
-            label.setPadding(new Insets(5,5,5,5));
-            vbox.getChildren().add(label);
-        }
+    private void initDraggedPane() {
+        // draggedPane itself
+        draggedPane = new Pane();
+        draggedPane.setVisible(false);
+        draggedPane.setStyle(draggedStyleBackground);
+
+        // dragged content pane which mirrors our content pane, shown when dragging.
+        draggedContentPane = new VBox() ;
+        draggedContentPane.minWidthProperty().bind(draggedPane.widthProperty());
+        draggedContentPane.maxWidthProperty().bind(draggedPane.widthProperty());
+        draggedContentPane.minHeightProperty().bind(draggedPane.heightProperty());
+        draggedContentPane.maxHeightProperty().bind(draggedPane.heightProperty());
+        draggedContentPane.setStyle(normalStyleForeground);
+        draggedContentPane.setBlendMode(BlendMode.MULTIPLY);
+        draggedContentPane.setOpacity(0.9);
+
+        // dropshadow shown underneath dragged pane
+        DropShadow ds = new DropShadow(15.0, 5.0, 5.0, Color.GRAY);
+        draggedPane.setEffect(ds);
+
+        // blurring shown behind dragged pane
+        behindPanelBlur = new BlurHelper(draggedPane);
+        behindPanelBlur.getImageView().setBlendMode(BlendMode.MULTIPLY);
+        behindPanelBlur.getImageView().setOpacity(0.9);
+        behindPanelBlur.setRadius(blurRadius);
+        behindPanelBlur.setOffset(new Point2D(8, 8));
+        addWithClipRegion(behindPanelBlur.getImageView(), draggedPane);
+
+        // add some labels etc
+        titleDraggedLabel = initTitleLabel(draggedContentPane);
+        countDraggedLabel = initCountLabel(draggedContentPane);
+        descriptionDraggedLabel = initCountLabel(draggedContentPane);
+        descriptionDraggedLabel.setWrapText(true);
+
+        addWithClipRegion(draggedContentPane, draggedPane);
+        pane.getParentPane().getChildren().add(draggedPane);
+    }
+
+    /**
+     * Helper function to initialize feedback (the snapping) blocks.
+     */
+    private void initFeedbackPane() {
+        feedbackPane = new Pane();
+        feedbackPane.setVisible(false);
+        gaussianBlur = new GaussianBlur(15.0);
+        darken = new ColorAdjust(0, -0.4, -0.2, 0.2);
+        pane.getGrid().add(feedbackPane, 0, 0);
+    }
+
+    /**
+     * Add content to pane, but with a clipping region bound to the pane's size.
+     * @param content the Pane in which content is located.
+     * @param pane the Pane in which the vbox is located.
+     */
+    private void addWithClipRegion(Node content, Pane pane) {
+        Rectangle clipRegion = new Rectangle(); // clip region to restrict content
+        clipRegion.widthProperty().bind(pane.widthProperty());
+        clipRegion.heightProperty().bind(pane.heightProperty().subtract(verticalBorderSize));
+        content.setClip(clipRegion);
+        pane.getChildren().add(content);
+    }
+
+    /**
+     * Helper function to add title labels to panes.
+     * @param vbox pane to add this label to
+     * @return the label in question.
+     */
+    private Label initTitleLabel(VBox vbox) {
+        Label res = new Label();
+        res.setText("Block Title");
+        res.maxWidthProperty().bind(this.widthProperty());
+        res.setPadding(new Insets(0,0,0,5));
+        res.setStyle(textTitleStyle);
+        vbox.getChildren().add(res);
+        return res;
+    }
+
+    /**
+     * Helper function to add count labels to panes.
+     * @param vbox pane to add this label to
+     * @return the label in question.
+     */
+    private Label initCountLabel(VBox vbox) {
+        Label res = new Label();
+        res.setText("0 - 0");
+        res.maxWidthProperty().bind(this.widthProperty());
+        res.setPadding(new Insets(0,5,5,5));
+        res.setStyle(textNormalStyle);
+        vbox.getChildren().add(res);
+        return res;
     }
 
     /**
@@ -178,15 +321,27 @@ public class TimetableBlock extends Pane {
      */
     private EventHandler<MouseEvent> getOnPressedHandler() {
         return e -> {
+            // init correct object ordering
+            feedbackPane.toFront();
+            draggedPane.toFront();
+            this.toFront();
 
-            // init dummypane
-            setStyle(dragStyle);
+            // init draggingpane
             draggingType = findEdgeZone(e);
-            dummyPane.setLayoutX(getLayoutX());
-            dummyPane.setLayoutY(getLayoutY());
+            draggedPane.setLayoutX(getLayoutX());
+            draggedPane.setLayoutY(getLayoutY());
 
             // Init feedbackpane
+            feedbackImage = this.snapshot(new SnapshotParameters(), null);
+            ImageView image = new ImageView(feedbackImage);
+            image.fitHeightProperty().bind(feedbackPane.heightProperty());
+            darken.setInput(gaussianBlur);
+            image.setEffect(darken);
+            feedbackPane.getChildren().add(image);
+            //feedbackPane.setStyle("-fx-background-color: rgb(255,0,0)");
+            feedbackPane.toBack();
             feedbackPane.setVisible(true);
+
             TimelinesGridPane.setColumnIndex(feedbackPane,
                     TimelinesGridPane.getColumnIndex(thisBlock));
             TimelinesGridPane.setRowIndex(feedbackPane, TimelinesGridPane.getRowIndex(thisBlock));
@@ -200,6 +355,8 @@ public class TimetableBlock extends Pane {
             } else if (draggingType == DraggingTypes.Resize_Bottom) {
                 startingY = blockY;
             }
+
+            behindPanelBlur.processBlurUsingBounds();
         };
     }
 
@@ -214,12 +371,13 @@ public class TimetableBlock extends Pane {
                 dragYOffset = e.getY();
 
                 dragging = true;
-                dummyPane.setVisible(true);
-                dummyPane.setPrefHeight(getHeight());
-                dummyPane.setPrefWidth(getWidth());
+                draggedPane.setVisible(true);
+                draggedPane.setPrefHeight(getHeight());
+                draggedPane.setPrefWidth(getWidth());
                 thisBlock.setVisible(false);
             }
             onMouseDraggedHelper(e);
+            behindPanelBlur.processBlurUsingBounds();
             e.consume();
         };
     }
@@ -230,11 +388,12 @@ public class TimetableBlock extends Pane {
      */
     private EventHandler<MouseEvent> getOnreleaseHandler() {
         return e -> {
-            dummyPane.setVisible(false);
+            draggedPane.setVisible(false);
             thisBlock.setVisible(true);
             feedbackPane.setVisible(false);
+            feedbackPane.getChildren().remove(0);
             dragging = false;
-            snapPane(thisBlock, dummyPane, e.getSceneX(), e.getSceneY(), draggingType);
+            snapPane(thisBlock, draggedPane, e.getSceneX(), e.getSceneY(), draggingType);
 
             this.fireEvent(parentBlock.getShotBlockUpdatedEvent());
         };
@@ -253,8 +412,6 @@ public class TimetableBlock extends Pane {
 
         // useful items to convert local coordinates into parent (scrollable) coordinates.
         Parent localToScrollPane = pane.getParent();
-        scrollMouse = localToScrollPane.getLocalToParentTransform().transform(
-                event.getSceneX(), event.getSceneY());
 
         // determine what kind of dragging we're going to do.
         if (draggingType == DraggingTypes.Resize_Bottom
@@ -266,7 +423,8 @@ public class TimetableBlock extends Pane {
         }
 
         // set feedbackpane
-        if (snapPane(feedbackPane, dummyPane, event.getSceneX(), event.getSceneY(), draggingType)) {
+        if (snapPane(feedbackPane, draggedPane, event.getSceneX(), event.getSceneY(),
+                draggingType)) {
             feedbackPane.setVisible(true);
         } else {
             feedbackPane.setVisible(false);
@@ -310,9 +468,8 @@ public class TimetableBlock extends Pane {
                 numCounts = (int) Math.round((mappingPane.getHeight() - 5) / pane.getCountHeight());
             }
 
-            if ((dragType == DraggingTypes.Resize_Top
-                    || dragType == DraggingTypes.Move)
-                    && myPane.isBottomHalf()) {
+            if (myPane.isBottomHalf() && (dragType == DraggingTypes.Resize_Top
+                    || dragType == DraggingTypes.Move)) {
                 GridPane.setRowIndex(targetRegion, myPane.getRow() + 1);
             } else {
                 GridPane.setRowIndex(targetRegion, myPane.getRow());
@@ -333,8 +490,8 @@ public class TimetableBlock extends Pane {
         AnchorPane parentPane = pane.getParentPane();
         Bounds parentBounds = parentPane.localToScene(parentPane.getBoundsInLocal());
 
-        dummyPane.setLayoutX(event.getSceneX() - parentBounds.getMinX() - dragXOffset);
-        dummyPane.setLayoutY(event.getSceneY() - parentBounds.getMinY() - dragYOffset);
+        draggedPane.setLayoutX(event.getSceneX() - parentBounds.getMinX() - dragXOffset);
+        draggedPane.setLayoutY(event.getSceneY() - parentBounds.getMinY() - dragYOffset);
     }
 
     /**
@@ -361,8 +518,8 @@ public class TimetableBlock extends Pane {
             }
         }
 
-        dummyPane.setLayoutY(newLayoutY);
-        dummyPane.setPrefHeight(newPrefHeight);
+        draggedPane.setLayoutY(newLayoutY);
+        draggedPane.setPrefHeight(newPrefHeight);
 
     }
 

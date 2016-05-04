@@ -1,8 +1,7 @@
 package control;
 
+
 import java.io.File;
-
-
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -64,7 +63,6 @@ public class TimelineController {
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex,
                 rootPane.getRootCenterArea(), startCount, endCount, description,
                 name, this::shotChangedHandler, newShot);
-
         controllerManager.setActiveShotBlock(shotBlock);
     }
 

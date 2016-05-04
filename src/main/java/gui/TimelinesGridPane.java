@@ -44,13 +44,15 @@ public class TimelinesGridPane extends GridPane {
         this.numberOfCounts = numberOfCounts;
         this.panes = new ArrayList<>();
         this.setMinWidth(width);
-        this.setMinHeight(height);
-        this.setMaxHeight(height);
+        this.setMinHeight(countHeight * numberOfCounts);
+        this.setMaxHeight(countHeight * numberOfCounts);
 
         addPanes();
 
-        this.setGridLinesVisible(true);
-        this.setPadding(new Insets(5, 5, 5, 5));
+        this.setGridLinesVisible(false);
+        // don't remove, will be reenabled once I start working on grid, so I can let
+        // side-panes overlap it without messing up the scrolling.
+        //this.setPadding(new Insets(5, 5, 5, 5));
 
         // set constraints, with minimum size 100x100, and maximum size infinite.
         for (int i = 0; i < numberOfTimelines; i++) {
@@ -84,12 +86,13 @@ public class TimelinesGridPane extends GridPane {
      */
     private void addPanes() {
         panes = new ArrayList<>();
-
-        for (int i = 0; i < numberOfCounts; i++) {
-            for (int j = 0; j < numberOfTimelines; j++) {
-                SnappingPane pane = new SnappingPane(i, j, 200, 50);
-                this.add(pane, j, i);
+        for (int i = 0; i < numberOfTimelines; i++) {
+            for (int j = 0; j < numberOfCounts; j++) {
+                SnappingPane pane = new SnappingPane(j, i, 200, countHeight);
+                this.add(pane, i, j);
                 panes.add(pane);
+                pane.setStyle("-fx-border-color: gray;"
+                        + "-fx-border-width: 0.1px 1px 0.1px 1px;");;
             }
         }
     }
