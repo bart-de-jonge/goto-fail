@@ -2,6 +2,8 @@ package control;
 
 
 import java.io.File;
+import java.util.ArrayList;
+
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -87,10 +89,27 @@ public class TimelineController {
         // Adjust model
         shot.setBeginCount(changedBlock.getBeginCount());
         shot.setEndCount(changedBlock.getEndCount());
-        // Remove shot from previous timeline and add to new one
-        previousTimeline.removeShot(shot);
-        this.project.getCameraTimelines()
-                .get(changedBlock.getTimetableNumber()).addShot(shot);
+        System.out.println(changedBlock.getBeginCount());
+        System.out.println(shot.getBeginCount());
+
+        CameraTimeline newCameraTimeline = this.project.getCameraTimelines().get(changedBlock.getTimetableNumber());
+
+        // Remove shot from previous timeline and add to new one if changed
+        if(event.getOldTimelineNumber() != changedBlock.getTimetableNumber()) {
+            previousTimeline.removeShot(shot);
+            newCameraTimeline.addShot(shot);
+        }
+
+        // Check for collisions
+        ArrayList<CameraShot> overlappingShots = newCameraTimeline.getOverlappingShots(shot);
+        if (overlappingShots.size() > 1) {
+            System.out.println(overlappingShots);
+            for(CameraShot shotThing : overlappingShots) {
+                System.out.println(shotThing.toString());
+            }
+
+            System.out.println("COLLISION BITCH");
+        }
     }
 
     /**

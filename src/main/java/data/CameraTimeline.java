@@ -2,6 +2,7 @@ package data;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -81,7 +82,6 @@ public class CameraTimeline extends Timeline {
        shots are found, the shot that was added will be the last one in the list.
      */
     public ArrayList<CameraShot> addShot(CameraShot shot) {
-        ArrayList<CameraShot> result = new ArrayList<>();
         boolean added = false;
 
         // Add the new Shot the the shots
@@ -93,16 +93,29 @@ public class CameraTimeline extends Timeline {
                     added = true;
                 }
             }
-            if (checkOverlap(shot, other, camera.getMovementMargin())) {
-                result.add(other);
-            }
         }
         if (!added) {
             shots.add(shot);
         }
+        return getOverlappingShots(shot);
+    }
+
+    /**
+     * Get the list of shots overlapping with the given shots.
+     * @param shot - the shot to check with
+     * @return - only the shot when no overlap, list of overlapping shots otherwise
+     */
+    public ArrayList<CameraShot> getOverlappingShots(CameraShot shot) {
+        ArrayList<CameraShot> result = new ArrayList<>();
+
+        // check for overlapping shots
+        result.addAll(shots.stream()
+                .filter(other -> shot != other && checkOverlap(shot, other, camera.getMovementMargin()))
+                .collect(Collectors.toList()));
         result.add(shot);
         return result;
     }
+
 
     /**
      * Removes all shots from the Timeline.

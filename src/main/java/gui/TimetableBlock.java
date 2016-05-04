@@ -395,6 +395,13 @@ public class TimetableBlock extends Pane {
             dragging = false;
             snapPane(thisBlock, draggedPane, e.getSceneX(), e.getSceneY(), draggingType);
 
+            // Update ShotBlock
+            int newBeginCount = TimelinesGridPane.getRowIndex(thisBlock);
+            System.out.println("begincount= " + newBeginCount);
+            System.out.println("endcount= " + (newBeginCount + TimelinesGridPane.getRowSpan(thisBlock)));
+            parentBlock.setBeginCount(newBeginCount, false);
+            parentBlock.setEndCount(newBeginCount + TimelinesGridPane.getRowSpan(thisBlock), false);
+
             this.fireEvent(parentBlock.getShotBlockUpdatedEvent());
         };
     }
