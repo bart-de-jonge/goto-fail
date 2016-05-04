@@ -31,7 +31,7 @@ public class TimelineController {
 
     // Placeholder camera type until GUI allows personalized entry
     // TODO: Replace Camera Type and Scripting Project when XML functionality is available
-    private final CameraType defType = new CameraType("AW-HE130 HD PTZ", "It's an IP Camera", 0.5);
+    private final CameraType defType = new CameraType("AW-HE130 HD PTZ", "It's an IP Camera", 0);
 
     @Getter
     private ControllerManager controllerManager;
@@ -89,8 +89,6 @@ public class TimelineController {
         // Adjust model
         shot.setBeginCount(changedBlock.getBeginCount());
         shot.setEndCount(changedBlock.getEndCount());
-        System.out.println(changedBlock.getBeginCount());
-        System.out.println(shot.getBeginCount());
 
         CameraTimeline newCameraTimeline = this.project.getCameraTimelines().get(changedBlock.getTimetableNumber());
 
@@ -103,10 +101,6 @@ public class TimelineController {
         // Check for collisions
         ArrayList<CameraShot> overlappingShots = newCameraTimeline.getOverlappingShots(shot);
         if (overlappingShots.size() > 1) {
-            System.out.println(overlappingShots);
-            for(CameraShot shotThing : overlappingShots) {
-                System.out.println(shotThing.toString());
-            }
 
             System.out.println("COLLISION BITCH");
         }

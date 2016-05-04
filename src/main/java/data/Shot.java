@@ -92,14 +92,19 @@ public abstract class Shot {
      * @return true when shots are overlapping, false when there are not overlapping
      */
     public boolean areOverlapping(Shot other, double movementOffset) {
+        // Other shot starts during this shot
         if (other.getBeginCount() > getBeginCount() - movementOffset
-                && other.getBeginCount() < getEndCount()) {
+                && other.getBeginCount() - movementOffset < getEndCount()) {
             return true;
         }
+
+        // THis shot starts during other shot
         if (other.getEndCount() > getBeginCount() - movementOffset
                 && other.getEndCount() < getEndCount()) {
             return true;
         }
+
+        // This shot entirely in other shot or the other way around
         if (other.getBeginCount() <= getBeginCount() && other.getEndCount() >= getEndCount()
             || getBeginCount() < other.getBeginCount() && getEndCount() > other.getEndCount()) {
             return true;
