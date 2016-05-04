@@ -52,35 +52,6 @@ public class TimetableBlock extends Pane {
      *  Temporary variables, until they can be moved to CSS files properly.
      */
 
-    private String normalStyleBackground =
-            "-fx-background-color:" + colorBlockBorders + ";"
-            + "-fx-background-insets: 1 1 1 1;"
-            + "-fx-border-style: solid inside;"
-            + "-fx-border-color: " + colorBlockBackground + ";"
-            + "-fx-border-width: 0.5 0 0.5 0;";
-
-    private String normalStyleForeground =
-            "-fx-padding: " + verticalBorderSize + " 0 " + verticalBorderSize + " 0;"
-            + "-fx-border-style: solid inside;"
-            + "-fx-border-insets: " + verticalBorderSize + " 0 " + verticalBorderSize + " 0;"
-            + "-fx-border-width: 2 0 0 0;"
-            + "-fx-border-color: " + colorBlockBorderHighlight + ";"
-            + "-fx-background-color: " + colorBlockBackground + ";"
-            + "-fx-background-insets: " + verticalBorderSize + " 2 " + verticalBorderSize + " 2;";
-
-    private String draggedStyleBackground =
-            "-fx-background-color:" + colorBlockBorders + ";"
-            + "-fx-background-insets: 1 1 1 1;"
-            + "-fx-background-radius: 3;";
-
-    private String textTitleStyle =
-            "-fx-text-fill: " + colorBlockBorderHighlight + ";"
-            + "-fx-font-size: 13";
-
-    private String textNormalStyle =
-            "-fx-text-fill: " + colorText + ";"
-            + "-fx-font-size: 12";
-
     private String title = "Camblock title";
     private String shots = "15 - 20";
 
@@ -171,7 +142,7 @@ public class TimetableBlock extends Pane {
      */
     private void initNormalPane() {
         setBlendMode(BlendMode.MULTIPLY);
-        setStyle(normalStyleBackground);
+        getStyleClass().add("block_Background_Normal");
 
         // content pane for our actual pane, which holds content (text and stuff)
         contentPane = new VBox();
@@ -179,7 +150,7 @@ public class TimetableBlock extends Pane {
         contentPane.maxWidthProperty().bind(widthProperty());
         contentPane.minHeightProperty().bind(heightProperty());
         contentPane.maxHeightProperty().bind(heightProperty());
-        contentPane.setStyle(normalStyleForeground);
+        contentPane.getStyleClass().add("block_Foreground_Normal");
 
         // add some labels etc
         titleNormalLabel = initTitleLabel(contentPane);
@@ -197,7 +168,7 @@ public class TimetableBlock extends Pane {
         // draggedPane itself
         draggedPane = new Pane();
         draggedPane.setVisible(false);
-        draggedPane.setStyle(draggedStyleBackground);
+        draggedPane.getStyleClass().add("block_Background_Dragged");
 
         // dragged content pane which mirrors our content pane, shown when dragging.
         draggedContentPane = new VBox() ;
@@ -205,9 +176,7 @@ public class TimetableBlock extends Pane {
         draggedContentPane.maxWidthProperty().bind(draggedPane.widthProperty());
         draggedContentPane.minHeightProperty().bind(draggedPane.heightProperty());
         draggedContentPane.maxHeightProperty().bind(draggedPane.heightProperty());
-        draggedContentPane.setStyle(normalStyleForeground);
-        draggedContentPane.setBlendMode(BlendMode.MULTIPLY);
-        draggedContentPane.setOpacity(0.9);
+        draggedContentPane.getStyleClass().add("block_Foreground_Dragged");
 
         // dropshadow shown underneath dragged pane
         DropShadow ds = new DropShadow(15.0, 5.0, 5.0, Color.GRAY);
@@ -264,8 +233,7 @@ public class TimetableBlock extends Pane {
         Label res = new Label();
         res.setText("Block Title");
         res.maxWidthProperty().bind(this.widthProperty());
-        res.setPadding(new Insets(0,0,0,5));
-        res.setStyle(textTitleStyle);
+        res.getStyleClass().add("block_Text_Title");
         vbox.getChildren().add(res);
         return res;
     }
@@ -279,8 +247,7 @@ public class TimetableBlock extends Pane {
         Label res = new Label();
         res.setText("0 - 0");
         res.maxWidthProperty().bind(this.widthProperty());
-        res.setPadding(new Insets(0,5,5,5));
-        res.setStyle(textNormalStyle);
+        res.getStyleClass().add("block_Text_Normal");
         vbox.getChildren().add(res);
         return res;
     }

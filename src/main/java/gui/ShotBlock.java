@@ -1,6 +1,5 @@
 package gui;
 
-import data.CameraShot;
 import data.Shot;
 import javafx.event.EventHandler;
 import lombok.Getter;
@@ -20,19 +19,19 @@ public abstract class ShotBlock {
     private double beginCount;
 
     // The end shot of this count
-    @Getter @Setter
+    @Getter
     private double endCount;
 
     // The description of this shotblock
-    @Getter @Setter
+    @Getter
     private String description;
 
     // The name of this shotblock
     @Getter
     private String name;
 
-    // The actual shot in the model that belongs to this shotblock
-    // For updating the model using the controller o eventss
+    // The actual shot in the model that belongs to this ShotBlock
+    // For updating the model using the controller of events
     @Getter
     private Shot shot;
 
@@ -43,7 +42,7 @@ public abstract class ShotBlock {
      * @param endCount - the end count of this shot
      * @param description - the description of this shot
      * @param name - the name of this shot
-     * @param shot - the shot of this shotblock
+     * @param shot - the shot of this ShotBlock
      */
     public ShotBlock(RootCenterArea rootCenterArea, double beginCount, double endCount,
                      String description, String name, Shot shot) {
@@ -56,7 +55,7 @@ public abstract class ShotBlock {
     }
 
     /**
-     * Set the begin count of this shotblock.
+     * Set the begin count of this ShotBlock.
      * @param count - the new begincount
      * @param recompute - should we recompute after setting
      */
@@ -71,7 +70,7 @@ public abstract class ShotBlock {
     }
 
     /**
-     * Set the begin count of this shotblock.
+     * Set the begin count of this ShotBlock.
      * @param count - the new begincount
      */
     public void setBeginCount(double count) {
@@ -79,7 +78,7 @@ public abstract class ShotBlock {
     }
 
     /**
-     * Set the end count of this shotblock.
+     * Set the end count of this ShotBlock.
      * @param count - the new endcount
      * @param recompute - should we recompute after setting
      */
@@ -94,7 +93,7 @@ public abstract class ShotBlock {
     }
 
     /**
-     * Set the end count of this shotblock.
+     * Set the end count of this ShotBlock.
      * @param count - the new endcount
      */
     public void setEndCount(double count) {
@@ -102,7 +101,7 @@ public abstract class ShotBlock {
     }
 
     /**
-     * Set name of this shotblock. No Lombok because it does some extra work for the GUI.
+     * Set name of this ShotBlock. No Lombok because it does some extra work for the GUI.
      * @param name the name to set
      */
     public void setName(String name) {
@@ -112,7 +111,7 @@ public abstract class ShotBlock {
     }
 
     /**
-     * Set description of this shotBlock. No Lombok because it does some extra work for the GUI.
+     * Set description of this ShotBlock. No Lombok because it does some extra work for the GUI.
      * @param description the description to set
      */
     public void setDescription(String description) {
@@ -148,7 +147,7 @@ public abstract class ShotBlock {
     }
 
     /**
-     * Return correct event for the specific shotblock.
+     * Return correct event for the specific ShotBlock.
      * @return - the event
      */
     public abstract ShotblockUpdatedEvent getShotBlockUpdatedEvent();

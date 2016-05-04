@@ -42,7 +42,7 @@ public class RootPane extends Application {
         // created. Also has some useful settings.
         //TODO: change this line of code.
         Scene scene = new Scene(topLevelPane);
-        scene.getStylesheets().add("testcss.css");
+        scene.getStylesheets().add("stylesheet.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("Hoi ben een titel lol.");
         primaryStage.setMinHeight(minimumResolutionY);
