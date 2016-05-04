@@ -2,6 +2,7 @@ package data;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -10,6 +11,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other;
 
 /**
  * Class to store information about a camera timeline.
@@ -59,7 +62,7 @@ public class CameraTimeline extends Timeline {
      * @param startCount the start count of the Shot
      * @param endCount the end count of the Shot
      * @return If no overlap is found, only the newly added shot will be returned. If any
-       overlapping shots are found, all overlapping shots will be returned. If any overlapping
+       colliding shots are found, all colliding shots will be returned. If any colliding
        shots are found, the shot that was added will be the last one in the list. 
      * @see CameraTimeline#addShot(CameraShot)
      */
@@ -72,16 +75,15 @@ public class CameraTimeline extends Timeline {
      * Adds a Shot to the Timeline. The Shot is inserted in a sorted manner. When a Shot is
      * inserted, the shots before the Shot have a lower start count of a lower end count. The
      * Shot after the inserted shot have a higher start count or end count. This method also checks
-     * for overlapping shots. The overlapping shots will have their overlapping variable set to
+     * for colliding shots. The colliding shots will have their colliding variable set to
      * true.
      *
      * @param shot the Shot to add to the timeline
      * @return If no overlap is found, only the newly added shot will be returned. If any
-       overlapping shots are found, all overlapping shots will be returned. If any overlapping
+       colliding shots are found, all colliding shots will be returned. If any colliding
        shots are found, the shot that was added will be the last one in the list.
      */
     public ArrayList<CameraShot> addShot(CameraShot shot) {
-        ArrayList<CameraShot> result = new ArrayList<>();
         boolean added = false;
 
         // Add the new Shot the the shots
@@ -93,13 +95,26 @@ public class CameraTimeline extends Timeline {
                     added = true;
                 }
             }
-            if (checkOverlap(shot, other, camera.getMovementMargin())) {
-                result.add(other);
-            }
         }
         if (!added) {
             shots.add(shot);
         }
+        return getOverlappingShots(shot);
+    }
+
+    /**
+     * Get the list of shots colliding with the given shots.
+     * @param shot - the shot to check with
+     * @return - only the shot when no overlap, list of colliding shots otherwise
+     */
+    public ArrayList<CameraShot> getOverlappingShots(CameraShot shot) {
+        ArrayList<CameraShot> result = new ArrayList<>();
+
+        // check for colliding shots
+        result.addAll(shots.stream()
+                .filter(other -> shot != other)
+                .filter(other -> checkOverlap(shot, other, camera.getMovementMargin()))
+                .collect(Collectors.toList()));
         result.add(shot);
         return result;
     }

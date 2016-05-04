@@ -9,7 +9,6 @@ import lombok.ToString;
  * Created by martijn.
  */
 @XmlRootElement(name = "cameraShot")
-@ToString
 public class CameraShot extends Shot {
 
     // Counter that ensures no shots with duplicate numbers will be created.

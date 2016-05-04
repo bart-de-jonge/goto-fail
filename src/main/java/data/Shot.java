@@ -7,12 +7,15 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.ArrayList;
+
+import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other;
+
 /**
  * Created by martijn.
  * This class contains information about a Shot.
  */
 @XmlRootElement(name = "shot")
-@ToString
 @Log4j2
 public abstract class Shot {
 
@@ -36,9 +39,12 @@ public abstract class Shot {
     @Getter @Setter
     private double endCount;
 
-    // True if the shot is overlapping with another Shot.
+    // True if the shot is colliding with another Shot.
     @Getter @Setter
-    private boolean overlapping;
+    private boolean colliding;
+
+    @Getter
+    private ArrayList<Shot> collidesWith;
     
     /**
      * Default Constructor.
@@ -49,6 +55,7 @@ public abstract class Shot {
         instance = 0;
         beginCount = 0;
         endCount = 0;
+        collidesWith = new ArrayList<>();
     }
 
     /**
@@ -71,6 +78,7 @@ public abstract class Shot {
         this.instance = instance;
         this.beginCount = beginCount;
         this.endCount = endCount;
+        this.collidesWith = new ArrayList<>();
     }
 
     /**
@@ -90,25 +98,64 @@ public abstract class Shot {
     }
 
     /**
-     * Checks whether the two Shots are overlapping.
+     * Checks whether the two Shots are colliding.
      *
      * @param other the other Shot the check the overlap with
      * @param movementOffset the offset the camera needs to move to the shot.
-     * @return true when shots are overlapping, false when there are not overlapping
+     * @return true when shots are colliding, false when there are not colliding
      */
     public boolean areOverlapping(Shot other, double movementOffset) {
+        boolean result = false;
+
+        // Other shot starts during this shot
         if (other.getBeginCount() > getBeginCount() - movementOffset
-                && other.getBeginCount() < getEndCount()) {
-            return true;
+                && other.getBeginCount() - movementOffset < getEndCount()) {
+            result = true;
         }
+
+        // This shot starts during other shot
         if (other.getEndCount() > getBeginCount() - movementOffset
                 && other.getEndCount() < getEndCount()) {
-            return true;
+            result = true;
         }
+
+        // This shot entirely in other shot or the other way around
         if (other.getBeginCount() <= getBeginCount() && other.getEndCount() >= getEndCount()
             || getBeginCount() < other.getBeginCount() && getEndCount() > other.getEndCount()) {
-            return true;
+            result = true;
         }
-        return false;
+
+        editCollidesWith(result, other);
+
+        // Update collides fields
+        this.colliding = !this.collidesWith.isEmpty();
+        other.setColliding(!other.getCollidesWith().isEmpty());
+
+        return result;
+    }
+
+    /**
+     * Edit the collidesWith list using the provided other shot.
+     * @param addCollisioin - identifies if we want to add or remove collisions
+     * @param other - the shot to edit the collisions with
+     */
+    private void editCollidesWith(boolean addCollisioin, Shot other) {
+        if (addCollisioin) {
+            // Add to collideswith if it is not in there
+            if (!this.collidesWith.contains(other)) {
+                this.collidesWith.add(other);
+            }
+            if (!other.getCollidesWith().contains(this)) {
+                other.getCollidesWith().add(this);
+            }
+        } else {
+            // Remove from collideswith if it is in there, doesn't collide anymore
+            if (this.collidesWith.contains(other)) {
+                this.collidesWith.remove(other);
+            }
+            if (other.getCollidesWith().contains(this)) {
+                other.getCollidesWith().remove(this);
+            }
+        }
     }
 }
