@@ -89,4 +89,11 @@ public class CameraShotBlock extends ShotBlock {
     public CameraShot getShot() {
         return (CameraShot) super.getShot();
     }
+
+    /**
+     * Remove this CameraShotBlock's view from the view that it's in.
+     */
+    public void removeFromView() {
+        this.grid.removeCameraShotBlock(this);
+    }
 }

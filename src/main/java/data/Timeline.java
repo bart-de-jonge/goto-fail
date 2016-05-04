@@ -43,17 +43,17 @@ public abstract class Timeline {
     }
 
     /**
-     * Checks overlap between two shots. If the two shots are overlapping, the two shots will have
-     * their overlapping variables set to true.
+     * Checks overlap between two shots. If the two shots are colliding, the two shots will have
+     * their colliding variables set to true.
      * @param s1 the first Shot to check overlap
      * @param s2 the other Shot to check overlap
      * @param seconds the seconds to use for the margin
-     * @return true when the two shots are overlapping, false if not
+     * @return true when the two shots are colliding, false if not
      */
     public boolean checkOverlap(Shot s1, Shot s2, double seconds) {
         if (s1.areOverlapping(s2, project.secondsToCounts(seconds))) {
-            s1.setOverlapping(true);
-            s2.setOverlapping(true);
+            s1.setColliding(true);
+            s2.setColliding(true);
             return true;
         }
         return false;

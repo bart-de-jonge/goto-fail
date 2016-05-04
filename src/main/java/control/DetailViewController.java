@@ -114,6 +114,8 @@ public class DetailViewController {
             // TODO: Make doubles possible in detailview
             detailView.setBeginCount((int) manager.getActiveShotBlock().getBeginCount());
             detailView.setEndCount((int) manager.getActiveShotBlock().getEndCount());
+        } else {
+            detailView.resetDetails();
         }
     }
 }

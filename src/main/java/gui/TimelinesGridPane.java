@@ -81,6 +81,14 @@ public class TimelinesGridPane extends GridPane {
     }
 
     /**
+     * Remove a CameraShotBlock from this gridpane.
+     * @param block the block to remove
+     */
+    public void removeCameraShotBlock(CameraShotBlock block) {
+        this.getChildren().remove(block.getTimetableBlock());
+    }
+
+    /**
      * Add snapping panes to grid.
      */
     private void addPanes() {

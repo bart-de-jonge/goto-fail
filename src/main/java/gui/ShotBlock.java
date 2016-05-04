@@ -35,6 +35,9 @@ public abstract class ShotBlock {
     @Getter
     private Shot shot;
 
+    @Getter
+    private boolean colliding;
+
     /**
      * Constructor.
      * @param rootCenterArea - the rootCenterArea this shot belongs to
@@ -52,6 +55,23 @@ public abstract class ShotBlock {
         this.beginCount = beginCount;
         this.endCount = endCount;
         this.shot = shot;
+        this.colliding = false;
+    }
+
+    /**
+     * Set colliding field of this camerashotblock.
+     * Apply styling changes here
+     * @param colliding - the new colliding value
+     */
+    public void setColliding(boolean colliding) {
+        // TODO: Mark do styling stuff here
+        this.colliding = colliding;
+
+        if (colliding) {
+            this.timetableBlock.setStyle("-fx-background-color: red");
+        } else {
+            this.timetableBlock.setStyle("-fx-background-color: none");
+        }
     }
 
     /**

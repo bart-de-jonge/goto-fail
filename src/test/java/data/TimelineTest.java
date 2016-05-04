@@ -36,8 +36,8 @@ public class TimelineTest {
     @Test
     public void checkOverlapTest() {
         timeline.checkOverlap(timeline.getShots().get(0), timeline.getShots().get(1), 0);
-        assertTrue(timeline.getShots().get(0).isOverlapping());
-        assertTrue(timeline.getShots().get(1).isOverlapping());
+        assertTrue(timeline.getShots().get(0).isColliding());
+        assertTrue(timeline.getShots().get(1).isColliding());
     }
 
     @Test
@@ -46,8 +46,8 @@ public class TimelineTest {
         timeline.addShot("", "", 1, 2);
         timeline.addShot("", "", 2, 3);
         assertFalse(timeline.checkOverlap(timeline.getShots().get(0), timeline.getShots().get(1), 0));
-        assertFalse(timeline.getShots().get(0).isOverlapping());
-        assertFalse(timeline.getShots().get(1).isOverlapping());
+        assertFalse(timeline.getShots().get(0).isColliding());
+        assertFalse(timeline.getShots().get(1).isColliding());
     }
 
     @Test

@@ -64,8 +64,13 @@ public class ControllerManager {
         toolViewController = new ToolViewController(this);
     }
 
+    /**
+     * Sets the active ShotBlock and notifies necessary controllers.
+     * @param block ShotBlock to set as active
+     */
     public void setActiveShotBlock(ShotBlock block) {
         this.activeShotBlock = block;
         detailViewController.activeBlockChanged();
+        toolViewController.activeBlockChanged();
     }
 }
