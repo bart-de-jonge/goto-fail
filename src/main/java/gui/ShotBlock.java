@@ -20,11 +20,11 @@ public abstract class ShotBlock {
     private double beginCount;
 
     // The end shot of this count
-    @Getter @Setter
+    @Getter
     private double endCount;
 
     // The description of this shotblock
-    @Getter @Setter
+    @Getter
     private String description;
 
     // The name of this shotblock
@@ -35,6 +35,9 @@ public abstract class ShotBlock {
     // For updating the model using the controller o eventss
     @Getter
     private Shot shot;
+
+    @Getter
+    private boolean colliding;
 
     /**
      * Constructor.
@@ -53,6 +56,18 @@ public abstract class ShotBlock {
         this.beginCount = beginCount;
         this.endCount = endCount;
         this.shot = shot;
+        this.colliding = false;
+    }
+
+    public void setColliding(boolean colliding) {
+        // TODO: Mark do styling stuff here
+        this.colliding = colliding;
+
+        if (colliding) {
+            this.timetableBlock.setStyle("-fx-background-color: red");
+        } else {
+            this.timetableBlock.setStyle("-fx-background-color: none");
+        }
     }
 
     /**

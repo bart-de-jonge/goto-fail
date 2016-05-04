@@ -104,46 +104,44 @@ public abstract class Shot {
      * @return true when shots are overlapping, false when there are not overlapping
      */
     public boolean areOverlapping(Shot other, double movementOffset) {
-        System.out.println("Checking overlap thingy");
+        boolean result = false;
 
         // Other shot starts during this shot
         if (other.getBeginCount() > getBeginCount() - movementOffset
                 && other.getBeginCount() - movementOffset < getEndCount()) {
-            this.collidesWith.add(other);
-            other.getCollidesWith().add(this);
-            return true;
+            result = true;
         }
 
         // This shot starts during other shot
         if (other.getEndCount() > getBeginCount() - movementOffset
                 && other.getEndCount() < getEndCount()) {
-            this.collidesWith.add(other);
-            other.getCollidesWith().add(this);
-            return true;
+            result = true;
         }
 
         // This shot entirely in other shot or the other way around
         if (other.getBeginCount() <= getBeginCount() && other.getEndCount() >= getEndCount()
             || getBeginCount() < other.getBeginCount() && getEndCount() > other.getEndCount()) {
-            this.collidesWith.add(other);
-            other.getCollidesWith().add(this);
-            return true;
+            result = true;
         }
 
-        System.out.println("NO COILIDES");
-        // Remove from collideswith if it is in there, doesn't collide anymore
-        if (this.collidesWith.contains(other)) {
-            System.out.println(collidesWith.size());
-            this.collidesWith.remove(other);
-            System.out.println("REMOVING THOUGH");
-            System.out.println(collidesWith.size());
-            System.out.println(collidesWith.contains(this));
-            System.out.println(collidesWith);
-        }
-        if (other.getCollidesWith().contains(this)) {
-            other.getCollidesWith().remove(this);
+        if (result) {
+            // Add to collideswith if it is not in there
+            if (!this.collidesWith.contains(other)) {
+                this.collidesWith.add(other);
+            }
+            if (!other.getCollidesWith().contains(this)) {
+                other.getCollidesWith().add(this);
+            }
+        } else {
+            // Remove from collideswith if it is in there, doesn't collide anymore
+            if (this.collidesWith.contains(other)) {
+                this.collidesWith.remove(other);
+            }
+            if (other.getCollidesWith().contains(this)) {
+                other.getCollidesWith().remove(this);
+            }
         }
 
-        return false;
+        return result;
     }
 }
