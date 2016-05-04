@@ -471,9 +471,10 @@ public class TimetableBlock extends Pane {
             if (myPane.isBottomHalf() && (dragType == DraggingTypes.Resize_Top
                     || dragType == DraggingTypes.Move)) {
                 GridPane.setRowIndex(targetRegion, myPane.getRow() + 1);
-            } else {
+            } else if (dragType == DraggingTypes.Move){
                 GridPane.setRowIndex(targetRegion, myPane.getRow());
             }
+
             GridPane.setColumnIndex(targetRegion, myPane.getColumn());
             GridPane.setRowSpan(targetRegion, Math.max(numCounts, 1));
             return true;
