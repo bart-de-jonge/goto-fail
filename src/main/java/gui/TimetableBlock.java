@@ -463,9 +463,9 @@ public class TimetableBlock extends Pane {
 
         SnappingPane myPane = pane.getGrid().getMyPane(xCoordinate, yCoordinate);
         if (myPane != null) {
-            int numCounts = (int) Math.round(mappingPane.getHeight() / pane.getCountHeight());
+            int numCounts = (int) Math.round(mappingPane.getHeight() / pane.getGrid().getCountHeight());
             if (myPane.isBottomHalf() && dragType == DraggingTypes.Resize_Top) {
-                numCounts = (int) Math.round((mappingPane.getHeight() - 5) / pane.getCountHeight());
+                numCounts = (int) Math.round((mappingPane.getHeight() - 5) / pane.getGrid().getCountHeight());
             }
 
             if (myPane.isBottomHalf() && (dragType == DraggingTypes.Resize_Top

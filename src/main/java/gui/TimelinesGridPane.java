@@ -25,9 +25,9 @@ public class TimelinesGridPane extends GridPane {
 
     private ArrayList<SnappingPane> panes;
 
-    //////////// Mock variables, update this with project settings
+    // Height and width of count and timelines. Note that timelineWidth is a minimum.
     @Getter
-    private double countHeight = 50;
+    private double countHeight = 25;
     @Getter
     private double timelineWidth = 100;
 

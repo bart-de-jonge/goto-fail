@@ -11,12 +11,6 @@ import lombok.Setter;
  */
 public class RootCenterArea extends ScrollPane {
 
-    //private double width, height;
-
-    @Getter @Setter
-    private int countHeight = 50;
-    @Getter @Setter
-    private int timelineWidth = 200;
     @Getter @Setter
     private int numberOfTimelines = 8;
     @Getter @Setter
