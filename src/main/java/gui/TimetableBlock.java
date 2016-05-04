@@ -26,7 +26,7 @@ import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 
 /**
- * Class that resembles a draggable, resiable block inside the timetable,
+ * Class that resembles a draggable, resizable block inside the timetable,
  * whose sole purpose is to display information.
  * Highly volatile. Do not poke the dragging-dragon too much.
  */
@@ -34,9 +34,9 @@ public class TimetableBlock extends Pane {
 
     public enum DraggingTypes { Move, Resize_Top, Resize_Right, Resize_Bottom, Resize_Left }
 
-    /*
-        Styling variables.
-        For tweaking the styling.
+    /**
+     *  Styling variables.
+     *  For tweaking the styling.
      */
 
     private double verticalBorderSize = 4.0;
@@ -48,8 +48,8 @@ public class TimetableBlock extends Pane {
     private String colorBlockBorderHighlight = "#005482";
     private String colorText = "#047FB7";
 
-    /*
-        Temporary variables, until they can be moved to CSS files properly.
+    /**
+     *  Temporary variables, until they can be moved to CSS files properly.
      */
 
     private String normalStyleBackground =
@@ -84,9 +84,9 @@ public class TimetableBlock extends Pane {
     private String title = "Camblock title";
     private String shots = "15 - 20";
 
-    /*
-        Content variables.
-        Directly displaying block content, such as the name.
+    /**
+     *  Content variables.
+     *  Directly displaying block content, such as the name.
      */
     @Getter
     private Label titleNormalLabel;
@@ -106,9 +106,9 @@ public class TimetableBlock extends Pane {
     @Getter
     private Label descriptionDraggedLabel;
 
-    /*
-        Misc variables.
-        For dragging, panes etc
+    /**
+     * Misc variables.
+     * For dragging, panes etc
      */
 
     private TimetableBlock thisBlock;
@@ -257,7 +257,7 @@ public class TimetableBlock extends Pane {
 
     /**
      * Helper function to add title labels to panes.
-     * @param vbox pane to add to
+     * @param vbox pane to add this label to
      * @return the label in question.
      */
     private Label initTitleLabel(VBox vbox) {
@@ -272,7 +272,7 @@ public class TimetableBlock extends Pane {
 
     /**
      * Helper function to add count labels to panes.
-     * @param vbox pane to add to
+     * @param vbox pane to add this label to
      * @return the label in question.
      */
     private Label initCountLabel(VBox vbox) {
@@ -284,33 +284,6 @@ public class TimetableBlock extends Pane {
         vbox.getChildren().add(res);
         return res;
     }
-
-//    /**
-//     * Temporary helper function to add test count labels to panes.
-//     * @param vbox pane to add to
-//     */
-//    private void addCountLabel(VBox vbox) {
-//        Label label = new Label();
-//        label.setText(getParentBlock().getBeginCount() + " - " + parentBlock.getEndCount());
-//        label.maxWidthProperty().bind(this.widthProperty());
-//        label.setPadding(new Insets(5,5,5,5));
-//        label.setStyle(textNormalStyle);
-//        vbox.getChildren().add(label);
-//    }
-//
-//    /**
-//     * Temporary helper function to add test labels to panes.
-//     * @param vbox pane to add to
-//     */
-//    private void addTestLabels(VBox vbox) {
-//        for (int i = 0; i < 6; i++) {
-//            Label label = new Label(shots);
-//            label.maxWidthProperty().bind(this.widthProperty());
-//            label.setPadding(new Insets(5,5,5,5));
-//            label.setStyle(textNormalStyle);
-//            vbox.getChildren().add(label);
-//        }
-//    }
 
     /**
      * Get handler for on mouse moved (handling cursors).
@@ -495,9 +468,8 @@ public class TimetableBlock extends Pane {
                 numCounts = (int) Math.round((mappingPane.getHeight() - 5) / pane.getCountHeight());
             }
 
-            if ((dragType == DraggingTypes.Resize_Top
-                    || dragType == DraggingTypes.Move)
-                    && myPane.isBottomHalf()) {
+            if (myPane.isBottomHalf() && (dragType == DraggingTypes.Resize_Top
+                    || dragType == DraggingTypes.Move)) {
                 GridPane.setRowIndex(targetRegion, myPane.getRow() + 1);
             } else {
                 GridPane.setRowIndex(targetRegion, myPane.getRow());

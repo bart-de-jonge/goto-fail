@@ -18,28 +18,27 @@ import lombok.Setter;
  */
 public class BlurHelper {
 
-    private WritableImage writableImage;
-    private SnapshotParameters parameters;
-    private Bounds bounds;
+    private WritableImage writableImage;    // Image used for writing snapshots to.
+    private SnapshotParameters parameters; // Parameters used for writing snapshots (resolution etc)
+    private Bounds bounds; // Bounds of node used for snapshot parameters (x, y, width, height)
 
     @Getter
-    private GaussianBlur gaussianBlur;
+    private GaussianBlur gaussianBlur; // The blur effect we apply (can be replaced by box blur)
 
     @Getter
-    private double radius;
+    private double radius; // Radius of the blur (setblur is defined below)
 
     @Getter
-    private ImageView imageView;
+    private ImageView imageView; // ImageView region used to display blurred image.
 
     @Getter @Setter
-    private Node node;
+    private Node node; // Node behind which we're blurring
 
     @Getter @Setter
-    private boolean hideNode;
+    private boolean hideNode; // Whether or not node is included in blurring process
 
     @Getter @Setter
-    private Point2D offset;
-
+    private Point2D offset; // Pixel offset if we wish to move blur slightly
 
     /**
      * Constructor of class.
@@ -76,7 +75,7 @@ public class BlurHelper {
 
     /**
      * Radius setter, that also updates the blur effect radius.
-     * @param radius new radius to use/
+     * @param radius new radius to use
      */
     public void setRadius(double radius) {
         this.radius = radius;
@@ -98,10 +97,10 @@ public class BlurHelper {
     public void processBlurUsingBounds() {
         // get information on current size of object in scene, and set proper parameters
         bounds = node.localToScene(node.getBoundsInLocal());
-        Rectangle2D rekt = new Rectangle2D(bounds.getMinX() + offset.getX() ,
+        Rectangle2D rect = new Rectangle2D(bounds.getMinX() + offset.getX() ,
                 bounds.getMinY() + offset.getY(),
                 bounds.getWidth(), bounds.getHeight());
-        parameters.setViewport(rekt);
+        parameters.setViewport(rect);
 
         // just a catch, in case something goes wrong.
         Point2D imageSize = new Point2D(Math.round(bounds.getWidth()),

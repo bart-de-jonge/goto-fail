@@ -16,8 +16,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Getter;
 
-import java.io.File;
-
 /**
  * Class that controls the timeline.
  * @author alex
