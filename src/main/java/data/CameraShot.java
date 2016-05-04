@@ -10,7 +10,6 @@ import lombok.extern.log4j.Log4j2;
  * Created by martijn.
  */
 @XmlRootElement(name = "cameraShot")
-@ToString
 @Log4j2
 public class CameraShot extends Shot {
 

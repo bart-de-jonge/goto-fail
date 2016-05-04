@@ -41,4 +41,18 @@ public class ToolButton {
 
         headerArea.getToolView().addToolButton(this);
     }
+
+    /**
+     * Enable the button.
+     */
+    public void enableButton() {
+        this.button.setDisable(false);
+    }
+
+    /**
+     * Disable the button.
+     */
+    public void disableButton() {
+        this.button.setDisable(true);
+    }
 }
