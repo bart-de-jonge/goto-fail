@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
@@ -25,6 +26,11 @@ public class CreationModalView extends ModalView {
 
     private VBox viewPane;
     private List<CheckBox> cameraCheckboxes;
+    private TextField descripField;
+    private TextField nameField;
+    private NumberTextField startField;
+    private NumberTextField endField;
+    private Button creationButton;
 
     /**
      * Constructor.
@@ -48,7 +54,7 @@ public class CreationModalView extends ModalView {
         initCountFields();
         initCamCheckBoxes();
 
-        Button creationButton = new Button("Create");
+        creationButton = new Button("Create");
         creationButton.setOnMouseClicked(this::createShot);
         this.viewPane.getChildren().add(creationButton);
 
@@ -61,14 +67,14 @@ public class CreationModalView extends ModalView {
      */
     private void initNameDescriptionFields() {
         // Add the textfields for shot's name & description
-        Label nameLabel = new Label("Shot Name: ");
-        TextField nameField = new TextField();
+        final Label nameLabel = new Label("Shot Name: ");
+        nameField = new TextField();
         HBox nameBox = new HBox();
         nameBox.getChildren().addAll(nameLabel, nameField);
         nameBox.setSpacing(10);
 
-        Label descripLabel = new Label("Shot Description: ");
-        TextField descripField = new TextField();
+        final Label descripLabel = new Label("Shot Description: ");
+        descripField = new TextField();
         HBox descripBox = new HBox();
         descripBox.getChildren().addAll(descripLabel, descripField);
         descripBox.setSpacing(10);
@@ -81,10 +87,10 @@ public class CreationModalView extends ModalView {
      */
     private void initCountFields() {
         // Start and end points
-        Label startLabel = new Label("Start:");
-        NumberTextField startField = new NumberTextField();
-        Label endLabel = new Label("End:");
-        NumberTextField endField = new NumberTextField();
+        final Label startLabel = new Label("Start:");
+        startField = new NumberTextField();
+        final Label endLabel = new Label("End:");
+        endField = new NumberTextField();
 
         // Add default values as a cue
         startField.setText("0");
@@ -114,8 +120,59 @@ public class CreationModalView extends ModalView {
      * @param event Creation button event
      */
     private void createShot(MouseEvent event) {
-        super.hideModal();
-        // TODO: Add field validation (i.e. at least 1 camera, no non-negatives)
-        System.out.println("Should create shot here");
+        if (validateShot()) {
+            super.hideModal();
+            System.out.println("Should create shot here");
+        }
+    }
+
+    /**
+     * Validates that the fields are correctly filled, and if not, displays
+     * a corresponding error message.
+     * @return whether or not the fields are valid
+     */
+    private boolean validateShot() {
+        String errorString = "";
+        if (nameField.getText().isEmpty()) {
+            errorString += "Please name your shot.\n";
+        }
+
+        if (descripField.getText().isEmpty()) {
+            errorString += "Please add a description.\n";
+        }
+
+        double startVal = Double.parseDouble(startField.getText());
+        double endVal = Double.parseDouble(endField.getText());
+        if (startVal >= endVal) {
+            errorString += "Please make sure that the shot ends after it begins.\n";
+        }
+
+        boolean aCameraSelected = false;
+        for (CheckBox cb : this.cameraCheckboxes) {
+            if (cb.isSelected()) {
+                aCameraSelected = true;
+            }
+        }
+
+        if (!aCameraSelected) {
+            errorString += "Please select at least one camera for this shot.";
+        }
+
+        if (errorString.isEmpty()) {
+            return true;
+        } else {
+            displayError(errorString);
+            return false;
+        }
+    }
+
+    /**
+     * Displays an error message in the view.
+     * @param errorString Error to be displayed.
+     */
+    private void displayError(String errorString) {
+        Text errText = new Text(errorString);
+        errText.setFill(Color.RED);
+        this.viewPane.getChildren().add(this.viewPane.getChildren().size() - 1, errText);
     }
 }
