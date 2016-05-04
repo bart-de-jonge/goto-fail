@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Created by martijn.
@@ -12,6 +13,7 @@ import lombok.ToString;
  */
 @XmlRootElement(name = "shot")
 @ToString
+@Log4j2
 public abstract class Shot {
 
     // The name of the Shot.
@@ -59,6 +61,9 @@ public abstract class Shot {
      * @param endCount the end count of the Shot
      */
     public Shot(int instance, String name, String description, int beginCount, int endCount) {
+        log.debug("Adding Shot(instance={}, name={}, description={}, beginCount={}, endCount={})",
+                instance, name, description, beginCount, endCount);
+
         assert (beginCount <= endCount);
 
         this.name = name;

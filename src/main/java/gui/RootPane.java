@@ -6,10 +6,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Class that represents the whole top of the gui application.
  */
+@Log4j2
 public class RootPane extends Application {
 
     private int minimumResolutionX = 640;
@@ -32,6 +34,7 @@ public class RootPane extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        log.info("Starting RootPane.");
         this.primaryStage = primaryStage;
 
         // Create a BorderPane,
