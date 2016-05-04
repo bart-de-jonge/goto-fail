@@ -9,7 +9,7 @@ import lombok.ToString;
 
 /**
  * Created by Bart.
- * Abstract class for timelines.
+ * Abstract class for centerarea.
  */
 @XmlRootElement(name = "timeline")
 @ToString

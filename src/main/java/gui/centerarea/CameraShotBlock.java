@@ -1,9 +1,11 @@
-package gui;
+package gui.centerarea;
 
 import data.CameraShot;
+import gui.root.RootCenterArea;
+import gui.events.CameraShotBlockUpdatedEvent;
+import gui.events.ShotblockUpdatedEvent;
 import javafx.event.EventHandler;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Created by Bart.
@@ -41,7 +43,7 @@ public class CameraShotBlock extends ShotBlock {
         super(rootCenterArea, beginCount, endCount, description, name, shot);
         this.shotId = shotId;
         this.timetableNumber = timetableNumber;
-        this.grid = rootCenterArea.getGrid();
+        this.grid = rootCenterArea.getMainTimeLineGridPane();
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
                 this.setBeginCount(TimelinesGridPane.getRowIndex(
@@ -56,9 +58,9 @@ public class CameraShotBlock extends ShotBlock {
                 }
             });
 
-        this.getTimetableBlock().setPrefWidth(grid.getTimelineWidth());
-        this.getTimetableBlock().setPrefHeight(grid.getNumberOfCounts()
-                * grid.getCountHeight());
+        this.getTimetableBlock().setPrefWidth(grid.getHorizontalElementMinimumSize());
+        this.getTimetableBlock().setPrefHeight(grid.getNumberOfVerticalGrids()
+                * grid.getVerticalElementSize());
         grid.addCameraShotBlock(this);
     }
 

@@ -1,16 +1,11 @@
 package control;
 
-import gui.DetailView;
-import gui.RootHeaderArea;
-import gui.RootPane;
+import gui.root.RootPane;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
 
 /**
  * @author alex

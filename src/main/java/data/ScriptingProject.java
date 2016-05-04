@@ -47,9 +47,9 @@ public class ScriptingProject {
     @Getter @Setter
     private DirectorTimeline directorTimeline;
 
-    // The camera timelines of this project
+    // The camera centerarea of this project
     @Getter @Setter
-    @XmlElementWrapper(name = "camera-timelines")
+    @XmlElementWrapper(name = "camera-centerarea")
     @XmlElement(name = "cameraTimeline")
     private ArrayList<CameraTimeline> cameraTimelines;
 

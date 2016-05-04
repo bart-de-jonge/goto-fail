@@ -1,8 +1,8 @@
 package control;
 
 import data.ScriptingProject;
-import gui.RootPane;
-import gui.ShotBlock;
+import gui.root.RootPane;
+import gui.centerarea.ShotBlock;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
@@ -46,7 +46,7 @@ public class ControllerManager {
     /**
      * Overloaded constructor to directly pass controllers.
      * @param rootPane - the root window of the application
-     * @param timelineController - the controller that controls the timelines
+     * @param timelineController - the controller that controls the centerarea
      * @param detailViewController - the controller that controls the detailview
      * @param toolViewController  - the controller that controls the toolview
      */

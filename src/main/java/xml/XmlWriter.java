@@ -111,13 +111,13 @@ public class XmlWriter {
     }
     
     /**
-     * Write a list of camera timelines to an element.
-     * @param timelines the list of timelines to write
+     * Write a list of camera centerarea to an element.
+     * @param timelines the list of centerarea to write
      * @param doc the document to write with
      * @return an element for this list of cameras
      */
     private Element writeCameraTimelines(ArrayList<CameraTimeline> timelines, Document doc) {
-        Element timelinesElement = doc.createElement("camera-timelines");
+        Element timelinesElement = doc.createElement("camera-centerarea");
         for (CameraTimeline c: timelines) {
             timelinesElement.appendChild(writeCameraTimeline(c, doc));
         }

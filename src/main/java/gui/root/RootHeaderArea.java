@@ -1,20 +1,14 @@
-package gui;
+package gui.root;
 
+import gui.headerarea.DetailView;
+import gui.headerarea.ToolView;
 import javafx.scene.control.MenuItem;
 
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
-import lombok.Setter;
-
-import javax.xml.soap.Detail;
-
-import static javafx.scene.input.KeyCode.H;
 
 /**
  * Class that represents the whole of top-level elements in the gui.

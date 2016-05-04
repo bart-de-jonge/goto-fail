@@ -1,4 +1,4 @@
-package gui;
+package gui.root;
 
 import control.ControllerManager;
 import javafx.application.Application;
@@ -43,9 +43,9 @@ public class RootPane extends Application {
         topLevelPane = new BorderPane();
         // Create scene and set the stage. This is where the window is basically
         // created. Also has some useful settings.
-        //TODO: change this line of code.
+
         Scene scene = new Scene(topLevelPane);
-        scene.getStylesheets().add("testcss.css");
+        scene.getStylesheets().add("stylesheet.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("Hoi ben een titel lol.");
         primaryStage.setMinHeight(minimumResolutionY);

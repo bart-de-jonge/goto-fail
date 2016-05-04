@@ -1,4 +1,4 @@
-import gui.RootPane;
+import gui.root.RootPane;
 import javafx.application.Application;
 import lombok.extern.log4j.Log4j2;
 

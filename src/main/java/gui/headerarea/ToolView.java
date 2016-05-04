@@ -1,4 +1,4 @@
-package gui;
+package gui.headerarea;
 
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;

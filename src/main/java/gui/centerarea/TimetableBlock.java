@@ -1,8 +1,9 @@
-package gui;
+package gui.centerarea;
 
+import gui.misc.BlurHelper;
+import gui.root.RootCenterArea;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
-import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -51,35 +52,6 @@ public class TimetableBlock extends Pane {
     /**
      *  Temporary variables, until they can be moved to CSS files properly.
      */
-
-    private String normalStyleBackground =
-            "-fx-background-color:" + colorBlockBorders + ";"
-            + "-fx-background-insets: 1 1 1 1;"
-            + "-fx-border-style: solid inside;"
-            + "-fx-border-color: " + colorBlockBackground + ";"
-            + "-fx-border-width: 0.5 0 0.5 0;";
-
-    private String normalStyleForeground =
-            "-fx-padding: " + verticalBorderSize + " 0 " + verticalBorderSize + " 0;"
-            + "-fx-border-style: solid inside;"
-            + "-fx-border-insets: " + verticalBorderSize + " 0 " + verticalBorderSize + " 0;"
-            + "-fx-border-width: 2 0 0 0;"
-            + "-fx-border-color: " + colorBlockBorderHighlight + ";"
-            + "-fx-background-color: " + colorBlockBackground + ";"
-            + "-fx-background-insets: " + verticalBorderSize + " 2 " + verticalBorderSize + " 2;";
-
-    private String draggedStyleBackground =
-            "-fx-background-color:" + colorBlockBorders + ";"
-            + "-fx-background-insets: 1 1 1 1;"
-            + "-fx-background-radius: 3;";
-
-    private String textTitleStyle =
-            "-fx-text-fill: " + colorBlockBorderHighlight + ";"
-            + "-fx-font-size: 13";
-
-    private String textNormalStyle =
-            "-fx-text-fill: " + colorText + ";"
-            + "-fx-font-size: 12";
 
     private String title = "Camblock title";
     private String shots = "15 - 20";
@@ -171,7 +143,7 @@ public class TimetableBlock extends Pane {
      */
     private void initNormalPane() {
         setBlendMode(BlendMode.MULTIPLY);
-        setStyle(normalStyleBackground);
+        getStyleClass().add("block_Background_Normal");
 
         // content pane for our actual pane, which holds content (text and stuff)
         contentPane = new VBox();
@@ -179,7 +151,7 @@ public class TimetableBlock extends Pane {
         contentPane.maxWidthProperty().bind(widthProperty());
         contentPane.minHeightProperty().bind(heightProperty());
         contentPane.maxHeightProperty().bind(heightProperty());
-        contentPane.setStyle(normalStyleForeground);
+        contentPane.getStyleClass().add("block_Foreground_Normal");
 
         // add some labels etc
         titleNormalLabel = initTitleLabel(contentPane);
@@ -197,7 +169,7 @@ public class TimetableBlock extends Pane {
         // draggedPane itself
         draggedPane = new Pane();
         draggedPane.setVisible(false);
-        draggedPane.setStyle(draggedStyleBackground);
+        draggedPane.getStyleClass().add("block_Background_Dragged");
 
         // dragged content pane which mirrors our content pane, shown when dragging.
         draggedContentPane = new VBox() ;
@@ -205,9 +177,7 @@ public class TimetableBlock extends Pane {
         draggedContentPane.maxWidthProperty().bind(draggedPane.widthProperty());
         draggedContentPane.minHeightProperty().bind(draggedPane.heightProperty());
         draggedContentPane.maxHeightProperty().bind(draggedPane.heightProperty());
-        draggedContentPane.setStyle(normalStyleForeground);
-        draggedContentPane.setBlendMode(BlendMode.MULTIPLY);
-        draggedContentPane.setOpacity(0.9);
+        draggedContentPane.getStyleClass().add("block_Foreground_Dragged");
 
         // dropshadow shown underneath dragged pane
         DropShadow ds = new DropShadow(15.0, 5.0, 5.0, Color.GRAY);
@@ -228,7 +198,7 @@ public class TimetableBlock extends Pane {
         descriptionDraggedLabel.setWrapText(true);
 
         addWithClipRegion(draggedContentPane, draggedPane);
-        pane.getParentPane().getChildren().add(draggedPane);
+        pane.getMainTimeLineAnchorPane().getChildren().add(draggedPane);
     }
 
     /**
@@ -239,7 +209,7 @@ public class TimetableBlock extends Pane {
         feedbackPane.setVisible(false);
         gaussianBlur = new GaussianBlur(15.0);
         darken = new ColorAdjust(0, -0.4, -0.2, 0.2);
-        pane.getGrid().add(feedbackPane, 0, 0);
+        pane.getMainTimeLineGridPane().add(feedbackPane, 0, 0);
     }
 
     /**
@@ -264,8 +234,7 @@ public class TimetableBlock extends Pane {
         Label res = new Label();
         res.setText("Block Title");
         res.maxWidthProperty().bind(this.widthProperty());
-        res.setPadding(new Insets(0,0,0,5));
-        res.setStyle(textTitleStyle);
+        res.getStyleClass().add("block_Text_Title");
         vbox.getChildren().add(res);
         return res;
     }
@@ -279,8 +248,7 @@ public class TimetableBlock extends Pane {
         Label res = new Label();
         res.setText("0 - 0");
         res.maxWidthProperty().bind(this.widthProperty());
-        res.setPadding(new Insets(0,5,5,5));
-        res.setStyle(textNormalStyle);
+        res.getStyleClass().add("block_Text_Normal");
         vbox.getChildren().add(res);
         return res;
     }
@@ -348,7 +316,7 @@ public class TimetableBlock extends Pane {
             TimelinesGridPane.setRowSpan(feedbackPane, TimelinesGridPane.getRowSpan(thisBlock));
 
             // Set startingY if dragging
-            double blockY = pane.getGrid().localToScene(thisBlock.getLayoutX(),
+            double blockY = pane.getMainTimeLineGridPane().localToScene(thisBlock.getLayoutX(),
                     thisBlock.getLayoutY()).getY();
             if (draggingType == DraggingTypes.Resize_Top) {
                 startingY = blockY + thisBlock.getHeight();
@@ -466,19 +434,22 @@ public class TimetableBlock extends Pane {
             yCoordinate++;
         }
 
-        SnappingPane myPane = pane.getGrid().getMyPane(xCoordinate, yCoordinate);
+        SnappingPane myPane = pane.getMainTimeLineGridPane().getMyPane(xCoordinate, yCoordinate);
         if (myPane != null) {
-            int numCounts = (int) Math.round(mappingPane.getHeight() / pane.getCountHeight());
+            int numCounts = (int) Math.round(mappingPane.getHeight()
+                    / pane.getMainTimeLineGridPane().getVerticalElementSize());
             if (myPane.isBottomHalf() && dragType == DraggingTypes.Resize_Top) {
-                numCounts = (int) Math.round((mappingPane.getHeight() - 5) / pane.getCountHeight());
+                numCounts = (int) Math.round((mappingPane.getHeight() - 5)
+                        / pane.getMainTimeLineGridPane().getVerticalElementSize());
             }
 
             if (myPane.isBottomHalf() && (dragType == DraggingTypes.Resize_Top
                     || dragType == DraggingTypes.Move)) {
                 GridPane.setRowIndex(targetRegion, myPane.getRow() + 1);
-            } else {
+            } else if (dragType == DraggingTypes.Move) {
                 GridPane.setRowIndex(targetRegion, myPane.getRow());
             }
+
             GridPane.setColumnIndex(targetRegion, myPane.getColumn());
             GridPane.setRowSpan(targetRegion, Math.max(numCounts, 1));
             return true;
@@ -492,7 +463,7 @@ public class TimetableBlock extends Pane {
      * @param event the mousedrag event in question.
      */
     private void onMouseDraggedHelperNormal(MouseEvent event) {
-        AnchorPane parentPane = pane.getParentPane();
+        AnchorPane parentPane = pane.getMainTimeLineAnchorPane();
         Bounds parentBounds = parentPane.localToScene(parentPane.getBoundsInLocal());
 
         draggedPane.setLayoutX(event.getSceneX() - parentBounds.getMinX() - dragXOffset);
@@ -506,20 +477,22 @@ public class TimetableBlock extends Pane {
     private void onMouseDraggedHelperVertical(MouseEvent event) {
         double newLayoutY = 0;
         double newPrefHeight = 0;
-        Point2D bounds = pane.getParentPane().sceneToLocal(event.getSceneX(), event.getSceneY());
+        Point2D bounds = pane.getMainTimeLineAnchorPane().sceneToLocal(event.getSceneX(),
+                event.getSceneY());
 
         if (thisBlock.draggingType == DraggingTypes.Resize_Top) {
             newPrefHeight = startingY - event.getSceneY();
             newLayoutY = bounds.getY();
         } else if (thisBlock.draggingType == DraggingTypes.Resize_Bottom) {
-            newLayoutY = pane.getParentPane().sceneToLocal(0, startingY).getY();
+            newLayoutY = pane.getMainTimeLineAnchorPane().sceneToLocal(0, startingY).getY();
             newPrefHeight = bounds.getY() - newLayoutY;
         }
 
-        if (newPrefHeight < pane.getGrid().getCountHeight()) {
-            newPrefHeight = pane.getGrid().getCountHeight();
+        if (newPrefHeight < pane.getMainTimeLineGridPane().getVerticalElementSize()) {
+            newPrefHeight = pane.getMainTimeLineGridPane().getVerticalElementSize();
             if (draggingType == DraggingTypes.Resize_Top) {
-                newLayoutY = pane.getParentPane().sceneToLocal(0, startingY).getY() - newPrefHeight;
+                newLayoutY = pane.getMainTimeLineAnchorPane().sceneToLocal(0,
+                        startingY).getY() - newPrefHeight;
             }
         }
 

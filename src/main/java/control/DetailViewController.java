@@ -1,9 +1,9 @@
 package control;
 
 import data.ScriptingProject;
-import gui.CameraShotBlock;
-import gui.DetailView;
-import gui.ShotBlock;
+import gui.centerarea.CameraShotBlock;
+import gui.headerarea.DetailView;
+import gui.centerarea.ShotBlock;
 
 /**
  * Created by Bart.

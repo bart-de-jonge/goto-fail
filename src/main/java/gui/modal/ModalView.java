@@ -1,11 +1,10 @@
-package gui;
+package gui.modal;
 
-import javafx.event.EventHandler;
+import gui.root.RootPane;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 /**
  * Class that creates and displays a modal (popup) view.
