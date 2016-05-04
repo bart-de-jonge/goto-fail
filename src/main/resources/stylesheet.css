@@ -1,7 +1,5 @@
 /* for the love of all that is holy, do not enable this ever again.
 .root {
-	-fx-font-size: 16pt;
-	-fx-base: #ff01d2;
 	-fx-background: #ff01d2;
 }
 */
@@ -11,6 +9,14 @@
   -c-block-borders: #DDF2FC;
   -c-block-highlight: #005482;
   -c-block-text: #047FB7;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+   -fx-background-color: transparent;
 }
 
 .block_Background_Normal {
