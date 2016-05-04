@@ -21,7 +21,7 @@ public class DirectorShot extends Shot {
      * Default Constructor.
      */
     public DirectorShot() {
-        new DirectorShot("", "", 0, 0);
+        this("", "", 0, 0);
     }
 
     /**

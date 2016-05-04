@@ -21,7 +21,7 @@ public class CameraShot extends Shot {
      * Default constructor.
      */
     public CameraShot() {
-        new CameraShot("", "", 0, 0);
+        this("", "", 0, 0);
     }
 
     /**
