@@ -15,6 +15,7 @@ import data.Shot;
 import gui.CameraShotBlock;
 import gui.CameraShotBlockUpdatedEvent;
 import gui.RootPane;
+import gui.ShotBlock;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
@@ -85,6 +86,24 @@ public class TimelineController {
         checkCollisions(cameraIndex, shotBlock);
     }
 
+    /**
+     * Remove a camera shot from both the display and the timeline.
+     * @param cameraShotBlock CameraShotBlock to be removed
+     */
+    public void removeCameraShot(CameraShotBlock cameraShotBlock) {
+        // If we are removing the active shot, then this must be updated accordingly
+        if (this.controllerManager.getActiveShotBlock().equals(cameraShotBlock)) {
+            this.controllerManager.setActiveShotBlock(null);
+        }
+
+        // Remove the shot from the model
+        CameraTimeline cameraTimeline = this.project.getCameraTimelines()
+                .get(cameraShotBlock.getTimetableNumber());
+        cameraTimeline.removeShot(cameraShotBlock.getShot());
+
+        // Then remove the shot from the view
+        cameraShotBlock.removeFromView();
+    }
 
     /**
      * Handle updated camera shot. The previous timeline is used to retrieve the corresponding
@@ -244,7 +263,4 @@ public class TimelineController {
             }
         }
     }
-    
-   
-    
 }
