@@ -3,12 +3,14 @@ package data;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * This class extends the Shot class, this one is specific for the CameraTimeline.
  * Created by martijn.
  */
 @XmlRootElement(name = "cameraShot")
+@Log4j2
 public class CameraShot extends Shot {
 
     // Counter that ensures no shots with duplicate numbers will be created.
@@ -18,8 +20,7 @@ public class CameraShot extends Shot {
      * Default constructor.
      */
     public CameraShot() {
-        super(instanceCounter, "", "", 0, 0);
-        instanceCounter++;
+        this("", "", 0, 0);
     }
 
     /**
@@ -31,6 +32,7 @@ public class CameraShot extends Shot {
      */
     public CameraShot(String name, String description, int startCount, int endCount) {
         super(instanceCounter, name, description, startCount, endCount);
+        log.debug("Created new CameraShot");
         instanceCounter++;
     }
 }

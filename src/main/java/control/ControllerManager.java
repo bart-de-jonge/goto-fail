@@ -4,11 +4,13 @@ import data.ScriptingProject;
 import gui.root.RootPane;
 import gui.centerarea.ShotBlock;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Class wrapper for model management controllers.
  * @author alex
  */
+@Log4j2
 public class ControllerManager {
 
     @Getter
@@ -35,6 +37,8 @@ public class ControllerManager {
      * @param rootPane Root Window
      */
     public ControllerManager(RootPane rootPane) {
+        log.debug("Initializing new ControllerManager");
+
         this.rootPane = rootPane;
         initializeControllers();
     }
@@ -49,6 +53,8 @@ public class ControllerManager {
     public ControllerManager(RootPane rootPane, TimelineController timelineController,
                              DetailViewController detailViewController,
                              ToolViewController toolViewController) {
+        log.debug("Initializing new ControllerManager");
+
         this.rootPane = rootPane;
         this.timelineControl = timelineController;
         this.detailViewController = detailViewController;
