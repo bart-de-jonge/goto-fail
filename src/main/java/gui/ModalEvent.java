@@ -8,18 +8,23 @@ import javafx.event.EventType;
  * @author alex
  */
 public abstract class ModalEvent extends Event {
+
+    /**
+     * Enum that represents the modal event type
+     * and manages the javafx event type.
+     */
     public enum ModalEventType {
         CONFIRM ("MODAL_CONFIRMED"),
         ABORT ("MODAL_ABORTED");
 
-        private final String typeName;
+        private final EventType<ModalEvent> event;
 
         ModalEventType(String s) {
-            typeName = s;
+            event = new EventType<>(Event.ANY, s);
         }
 
-        public String toString() {
-            return this.typeName;
+        public EventType<ModalEvent> getEvent() {
+            return this.event;
         }
     }
 
@@ -30,7 +35,7 @@ public abstract class ModalEvent extends Event {
      * @param type Modal event type
      */
     public ModalEvent(ModalEventType type) {
-        super(new EventType<>(Event.ANY, type.toString()));
+        super(type.getEvent());
         this.type = type;
     }
 }

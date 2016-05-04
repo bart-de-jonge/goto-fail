@@ -63,6 +63,7 @@ public class ScriptingProject {
         secondsPerCount = 0;
         cameras = null;
         cameraTimelines = null;
+        directorTimeline = new DirectorTimeline(description, this);
     }
 
     /**
@@ -75,6 +76,7 @@ public class ScriptingProject {
         this.secondsPerCount = secondsPerCount;
         this.cameras = new ArrayList<Camera>();
         this.cameraTimelines = new ArrayList<CameraTimeline>();
+        this.directorTimeline = new DirectorTimeline(description, this);
     }
 
     /**

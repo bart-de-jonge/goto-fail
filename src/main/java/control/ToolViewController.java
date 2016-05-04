@@ -1,5 +1,6 @@
 package control;
 
+import data.ScriptingProject;
 import gui.CreationModalView;
 import gui.DirectorShotCreationEvent;
 import gui.ModalView;
@@ -36,19 +37,32 @@ public class ToolViewController {
 
     /**
      * When triggered, this initializes and displays the modal view for the creation of a new block.
-     * TODO: Add modal and get rid of placeholder block
      * @param event mouse event
      */
     private void showBlockCreationWindow(MouseEvent event) {
-        this.controllerManager.getTimelineControl()
-                .addCameraShot(1, "BOOM", "Een description", 1, 2);
         new CreationModalView(this.controllerManager.getRootPane(),
                               this.controllerManager.getScriptingProject()
                                       .getCameraTimelines().size(),
                               this::createDirectorShot);
     }
 
+    /**
+     * Event handler for the creation of a director shot.
+     * It adds the DirectorShot to the DirectorTimline and adds the corresponding
+     * camera shots via the TimelineController.
+     * @param event shot creation event
+     */
     private void createDirectorShot(DirectorShotCreationEvent event) {
-        System.out.println("DO MAGIC");
+        ScriptingProject script = this.controllerManager.getScriptingProject();
+        // TODO: Remove cast to int once half-counts etc. are supported
+        script.getDirectorTimeline().addShot(event.getShotName(), event.getShotDescription(),
+                                             (int) event.getShotStart(), (int) event.getShotEnd());
+
+        TimelineController tlineControl = this.controllerManager.getTimelineControl();
+        event.getCamerasInShot().forEach(camInd -> {
+                tlineControl.addCameraShot(camInd,
+                                           event.getShotName(), event.getShotDescription(),
+                                           (int) event.getShotStart(), (int) event.getShotEnd());
+            });
     }
 }
