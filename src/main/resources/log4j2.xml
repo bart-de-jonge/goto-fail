@@ -15,10 +15,15 @@
             <PatternLayout pattern="${PATTERN}"/>
             <SizeBasedTriggeringPolicy/>
         </RollingFile>
+        <RollingFile name="debug" fileName="logs/debug.1" filePattern="logs/debug_%d{yyyy-MM-dd-hh-mm}.1">
+            <PatternLayout pattern="${PATTERN}"/>
+            <SizeBasedTriggeringPolicy/>
+        </RollingFile>
     </Appenders>
     <Loggers>
         <Root level="TRACE">
-            <AppenderRef ref="logs"/>
+            <AppenderRef ref="debug" level="DEBUG"/>
+            <AppenderRef ref="logs" level="INFO"/>
             <AppenderRef ref="errorlogs" level="ERROR"/>
             <AppenderRef ref="STDOUT" level="ERROR"/>
         </Root>
