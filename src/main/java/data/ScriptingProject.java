@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 import xml.XmlReader;
 import xml.XmlWriter;
 
@@ -29,6 +30,7 @@ import xml.XmlWriter;
 @XmlRootElement(name = "scriptingProject")
 @XmlAccessorType(XmlAccessType.FIELD)
 @ToString
+@Log4j2
 public class ScriptingProject {
 
     // Description of this project
@@ -59,10 +61,7 @@ public class ScriptingProject {
      * Default constructor.
      */
     public ScriptingProject() {
-        description = "";
-        secondsPerCount = 0;
-        cameras = null;
-        cameraTimelines = null;
+        this("", 0);
     }
 
     /**
@@ -71,6 +70,9 @@ public class ScriptingProject {
      * @param secondsPerCount - the number of seconds each count takes
      */
     public ScriptingProject(String description, double secondsPerCount) {
+        log.debug("Initializing new ScriptingProject(description={}, secondsPerCount={})",
+            description, secondsPerCount);
+
         this.description = description;
         this.secondsPerCount = secondsPerCount;
         this.cameras = new ArrayList<Camera>();
@@ -93,6 +95,7 @@ public class ScriptingProject {
      * @return true if write succeeded, false otherwise
      */
     public boolean write(File file) {
+        log.info("Writing ScriptingProject to file {}", file.getAbsolutePath());
         try {
             JAXBContext context = JAXBContext.newInstance(ScriptingProject.class);
             Marshaller m = context.createMarshaller();
@@ -122,6 +125,7 @@ public class ScriptingProject {
      * @return null if read failed, the read project otherwise
      */
     public static ScriptingProject read(File file) {
+        log.info("Reading ScriptingProject from file {}", file.getAbsolutePath());
         try {
             JAXBContext context = JAXBContext.newInstance(ScriptingProject.class);
             Unmarshaller um = context.createUnmarshaller();
