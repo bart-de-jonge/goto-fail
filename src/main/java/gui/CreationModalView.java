@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,11 @@ public class CreationModalView extends ModalView {
 
     private int numberOfCameras;
 
+    @Setter
+    private String defaultStartCount = "0";
+    @Setter
+    private String defaultEndCount = "1";
+
     private VBox viewPane;
     private List<CheckBox> cameraCheckboxes;
     private TextField descripField;
@@ -33,19 +39,33 @@ public class CreationModalView extends ModalView {
     private NumberTextField endField;
     private Button creationButton;
 
-    private EventHandler<DirectorShotCreationEvent> shotCreationEventEventHandler;
+    private EventHandler<DirectorShotCreationEvent> shotCreationEventHandler;
 
     /**
-     * Constructor.
+     * Constructor with default modal size.
      * @param rootPane Pane to display modal on top of
      * @param numberOfCamerasInTimeline Amount of cameras in timeline
      * @param creationHandler Event handler for the creation of a shot
      */
     public CreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
                              EventHandler<DirectorShotCreationEvent> creationHandler) {
-        super(rootPane, width, height);
+        this(rootPane, numberOfCamerasInTimeline, creationHandler, width, height);
+    }
+
+    /**
+     * Constructor.
+     * @param rootPane Pane to display modal on top of
+     * @param numberOfCamerasInTimeline Amount of cameras in timeline
+     * @param creationHandler Event handler for the creation of a shot
+     * @param modalWidth Modal display width
+     * @param modalHeight Modal display height
+     */
+    public CreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
+                             EventHandler<DirectorShotCreationEvent> creationHandler,
+                             int modalWidth, int modalHeight) {
+        super(rootPane, modalWidth, modalHeight);
         this.numberOfCameras = numberOfCamerasInTimeline;
-        this.shotCreationEventEventHandler = creationHandler;
+        this.shotCreationEventHandler = creationHandler;
         initializeCreationView();
     }
 
@@ -99,8 +119,8 @@ public class CreationModalView extends ModalView {
         endField = new NumberTextField();
 
         // Add default values as a cue
-        startField.setText("0");
-        endField.setText("1");
+        startField.setText(this.defaultStartCount);
+        endField.setText(this.defaultEndCount);
 
         HBox countBox = new HBox();
         countBox.getChildren()
@@ -128,7 +148,7 @@ public class CreationModalView extends ModalView {
     private void createShot(MouseEvent event) {
         if (validateShot()) {
             super.hideModal();
-            this.shotCreationEventEventHandler.handle(this.buildCreationEvent());
+            this.shotCreationEventHandler.handle(this.buildCreationEvent());
         }
     }
 

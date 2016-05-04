@@ -2,6 +2,7 @@ package gui;
 
 import javafx.event.Event;
 import javafx.event.EventType;
+import lombok.Getter;
 
 /**
  * Class that describes a modal action.
@@ -28,6 +29,7 @@ public abstract class ModalEvent extends Event {
         }
     }
 
+    @Getter
     private ModalEventType type;
 
     /**

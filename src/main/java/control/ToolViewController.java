@@ -48,7 +48,7 @@ public class ToolViewController {
 
     /**
      * Event handler for the creation of a director shot.
-     * It adds the DirectorShot to the DirectorTimline and adds the corresponding
+     * It adds the DirectorShot to the DirectorTimeline and adds the corresponding
      * camera shots via the TimelineController.
      * @param event shot creation event
      */
