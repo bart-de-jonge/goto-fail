@@ -6,12 +6,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
+
 /**
  * Created by martijn.
  * This class contains information about a Shot.
  */
 @XmlRootElement(name = "shot")
-@ToString
+@ToString(exclude="collidesWith")
 public abstract class Shot {
 
     // The name of the Shot.
@@ -37,6 +39,9 @@ public abstract class Shot {
     // True if the shot is overlapping with another Shot.
     @Getter @Setter
     private boolean overlapping;
+
+    @Getter
+    private ArrayList<Shot> collidesWith;
     
     /**
      * Default Constructor.
@@ -47,6 +52,7 @@ public abstract class Shot {
         instance = 0;
         beginCount = 0;
         endCount = 0;
+        collidesWith = new ArrayList<>();
     }
 
     /**
@@ -66,6 +72,7 @@ public abstract class Shot {
         this.instance = instance;
         this.beginCount = beginCount;
         this.endCount = endCount;
+        this.collidesWith = new ArrayList<>();
     }
 
     /**
@@ -92,23 +99,46 @@ public abstract class Shot {
      * @return true when shots are overlapping, false when there are not overlapping
      */
     public boolean areOverlapping(Shot other, double movementOffset) {
+        System.out.println("Checking overlap thingy");
+
         // Other shot starts during this shot
         if (other.getBeginCount() > getBeginCount() - movementOffset
                 && other.getBeginCount() - movementOffset < getEndCount()) {
+            this.collidesWith.add(other);
+            other.getCollidesWith().add(this);
             return true;
         }
 
-        // THis shot starts during other shot
+        // This shot starts during other shot
         if (other.getEndCount() > getBeginCount() - movementOffset
                 && other.getEndCount() < getEndCount()) {
+            this.collidesWith.add(other);
+            other.getCollidesWith().add(this);
             return true;
         }
 
         // This shot entirely in other shot or the other way around
         if (other.getBeginCount() <= getBeginCount() && other.getEndCount() >= getEndCount()
             || getBeginCount() < other.getBeginCount() && getEndCount() > other.getEndCount()) {
+            this.collidesWith.add(other);
+            other.getCollidesWith().add(this);
             return true;
         }
+
+        System.out.println("NO COILIDES");
+        // Remove from collideswith if it is in there, doesn't collide anymore
+        if (this.collidesWith.contains(other)) {
+            System.out.println(collidesWith.size());
+            this.collidesWith.remove(other);
+            System.out.println("REMOVING THOUGH");
+            System.out.println(collidesWith.size());
+            System.out.println(collidesWith.contains(this));
+            System.out.println(collidesWith);
+        }
+        if (other.getCollidesWith().contains(this)) {
+            other.getCollidesWith().remove(this);
+        }
+
         return false;
     }
 }
