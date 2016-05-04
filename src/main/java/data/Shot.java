@@ -39,9 +39,9 @@ public abstract class Shot {
     @Getter @Setter
     private double endCount;
 
-    // True if the shot is overlapping with another Shot.
+    // True if the shot is colliding with another Shot.
     @Getter @Setter
-    private boolean overlapping;
+    private boolean colliding;
 
     @Getter
     private ArrayList<Shot> collidesWith;
@@ -98,11 +98,11 @@ public abstract class Shot {
     }
 
     /**
-     * Checks whether the two Shots are overlapping.
+     * Checks whether the two Shots are colliding.
      *
      * @param other the other Shot the check the overlap with
      * @param movementOffset the offset the camera needs to move to the shot.
-     * @return true when shots are overlapping, false when there are not overlapping
+     * @return true when shots are colliding, false when there are not colliding
      */
     public boolean areOverlapping(Shot other, double movementOffset) {
         boolean result = false;
@@ -126,6 +126,11 @@ public abstract class Shot {
         }
 
         editCollidesWith(result, other);
+
+        // Update collides fields
+        this.colliding = !this.collidesWith.isEmpty();
+        other.setColliding(!other.getCollidesWith().isEmpty());
+
         return result;
     }
 

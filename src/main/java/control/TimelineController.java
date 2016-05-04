@@ -47,7 +47,7 @@ public class TimelineController {
     // List of all camerashotblocks in this timelinecontroller
     private ArrayList<CameraShotBlock> cameraShotBlocks;
 
-    // List of all currently overlapping camerashotblocks
+    // List of all currently colliding camerashotblocks
     private ArrayList<CameraShotBlock> overlappingCameraShotBlocks;
 
     /**
@@ -139,18 +139,18 @@ public class TimelineController {
      */
     private void checkCollisions(int timelineNumber, int oldTimelineNumber,
                                  CameraShotBlock cameraShotBlock) {
-        // Get the correct timeline
         CameraTimeline timeline = project.getCameraTimelines().get(timelineNumber);
         // Remove collisions from shot if added to new timeline
         if (oldTimelineNumber >= 0) {
             removeCollisionFromCameraShotBlock(cameraShotBlock);
-            // Remove overlaps for non-overlapping shotblocks
+            // Remove overlaps for non-colliding shotblocks
             ArrayList<CameraShotBlock> toRemove = new ArrayList<>();
-            this.overlappingCameraShotBlocks.stream().filter(shotBlock ->
-                    shotBlock.getShot().getCollidesWith().isEmpty()).forEach(shotBlock -> {
-                            shotBlock.setColliding(false);
-                            toRemove.add(shotBlock);
-                        });
+            this.overlappingCameraShotBlocks.stream()
+                    .filter(shotBlock ->
+                        shotBlock.getShot().getCollidesWith().isEmpty()).forEach(shotBlock -> {
+                                shotBlock.setColliding(false);
+                                toRemove.add(shotBlock);
+                            });
             this.overlappingCameraShotBlocks.removeAll(toRemove);
         }
 

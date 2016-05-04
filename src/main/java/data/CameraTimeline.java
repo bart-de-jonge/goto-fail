@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other;
+
 /**
  * Class to store information about a camera timeline.
  * @author Bart.
@@ -60,7 +62,7 @@ public class CameraTimeline extends Timeline {
      * @param startCount the start count of the Shot
      * @param endCount the end count of the Shot
      * @return If no overlap is found, only the newly added shot will be returned. If any
-       overlapping shots are found, all overlapping shots will be returned. If any overlapping
+       colliding shots are found, all colliding shots will be returned. If any colliding
        shots are found, the shot that was added will be the last one in the list. 
      * @see CameraTimeline#addShot(CameraShot)
      */
@@ -73,12 +75,12 @@ public class CameraTimeline extends Timeline {
      * Adds a Shot to the Timeline. The Shot is inserted in a sorted manner. When a Shot is
      * inserted, the shots before the Shot have a lower start count of a lower end count. The
      * Shot after the inserted shot have a higher start count or end count. This method also checks
-     * for overlapping shots. The overlapping shots will have their overlapping variable set to
+     * for colliding shots. The colliding shots will have their colliding variable set to
      * true.
      *
      * @param shot the Shot to add to the timeline
      * @return If no overlap is found, only the newly added shot will be returned. If any
-       overlapping shots are found, all overlapping shots will be returned. If any overlapping
+       colliding shots are found, all colliding shots will be returned. If any colliding
        shots are found, the shot that was added will be the last one in the list.
      */
     public ArrayList<CameraShot> addShot(CameraShot shot) {
@@ -101,22 +103,21 @@ public class CameraTimeline extends Timeline {
     }
 
     /**
-     * Get the list of shots overlapping with the given shots.
+     * Get the list of shots colliding with the given shots.
      * @param shot - the shot to check with
-     * @return - only the shot when no overlap, list of overlapping shots otherwise
+     * @return - only the shot when no overlap, list of colliding shots otherwise
      */
     public ArrayList<CameraShot> getOverlappingShots(CameraShot shot) {
         ArrayList<CameraShot> result = new ArrayList<>();
 
-        // check for overlapping shots
+        // check for colliding shots
         result.addAll(shots.stream()
-                .filter(other -> shot != other && checkOverlap(shot,
-                        other, camera.getMovementMargin()))
+                .filter(other -> shot != other)
+                .filter(other -> checkOverlap(shot, other, camera.getMovementMargin()))
                 .collect(Collectors.toList()));
         result.add(shot);
         return result;
     }
-
 
     /**
      * Removes all shots from the Timeline.
