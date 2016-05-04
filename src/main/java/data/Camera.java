@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Created by Bart.
@@ -14,6 +15,7 @@ import lombok.ToString;
 @XmlRootElement(name = "camera")
 @EqualsAndHashCode
 @ToString
+@Log4j2
 public class Camera {
 
     // Name of the camera
@@ -36,10 +38,7 @@ public class Camera {
      * Default constructor.
      */
     public Camera() {
-        name = "";
-        description = "";
-        cameraType = null;
-        movementMargin = -1;
+        this("", "", null);
     }
 
     /**
@@ -53,6 +52,8 @@ public class Camera {
         this.description = description;
         this.cameraType = cameraType;
         this.movementMargin = -1;
+        log.debug("Created new Camera(name={}, description={}, cameraType={}",
+                name, description, cameraType);
     }
 
     /**

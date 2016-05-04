@@ -88,11 +88,16 @@ public abstract class Shot {
        equal start times, the end times are compared.
      */
     public int compareTo(Shot other) {
+        log.debug("Comparing this(beginCount={}, endCount={}) to other(beginCount={}, endCount={})",
+                beginCount, endCount, other.getBeginCount(), other.getEndCount());
+
         int result = Double.compare(getBeginCount(), other.getBeginCount());
 
         if (result == 0) {
             result = Double.compare(getEndCount(), other.getEndCount());
         }
+
+        log.debug("Compare returns {}", result);
 
         return result;
     }
@@ -105,23 +110,30 @@ public abstract class Shot {
      * @return true when shots are colliding, false when there are not colliding
      */
     public boolean areOverlapping(Shot other, double movementOffset) {
+        log.debug("Checking overlap of this(beginCount={}, endCount={}) to other(beginCount={}, "
+            + "endCount={})", beginCount, endCount, other.getBeginCount(), other.getEndCount());
+
         boolean result = false;
 
         // Other shot starts during this shot
         if (other.getBeginCount() > getBeginCount() - movementOffset
-                && other.getBeginCount() - movementOffset < getEndCount()) {
+            && other.getBeginCount() - movementOffset < getEndCount()) {
+            log.debug("Other shot starts during this shot");
             result = true;
         }
 
         // This shot starts during other shot
         if (other.getEndCount() > getBeginCount() - movementOffset
                 && other.getEndCount() < getEndCount()) {
+            log.debug("Other shot ends during this shot");
             result = true;
         }
 
         // This shot entirely in other shot or the other way around
         if (other.getBeginCount() <= getBeginCount() && other.getEndCount() >= getEndCount()
             || getBeginCount() < other.getBeginCount() && getEndCount() > other.getEndCount()) {
+            log.debug("One of the two shots completely overlaps the other");
+
             result = true;
         }
 
@@ -130,6 +142,8 @@ public abstract class Shot {
         // Update collides fields
         this.colliding = !this.collidesWith.isEmpty();
         other.setColliding(!other.getCollidesWith().isEmpty());
+
+        log.debug("No overlap found");
 
         return result;
     }

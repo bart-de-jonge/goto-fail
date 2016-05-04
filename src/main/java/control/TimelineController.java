@@ -1,11 +1,6 @@
 package control;
 
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -15,19 +10,23 @@ import data.Shot;
 import gui.CameraShotBlock;
 import gui.CameraShotBlockUpdatedEvent;
 import gui.RootPane;
-import gui.ShotBlock;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 
-import static javax.swing.UIManager.get;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Class that controls the timeline.
  * @author alex
  */
+@Log4j2
 public class TimelineController {
 
     private RootPane rootPane;
@@ -55,7 +54,9 @@ public class TimelineController {
      * Constructor.
      * @param controllerManager Root Pane.
      */
-    TimelineController(ControllerManager controllerManager) {
+    public TimelineController(ControllerManager controllerManager) {
+        log.debug("Constructing new TimelineController(controllerManager={})", controllerManager);
+
         this.controllerManager = controllerManager;
         this.rootPane = controllerManager.getRootPane();
         this.project = controllerManager.getScriptingProject();
@@ -72,8 +73,10 @@ public class TimelineController {
      * @param startCount Start count.
      * @param endCount End count.
      */
-    void addCameraShot(int cameraIndex, String name, String description,
-                       int startCount, int endCount) {
+    public void addCameraShot(int cameraIndex, String name, String description,
+                              int startCount, int endCount) {
+        log.info("Adding CameraShot to Timeline");
+
         CameraShot newShot = new CameraShot(name,description, startCount, endCount);
         this.project.getCameraTimelines().get(cameraIndex).addShot(newShot);
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex,
@@ -112,7 +115,9 @@ public class TimelineController {
      * it is removed from the previous timeline and added to the new one.
      * @param event Camera shot change event.
      */
-    void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
+    public void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
+        log.info("Shot moved to new TimeLine");
+
         CameraShotBlock changedBlock = event.getCameraShotBlock();
 
         controllerManager.setActiveShotBlock(changedBlock);
@@ -219,6 +224,7 @@ public class TimelineController {
      * TODO: Replace this with proper XML based project creation
      */
     private void initializeCameraTimelines() {
+        log.info("Initializing camera Timelines");
         for (int i = 0; i < numTimelines; i++) {
             Camera defCam = new Camera("IP Cam " + i, "", defType);
             CameraTimeline timelineN = new CameraTimeline(defCam, "", project);
@@ -231,6 +237,7 @@ public class TimelineController {
      * A file chooser window will be opened to select a file
      */
     public void save() {
+        log.info("Saving Project to file");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save");
         ExtensionFilter extFilter = new ExtensionFilter("txt files", "*.txt");
@@ -246,6 +253,7 @@ public class TimelineController {
      * A file chooser window will be opened to select the file.
      */
     public void load() {
+        log.info("Loading Project from file");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load");
         ExtensionFilter extFilter = new ExtensionFilter("txt files", "*.txt");

@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Created by Bart.
@@ -13,6 +14,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 @XmlRootElement(name = "cameraType")
+@Log4j2
 public class CameraType {
 
     // Name of the cameraType
@@ -33,9 +35,7 @@ public class CameraType {
      * Default constructor.
      */
     public CameraType() {
-        name = "";
-        description = "";
-        movementMargin = -1;
+        this("", "", -1);
     }
 
     /**
@@ -48,5 +48,7 @@ public class CameraType {
         this.name = name;
         this.description = description;
         this.movementMargin = movementMargin;
+        log.debug("Created new CameraType(name={}, description={}, movementMargin={})",
+            name, description, movementMargin);
     }
 }
