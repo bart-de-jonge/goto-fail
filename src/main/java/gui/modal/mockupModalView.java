@@ -1,6 +1,13 @@
 package gui.modal;
 
+import gui.misc.TransitionHelper;
 import gui.root.RootPane;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -8,9 +15,11 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 /**
  * Modal view for gui testing and mockups. Temporary until style basics are worked out.
@@ -44,22 +53,31 @@ public class mockupModalView extends ModalView {
 
     private void initExampleButtons() {
 
-        dropShadowForButtons = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.15),
-                10, 0.1, 2, 1);
+        dropShadowForButtons = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.35),
+                20, 0.1, 1, 3);
 
         innerShadowForButtons = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.15),
-                1, 1, -2, -1);
+                1, 1, -3, -2);
 
         dropShadowForButtons.setInput(innerShadowForButtons);
+        TransitionHelper transitionHelper = new TransitionHelper();
 
         enabledButton = new Button("Click me!");
+        enabledButton.setPadding(new Insets(10, 30, 10, 30));
         enabledButton.setEffect(dropShadowForButtons);
-        this.viewPane.getChildren().add(enabledButton);
 
-        disabledButton = new Button("No clicking!");
-        disabledButton.setEffect(dropShadowForButtons);
-        disabledButton.setDisable(true);
-        this.viewPane.getChildren().add(disabledButton);
+//        transitionHelper.addMouseOverTransition(enabledButton, dropShadowForButtons.radiusProperty(),
+//                200, 20, 18);
+        transitionHelper.addMouseClickTransition(enabledButton, enabledButton.translateYProperty(),
+                100, 0, 15);
+        transitionHelper.addMouseClickTransition(enabledButton, enabledButton.translateXProperty(),
+                100, 0, 15);
+//        transitionHelper.addMouseOverTransition(enabledButton, dropShadowForButtons.offsetYProperty(),
+//                200, 3, 0);
+//        transitionHelper.addMouseOverTransition(enabledButton, dropShadowForButtons.colorProperty(),
+//                200, Color.gray(0, 0.35), Color.gray(0, 0.45));
+
+        this.viewPane.getChildren().add(enabledButton);
 
     }
 

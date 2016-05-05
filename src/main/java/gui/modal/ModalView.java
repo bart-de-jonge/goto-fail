@@ -59,7 +59,7 @@ public abstract class ModalView {
      */
     public void setModalView(Pane modalView) {
         this.displayScene = new Scene(modalView, width, height);
-        this.displayScene.getStylesheets().add("stylesheet.css");
+        this.displayScene.getStylesheets().add("mockupstylesheet.css");
         this.modalStage.setScene(displayScene);
     }
 }
