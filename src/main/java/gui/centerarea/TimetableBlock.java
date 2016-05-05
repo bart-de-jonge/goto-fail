@@ -26,12 +26,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 
+import static gui.centerarea.TimetableBlock.DraggingTypes.Move;
+
 /**
  * Class that resembles a draggable, resizable block inside the timetable,
  * whose sole purpose is to display information.
  * Highly volatile. Do not poke the dragging-dragon too much.
  */
-public class TimetableBlock extends Pane {
+public abstract class TimetableBlock extends Pane {
 
     public enum DraggingTypes { Move, Resize_Top, Resize_Right, Resize_Bottom, Resize_Left }
 
@@ -53,7 +55,7 @@ public class TimetableBlock extends Pane {
      *  Temporary variables, until they can be moved to CSS files properly.
      */
 
-    private String title = "Camblock title";
+    private String title = "block title";
     private String shots = "15 - 20";
 
     /**
@@ -62,19 +64,14 @@ public class TimetableBlock extends Pane {
      */
     @Getter
     private Label titleNormalLabel;
-
     @Getter
     private Label titleDraggedLabel;
-
     @Getter
     private Label countNormalLabel;
-
     @Getter
     private Label countDraggedLabel;
-
     @Getter
     private Label descriptionNormalLabel;
-
     @Getter
     private Label descriptionDraggedLabel;
 
@@ -82,37 +79,51 @@ public class TimetableBlock extends Pane {
      * Misc variables.
      * For dragging, panes etc
      */
-
+    @Getter
     private TimetableBlock thisBlock;
-
+    @Getter
     private Pane draggedPane; // pane shown when dragging
+    @Getter
     private Pane feedbackPane; // pane shown when snapping
+    @Getter
     private VBox contentPane; // content of this pane
+    @Getter
     private VBox draggedContentPane; // content of pane shown when dragging
-
     // for feedbackPane
+    @Getter
     private WritableImage feedbackImage; // content of feedbackPane (is just an image, sneaky!)
+    @Getter
     private GaussianBlur gaussianBlur;
+    @Getter
     private ColorAdjust darken;
 
     // for glass effect
+    @Getter
     private BlurHelper behindPanelBlur;
-
+    @Getter
     private double dragXOffset;
+    @Getter
     private double dragYOffset;
-
+    @Getter
     private RootCenterArea pane;
+    @Getter
     private boolean dragging;
+    @Getter
     private DraggingTypes draggingType;
 
+    @Getter
     private double mouseCurrentXPosition;
+    @Getter
     private double mouseCurrentYPosition;
+    @Getter
     private double mouseCurrentXMovement;
+    @Getter
     private double mouseCurrentYMovement;
 
     @Getter
     private ShotBlock parentBlock;
 
+    @Getter
     private double startingY;
 
     /**
@@ -125,15 +136,17 @@ public class TimetableBlock extends Pane {
         this.thisBlock = this;
         this.parentBlock = parent;
         this.pane = pane;
+    }
 
-        // pane helpers
-        initNormalPane();
-        initDraggedPane();
-        initFeedbackPane();
-
+    /**
+     * Inits the necessary eventhandlers for this block.
+     * @param horizontalAllowed - specifies if horizontal dragging (between timelines)
+     *                          is allowed
+     */
+    void addMouseEventHandlers(boolean horizontalAllowed) {
         // mouse event handlers
         setOnMousePressed(getOnPressedHandler());
-        setOnMouseDragged(getOnDraggedHandler());
+        setOnMouseDragged(getOnDraggedHandler(horizontalAllowed));
         setOnMouseReleased(getOnreleaseHandler());
         setOnMouseMoved(getOnMouseMovedHandler());
     }
@@ -141,7 +154,7 @@ public class TimetableBlock extends Pane {
     /**
      * Helper function to initialize normal (visible) blocks.
      */
-    private void initNormalPane() {
+    void initNormalPane() {
         setBlendMode(BlendMode.MULTIPLY);
         getStyleClass().add("block_Background_Normal");
 
@@ -151,7 +164,6 @@ public class TimetableBlock extends Pane {
         contentPane.maxWidthProperty().bind(widthProperty());
         contentPane.minHeightProperty().bind(heightProperty());
         contentPane.maxHeightProperty().bind(heightProperty());
-        contentPane.getStyleClass().add("block_Foreground_Normal");
 
         // add some labels etc
         titleNormalLabel = initTitleLabel(contentPane);
@@ -165,11 +177,10 @@ public class TimetableBlock extends Pane {
     /**
      * Helper function to initialize dragged (visible when dragging) blocks.
      */
-    private void initDraggedPane() {
+    void initDraggedPane() {
         // draggedPane itself
         draggedPane = new Pane();
         draggedPane.setVisible(false);
-        draggedPane.getStyleClass().add("block_Background_Dragged");
 
         // dragged content pane which mirrors our content pane, shown when dragging.
         draggedContentPane = new VBox() ;
@@ -177,11 +188,6 @@ public class TimetableBlock extends Pane {
         draggedContentPane.maxWidthProperty().bind(draggedPane.widthProperty());
         draggedContentPane.minHeightProperty().bind(draggedPane.heightProperty());
         draggedContentPane.maxHeightProperty().bind(draggedPane.heightProperty());
-        draggedContentPane.getStyleClass().add("block_Foreground_Dragged");
-
-        // dropshadow shown underneath dragged pane
-        DropShadow ds = new DropShadow(15.0, 5.0, 5.0, Color.GRAY);
-        draggedPane.setEffect(ds);
 
         // blurring shown behind dragged pane
         behindPanelBlur = new BlurHelper(draggedPane);
@@ -197,6 +203,10 @@ public class TimetableBlock extends Pane {
         descriptionDraggedLabel = initCountLabel(draggedContentPane);
         descriptionDraggedLabel.setWrapText(true);
 
+        // dropshadow shown underneath dragged pane
+        DropShadow ds = new DropShadow(15.0, 5.0, 5.0, Color.GRAY);
+        this.getDraggedPane().setEffect(ds);
+
         addWithClipRegion(draggedContentPane, draggedPane);
         pane.getMainTimeLineAnchorPane().getChildren().add(draggedPane);
     }
@@ -204,7 +214,7 @@ public class TimetableBlock extends Pane {
     /**
      * Helper function to initialize feedback (the snapping) blocks.
      */
-    private void initFeedbackPane() {
+    void initFeedbackPane() {
         feedbackPane = new Pane();
         feedbackPane.setVisible(false);
         gaussianBlur = new GaussianBlur(15.0);
@@ -330,9 +340,11 @@ public class TimetableBlock extends Pane {
 
     /**
      * Event handler for on mouse dragged.
+     * @param horizontalAllowed - specifies if horizontal dragging (between timelines)
+     *                          is allowed
      * @return - the eventhandler
      */
-    private EventHandler<MouseEvent> getOnDraggedHandler() {
+    private EventHandler<MouseEvent> getOnDraggedHandler(boolean horizontalAllowed) {
         return e -> {
             if (!dragging) {
                 dragXOffset = e.getX();
@@ -344,7 +356,7 @@ public class TimetableBlock extends Pane {
                 draggedPane.setPrefWidth(getWidth());
                 thisBlock.setVisible(false);
             }
-            onMouseDraggedHelper(e);
+            onMouseDraggedHelper(e, horizontalAllowed);
             behindPanelBlur.processBlurUsingBounds();
             e.consume();
         };
@@ -377,8 +389,10 @@ public class TimetableBlock extends Pane {
     /**
      * Helper function for MouseDragged event. Normal (actual dragging) part.
      * @param event the mousedrag event in question.
+     * @param horizontalAllowed - specifies if horizontal dragging (between timelines)
+     *                          is allowed
      */
-    private void onMouseDraggedHelper(MouseEvent event) {
+    private void onMouseDraggedHelper(MouseEvent event, boolean horizontalAllowed) {
         // Mouse movement in pixels during this event.
         mouseCurrentXMovement = event.getSceneX() - mouseCurrentXPosition;
         mouseCurrentYMovement = event.getSceneY() - mouseCurrentYPosition;
@@ -388,10 +402,11 @@ public class TimetableBlock extends Pane {
 
         // determine what kind of dragging we're going to do.
         if (draggingType == DraggingTypes.Resize_Bottom
-                || draggingType == DraggingTypes.Resize_Top) {
+                || draggingType == DraggingTypes.Resize_Top
+                || (draggingType == DraggingTypes.Move && horizontalAllowed)) {
             // handle vertical drags in helper.
             onMouseDraggedHelperVertical(event);
-        } else if (draggingType == DraggingTypes.Move) { // handle just general dragging
+        } else if (draggingType == Move) { // handle just general dragging
             onMouseDraggedHelperNormal(event);
         }
 
@@ -423,7 +438,7 @@ public class TimetableBlock extends Pane {
         double yCoordinate;
         double xCoordinate;
 
-        if (dragType == DraggingTypes.Move) {
+        if (dragType == Move) {
             yCoordinate = y - dragYOffset;
             xCoordinate = mappingPane.localToScene(mappingPane.getBoundsInLocal()).getMinX()
                     + mappingPane.getWidth() / 2;
@@ -444,9 +459,9 @@ public class TimetableBlock extends Pane {
             }
 
             if (myPane.isBottomHalf() && (dragType == DraggingTypes.Resize_Top
-                    || dragType == DraggingTypes.Move)) {
+                    || dragType == Move)) {
                 GridPane.setRowIndex(targetRegion, myPane.getRow() + 1);
-            } else if (dragType == DraggingTypes.Move) {
+            } else if (dragType == Move) {
                 GridPane.setRowIndex(targetRegion, myPane.getRow());
             }
 
@@ -514,15 +529,15 @@ public class TimetableBlock extends Pane {
         } else if (event.getX() > getWidth() - margin) {
             // Horizontal resizing disabled for now.
 //            return DraggingTypes.Resize_Right;
-            return DraggingTypes.Move;
+            return Move;
         } else if (event.getY() > getHeight() - margin) {
             return DraggingTypes.Resize_Bottom;
         } else if (event.getX() < margin) {
             // Horizontal resizing disabled for now.
 //            return DraggingTypes.Resize_Left;
-            return DraggingTypes.Move;
+            return Move;
         } else {
-            return DraggingTypes.Move;
+            return Move;
         }
     }
 
