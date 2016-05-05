@@ -23,7 +23,7 @@ public class RootCenterArea extends StackPane {
     @Getter @Setter
     private int numberOfCounts = 100;
     @Getter
-    private int directorAndCounterPaneMaxWidth = 200;
+    private int directorAndCounterPaneMaxWidth = 100;
     @Getter
     private int countHeight = 10; // 10 works well, if you've changed this.
     @Getter
@@ -80,7 +80,7 @@ public class RootCenterArea extends StackPane {
         getChildren().add(counterAndDirectorPane);
 
         initCounterPane();
-        initDirectorPane();
+        //initDirectorPane();
         initScrollbar();
     }
 

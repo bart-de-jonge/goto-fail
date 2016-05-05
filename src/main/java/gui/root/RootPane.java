@@ -1,6 +1,7 @@
 package gui.root;
 
 import control.ControllerManager;
+import gui.modal.mockupModalView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -68,6 +69,9 @@ public class RootPane extends Application {
 
         primaryStage.centerOnScreen();
         primaryStage.show();
+
+        mockupModalView mockupView = new mockupModalView(this);
+
     }
 
 }
