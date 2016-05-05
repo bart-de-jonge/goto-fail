@@ -6,6 +6,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import lombok.Setter;
  */
 public class BlurHelper {
 
-    private WritableImage writableImage;    // Image used for writing snapshots to.
+   // private WritableImage writableImage;    // Image used for writing snapshots to.
     private SnapshotParameters parameters; // Parameters used for writing snapshots (resolution etc)
     private Bounds bounds; // Bounds of node used for snapshot parameters (x, y, width, height)
 
@@ -103,14 +104,14 @@ public class BlurHelper {
         parameters.setViewport(rect);
 
         // just a catch, in case something goes wrong.
-        Point2D imageSize = new Point2D(Math.round(bounds.getWidth()),
-                Math.round(bounds.getHeight()));
+        Point2D imageSize = new Point2D(Math.floor(bounds.getWidth()),
+                Math.floor(bounds.getHeight()));
         if (imageSize.getX() <= 0.0 || imageSize.getY() <= 0.0) {
             return;
         }
 
         // create writable image using these bounds.
-        writableImage = new WritableImage((int) imageSize.getX(), (int) imageSize.getY());
+        WritableImage writableImage = new WritableImage((int) imageSize.getX(), (int) imageSize.getY());
 
         if (hideNode) { // blurs and returns content behind the node
             double opacity = node.getOpacity();
@@ -120,8 +121,12 @@ public class BlurHelper {
         } else { // blurs and returns the node
             node.getScene().getRoot().snapshot(parameters, writableImage);
         }
-
+        //imageView.
         imageView.setImage(writableImage);
+//        imageView
+//        imageView = new ImageView(writableImage);
+//        imageView.setEffect(gaussianBlur);
+        //imageView.setImage(writableImage);
     }
 
 }
