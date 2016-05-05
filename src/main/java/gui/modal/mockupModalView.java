@@ -60,18 +60,17 @@ public class mockupModalView extends ModalView {
                 1, 1, -3, -2);
 
         dropShadowForButtons.setInput(innerShadowForButtons);
-        TransitionHelper transitionHelper = new TransitionHelper();
 
-        enabledButton = new Button("Click me!");
+        enabledButton = new Button("I want to be clicked! :D");
         enabledButton.setPadding(new Insets(10, 30, 10, 30));
         enabledButton.setEffect(dropShadowForButtons);
+        TransitionHelper transitionHelper = new TransitionHelper(enabledButton);
 
 //        transitionHelper.addMouseOverTransition(enabledButton, dropShadowForButtons.radiusProperty(),
-//                200, 20, 18);
-        transitionHelper.addMouseClickTransition(enabledButton, enabledButton.translateYProperty(),
-                100, 0, 15);
-        transitionHelper.addMouseClickTransition(enabledButton, enabledButton.translateXProperty(),
-                100, 0, 15);
+//                200, 20, 10);
+//        transitionHelper.addMouseClickTransition(enabledButton.translateYProperty(),
+//                100, 0, -2);
+        transitionHelper.addMouseOverTransition(enabledButton.translateXProperty(), 200, 20);
 //        transitionHelper.addMouseOverTransition(enabledButton, dropShadowForButtons.offsetYProperty(),
 //                200, 3, 0);
 //        transitionHelper.addMouseOverTransition(enabledButton, dropShadowForButtons.colorProperty(),
