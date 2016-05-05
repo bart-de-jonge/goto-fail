@@ -1,9 +1,10 @@
 package control;
 
 import data.ScriptingProject;
-import gui.root.RootPane;
 import gui.centerarea.ShotBlock;
+import gui.root.RootPane;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -29,8 +30,8 @@ public class ControllerManager {
     private ShotBlock activeShotBlock;
 
     // Placeholder project in lieu of XML loading
-    @Getter
-    private final ScriptingProject scriptingProject = new ScriptingProject("BOSS Project", 1.0);
+    @Getter @Setter
+    private ScriptingProject scriptingProject = new ScriptingProject("BOSS Project", 1.0);
 
     /**
      * Constructor.
