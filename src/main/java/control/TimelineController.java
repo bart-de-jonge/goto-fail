@@ -89,9 +89,13 @@ public class TimelineController {
         checkCollisions(cameraIndex, shotBlock);
     }
     
-    
+    /**
+     * Add a camera shot that is loaded from file.
+     * @param cameraIndex the index of the camera timeline to use
+     * @param shot the shot to add
+     */
     private void addCameraShotForLoad(int cameraIndex, CameraShot shot) {
-       CameraShotBlock shotBlock = new CameraShotBlock(shot, cameraIndex, 
+        CameraShotBlock shotBlock = new CameraShotBlock(shot, cameraIndex, 
                                                        rootPane.getRootCenterArea(),
                                                        this::shotChangedHandler);
         controllerManager.setActiveShotBlock(shotBlock);
@@ -282,13 +286,17 @@ public class TimelineController {
         }
     }
     
+    /**
+     * Add the blocks that were loaded from file to the UI.
+     * @param project the project that was loaded
+     */
     private void addLoadedBlocks(ScriptingProject project) {
         System.out.println("Adding loaded blocks");
-        for (int i = 0; i<project.getCameraTimelines().size();i++) {
+        for (int i = 0; i < project.getCameraTimelines().size();i++) {
             System.out.println("Outer loop");
             CameraTimeline timeline = project.getCameraTimelines().get(i);
             int amountShots = timeline.getShots().size();
-            for (int j = 0; j<amountShots;j++) {
+            for (int j = 0; j < amountShots;j++) {
                 System.out.println(timeline.getShots().size());
                 System.out.println(j);
                 System.out.println("Inner loop");
