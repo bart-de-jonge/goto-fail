@@ -6,11 +6,16 @@ import gui.events.CameraShotBlockUpdatedEvent;
 import gui.events.ShotblockUpdatedEvent;
 import javafx.event.EventHandler;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created by Bart.
  */
 public class CameraShotBlock extends ShotBlock {
+
+    // The timetableBlock used for displaying this block
+    @Getter @Setter
+    private TimetableBlock timetableBlock;
 
     // The number of the timetable this shot belongs to
     @Getter
@@ -30,7 +35,6 @@ public class CameraShotBlock extends ShotBlock {
                 shot.getEndCount(), shot.getDescription(), shot.getName(), handler, shot);
     }
 
-
     /**
      * Constructor.
      * @param shotId the shot's unique id
@@ -47,9 +51,12 @@ public class CameraShotBlock extends ShotBlock {
                            double beginCount, double endCount, String description, String name,
                            EventHandler<CameraShotBlockUpdatedEvent> handler, CameraShot shot) {
         super(rootCenterArea, beginCount, endCount, description, name, shot);
+        this.setTimetableBlock(new CameraTimetableBlock(rootCenterArea, this));
+        System.out.println(this.getTimetableBlock());
         this.shotId = shotId;
         this.timetableNumber = timetableNumber;
         this.grid = rootCenterArea.getMainTimeLineGridPane();
+        this.timetableBlock = new CameraTimetableBlock(rootCenterArea, this);
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
                 this.setBeginCount(TimelinesGridPane.getRowIndex(

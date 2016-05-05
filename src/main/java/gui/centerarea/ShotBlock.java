@@ -53,7 +53,9 @@ public abstract class ShotBlock {
                      String description, String name, Shot shot) {
         this.description = description;
         this.name = name;
-        this.timetableBlock = new TimetableBlock(rootCenterArea, this);
+
+        // TimetableBlock set in subclass constructors!!
+        this.timetableBlock = null;
         this.beginCount = beginCount;
         this.endCount = endCount;
         this.shot = shot;

@@ -7,9 +7,8 @@ import gui.root.RootCenterArea;
  */
 public class CameraTimetableBlock extends TimetableBlock {
 
-
     /**
-     * Constructor for TimetableBlock class.
+     * Constructor for CameraTimetableBlock class.
      *
      * @param pane   - the parent pane.
      * @param parent - the parent node
