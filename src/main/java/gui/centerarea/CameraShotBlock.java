@@ -20,7 +20,7 @@ public class CameraShotBlock extends ShotBlock {
     @Getter
     private int shotId;
 
-    // THe grid this camershotblock belongs to
+    // The grid this camershotblock belongs to
     @Getter
     private TimelinesGridPane grid;
     

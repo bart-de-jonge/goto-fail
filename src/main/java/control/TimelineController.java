@@ -294,15 +294,11 @@ public class TimelineController {
      * @param project the project that was loaded
      */
     private void addLoadedBlocks(ScriptingProject project) {
-        System.out.println("Adding loaded blocks");
+        log.info("Adding loaded blocks");
         for (int i = 0; i < project.getCameraTimelines().size();i++) {
-            System.out.println("Outer loop");
             CameraTimeline timeline = project.getCameraTimelines().get(i);
             int amountShots = timeline.getShots().size();
             for (int j = 0; j < amountShots;j++) {
-                System.out.println(timeline.getShots().size());
-                System.out.println(j);
-                System.out.println("Inner loop");
                 CameraShot shot = timeline.getShots().get(j);
                 addCameraShotForLoad(i, shot);
             }
