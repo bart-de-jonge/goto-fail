@@ -23,6 +23,12 @@ public class CameraShotBlock extends ShotBlock {
     // THe grid this camershotblock belongs to
     @Getter
     private TimelinesGridPane grid;
+    
+    public CameraShotBlock(CameraShot shot, int timetableNumber, RootCenterArea rootCenterArea,
+                           EventHandler<CameraShotBlockUpdatedEvent> handler) {
+        this(shot.getInstance(), timetableNumber, rootCenterArea, shot.getBeginCount(),
+                shot.getEndCount(), shot.getDescription(), shot.getName(), handler, shot);
+    }
 
 
     /**

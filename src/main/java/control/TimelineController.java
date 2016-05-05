@@ -88,7 +88,15 @@ public class TimelineController {
         // Check for collisions
         checkCollisions(cameraIndex, shotBlock);
     }
-
+    
+    
+    private void addCameraShotForLoad(int cameraIndex, CameraShot shot) {
+       CameraShotBlock shotBlock = new CameraShotBlock(shot, cameraIndex, 
+                                                       rootPane.getRootCenterArea(),
+                                                       this::shotChangedHandler);
+        controllerManager.setActiveShotBlock(shotBlock);
+        this.cameraShotBlocks.add(shotBlock);
+    }
     /**
      * Remove a camera shot from both the display and the timeline.
      * @param cameraShotBlock CameraShotBlock to be removed
@@ -267,7 +275,25 @@ public class TimelineController {
                 alert.setContentText("The format in the selected file was not recognized");
                 alert.showAndWait();
             } else {
-                project = temp;
+                controllerManager.setScriptingProject(temp);
+                project = controllerManager.getScriptingProject();
+                addLoadedBlocks(project);
+            }
+        }
+    }
+    
+    private void addLoadedBlocks(ScriptingProject project) {
+        System.out.println("Adding loaded blocks");
+        for (int i = 0; i<project.getCameraTimelines().size();i++) {
+            System.out.println("Outer loop");
+            CameraTimeline timeline = project.getCameraTimelines().get(i);
+            int amountShots = timeline.getShots().size();
+            for (int j = 0; j<amountShots;j++) {
+                System.out.println(timeline.getShots().size());
+                System.out.println(j);
+                System.out.println("Inner loop");
+                CameraShot shot = timeline.getShots().get(j);
+                addCameraShotForLoad(i, shot);
             }
         }
     }
