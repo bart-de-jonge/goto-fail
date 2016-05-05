@@ -1,5 +1,8 @@
 package gui.misc;
 
+import java.util.ArrayList;
+
+import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -13,15 +16,19 @@ import javafx.util.Duration;
 import lombok.Getter;
 
 
+
 /**
  * Class to assist in easy setup of transitions for Nodes on common events
  * such as mouse-over, buttonclick, etc.
+ * Also, if anyone has a better way to do the generic types, tell me,
+ * because I haven't exactly used that a lot so far.
  * @author Mark
  */
 public class TransitionHelper {
 
     @Getter
     private Node node;
+    private ArrayList<Double> transitionStores;
 
     /**
      * Constructor of class.
@@ -29,6 +36,7 @@ public class TransitionHelper {
      */
     public TransitionHelper(Node node) {
         this.node = node;
+        transitionStores = new ArrayList<Double>();
     }
 
     /**
@@ -57,11 +65,15 @@ public class TransitionHelper {
      */
     public void addMouseClickTransition(DoubleProperty property, int ms,
                                        double v, Interpolator interpolator) {
+        // setup timelines
+        Timeline t1 = new Timeline();
+        Timeline t2 = new Timeline();
+
         // Create event handlers from x to y, and from y to x.
-        EventHandler<MouseEvent> mouseInHandler = createHandlerTowardsDouble(property, ms,
-                v, interpolator);
-        EventHandler<MouseEvent> mouseOutHandler = createHandlerTowardsDouble(property, ms,
-                -v, interpolator);
+        EventHandler<MouseEvent> mouseInHandler = createHandlerTowardsDouble(property, t1, t2, ms,
+                v, false, interpolator);
+        EventHandler<MouseEvent> mouseOutHandler = createHandlerTowardsDouble(property, t1, t2, ms,
+                v, true, interpolator);
 
         // Bind event handlers on mouse enter and exit for this Node.
         node.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseInHandler);
@@ -127,11 +139,15 @@ public class TransitionHelper {
      */
     public void addMouseOverTransition(DoubleProperty property, int ms,
                                            double v, Interpolator interpolator) {
+        // setup timelines
+        Timeline t1 = new Timeline();
+        Timeline t2 = new Timeline();
+
         // Create event handlers from x to y, and from y to x.
-        EventHandler<MouseEvent> mouseInHandler = createHandlerTowardsDouble(property, ms,
-                v, interpolator);
-        EventHandler<MouseEvent> mouseOutHandler = createHandlerTowardsDouble(property, ms,
-                -v, interpolator);
+        EventHandler<MouseEvent> mouseInHandler = createHandlerTowardsDouble(property, t1, t2, ms,
+                v, false, interpolator);
+        EventHandler<MouseEvent> mouseOutHandler = createHandlerTowardsDouble(property, t1, t2, ms,
+                v, true, interpolator);
 
         // Bind event handlers on mouse enter and exit for this Node.
         node.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_ENTERED, mouseInHandler);
@@ -141,8 +157,6 @@ public class TransitionHelper {
     /**
      * Add a transition event, on mouse enter and exit, between two values,
      * with a specified transition half-time, over a specified property
-     * Also, if anyone has a better way to do the generic types, tell me,
-     * because I haven't exactly used that a lot so far.
      * @param property property being modified. (for example, color property)
      * @param ms time in milliseconds for transition.
      * @param x value before transition.
@@ -157,8 +171,6 @@ public class TransitionHelper {
     /**
      * Add a transition event, on mouse enter and exit, between two values,
      * with a specified transition half-time, over a specified property
-     * Also, if anyone has a better way to do the generic types, tell me,
-     * because I haven't exactly used that a lot so far.
      * @param property property being modified. (for example, color property)
      * @param ms time in milliseconds for transition.
      * @param x value before transition.
@@ -180,7 +192,7 @@ public class TransitionHelper {
     }
 
     /**
-     * Event handler functions below.
+     * Event handler creation functions below.
      */
 
     /**
@@ -188,6 +200,9 @@ public class TransitionHelper {
      * The transition operates over a specified property, with a duration in
      * milliseconds, between values x and y, and with specified interpolation.
      * The interpolation can be something like linear, edge-in, etc...
+     * Realize that elements are always forced to the x and y position by this transition.
+     * Downside is, this means that multiple transitions on the same property do not stack.
+     * Upside is, this is very safe to use.
      * @param property the property to operate on.
      * @param ms duration in milliseconds.
      * @param x begin value of transition.
@@ -218,31 +233,59 @@ public class TransitionHelper {
     /**
      * Returns an unspecified event handler with an embedded transition.
      * The transition operates over a specified property, with a duration in
-     * milliseconds, between doubles x and y, and with specified interpolation.
+     * milliseconds, over an offset value v, and with specified interpolation.
      * The interpolation can be something like linear, edge-in, etc...
+     * This transition moves from wherever the current point is.
+     * This means elements can get lost if handled improperly.
      * @param property the property to operate on.
+     * @param t1 timeline for forward-transition.
+     * @param t2 timeline for backward-transition.
      * @param ms duration in milliseconds.
      * @param v end value of transition.
+     * @param done whether double used is done.
      * @param interpolator type of interpolation used.
      * @return the new eventhandler.
      */
     private EventHandler<MouseEvent> createHandlerTowardsDouble(DoubleProperty property,
-                                                                 int ms, double v,
-                                                                 Interpolator interpolator) {
+                                                                 Timeline t1, Timeline t2,
+                                                                int ms, double v, boolean done,
+                                                                Interpolator interpolator) {
         return  e -> {
-            Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.seconds(0),
-                            new KeyValue(property,
-                                    property.getValue(),
-                                    interpolator)),
-                    new KeyFrame(Duration.millis(ms),
-                            new KeyValue(property,
-                                    property.getValue() + v,
-                                    interpolator))
-            );
-            timeline.setCycleCount(1);
-            timeline.setAutoReverse(false);
-            timeline.play();
+            if (!done) { // setup animation t1 towards v.
+                t1.getKeyFrames().add(
+                        new KeyFrame(Duration.seconds(0),
+                                new KeyValue(property,
+                                        property.getValue(),
+                                        interpolator)) );
+                t1.getKeyFrames().add(
+                        new KeyFrame(Duration.millis(ms),
+                                new KeyValue(property,
+                                        property.getValue() + v,
+                                        interpolator)) );
+                t1.setCycleCount(1);
+                t1.setAutoReverse(false);
+                t1.play();
+            } else { // setup animation t2 to move back what has been progressed by t1.
+                double progressBack = v;
+                if (t1.getStatus() == Animation.Status.RUNNING) {
+                    progressBack *= (t1.getCurrentTime().toMillis()
+                            / t1.getTotalDuration().toMillis());
+                    t1.stop();
+                }
+                t2.getKeyFrames().add(
+                        new KeyFrame(Duration.seconds(0),
+                                new KeyValue(property,
+                                        property.getValue(),
+                                        interpolator)) );
+                t2.getKeyFrames().add(
+                        new KeyFrame(Duration.millis(ms),
+                                new KeyValue(property,
+                                        property.getValue() - progressBack,
+                                        interpolator)) );
+                t2.setCycleCount(1);
+                t2.setAutoReverse(false);
+                t2.play();
+            }
         };
     }
 

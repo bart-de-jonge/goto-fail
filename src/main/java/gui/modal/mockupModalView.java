@@ -70,7 +70,8 @@ public class mockupModalView extends ModalView {
 //                200, 20, 10);
 //        transitionHelper.addMouseClickTransition(enabledButton.translateYProperty(),
 //                100, 0, -2);
-        transitionHelper.addMouseOverTransition(enabledButton.translateXProperty(), 200, 20);
+        transitionHelper.addMouseClickTransition(enabledButton.translateYProperty(), 50, 2);
+        transitionHelper.addMouseOverTransition(enabledButton.translateYProperty(), 100, -1);
 //        transitionHelper.addMouseOverTransition(enabledButton, dropShadowForButtons.offsetYProperty(),
 //                200, 3, 0);
 //        transitionHelper.addMouseOverTransition(enabledButton, dropShadowForButtons.colorProperty(),
