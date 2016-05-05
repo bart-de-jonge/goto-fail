@@ -2,6 +2,8 @@ package gui.modal;
 
 import gui.misc.TransitionHelper;
 import gui.root.RootPane;
+import gui.styling.StyledButton;
+import gui.styling.StyledTextfield;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -12,7 +14,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.BlurType;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.MouseEvent;
@@ -22,18 +26,12 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 /**
- * Modal view for gui testing and mockups. Temporary until style basics are worked out.
+ * Modal view for gui testing and mockups. Temporary until style basics are pretty much worked out.
  * @author Mark
  */
 public class mockupModalView extends ModalView {
 
     private VBox viewPane;
-
-    private Button enabledButton;
-    private Button disabledButton;
-
-    private DropShadow dropShadowForButtons;
-    private InnerShadow innerShadowForButtons;
 
     /**
      * Constructor.
@@ -47,38 +45,45 @@ public class mockupModalView extends ModalView {
         this.viewPane.setSpacing(20.0);
         this.viewPane.setPadding(new Insets(10,10,10,10));
         initExampleButtons();
+        initExampleTextfields();
+        initExampleButtons2();
         super.setModalView(this.viewPane);
         super.displayModal();
     }
 
+    private void initExampleTextfields() {
+        StyledTextfield textTextField = new StyledTextfield("I'm a textfield!");
+
+        this.viewPane.getChildren().add(textTextField);
+    }
+
     private void initExampleButtons() {
+        StyledButton testButton = new StyledButton("I'm a button!");
+        testButton.setButtonColor(100, 195, 50);
+        this.viewPane.getChildren().add(testButton);
 
-        dropShadowForButtons = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.35),
-                20, 0.1, 1, 3);
+        StyledButton testButton2 = new StyledButton("I'm another button!");
+        testButton2.setButtonColor(200, 75, 175);
+        this.viewPane.getChildren().add(testButton2);
 
-        innerShadowForButtons = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.15),
-                1, 1, -3, -2);
+    }
 
-        dropShadowForButtons.setInput(innerShadowForButtons);
+    private void initExampleButtons2() {
+        StyledButton testRoundButton = new StyledButton("+");
+        testRoundButton.setStyle("-fx-font-size: 32;"
+                + "-fx-background-radius: 5em;"
+                + "-fx-min-width: 60; -fx-max-width: 60;"
+                + "-fx-min-height: 60; -fx-max-height: 60;");
+        testRoundButton.setButtonColor(54, 200, 178);
+        this.viewPane.getChildren().add(testRoundButton);
 
-        enabledButton = new Button("I want to be clicked! :D");
-        enabledButton.setPadding(new Insets(10, 30, 10, 30));
-        enabledButton.setEffect(dropShadowForButtons);
-        TransitionHelper transitionHelper = new TransitionHelper(enabledButton);
-
-//        transitionHelper.addMouseOverTransition(enabledButton, dropShadowForButtons.radiusProperty(),
-//                200, 20, 10);
-//        transitionHelper.addMouseClickTransition(enabledButton.translateYProperty(),
-//                100, 0, -2);
-        transitionHelper.addMouseClickTransition(enabledButton.translateYProperty(), 50, 2);
-        transitionHelper.addMouseOverTransition(enabledButton.translateYProperty(), 100, -1);
-//        transitionHelper.addMouseOverTransition(enabledButton, dropShadowForButtons.offsetYProperty(),
-//                200, 3, 0);
-//        transitionHelper.addMouseOverTransition(enabledButton, dropShadowForButtons.colorProperty(),
-//                200, Color.gray(0, 0.35), Color.gray(0, 0.45));
-
-        this.viewPane.getChildren().add(enabledButton);
-
+        StyledButton testRoundButton2 = new StyledButton("-");
+        testRoundButton2.setStyle("-fx-font-size: 32;"
+                + "-fx-background-radius: 5em;"
+                + "-fx-min-width: 60; -fx-max-width: 60;"
+                + "-fx-min-height: 60; -fx-max-height: 60;");
+        testRoundButton2.setButtonColor(120, 180, 215);
+        this.viewPane.getChildren().add(testRoundButton2);
     }
 
     @Override

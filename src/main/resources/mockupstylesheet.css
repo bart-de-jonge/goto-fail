@@ -13,18 +13,28 @@
 
 .button {
     -fx-background-radius: 10;
-    -fx-background-color: rgb(230,160,100);
+    -fx-background-color: rgb(200,200,200);
     -fx-text-fill: white;
-    -fx-font-size: 18;;
-}
-
-.button:hover {
-    /*-fx-background-color: rgb(255,235,35);*/
+    -fx-font-size: 14;
+    -fx-padding: 5 15 5 15;
 }
 
 .button:disabled {
     -fx-opacity: 1.0;
     -fx-background-color: rgb(200,235,35);
+}
+
+.text-field {
+    -fx-background-color: rgb(205,205,205);
+    -fx-background-radius: 10;
+    -fx-alignment: center-left;
+    -fx-font-size: 14;
+    -fx-text-fill: white;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.05), 1, 1, 2, 1);
+}
+
+.text-field:focused {
+    -fx-background-color: rgb(195,195,195);
 }
 
 .scroll-pane > .viewport {
