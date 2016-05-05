@@ -28,11 +28,13 @@ import java.util.stream.Collectors;
  */
 @Log4j2
 public class TimelineController {
+    
+    private final int defaultAmountTimelines = 8;
 
     private RootPane rootPane;
 
     // TODO: replace number of centerarea with xml data
-    private final int numTimelines = 8;
+    private int numTimelines = defaultAmountTimelines;
 
     // Placeholder camera type until GUI allows personalized entry
     // TODO: Replace Camera Type and Scripting Project when XML functionality is available
@@ -282,6 +284,7 @@ public class TimelineController {
                 controllerManager.setScriptingProject(temp);
                 project = controllerManager.getScriptingProject();
                 addLoadedBlocks(project);
+                numTimelines = project.getCameraTimelines().size();
             }
         }
     }
