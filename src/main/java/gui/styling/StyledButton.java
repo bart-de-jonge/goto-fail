@@ -29,8 +29,8 @@ public class StyledButton extends Button {
 
     // effect tweaking
     private double shadowRadius = 15;
-    private double shadowOpacity = 0.15;
-    private double bezelOpacity = 0.05;
+    private double shadowOpacity = 0.25;
+    private double bezelOpacity = 0.1;
 
     // transition tweaking
     private int mouseOverDuration = 100;

@@ -64,11 +64,13 @@ public class mockupModalView extends ModalView {
         this.vBox = new VBox();
       //  this.vBox.setPadding(new Insets(10, 10, 10, 10));
       //  this.vBox.setSpacing(10.0);
-        this.vBox.setStyle("-fx-background-color: rgba(0,0,0,0.01);");
         this.vBox.setMaxWidth(400.0);
         this.vBox.setMaxHeight(250.0);
         this.vBox.setPadding(new Insets(20, 20, 20, 20));
         this.vBox.setSpacing(20.0);
+        this.vBox.setStyle("-fx-border-width: 0 0 1 0;" +
+                "-fx-border-color: rgba(0,0,0, 0.5);" +
+                "-fx-border-style: solid inside;");
         this.viewPane.setAlignment(vBox, Pos.TOP_CENTER);
         this.viewPane.getChildren().add(scrollPane);
         this.viewPane.getChildren().add(vBox);
@@ -81,6 +83,7 @@ public class mockupModalView extends ModalView {
         super.displayModal();
 
         BlurHelper blurHelper = new BlurHelper(this.vBox);
+        blurHelper.setRadius(50.0);
         this.viewPane.setAlignment(blurHelper.getImageView(), Pos.TOP_CENTER);
 
        // this.viewPane.getChildren().add(1, blurHelper.getImageView());
