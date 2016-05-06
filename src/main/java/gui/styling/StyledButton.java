@@ -31,9 +31,11 @@ public class StyledButton extends Button {
     private double shadowRadius = 15;
     private double shadowOpacity = 0.25;
     private double bezelOpacity = 0.1;
+    private double highlightAmount = 0.2;
+    private double darkenAmount = 0.25;
 
     // transition tweaking
-    private int mouseOverDuration = 100;
+    private int mouseOverDuration = 200;
     private int mouseClickDuration = 50;
 
     /**
@@ -79,10 +81,10 @@ public class StyledButton extends Button {
      */
     private void initMouseOverTransitions() {
         transitionHelper.addMouseOverTransition(this.translateYProperty(), mouseOverDuration, -1);
-        transitionHelper.addMouseOverTransition(dropShadow.radiusProperty(), mouseOverDuration, 10);
+        transitionHelper.addMouseOverTransition(dropShadow.radiusProperty(), mouseOverDuration, 20);
         transitionHelper.addMouseOverTransition(dropShadow.offsetXProperty(), mouseOverDuration, 3);
         transitionHelper.addMouseOverTransition(dropShadow.offsetYProperty(), mouseOverDuration, 3);
-        transitionHelper.addMouseOverTransition(colorAdjust.brightnessProperty(), mouseOverDuration, 0.1);
+        transitionHelper.addMouseOverTransition(colorAdjust.brightnessProperty(), mouseOverDuration, highlightAmount);
     }
 
     /**
@@ -90,10 +92,10 @@ public class StyledButton extends Button {
      */
     private void initMouseClickTransitions() {
         transitionHelper.addMouseClickTransition(this.translateYProperty(), mouseClickDuration, 2);
-        transitionHelper.addMouseClickTransition(dropShadow.radiusProperty(), mouseClickDuration, -20);
+        transitionHelper.addMouseClickTransition(dropShadow.radiusProperty(), mouseClickDuration, -25);
         transitionHelper.addMouseClickTransition(dropShadow.offsetXProperty(), mouseClickDuration, -5);
         transitionHelper.addMouseClickTransition(dropShadow.offsetYProperty(), mouseClickDuration, -5);
-        transitionHelper.addMouseClickTransition(colorAdjust.brightnessProperty(), mouseClickDuration, -0.15);
+        transitionHelper.addMouseClickTransition(colorAdjust.brightnessProperty(), mouseClickDuration, -darkenAmount);
     }
 
     /**

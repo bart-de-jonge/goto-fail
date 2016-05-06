@@ -60,6 +60,9 @@ public abstract class ModalView {
     public void setModalView(Pane modalView) {
         this.displayScene = new Scene(modalView, width, height);
         this.displayScene.getStylesheets().add("mockupstylesheet.css");
+        this.displayScene.getStylesheets().add("StyledButton.css");
+        this.displayScene.getStylesheets().add("StyledCheckbox.css");
+        this.displayScene.getStylesheets().add("StyledTextfield.css");
         this.modalStage.setScene(displayScene);
     }
 }

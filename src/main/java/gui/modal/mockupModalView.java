@@ -4,6 +4,7 @@ import gui.misc.BlurHelper;
 import gui.misc.TransitionHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
+import gui.styling.StyledCheckbox;
 import gui.styling.StyledTextfield;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -143,10 +144,8 @@ public class mockupModalView extends ModalView {
     }
 
     private void initExampleTextfield() {
-        CheckBox testCheckbox = new CheckBox("tetter");
+        CheckBox testCheckbox = new StyledCheckbox("tetter");
         testCheckbox.setSelected(true);
-        testCheckbox.setEffect(new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.15),
-                1, 1, 1, 1));
         this.vBox.getChildren().add(testCheckbox);
     }
 
