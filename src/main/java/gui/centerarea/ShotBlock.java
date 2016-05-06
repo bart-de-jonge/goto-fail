@@ -1,15 +1,23 @@
 package gui.centerarea;
 
 import data.Shot;
+import edu.umd.cs.findbugs.gui.Logger;
 import gui.root.RootCenterArea;
 import gui.events.ShotblockUpdatedEvent;
 import javafx.event.EventHandler;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+import static javafx.scene.input.KeyCode.T;
 
 /**
  * Created by Bart.
  */
+@Log4j2
 public abstract class ShotBlock {
 
     // The timetableBlock used for displaying this block
@@ -50,12 +58,19 @@ public abstract class ShotBlock {
      * @param shot - the shot of this ShotBlock
      */
     public ShotBlock(RootCenterArea rootCenterArea, double beginCount, double endCount,
-                     String description, String name, Shot shot) {
+                     String description, String name, Shot shot, Class<?> timetableBlockClass) {
         this.description = description;
         this.name = name;
 
         // TimetableBlock set in subclass constructors!!
-        this.timetableBlock = null;
+        try {
+            Constructor<?> constructor = timetableBlockClass.getConstructor(RootCenterArea.class, ShotBlock.class);
+            this.timetableBlock = (TimetableBlock) constructor.newInstance(rootCenterArea, this);
+        } catch (Exception e) {
+            log.error("No valid timetableblock class, could not initialize timetableblock!");
+            this.timetableBlock = null;
+            e.printStackTrace();
+        }
         this.beginCount = beginCount;
         this.endCount = endCount;
         this.shot = shot;
@@ -140,6 +155,10 @@ public abstract class ShotBlock {
      */
     public void setDescription(String description) {
         this.description = description;
+
+        System.out.println(timetableBlock);
+        System.out.println(timetableBlock.getDescriptionNormalLabel());
+
         timetableBlock.getDescriptionNormalLabel().setText(description);
         timetableBlock.getDescriptionDraggedLabel().setText(description);
     }

@@ -13,7 +13,7 @@ public class CameraTimetableBlock extends TimetableBlock {
      * @param pane   - the parent pane.
      * @param parent - the parent node
      */
-    CameraTimetableBlock(RootCenterArea pane, ShotBlock parent) {
+    public CameraTimetableBlock(RootCenterArea pane, ShotBlock parent) {
         super(pane, parent);
 
         // pane helpers
