@@ -85,8 +85,6 @@ public class TimelineController {
                 rootPane.getRootCenterArea(), startCount, endCount, description,
                 name, this::shotChangedHandler, newShot);
 
-        System.out.println(shotBlock.getTimetableBlock().getDescriptionNormalLabel());
-
         controllerManager.setActiveShotBlock(shotBlock);
         this.cameraShotBlocks.add(shotBlock);
 

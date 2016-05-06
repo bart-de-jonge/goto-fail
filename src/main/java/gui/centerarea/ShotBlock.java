@@ -56,6 +56,10 @@ public abstract class ShotBlock {
      * @param description - the description of this shot
      * @param name - the name of this shot
      * @param shot - the shot of this ShotBlock
+     * @param timetableBlockClass - the class of the timetableblock implementation
+     *        that belongs to this shotblock. This must be a valid subclass of
+     *        TimetableBlock with its default constructor implemented. Otherwise
+     *        timetableBlock is initialized to null.
      */
     public ShotBlock(RootCenterArea rootCenterArea, double beginCount, double endCount,
                      String description, String name, Shot shot, Class<?> timetableBlockClass) {
@@ -64,7 +68,8 @@ public abstract class ShotBlock {
 
         // TimetableBlock set in subclass constructors!!
         try {
-            Constructor<?> constructor = timetableBlockClass.getConstructor(RootCenterArea.class, ShotBlock.class);
+            Constructor<?> constructor = timetableBlockClass
+                    .getConstructor(RootCenterArea.class, ShotBlock.class);
             this.timetableBlock = (TimetableBlock) constructor.newInstance(rootCenterArea, this);
         } catch (Exception e) {
             log.error("No valid timetableblock class, could not initialize timetableblock!");
@@ -155,9 +160,6 @@ public abstract class ShotBlock {
      */
     public void setDescription(String description) {
         this.description = description;
-
-        System.out.println(timetableBlock);
-        System.out.println(timetableBlock.getDescriptionNormalLabel());
 
         timetableBlock.getDescriptionNormalLabel().setText(description);
         timetableBlock.getDescriptionDraggedLabel().setText(description);
