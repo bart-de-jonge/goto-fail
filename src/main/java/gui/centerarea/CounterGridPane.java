@@ -38,7 +38,7 @@ public class CounterGridPane extends ScrollableGridPane {
      * @param verticalElementSize size of usual vertical elements.
      */
     private void initGridConstaints(int numberOfCounts, int verticalElementSize) {
-        // remove row constraints, as we want to change them
+        // remove row constraints, as we want to override them
         getRowConstraints().clear();
 
         // offset our grid by half a grid size, so grid numbers are located in the middle!

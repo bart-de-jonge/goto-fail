@@ -76,7 +76,6 @@ public class RootCenterArea extends StackPane {
         counterAndDirectorPane = new HBox();
         setAlignment(counterAndDirectorPane, Pos.CENTER_LEFT);
         counterAndDirectorPane.setMaxWidth(counterWidth + timelineWidth);
-        //counterAndDirectorPane.setStyle("-fx-background-color: red"); // debugcolor for now
         getChildren().add(counterAndDirectorPane);
 
         initCounterPane();
@@ -150,7 +149,6 @@ public class RootCenterArea extends StackPane {
         ScrollBar scrollbar = new ScrollBar();
         scrollbar.setMin(0);
         scrollbar.setMax(1);
-        //scrollbar.visibleAmountProperty().bind(mainTimelineScrollpane.prefViewportWidthProperty());
         scrollbar.maxWidthProperty().bind(widthProperty().subtract(counterWidth + timelineWidth));
         mainTimelineScrollpane.hvalueProperty().bind(scrollbar.valueProperty());
         getChildren().add(scrollbar);
