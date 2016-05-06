@@ -1,19 +1,36 @@
 package data;
 
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * Class to store information about a directors timeline.
  * @author Bart.
  */
+@XmlRootElement(name = "directorTimeline")
+@ToString
 public class DirectorTimeline extends Timeline {
 
     // Collection of all Shot elements in this Timeline.
     @Getter
+    @XmlElementWrapper(name = "shotList")
+    @XmlElement(name = "shot")
     private LinkedList<DirectorShot> shots;
+    
+    /**
+     * Default constructor.
+     */
+    public DirectorTimeline() {
+        super("", null);
+        shots = null;
+    }
 
     /**
      * Constructor.
@@ -34,7 +51,7 @@ public class DirectorTimeline extends Timeline {
      * @param startCount the start count of the Shot
      * @param endCount the end count of the Shot
      * @return If no overlap is found, only the newly added shot will be returned. If any
-       overlapping shots are found, all overlapping shots will be returned. If any overlapping
+       colliding shots are found, all colliding shots will be returned. If any colliding
        shots are found, the shot that was added will be the last one in the list.
      * @see DirectorTimeline#addShot(DirectorShot)
      */
@@ -47,12 +64,12 @@ public class DirectorTimeline extends Timeline {
      * Adds a Shot to the Timeline. The Shot is inserted in a sorted manner. When a Shot is
      * inserted, the shots before the Shot have a lower start count of a lower end count. The
      * Shot after the inserted shot have a higher start count or end count. This method also checks
-     * for overlapping shots. The overlapping shots will have their overlapping variable set to
+     * for colliding shots. The colliding shots will have their colliding variable set to
      * true.
      *
      * @param shot the Shot to add to the timeline
      * @return If no overlap is found, only the newly added shot will be returned. If any
-       overlapping shots are found, all overlapping shots will be returned. If any overlapping
+       colliding shots are found, all colliding shots will be returned. If any colliding
        shots are found, the shot that was added will be the last one in the list.
      */
     public ArrayList<DirectorShot> addShot(DirectorShot shot) {

@@ -1,8 +1,7 @@
-package gui;
+package gui.events;
 
-import javafx.beans.NamedArg;
+import gui.centerarea.ShotBlock;
 import javafx.event.Event;
-import javafx.event.EventTarget;
 import javafx.event.EventType;
 import lombok.Getter;
 

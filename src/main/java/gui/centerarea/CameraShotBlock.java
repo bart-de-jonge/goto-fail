@@ -1,8 +1,11 @@
-package gui;
+package gui.centerarea;
 
+import data.CameraShot;
+import gui.root.RootCenterArea;
+import gui.events.CameraShotBlockUpdatedEvent;
+import gui.events.ShotblockUpdatedEvent;
 import javafx.event.EventHandler;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Created by Bart.
@@ -12,12 +15,21 @@ public class CameraShotBlock extends ShotBlock {
     // The number of the timetable this shot belongs to
     @Getter
     private int timetableNumber;
+
+    // The id of the shot
     @Getter
     private int shotId;
+
+    // The grid this camershotblock belongs to
     @Getter
     private TimelinesGridPane grid;
+    
+    public CameraShotBlock(CameraShot shot, int timetableNumber, RootCenterArea rootCenterArea,
+                           EventHandler<CameraShotBlockUpdatedEvent> handler) {
+        this(shot.getInstance(), timetableNumber, rootCenterArea, shot.getBeginCount(),
+                shot.getEndCount(), shot.getDescription(), shot.getName(), handler, shot);
+    }
 
-    private CameraShotBlock thisBlock;
 
     /**
      * Constructor.
@@ -27,15 +39,17 @@ public class CameraShotBlock extends ShotBlock {
      * @param beginCount - the begin count of this shot
      * @param endCount - the end count of this shot
      * @param handler - The handler for this camerashotblock
+     * @param description - the description of this camerashotblock
+     * @param name - the name of this camerashotblock
+     * @param shot - The shot in the model belonging to this camerashotblock
      */
     public CameraShotBlock(int shotId, int timetableNumber, RootCenterArea rootCenterArea,
-                           double beginCount, double endCount,
-                           EventHandler<CameraShotBlockUpdatedEvent> handler) {
-        super(rootCenterArea, beginCount, endCount);
+                           double beginCount, double endCount, String description, String name,
+                           EventHandler<CameraShotBlockUpdatedEvent> handler, CameraShot shot) {
+        super(rootCenterArea, beginCount, endCount, description, name, shot);
         this.shotId = shotId;
         this.timetableNumber = timetableNumber;
-        thisBlock = this;
-        this.grid = rootCenterArea.getGrid();
+        this.grid = rootCenterArea.getMainTimeLineGridPane();
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
                 this.setBeginCount(TimelinesGridPane.getRowIndex(
@@ -50,9 +64,9 @@ public class CameraShotBlock extends ShotBlock {
                 }
             });
 
-        this.getTimetableBlock().setPrefWidth(grid.getTimelineWidth());
-        this.getTimetableBlock().setPrefHeight(grid.getNumberOfCounts()
-                * grid.getCountHeight());
+        this.getTimetableBlock().setPrefWidth(grid.getHorizontalElementMinimumSize());
+        this.getTimetableBlock().setPrefHeight(grid.getNumberOfVerticalGrids()
+                * grid.getVerticalElementSize());
         grid.addCameraShotBlock(this);
     }
 
@@ -70,12 +84,25 @@ public class CameraShotBlock extends ShotBlock {
      */
     @Override
     public void recompute() {
-        TimelinesGridPane.setColumnIndex(this.getTimetableBlock(), timetableNumber);
+        TimelinesGridPane.setColumnIndex(this.getTimetableBlock(),
+                timetableNumber);
         super.recompute();
     }
 
     @Override
     public ShotblockUpdatedEvent getShotBlockUpdatedEvent() {
         return new CameraShotBlockUpdatedEvent(this, timetableNumber);
+    }
+
+    @Override
+    public CameraShot getShot() {
+        return (CameraShot) super.getShot();
+    }
+
+    /**
+     * Remove this CameraShotBlock's view from the view that it's in.
+     */
+    public void removeFromView() {
+        this.grid.removeCameraShotBlock(this);
     }
 }

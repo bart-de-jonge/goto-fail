@@ -1,4 +1,4 @@
-package gui;
+package gui.root;
 
 import control.ControllerManager;
 import javafx.application.Application;
@@ -6,10 +6,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Class that represents the whole top of the gui application.
  */
+@Log4j2
 public class RootPane extends Application {
 
     private int minimumResolutionX = 640;
@@ -32,6 +34,7 @@ public class RootPane extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        log.info("Starting RootPane.");
         this.primaryStage = primaryStage;
 
         // Create a BorderPane,
@@ -40,7 +43,10 @@ public class RootPane extends Application {
         topLevelPane = new BorderPane();
         // Create scene and set the stage. This is where the window is basically
         // created. Also has some useful settings.
-        primaryStage.setScene(new Scene(topLevelPane));
+
+        Scene scene = new Scene(topLevelPane);
+        scene.getStylesheets().add("stylesheet.css");
+        primaryStage.setScene(scene);
         primaryStage.setTitle("Hoi ben een titel lol.");
         primaryStage.setMinHeight(minimumResolutionY);
         primaryStage.setMinWidth(minimumResolutionX);

@@ -1,13 +1,20 @@
 package data;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Created by Bart.
  */
 @EqualsAndHashCode
+@ToString
+@XmlRootElement(name = "cameraType")
+@Log4j2
 public class CameraType {
 
     // Name of the cameraType
@@ -23,6 +30,13 @@ public class CameraType {
      * Defined in seconds */
     @Getter @Setter
     private double movementMargin;
+    
+    /**
+     * Default constructor.
+     */
+    public CameraType() {
+        this("", "", -1);
+    }
 
     /**
      * Constructor.
@@ -34,5 +48,7 @@ public class CameraType {
         this.name = name;
         this.description = description;
         this.movementMargin = movementMargin;
+        log.debug("Created new CameraType(name={}, description={}, movementMargin={})",
+            name, description, movementMargin);
     }
 }

@@ -1,8 +1,22 @@
 package data;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 import xml.XmlReader;
 import xml.XmlWriter;
 
@@ -13,6 +27,10 @@ import xml.XmlWriter;
  * Created by Bart.
  * Class to store top-level properties of a scripting project.
  */
+@XmlRootElement(name = "scriptingProject")
+@XmlAccessorType(XmlAccessType.FIELD)
+@ToString
+@Log4j2
 public class ScriptingProject {
 
     // Description of this project
@@ -21,19 +39,30 @@ public class ScriptingProject {
 
     // List of cameras that are available in this project
     @Getter @Setter
+    @XmlElementWrapper(name = "cameraList")
+    @XmlElement(name = "camera")
     private ArrayList<Camera> cameras;
 
     // The director timeline of this project
     @Getter @Setter
     private DirectorTimeline directorTimeline;
 
-    // The camera timelines of this project
+    // The camera centerarea of this project
     @Getter @Setter
+    @XmlElementWrapper(name = "camera-centerarea")
+    @XmlElement(name = "cameraTimeline")
     private ArrayList<CameraTimeline> cameraTimelines;
 
     // The number of seconds per count;
     @Getter @Setter
     private double secondsPerCount;
+    
+    /**
+     * Default constructor.
+     */
+    public ScriptingProject() {
+        this("", 0);
+    }
 
     /**
      * Constructor.
@@ -41,10 +70,14 @@ public class ScriptingProject {
      * @param secondsPerCount - the number of seconds each count takes
      */
     public ScriptingProject(String description, double secondsPerCount) {
+        log.debug("Initializing new ScriptingProject(description={}, secondsPerCount={})",
+            description, secondsPerCount);
+
         this.description = description;
         this.secondsPerCount = secondsPerCount;
         this.cameras = new ArrayList<Camera>();
         this.cameraTimelines = new ArrayList<CameraTimeline>();
+        this.directorTimeline = new DirectorTimeline(description, this);
     }
 
     /**
@@ -53,11 +86,27 @@ public class ScriptingProject {
      * @return          - boolean indicating if the write was successful
      */
     public boolean write(String fileName) {
-
-        // Write using XML, change if writing with another
-        // module is necessary
-        XmlWriter writer = new XmlWriter(fileName);
-        return writer.writeProject(this);
+        File file = new File(fileName);
+        return write(file);
+    }
+    
+    /**
+     * Write the current project to file.
+     * @param file the file to write to
+     * @return true if write succeeded, false otherwise
+     */
+    public boolean write(File file) {
+        log.info("Writing ScriptingProject to file {}", file.getAbsolutePath());
+        try {
+            JAXBContext context = JAXBContext.newInstance(ScriptingProject.class);
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            m.marshal(this, file);
+            return true;
+        } catch (JAXBException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
@@ -66,11 +115,29 @@ public class ScriptingProject {
      * @return          - boolean indicating if the write was successful
      */
     public static ScriptingProject read(String fileName) {
-
-        // Read using XML, change if reading with another
-        // module is necessary
-        XmlReader reader = new XmlReader(fileName);
-        return reader.readProject();
+        File file = new File(fileName);
+        return read(file);
+        
+    }
+    
+    /**
+     * Read a project from file.
+     * @param file the file to read from
+     * @return null if read failed, the read project otherwise
+     */
+    public static ScriptingProject read(File file) {
+        log.info("Reading ScriptingProject from file {}", file.getAbsolutePath());
+        try {
+            JAXBContext context = JAXBContext.newInstance(ScriptingProject.class);
+            Unmarshaller um = context.createUnmarshaller();
+            ScriptingProject result =  (ScriptingProject) um.unmarshal(file);
+            result.getDirectorTimeline().setProject(result);
+            result.getCameraTimelines().forEach(e -> e.setProject(result));
+            return result;
+        } catch (JAXBException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**

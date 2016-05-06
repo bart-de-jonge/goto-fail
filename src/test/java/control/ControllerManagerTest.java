@@ -1,6 +1,6 @@
 package control;
 
-import gui.RootPane;
+import gui.root.RootPane;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -16,8 +16,13 @@ public class ControllerManagerTest {
     @Before
     public void initialize() {
         // GUI element necessary for instantiation
-        RootPane rootMock = Mockito.spy(new RootPane());
-        controllerManager = new ControllerManager(rootMock);
+        RootPane rootMock = Mockito.mock(RootPane.class);
+        TimelineController timelineController = Mockito.mock(TimelineController.class);
+        DetailViewController detailViewController = Mockito.mock(DetailViewController.class);
+        ToolViewController toolViewController = Mockito.mock(ToolViewController.class);
+
+        controllerManager = new ControllerManager(rootMock, timelineController,
+                                                  detailViewController, toolViewController);
     }
 
     @Test

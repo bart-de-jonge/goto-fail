@@ -1,5 +1,7 @@
-package gui;
+package gui.events;
 
+import gui.centerarea.CameraShotBlock;
+import gui.centerarea.ShotBlock;
 import javafx.event.Event;
 import javafx.event.EventType;
 import lombok.Getter;
