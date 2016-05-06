@@ -46,18 +46,6 @@ public abstract class TimetableBlock extends Pane {
     private double margin = 5.0;
     private double blurRadius = 20.0;
 
-    private String colorBlockBackground = "#B1E2FA";
-    private String colorBlockBorders = "#DDF2FC";
-    private String colorBlockBorderHighlight = "#005482";
-    private String colorText = "#047FB7";
-
-    /**
-     *  Temporary variables, until they can be moved to CSS files properly.
-     */
-
-    private String title = "block title";
-    private String shots = "15 - 20";
-
     /**
      *  Content variables.
      *  Directly displaying block content, such as the name.
@@ -147,6 +135,7 @@ public abstract class TimetableBlock extends Pane {
         // mouse event handlers
         setOnMousePressed(getOnPressedHandler());
         setOnMouseDragged(getOnDraggedHandler(horizontalAllowed));
+        System.out.println(horizontalAllowed);
         setOnMouseReleased(getOnreleaseHandler());
         setOnMouseMoved(getOnMouseMovedHandler());
     }
@@ -403,7 +392,7 @@ public abstract class TimetableBlock extends Pane {
         // determine what kind of dragging we're going to do.
         if (draggingType == DraggingTypes.Resize_Bottom
                 || draggingType == DraggingTypes.Resize_Top
-                || (draggingType == DraggingTypes.Move && horizontalAllowed)) {
+                || (draggingType == DraggingTypes.Move && !horizontalAllowed)) {
             // handle vertical drags in helper.
             onMouseDraggedHelperVertical(event);
         } else if (draggingType == Move) { // handle just general dragging

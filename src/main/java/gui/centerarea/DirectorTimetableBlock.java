@@ -3,7 +3,10 @@ package gui.centerarea;
 import gui.root.RootCenterArea;
 
 /**
- * Created by Bart.
+ * @author Bart.
+ *
+ * This class is used to display DirectorShotBlocks on the DirectorGridPane.
+ * All styling and labels should be added here.
  */
 public class DirectorTimetableBlock extends TimetableBlock {
 
