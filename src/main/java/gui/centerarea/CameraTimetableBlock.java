@@ -5,8 +5,8 @@ import gui.root.RootCenterArea;
 /**
  * @author Bart.
  *
- * This class is used to display CameraShotBlocks on the TimelinesGridPane.
- * All styling and labels should be added here.
+ *      This class is used to display CameraShotBlocks on the TimelinesGridPane.
+ *      All styling and labels should be added here.
  */
 public class CameraTimetableBlock extends TimetableBlock {
 

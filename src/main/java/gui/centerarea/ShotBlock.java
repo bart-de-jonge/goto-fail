@@ -19,10 +19,10 @@ import static javafx.scene.input.KeyCode.T;
 /**
  * @author Bart.
  *
- * Abstract superclass for different kind of shots in the gui.
- * This class is the edge between the View and the Controller.
- * The controller only talks with this class and all the gui stuff
- * is done for him.
+ *      Abstract superclass for different kind of shots in the gui.
+ *      This class is the edge between the View and the Controller.
+ *      The controller only talks with this class and all the gui stuff
+ *      is done for him.
  */
 @Log4j2
 public abstract class ShotBlock {
@@ -184,7 +184,6 @@ public abstract class ShotBlock {
      * Recompute position in grid and repaint with these settings.
      */
     public void recompute() {
-        GridPane.setRowIndex(timetableBlock, (int) Math.round(beginCount));
         TimelinesGridPane.setRowIndex(timetableBlock,
                 (int) Math.round(beginCount));
         TimelinesGridPane.setRowSpan(timetableBlock,

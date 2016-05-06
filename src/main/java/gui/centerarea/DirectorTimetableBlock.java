@@ -5,8 +5,8 @@ import gui.root.RootCenterArea;
 /**
  * @author Bart.
  *
- * This class is used to display DirectorShotBlocks on the DirectorGridPane.
- * All styling and labels should be added here.
+ *      This class is used to display DirectorShotBlocks on the DirectorGridPane.
+ *      All styling and labels should be added here.
  */
 public class DirectorTimetableBlock extends TimetableBlock {
 
