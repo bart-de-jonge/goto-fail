@@ -135,7 +135,6 @@ public abstract class TimetableBlock extends Pane {
         // mouse event handlers
         setOnMousePressed(getOnPressedHandler());
         setOnMouseDragged(getOnDraggedHandler(horizontalAllowed));
-        System.out.println(horizontalAllowed);
         setOnMouseReleased(getOnreleaseHandler());
         setOnMouseMoved(getOnMouseMovedHandler());
     }

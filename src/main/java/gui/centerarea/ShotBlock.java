@@ -5,9 +5,11 @@ import edu.umd.cs.findbugs.gui.Logger;
 import gui.root.RootCenterArea;
 import gui.events.ShotblockUpdatedEvent;
 import javafx.event.EventHandler;
+import javafx.scene.layout.GridPane;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import sun.java2d.pipe.SpanIterator;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -182,9 +184,10 @@ public abstract class ShotBlock {
      * Recompute position in grid and repaint with these settings.
      */
     public void recompute() {
-        TimelinesGridPane.setRowIndex(this.timetableBlock,
+        GridPane.setRowIndex(timetableBlock, (int) Math.round(beginCount));
+        TimelinesGridPane.setRowIndex(timetableBlock,
                 (int) Math.round(beginCount));
-        TimelinesGridPane.setRowSpan(this.timetableBlock,
+        TimelinesGridPane.setRowSpan(timetableBlock,
                 (int) Math.round(endCount - beginCount));
     }
 
