@@ -108,8 +108,8 @@ public class BlurHelper {
         parameters.setViewport(rect);
 
         // just a catch, in case something goes horribly wrong.
-        Point2D imageSize = new Point2D(Math.floor(bounds.getWidth()),
-                Math.floor(bounds.getHeight()));
+        Point2D imageSize = new Point2D(Math.round(bounds.getWidth()),
+                Math.round(bounds.getHeight()));
         if (imageSize.getX() <= 0.0 || imageSize.getY() <= 0.0) {
             return;
         }

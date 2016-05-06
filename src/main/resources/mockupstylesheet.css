@@ -11,6 +11,41 @@
   -c-block-text: #047FB7;
 }
 
+.check-box .box {
+    -fx-background-radius: 10em;
+    -fx-background-color: rgb(190,190,190);
+    -fx-padding: 0 20 0 7;
+    -fx-min-width: 20;
+    -fx-min-height: 20;
+}
+
+.check-box:selected .box {
+    -fx-background-color: rgb(220,220,220);
+    -fx-padding: 0 7 0 20;
+    -fx-min-width: 20;
+    -fx-min-height: 20;
+}
+
+.check-box .mark {
+    -fx-shape: null;
+    -fx-background-color:  rgb(250,250,250);
+    -fx-background-radius: 10em;
+    -fx-min-width: 18;
+    -fx-min-height: 18;
+    -fx-opacity: 0.5;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.15), 1, 1, -1, 0);
+}
+
+.check-box:selected .mark {
+    -fx-shape: null;
+    -fx-background-color: #2cb7ff;
+    -fx-background-radius: 10em;
+    -fx-min-width: 18;
+    -fx-min-height: 18;
+    -fx-opacity: 1.0;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.15), 1, 1, -1, 0);
+}
+
 .button {
     -fx-background-radius: 10;
     -fx-background-color: rgb(200,200,200);

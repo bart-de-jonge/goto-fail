@@ -17,10 +17,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -62,10 +59,7 @@ public class mockupModalView extends ModalView {
         this.viewPane.setAlignment(vBoxScrollable, Pos.TOP_CENTER);
 
         this.vBox = new VBox();
-      //  this.vBox.setPadding(new Insets(10, 10, 10, 10));
-      //  this.vBox.setSpacing(10.0);
-        //this.vBox.setMaxWidth(400.0);
-        this.vBox.setMaxHeight(250.0);
+        this.vBox.setMaxHeight(400.0);
         this.vBox.setPadding(new Insets(20, 20, 20, 20));
         this.vBox.setSpacing(20.0);
         this.vBox.setStyle("-fx-border-width: 0 0 1 0;" +
@@ -78,20 +72,31 @@ public class mockupModalView extends ModalView {
         initExampleButtons();
         initExampleTextfields();
         initExampleButtons2();
+        initExampleTextfield();
 
         super.setModalView(this.viewPane);
         super.displayModal();
 
         BlurHelper blurHelper = new BlurHelper(this.vBox);
-        blurHelper.getImageView().setClip(new Rectangle(vBox.getWidth(), vBox.getHeight()));
-
         this.viewPane.setAlignment(blurHelper.getImageView(), Pos.TOP_CENTER);
-
-       // this.viewPane.getChildren().add(1, blurHelper.getImageView());
-        //addWithClipRegion(blurHelper.getImageView(), this.viewPane);
         this.viewPane.getChildren().add(1, blurHelper.getImageView());
+        blurHelper.processBlurUsingBounds();
 
         scrollPane.vvalueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                blurHelper.processBlurUsingBounds();
+            }
+        });
+
+        this.vBox.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                blurHelper.processBlurUsingBounds();
+            }
+        });
+
+        this.vBox.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 blurHelper.processBlurUsingBounds();
@@ -135,6 +140,14 @@ public class mockupModalView extends ModalView {
                 + "-fx-min-height: 60; -fx-max-height: 60;");
         testRoundButton2.setButtonColor(120, 180, 215);
         this.vBox.getChildren().add(testRoundButton2);
+    }
+
+    private void initExampleTextfield() {
+        CheckBox testCheckbox = new CheckBox("tetter");
+        testCheckbox.setSelected(true);
+        testCheckbox.setEffect(new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.15),
+                1, 1, 1, 1));
+        this.vBox.getChildren().add(testCheckbox);
     }
 
     @Override
