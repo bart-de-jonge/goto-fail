@@ -8,6 +8,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelFormat;
 import javafx.scene.image.WritableImage;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,6 +41,9 @@ public class BlurHelper {
 
     @Getter @Setter
     private Point2D offset; // Pixel offset if we wish to move blur slightly
+
+    @Getter
+    WritableImage writableImage; // writable image data used to write snapshots to
 
     /**
      * Constructor of class.
@@ -103,15 +107,22 @@ public class BlurHelper {
                 bounds.getWidth(), bounds.getHeight());
         parameters.setViewport(rect);
 
-        // just a catch, in case something goes wrong.
+        // just a catch, in case something goes horribly wrong.
         Point2D imageSize = new Point2D(Math.floor(bounds.getWidth()),
                 Math.floor(bounds.getHeight()));
         if (imageSize.getX() <= 0.0 || imageSize.getY() <= 0.0) {
             return;
         }
 
-        // create writable image using these bounds.
-        WritableImage writableImage = new WritableImage((int) imageSize.getX(), (int) imageSize.getY());
+        // Clear old image fist
+        writableImage = null;
+        imageView.setImage(null);
+        // TODO: DISCUSS THIS WITH TEAM. IS FORCE-CALLING GARBAGE COLLECTOR BAD?
+        // Apparently it is, because it causes massive slowdown.
+        // System.gc();
+
+        // create new writable image using these bounds.
+        writableImage =  new WritableImage((int) imageSize.getX(), (int) imageSize.getY());
 
         if (hideNode) { // blurs and returns content behind the node
             double opacity = node.getOpacity();
@@ -121,12 +132,9 @@ public class BlurHelper {
         } else { // blurs and returns the node
             node.getScene().getRoot().snapshot(parameters, writableImage);
         }
-        //imageView.
+
         imageView.setImage(writableImage);
-//        imageView
-//        imageView = new ImageView(writableImage);
-//        imageView.setEffect(gaussianBlur);
-        //imageView.setImage(writableImage);
     }
+
 
 }

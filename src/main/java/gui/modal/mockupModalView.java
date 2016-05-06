@@ -64,7 +64,7 @@ public class mockupModalView extends ModalView {
         this.vBox = new VBox();
       //  this.vBox.setPadding(new Insets(10, 10, 10, 10));
       //  this.vBox.setSpacing(10.0);
-        this.vBox.setMaxWidth(400.0);
+        //this.vBox.setMaxWidth(400.0);
         this.vBox.setMaxHeight(250.0);
         this.vBox.setPadding(new Insets(20, 20, 20, 20));
         this.vBox.setSpacing(20.0);
@@ -83,7 +83,8 @@ public class mockupModalView extends ModalView {
         super.displayModal();
 
         BlurHelper blurHelper = new BlurHelper(this.vBox);
-        blurHelper.setRadius(50.0);
+        blurHelper.getImageView().setClip(new Rectangle(vBox.getWidth(), vBox.getHeight()));
+
         this.viewPane.setAlignment(blurHelper.getImageView(), Pos.TOP_CENTER);
 
        // this.viewPane.getChildren().add(1, blurHelper.getImageView());
@@ -93,11 +94,7 @@ public class mockupModalView extends ModalView {
         scrollPane.vvalueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                viewPane.getChildren().remove(1);
                 blurHelper.processBlurUsingBounds();
-                viewPane.getChildren().add(1, blurHelper.getImageView());
-                viewPane.setAlignment(blurHelper.getImageView(), Pos.TOP_CENTER);
-                blurHelper.getImageView().setClip(new Rectangle(vBox.getWidth(), vBox.getHeight()));
             }
         });
     }
