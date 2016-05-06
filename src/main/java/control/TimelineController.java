@@ -132,7 +132,6 @@ public class TimelineController {
      */
     public void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
         log.info("Shot moved to new TimeLine");
-        System.out.println("block updated bithc");
 
         CameraShotBlock changedBlock = event.getCameraShotBlock();
 

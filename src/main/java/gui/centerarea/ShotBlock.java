@@ -140,7 +140,6 @@ public abstract class ShotBlock {
         if (recompute) {
             this.recompute();
         }
-        System.out.println("HEREEEEEE");
         redrawCounts();
     }
 
@@ -177,8 +176,6 @@ public abstract class ShotBlock {
      * Helper function to redraw block counts.
      */
     private void redrawCounts() {
-        System.out.println("Begincount = " + beginCount);
-        System.out.println("Endcount = " + endCount);
         timetableBlock.getCountNormalLabel().setText(beginCount + " - " + endCount);
         timetableBlock.getCountDraggedLabel().setText(beginCount + " - " + endCount);
     }
