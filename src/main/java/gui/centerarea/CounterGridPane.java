@@ -16,7 +16,6 @@ public class CounterGridPane extends ScrollableGridPane {
      * It has separate CSS files for all stylized elements, but I'm not merging it
      * until its done.
      */
-
     private String labelStyle = "-fx-padding: 0 5 0 0;";
 
     /**
@@ -55,7 +54,6 @@ public class CounterGridPane extends ScrollableGridPane {
             rc.setVgrow(Priority.ALWAYS);
             this.getRowConstraints().add(rc);
         }
-
     }
 
     /**
@@ -71,5 +69,4 @@ public class CounterGridPane extends ScrollableGridPane {
             this.add(label, 0, i);
         }
     }
-
 }
