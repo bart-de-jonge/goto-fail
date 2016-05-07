@@ -28,11 +28,13 @@ import java.util.stream.Collectors;
  */
 @Log4j2
 public class TimelineController {
+    
+    private final int defaultAmountTimelines = 8;
 
     private RootPane rootPane;
 
     // TODO: replace number of centerarea with xml data
-    private final int numTimelines = 8;
+    private int numTimelines = defaultAmountTimelines;
 
     // Placeholder camera type until GUI allows personalized entry
     // TODO: Replace Camera Type and Scripting Project when XML functionality is available
@@ -88,7 +90,19 @@ public class TimelineController {
         // Check for collisions
         checkCollisions(cameraIndex, shotBlock);
     }
-
+    
+    /**
+     * Add a camera shot that is loaded from file.
+     * @param cameraIndex the index of the camera timeline to use
+     * @param shot the shot to add
+     */
+    private void addCameraShotForLoad(int cameraIndex, CameraShot shot) {
+        CameraShotBlock shotBlock = new CameraShotBlock(shot, cameraIndex, 
+                                                       rootPane.getRootCenterArea(),
+                                                       this::shotChangedHandler);
+        controllerManager.setActiveShotBlock(shotBlock);
+        this.cameraShotBlocks.add(shotBlock);
+    }
     /**
      * Remove a camera shot from both the display and the timeline.
      * @param cameraShotBlock CameraShotBlock to be removed
@@ -267,7 +281,26 @@ public class TimelineController {
                 alert.setContentText("The format in the selected file was not recognized");
                 alert.showAndWait();
             } else {
-                project = temp;
+                controllerManager.setScriptingProject(temp);
+                project = controllerManager.getScriptingProject();
+                addLoadedBlocks(project);
+                numTimelines = project.getCameraTimelines().size();
+            }
+        }
+    }
+    
+    /**
+     * Add the blocks that were loaded from file to the UI.
+     * @param project the project that was loaded
+     */
+    private void addLoadedBlocks(ScriptingProject project) {
+        log.info("Adding loaded blocks");
+        for (int i = 0; i < project.getCameraTimelines().size();i++) {
+            CameraTimeline timeline = project.getCameraTimelines().get(i);
+            int amountShots = timeline.getShots().size();
+            for (int j = 0; j < amountShots;j++) {
+                CameraShot shot = timeline.getShots().get(j);
+                addCameraShotForLoad(i, shot);
             }
         }
     }

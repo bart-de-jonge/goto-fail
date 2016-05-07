@@ -131,7 +131,9 @@ public class mockupModalView extends ModalView {
                 + "-fx-background-radius: 5em;"
                 + "-fx-min-width: 60; -fx-max-width: 60;"
                 + "-fx-min-height: 60; -fx-max-height: 60;");
-        testRoundButton.setButtonColor(54, 200, 178);
+       // testRoundButton.setButtonColor(54, 200, 178);
+        testRoundButton.setButtonColor(255, 255, 255);
+        testRoundButton.setTextColor(100, 100, 100);
         this.vBox.getChildren().add(testRoundButton);
 
         StyledButton testRoundButton2 = new StyledButton("-");

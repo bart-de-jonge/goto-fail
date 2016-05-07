@@ -1,12 +1,16 @@
 package gui.styling;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,6 +41,7 @@ public class StyledCheckbox extends CheckBox {
     private int mouseOverDuration = 100;
     private int mouseClickDuration = 50;
 
+    private StyledCheckbox self;
 
     /**
      * Constructor of class.
@@ -52,6 +57,7 @@ public class StyledCheckbox extends CheckBox {
     public StyledCheckbox(String text) {
         setText(text);
         init();
+        self = this;
     }
 
     /**
@@ -74,6 +80,15 @@ public class StyledCheckbox extends CheckBox {
         colorAdjust.setInput(dropShadow);
         this.setEffect(colorAdjust);
 
+        this.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println(self.isSelected());
+                Node node = self.lookup(".mark");
+                node.setOpacity(0.40);
+            }
+        });
+        
     }
 
 }

@@ -130,7 +130,10 @@ public class ScriptingProject {
         try {
             JAXBContext context = JAXBContext.newInstance(ScriptingProject.class);
             Unmarshaller um = context.createUnmarshaller();
-            return (ScriptingProject) um.unmarshal(file);
+            ScriptingProject result =  (ScriptingProject) um.unmarshal(file);
+            result.getDirectorTimeline().setProject(result);
+            result.getCameraTimelines().forEach(e -> e.setProject(result));
+            return result;
         } catch (JAXBException e) {
             e.printStackTrace();
             return null;
