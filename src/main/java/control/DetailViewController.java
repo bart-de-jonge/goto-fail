@@ -5,6 +5,14 @@ import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
 import gui.headerarea.DetailView;
 import gui.centerarea.ShotBlock;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
+import java.text.DecimalFormat;
 
 /**
  * Created by Bart.
@@ -35,17 +43,43 @@ public class DetailViewController {
     private void initBeginCount() {
         detailView.setBeginCount(0);
 
-        detailView.getBeginCountField().textProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                if (manager.getActiveShotBlock() != null) {
-                    int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
-                    manager.getActiveShotBlock().setBeginCount(newVal);
-                    if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                        ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
-                                .setBeginCount(newVal);
-                    }
-                }
-            });
+        detailView.getBeginCountField().focusedProperty().addListener((observable, oldValue, newValue) -> {
+            // exiting focus
+            if (!newValue) {
+                beginCountUpdateHelper();
+            }
+        });
+
+        detailView.getBeginCountField().setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                beginCountUpdateHelper();
+            }
+        });
+    }
+
+    private String formatDouble(double d) {
+        if (d == (long) d) {
+            return String.format("%d", (long) d);
+        } else {
+            return String.format("%s", d);
+        }
+    }
+
+    private void beginCountUpdateHelper() {
+        if (manager.getActiveShotBlock() != null) {
+
+            String newValue = detailView.getBeginCountField().getText();
+            double newVal = newValue.isEmpty() ? 0 : Double.parseDouble(newValue);
+            newVal = Math.round(newVal*4)/4f;
+            detailView.getBeginCountField().setText(formatDouble(newVal));
+            System.out.println(formatDouble(newVal));
+
+            manager.getActiveShotBlock().setBeginCount(newVal);
+            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
+                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
+                        .setBeginCount(newVal);
+            }
+        }
     }
 
     /**
