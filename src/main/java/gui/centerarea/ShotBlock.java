@@ -66,6 +66,10 @@ public abstract class ShotBlock {
                      String description, String name, Shot shot, Class<?> timetableBlockClass) {
         this.description = description;
         this.name = name;
+        this.beginCount = beginCount;
+        this.endCount = endCount;
+        this.shot = shot;
+        this.colliding = false;
 
         // TimetableBlock set in subclass constructors!!
         try {
@@ -77,10 +81,6 @@ public abstract class ShotBlock {
             this.timetableBlock = null;
             e.printStackTrace();
         }
-        this.beginCount = beginCount;
-        this.endCount = endCount;
-        this.shot = shot;
-        this.colliding = false;
     }
 
     /**
