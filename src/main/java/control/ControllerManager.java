@@ -110,7 +110,7 @@ public class ControllerManager {
     }
     
     public void loadProject(MouseEvent event) {
-        timelineControl.load();
+        saveLoadController.load();
     }
 
     /**

@@ -1,7 +1,6 @@
 package control;
 
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -14,13 +13,9 @@ import data.ScriptingProject;
 import data.Shot;
 import gui.centerarea.CameraShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;
-import gui.root.RootCenterArea;
 import gui.root.RootPane;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -35,6 +30,7 @@ public class TimelineController {
     private RootPane rootPane;
 
     // TODO: replace number of centerarea with xml data
+    @Setter
     private int numTimelines = defaultAmountTimelines;
 
     // Placeholder camera type until GUI allows personalized entry
@@ -248,55 +244,15 @@ public class TimelineController {
         }
     }
     
-    /**
-     * Save the current project state to file.
-     * A file chooser window will be opened to select a file
-     */
-    public void save() {
-        log.info("Saving Project to file");
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save");
-        ExtensionFilter extFilter = new ExtensionFilter("txt files", "*.txt");
-        fileChooser.getExtensionFilters().add(extFilter);
-        File file = fileChooser.showSaveDialog(rootPane.getPrimaryStage());
-        if (file != null) {
-            project.write(file);
-        }
-    }
+   
     
-    /**
-     * Load a project from file.
-     * A file chooser window will be opened to select the file.
-     */
-    public void load() {
-        log.info("Loading Project from file");
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Load");
-        ExtensionFilter extFilter = new ExtensionFilter("txt files", "*.txt");
-        fileChooser.getExtensionFilters().add(extFilter);
-        File file = fileChooser.showOpenDialog(rootPane.getPrimaryStage());
-        if (file != null) {
-            ScriptingProject temp  = ScriptingProject.read(file);
-            if (temp == null) {
-                Alert alert = new Alert(AlertType.ERROR); 
-                alert.setTitle("Load Failed");
-                alert.setContentText("The format in the selected file was not recognized");
-                alert.showAndWait();
-            } else {
-                controllerManager.setScriptingProject(temp);
-                rootPane.reInitRootCenterArea(new RootCenterArea(rootPane, project.getCameraTimelines().size(), false));
-                project = controllerManager.getScriptingProject();
-                addLoadedBlocks(project);
-                numTimelines = project.getCameraTimelines().size();
-            }
-        }
-    }
+    
     
     /**
      * Add the blocks that were loaded from file to the UI.
      * @param project the project that was loaded
      */
-    private void addLoadedBlocks(ScriptingProject project) {
+    public void addLoadedBlocks(ScriptingProject project) {
         log.info("Adding loaded blocks");
         for (int i = 0; i < project.getCameraTimelines().size();i++) {
             CameraTimeline timeline = project.getCameraTimelines().get(i);
