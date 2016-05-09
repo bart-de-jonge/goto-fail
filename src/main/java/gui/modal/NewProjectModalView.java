@@ -25,11 +25,12 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class NewProjectModalView extends ModalView {
     
-    private static final int width = 600;
-    private static final int height = 600;
+    private static final int width = 700;
+    private static final int height = 700;
     
     private TextField descriptionField;
     private NumberTextField secondsPerCountField;
+    private TextField directorTimelineDescriptionField;
     private Button addCameraButton;
     private Button addTimelineButton;
     private Button creationButton;
@@ -65,7 +66,7 @@ public class NewProjectModalView extends ModalView {
         this.viewPane = new VBox(20);
         this.viewPane.getChildren().add(new Text("Create a new project"));
         
-        initDescriptionCountFields();
+        initFields();
         initAddCameraType();
         initAddCamera();
         initAddTimeline();
@@ -112,7 +113,7 @@ public class NewProjectModalView extends ModalView {
         
     }
 
-    private void initDescriptionCountFields() {
+    private void initFields() {
         final Label descriptionLabel = new Label("Project description: ");
         descriptionField = new TextField();
         HBox descriptionBox = new HBox();
@@ -125,7 +126,13 @@ public class NewProjectModalView extends ModalView {
         secondsPerCountBox.getChildren().addAll(secondsPerCountLabel, secondsPerCountField);
         secondsPerCountBox.setSpacing(10);
         
-        this.viewPane.getChildren().addAll(descriptionBox, secondsPerCountBox);
+        final Label directorTimelineDescriptionLabel = new Label("Director Timeline Description: ");
+        directorTimelineDescriptionField = new TextField();
+        HBox directorTimelineDescriptionBox = new HBox();
+        directorTimelineDescriptionBox.getChildren().addAll(directorTimelineDescriptionLabel, directorTimelineDescriptionField);
+        directorTimelineDescriptionBox.setSpacing(10);
+        
+        this.viewPane.getChildren().addAll(descriptionBox, secondsPerCountBox, directorTimelineDescriptionBox);
     }
     
     private void addCamera(MouseEvent event) {
@@ -137,8 +144,12 @@ public class NewProjectModalView extends ModalView {
     }
     
     private void createProject(MouseEvent event) {
-        // TODO: Do stuff
-        log.error("Creating project");
+        super.hideModal();
+        creationEventHandler.handle(this.buildEvent());
+    }
+    
+    private NewProjectCreationEvent buildEvent() {
+        
     }
     
     private void handleAddTimeline(AddTimelineEvent event) {

@@ -1,5 +1,7 @@
 package control;
 
+import data.CameraTimeline;
+import data.DirectorTimeline;
 import data.ScriptingProject;
 import gui.centerarea.ShotBlock;
 import gui.events.NewProjectCreationEvent;
@@ -70,7 +72,16 @@ public class ControllerManager {
     }
     
     private void createProject(NewProjectCreationEvent event) {
+        ScriptingProject project = new ScriptingProject(event.getDescription(), event.getSecondsPerCount());
+        project.setDirectorTimeline(new DirectorTimeline(event.getDirectorTimelineDescription(), null));
+        project.setCameras(event.getCameras());
+        project.setCameraTimelines(event.getTimelines());
+        project.getDirectorTimeline().setProject(project);
+        for (CameraTimeline timeline : project.getCameraTimelines()) {
+            timeline.setProject(project);
+        }
         
+        scriptingProject = project;
     }
 
     /**
