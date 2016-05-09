@@ -251,6 +251,7 @@ public abstract class TimetableBlock extends Pane {
      */
     private Label initCountLabel(VBox vbox) {
         String labelText = parentBlock.getBeginCount() + " - " + parentBlock.getEndCount();
+        System.out.println(labelText);
         Label res = new Label(labelText);
         res.maxWidthProperty().bind(this.widthProperty());
         res.getStyleClass().add("block_Text_Normal");
