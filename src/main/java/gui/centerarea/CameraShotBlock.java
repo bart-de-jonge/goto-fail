@@ -13,10 +13,6 @@ import lombok.Setter;
  */
 public class CameraShotBlock extends ShotBlock {
 
-    // The timetableBlock used for displaying this block
-    @Getter @Setter
-    private TimetableBlock timetableBlock;
-
     // The number of the timetable this shot belongs to
     @Getter
     private int timetableNumber;
@@ -54,11 +50,9 @@ public class CameraShotBlock extends ShotBlock {
         super(rootCenterArea, beginCount, endCount, description,
                 name, shot, CameraTimetableBlock.class);
 
-        this.setTimetableBlock(new CameraTimetableBlock(rootCenterArea, this));
         this.shotId = shotId;
         this.timetableNumber = timetableNumber;
         this.grid = rootCenterArea.getMainTimeLineGridPane();
-        this.timetableBlock = new CameraTimetableBlock(rootCenterArea, this);
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
             this.setBeginCount(TimelinesGridPane.getRowIndex(

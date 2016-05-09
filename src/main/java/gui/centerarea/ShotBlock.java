@@ -77,7 +77,7 @@ public abstract class ShotBlock {
         try {
             Constructor<?> constructor = timetableBlockClass
                     .getConstructor(RootCenterArea.class, ShotBlock.class);
-            this.timetableBlock = (TimetableBlock) constructor.newInstance(rootCenterArea, this);
+            this.setTimetableBlock((TimetableBlock) constructor.newInstance(rootCenterArea, this));
         } catch (Exception e) {
             log.error("No valid timetableblock class, could not initialize timetableblock!");
             this.timetableBlock = null;
