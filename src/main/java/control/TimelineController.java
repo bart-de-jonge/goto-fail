@@ -78,6 +78,7 @@ public class TimelineController {
     public void addCameraShot(int cameraIndex, String name, String description,
                               int startCount, int endCount) {
         log.info("Adding CameraShot to Timeline");
+        System.out.println("Adding camerashot to timeline");
 
         CameraShot newShot = new CameraShot(name,description, startCount, endCount);
         this.project.getCameraTimelines().get(cameraIndex).addShot(newShot);

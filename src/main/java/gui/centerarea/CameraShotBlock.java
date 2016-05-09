@@ -86,6 +86,7 @@ public class CameraShotBlock extends ShotBlock {
      */
     @Override
     public void recompute() {
+        System.out.println("recomputing");
         TimelinesGridPane.setColumnIndex(this.getTimetableBlock(),
                 timetableNumber);
         super.recompute();

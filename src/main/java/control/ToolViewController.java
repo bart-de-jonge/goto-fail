@@ -68,12 +68,10 @@ public class ToolViewController {
         script.getDirectorTimeline().addShot(event.getShotName(), event.getShotDescription(),
                                              (int) event.getShotStart(), (int) event.getShotEnd());
 
-        TimelineController tlineControl = this.controllerManager.getTimelineControl();
-        event.getCamerasInShot().forEach(camInd -> {
-                tlineControl.addCameraShot(camInd,
-                                           event.getShotName(), event.getShotDescription(),
-                                           (int) event.getShotStart(), (int) event.getShotEnd());
-            });
+        TimelineController timelineController = this.controllerManager.getTimelineControl();
+        event.getCamerasInShot().forEach(camInd ->
+                timelineController.addCameraShot(camInd, event.getShotName(), event.getShotDescription(),
+                                                 (int) event.getShotStart(), (int) event.getShotEnd()));
     }
 
     /**

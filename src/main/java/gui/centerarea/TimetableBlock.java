@@ -156,7 +156,7 @@ public abstract class TimetableBlock extends Pane {
         // add some labels etc
         titleNormalLabel = initTitleLabel(contentPane);
         countNormalLabel = initCountLabel(contentPane);
-        descriptionNormalLabel = initCountLabel(contentPane);
+        descriptionNormalLabel = initDescriptionLabel(contentPane);
         descriptionNormalLabel.setWrapText(true);
 
         addWithClipRegion(contentPane, this);
@@ -229,10 +229,17 @@ public abstract class TimetableBlock extends Pane {
      * @return the label in question.
      */
     private Label initTitleLabel(VBox vbox) {
-        Label res = new Label();
-        res.setText("Block Title");
+        Label res = new Label(parentBlock.getName());
         res.maxWidthProperty().bind(this.widthProperty());
         res.getStyleClass().add("block_Text_Title");
+        vbox.getChildren().add(res);
+        return res;
+    }
+
+    private Label initDescriptionLabel(VBox vbox) {
+        Label res = new Label(parentBlock.getDescription());
+        res.maxWidthProperty().bind(this.widthProperty());
+        res.getStyleClass().add("block_Text_Normal");
         vbox.getChildren().add(res);
         return res;
     }
@@ -243,8 +250,8 @@ public abstract class TimetableBlock extends Pane {
      * @return the label in question.
      */
     private Label initCountLabel(VBox vbox) {
-        Label res = new Label();
-        res.setText("0 - 0");
+        String labelText = parentBlock.getBeginCount() + " - " + parentBlock.getEndCount();
+        Label res = new Label(labelText);
         res.maxWidthProperty().bind(this.widthProperty());
         res.getStyleClass().add("block_Text_Normal");
         vbox.getChildren().add(res);
