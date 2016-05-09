@@ -6,7 +6,6 @@ import gui.events.CameraShotBlockUpdatedEvent;
 import gui.events.ShotblockUpdatedEvent;
 import javafx.event.EventHandler;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Created by Bart.
@@ -55,12 +54,12 @@ public class CameraShotBlock extends ShotBlock {
         this.grid = rootCenterArea.getMainTimeLineGridPane();
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
-            this.setBeginCount(TimelinesGridPane.getRowIndex(
+                this.setBeginCount(TimelinesGridPane.getRowIndex(
                         this.getTimetableBlock()), false);
                 this.setEndCount(TimelinesGridPane.getRowSpan(
-                        this.getTimetableBlock()) + this.getBeginCount(), false);
+                    this.getTimetableBlock()) + this.getBeginCount(), false);
                 this.timetableNumber = TimelinesGridPane.getColumnIndex(
-                        this.getTimetableBlock());
+                    this.getTimetableBlock());
 
                 if (e instanceof CameraShotBlockUpdatedEvent) {
                     handler.handle((CameraShotBlockUpdatedEvent) e);
