@@ -81,7 +81,6 @@ public class ControllerManager {
      * @param block ShotBlock to set as active
      */
     public void setActiveShotBlock(ShotBlock block) {
-        System.out.println("active shotblock updated");
         this.activeShotBlock = block;
         detailViewController.activeBlockChanged();
         toolViewController.activeBlockChanged();
