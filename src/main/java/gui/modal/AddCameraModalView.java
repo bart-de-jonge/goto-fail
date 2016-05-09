@@ -72,13 +72,14 @@ public class AddCameraModalView extends ModalView {
     }
     
     private void initTypeList() {
+        final Label cameraTypeLabel = new Label("Camera Type: ");
         cameraTypes = new ListView<Label>();
         cameraTypes.setMaxHeight(100);
         for (CameraType type: cameraTypeList) {
             cameraTypes.getItems().add(new Label(type.getName()));
         }
         
-        this.viewPane.getChildren().add(cameraTypes);
+        this.viewPane.getChildren().addAll(cameraTypeLabel, cameraTypes);
         
     }
     

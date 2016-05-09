@@ -31,11 +31,7 @@ public class TimelineController {
 
     // TODO: replace number of centerarea with xml data
     @Setter
-    private int numTimelines = defaultAmountTimelines;
-
-    // Placeholder camera type until GUI allows personalized entry
-    // TODO: Replace Camera Type and Scripting Project when XML functionality is available
-    private final CameraType defType = new CameraType("AW-HE130 HD PTZ", "It's an IP Camera", 0);
+    private int numTimelines;
 
     @Getter
     private ControllerManager controllerManager;

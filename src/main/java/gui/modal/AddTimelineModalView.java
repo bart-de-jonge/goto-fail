@@ -65,13 +65,14 @@ public class AddTimelineModalView extends ModalView {
     }
     
     private void initCameraList() {  
+        final Label cameraLabel = new Label("Camera: ");
         cameraList = new ListView<Label>();
         cameraList.setMaxHeight(100);
         for (Camera camera: cameras) {
             cameraList.getItems().add(new Label(camera.getName()));
         }
         
-        this.viewPane.getChildren().add(cameraList);
+        this.viewPane.getChildren().addAll(cameraLabel, cameraList);
     }
     
     private void addTimeline(MouseEvent event) {
