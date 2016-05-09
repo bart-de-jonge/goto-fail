@@ -70,8 +70,9 @@ public class ToolViewController {
 
         TimelineController timelineController = this.controllerManager.getTimelineControl();
         event.getCamerasInShot().forEach(camInd ->
-                timelineController.addCameraShot(camInd, event.getShotName(), event.getShotDescription(),
-                                                 (int) event.getShotStart(), (int) event.getShotEnd()));
+                timelineController.addCameraShot(camInd, event.getShotName(),
+                        event.getShotDescription(), (int) event.getShotStart(),
+                        (int) event.getShotEnd()));
     }
 
     /**

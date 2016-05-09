@@ -236,6 +236,11 @@ public abstract class TimetableBlock extends Pane {
         return res;
     }
 
+    /**
+     * Helper function to add the description label to panes.
+     * @param vbox - pane to add this label to
+     * @return - the label in question
+     */
     private Label initDescriptionLabel(VBox vbox) {
         Label res = new Label(parentBlock.getDescription());
         res.maxWidthProperty().bind(this.widthProperty());
