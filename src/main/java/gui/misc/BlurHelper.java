@@ -192,8 +192,9 @@ public class BlurHelper {
         ChangeListener<Number> listener = new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                System.out.println("watcher: " + watchable.getHeight());
-                processBlurUsingBounds(watchable.getHeight());
+                //System.out.println("watcher: " + watchable.getHeight());
+                //processBlurUsingBounds(watchable.getHeight());
+                processBlurUsingBounds();
             }
         };
 
@@ -212,6 +213,8 @@ public class BlurHelper {
 //        });
         watchable.heightProperty().addListener(listener);
         watchable.widthProperty().addListener(listener);
+        watchable.vvalueProperty().addListener(listener);
+        watchable.hvalueProperty().addListener(listener);
 
 //        watchable.contentProperty().addListener(new ChangeListener<Node>() {
 //            @Override
