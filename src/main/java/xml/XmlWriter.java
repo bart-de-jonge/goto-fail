@@ -27,10 +27,6 @@ import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
-
-
-
 /**
  * Created by Bart.
  * This class contains all the methods to write a ScriptingProject
