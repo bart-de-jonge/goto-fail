@@ -1,5 +1,6 @@
 package control;
 
+import data.CameraShot;
 import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
 import gui.headerarea.DetailView;
@@ -58,6 +59,7 @@ public class DetailViewController {
                 if (manager.getActiveShotBlock() != null) {
                     int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
                     ShotBlock block = manager.getActiveShotBlock();
+
                     block.setEndCount(newVal);
                     if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
                         ((CameraShotBlock) manager.getActiveShotBlock())

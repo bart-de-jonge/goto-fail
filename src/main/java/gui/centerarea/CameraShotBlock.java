@@ -30,7 +30,6 @@ public class CameraShotBlock extends ShotBlock {
                 shot.getEndCount(), shot.getDescription(), shot.getName(), handler, shot);
     }
 
-
     /**
      * Constructor.
      * @param shotId the shot's unique id
@@ -46,7 +45,10 @@ public class CameraShotBlock extends ShotBlock {
     public CameraShotBlock(int shotId, int timetableNumber, RootCenterArea rootCenterArea,
                            double beginCount, double endCount, String description, String name,
                            EventHandler<CameraShotBlockUpdatedEvent> handler, CameraShot shot) {
-        super(rootCenterArea, beginCount, endCount, description, name, shot);
+
+        super(rootCenterArea, beginCount, endCount, description,
+                name, shot, CameraTimetableBlock.class);
+
         this.shotId = shotId;
         this.timetableNumber = timetableNumber;
         this.grid = rootCenterArea.getMainTimeLineGridPane();
@@ -55,9 +57,9 @@ public class CameraShotBlock extends ShotBlock {
                 this.setBeginCount(TimelinesGridPane.getRowIndex(
                         this.getTimetableBlock()), false);
                 this.setEndCount(TimelinesGridPane.getRowSpan(
-                        this.getTimetableBlock()) + this.getBeginCount(), false);
+                    this.getTimetableBlock()) + this.getBeginCount(), false);
                 this.timetableNumber = TimelinesGridPane.getColumnIndex(
-                        this.getTimetableBlock());
+                    this.getTimetableBlock());
 
                 if (e instanceof CameraShotBlockUpdatedEvent) {
                     handler.handle((CameraShotBlockUpdatedEvent) e);
