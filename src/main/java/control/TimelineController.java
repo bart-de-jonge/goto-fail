@@ -36,7 +36,7 @@ public class TimelineController {
     @Getter
     private ControllerManager controllerManager;
 
-    @Getter
+    @Getter @Setter
     private ScriptingProject project;
 
     @Getter

@@ -1,16 +1,20 @@
 package control;
 
-import data.CameraShot;
-import data.ScriptingProject;
-import gui.centerarea.CameraShotBlock;
-import gui.events.CameraShotBlockUpdatedEvent;
-import gui.root.RootPane;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
+import data.Camera;
+import data.CameraShot;
+import data.CameraTimeline;
+import data.CameraType;
+import data.ScriptingProject;
+import gui.centerarea.CameraShotBlock;
+import gui.events.CameraShotBlockUpdatedEvent;
+import gui.root.RootPane;
 
 /**
  * @author alex
@@ -30,10 +34,20 @@ public class TimelineControllerTest {
         ControllerManager controllerManager = new ControllerManager(rootPane, timelineControllerMock,
                                                                     detailViewController, toolViewController);
 
+        ScriptingProject defaultProject = new ScriptingProject();
+        defaultProject.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), "kek", null));
+        
         timelineController = new TimelineController(controllerManager);
-        project = timelineController.getProject();
+        timelineController.getControllerManager().setScriptingProject(defaultProject);
+        timelineController.setProject(defaultProject);
+
+        project = timelineController.getControllerManager().getScriptingProject();
 
         shot = new CameraShot("Shot test", "", 1, 2);
+        System.out.println(project);
+        System.out.println(project.getCameraTimelines());
+        System.out.println(project.getCameraTimelines().get(0));
+        System.out.println(project.getCameraTimelines().get(0).addShot(shot));
         project.getCameraTimelines().get(0).addShot(shot);
 
         shotBlock = Mockito.mock(CameraShotBlock.class);
