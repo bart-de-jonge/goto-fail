@@ -72,7 +72,6 @@ public class DetailViewController {
             double newVal = newValue.isEmpty() ? 0 : Double.parseDouble(newValue);
             newVal = Math.round(newVal*4)/4f;
             detailView.getBeginCountField().setText(formatDouble(newVal));
-            System.out.println(formatDouble(newVal));
 
             manager.getActiveShotBlock().setBeginCount(newVal);
             if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
@@ -88,19 +87,34 @@ public class DetailViewController {
     private void initEndCount() {
         detailView.setEndCount(0);
 
-        detailView.getEndCountField().textProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                if (manager.getActiveShotBlock() != null) {
-                    int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
-                    ShotBlock block = manager.getActiveShotBlock();
+        detailView.getEndCountField().focusedProperty().addListener((observable, oldValue, newValue) -> {
+            // exiting focus
+            if (!newValue) {
+                beginCountUpdateHelper();
+            }
+        });
 
-                    block.setEndCount(newVal);
-                    if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                        ((CameraShotBlock) manager.getActiveShotBlock())
-                                .getShot().setEndCount(newVal);
-                    }
-                }
-            });
+        detailView.getEndCountField().setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                beginCountUpdateHelper();
+            }
+        });
+    }
+
+    private void endCountUpdateHelper() {
+        if (manager.getActiveShotBlock() != null) {
+
+            String newValue = detailView.getEndCountField().getText();
+            double newVal = newValue.isEmpty() ? 0 : Double.parseDouble(newValue);
+            newVal = Math.round(newVal*4)/4f;
+            detailView.getEndCountField().setText(formatDouble(newVal));
+
+            manager.getActiveShotBlock().setEndCount(newVal);
+            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
+                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
+                        .setEndCount(newVal);
+            }
+        }
     }
 
     /**

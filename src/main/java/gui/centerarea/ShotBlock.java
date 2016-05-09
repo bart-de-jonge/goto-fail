@@ -179,9 +179,9 @@ public abstract class ShotBlock {
      */
     public void recompute() {
         TimelinesGridPane.setRowIndex(timetableBlock,
-                (int) Math.round(beginCount));
+                (int) Math.round(beginCount * 4));
         TimelinesGridPane.setRowSpan(timetableBlock,
-                (int) Math.round(endCount - beginCount));
+                (int) Math.round((endCount - beginCount) * 4));
     }
 
     /**
