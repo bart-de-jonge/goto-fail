@@ -4,12 +4,16 @@ import java.io.File;
 
 import data.CameraShot;
 import data.CameraTimeline;
+import data.DirectorTimeline;
 import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
+import gui.events.NewProjectCreationEvent;
+import gui.modal.NewProjectModalView;
 import gui.root.RootCenterArea;
 import gui.root.RootPane;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.extern.log4j.Log4j2;
@@ -94,6 +98,34 @@ public class FileMenuController {
                                                        controllerManager.getTimelineControl()::shotChangedHandler);
         controllerManager.setActiveShotBlock(shotBlock);
         controllerManager.getTimelineControl().getCameraShotBlocks().add(shotBlock);
+    }
+    
+    public void newProject() {
+        new NewProjectModalView(controllerManager.getRootPane(), this::createProject);
+    }
+    
+    private void createProject(NewProjectCreationEvent event) {
+        ScriptingProject project = new ScriptingProject(event.getDescription(), event.getSecondsPerCount());
+        project.setDirectorTimeline(new DirectorTimeline(event.getDirectorTimelineDescription(), null));
+        project.setCameras(event.getCameras());
+        project.setCameraTimelines(event.getTimelines());
+        project.getDirectorTimeline().setProject(project);
+        for (CameraTimeline timeline : project.getCameraTimelines()) {
+            timeline.setProject(project);
+        }
+        
+        controllerManager.setScriptingProject(project);
+        RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(), event.getTimelines().size(), false);
+        controllerManager.getRootPane().reInitRootCenterArea(area);
+        
+    }
+    
+    public void newProject(MouseEvent event) {
+        newProject();
+    }
+    
+    public void loadProject(MouseEvent event) {
+        load();
     }
 
 }

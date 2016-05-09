@@ -76,8 +76,8 @@ public class RootCenterArea extends StackPane {
             Button newButton = new Button("Create new project");
             Button loadButton = new Button("Load project");
             buttonBox.getChildren().addAll(newButton, loadButton);
-            newButton.setOnMouseClicked(rootPane.getControllerManager()::newProject);
-            loadButton.setOnMouseClicked(rootPane.getControllerManager()::loadProject);
+            newButton.setOnMouseClicked(rootPane.getControllerManager().getFileMenuController()::newProject);
+            loadButton.setOnMouseClicked(rootPane.getControllerManager().getFileMenuController()::loadProject);
             this.getChildren().addAll(buttonBox);
             
             

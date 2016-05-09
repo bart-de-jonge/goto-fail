@@ -33,7 +33,7 @@ public class ControllerManager {
     private DetailViewController detailViewController;
     
     @Getter
-    private FileMenuController saveLoadController;
+    private FileMenuController fileMenuController;
 
     @Getter
     private ShotBlock activeShotBlock;
@@ -74,30 +74,9 @@ public class ControllerManager {
         this.toolViewController = toolViewController;
     }
     
-    public void newProject() {
-        System.out.println("Here");
-        new NewProjectModalView(rootPane, this::createProject);
-    }
     
-    private void createProject(NewProjectCreationEvent event) {
-        ScriptingProject project = new ScriptingProject(event.getDescription(), event.getSecondsPerCount());
-        project.setDirectorTimeline(new DirectorTimeline(event.getDirectorTimelineDescription(), null));
-        project.setCameras(event.getCameras());
-        project.setCameraTimelines(event.getTimelines());
-        project.getDirectorTimeline().setProject(project);
-        for (CameraTimeline timeline : project.getCameraTimelines()) {
-            timeline.setProject(project);
-        }
-        
-        scriptingProject = project;
-        RootCenterArea area = new RootCenterArea(rootPane, event.getTimelines().size(), false);
-        rootPane.reInitRootCenterArea(area);
-        
-    }
     
-    public void newProject(MouseEvent event) {
-        newProject();
-    }
+
 
     /**
      * Initialize all necessary controllers.
@@ -106,12 +85,10 @@ public class ControllerManager {
         timelineControl = new TimelineController(this);
         detailViewController = new DetailViewController(this);
         toolViewController = new ToolViewController(this);
-        saveLoadController = new FileMenuController(this);
+        fileMenuController = new FileMenuController(this);
     }
     
-    public void loadProject(MouseEvent event) {
-        saveLoadController.load();
-    }
+   
 
     /**
      * Sets the active ShotBlock and notifies necessary controllers.
