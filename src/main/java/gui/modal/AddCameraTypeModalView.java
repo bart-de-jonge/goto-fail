@@ -69,11 +69,19 @@ public class AddCameraTypeModalView extends ModalView {
         movementMarginBox.getChildren().addAll(marginLabel, movementMarginField);
         movementMarginBox.setSpacing(10);
         
-        this.viewPane.getChildren().addAll(nameBox, descriptionBox, marginLabel);
+        this.viewPane.getChildren().addAll(nameBox, descriptionBox, movementMarginBox);
     }
     
     private void addCameraType(MouseEvent event) {
-        
+        super.hideModal();
+        this.eventHandler.handle(this.buildEvent());
+    }
+    
+    private AddCameraTypeEvent buildEvent() {
+        String name = this.nameField.getText();
+        String description = this.descriptionField.getText();
+        double movementMargin = Double.parseDouble(this.movementMarginField.getText());
+        return new AddCameraTypeEvent(name, description, movementMargin);
     }
 
 }
