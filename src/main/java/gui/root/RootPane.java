@@ -52,22 +52,31 @@ public class RootPane extends Application {
         primaryStage.setMinWidth(minimumResolutionX);
         primaryStage.setHeight(startingResolutionY);
         primaryStage.setWidth(startingResolutionX);
+        
+
 
         // represents file-view-help bar and button bars at top of gui.
         rootHeaderArea = new RootHeaderArea(this);
         topLevelPane.setTop(rootHeaderArea);
+        
+        controllerManager = new ControllerManager(this);
+
 
         // represents simple bar at bottom of gui.
         rootFooterArea = new RootFooterArea();
         topLevelPane.setBottom(rootFooterArea);
 
-        rootCenterArea = new RootCenterArea(this);
+        rootCenterArea = new RootCenterArea(this, 0, true);
         topLevelPane.setCenter(rootCenterArea);
 
-        controllerManager = new ControllerManager(this);
 
         primaryStage.centerOnScreen();
         primaryStage.show();
+    }
+    
+    public void reInitRootCenterArea(RootCenterArea area) {
+        topLevelPane.setCenter(area);
+        rootCenterArea = area;
     }
 
 }

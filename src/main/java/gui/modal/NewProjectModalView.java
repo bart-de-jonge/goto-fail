@@ -149,7 +149,10 @@ public class NewProjectModalView extends ModalView {
     }
     
     private NewProjectCreationEvent buildEvent() {
-        
+        String description = descriptionField.getText();
+        String directorTimelineDescription = directorTimelineDescriptionField.getText();
+        double secondsPerCount = Double.parseDouble(secondsPerCountField.getText());
+        return new NewProjectCreationEvent(description, secondsPerCount, directorTimelineDescription, timelines, cameras);
     }
     
     private void handleAddTimeline(AddTimelineEvent event) {

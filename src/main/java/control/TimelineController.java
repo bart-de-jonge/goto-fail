@@ -1,6 +1,11 @@
 package control;
 
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -9,6 +14,7 @@ import data.ScriptingProject;
 import data.Shot;
 import gui.centerarea.CameraShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;
+import gui.root.RootCenterArea;
 import gui.root.RootPane;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -16,11 +22,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Class that controls the timeline.
@@ -283,6 +284,7 @@ public class TimelineController {
                 alert.showAndWait();
             } else {
                 controllerManager.setScriptingProject(temp);
+                rootPane.reInitRootCenterArea(new RootCenterArea(rootPane, project.getCameraTimelines().size(), false));
                 project = controllerManager.getScriptingProject();
                 addLoadedBlocks(project);
                 numTimelines = project.getCameraTimelines().size();

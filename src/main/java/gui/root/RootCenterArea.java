@@ -3,7 +3,9 @@ package gui.root;
 import gui.centerarea.CounterGridPane;
 import gui.centerarea.DirectorGridPane;
 import gui.centerarea.TimelinesGridPane;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
@@ -17,6 +19,8 @@ import lombok.Setter;
  * In other words, the time line view goes here.
  */
 public class RootCenterArea extends StackPane {
+    
+    private static final int DEFAULT_TIMELINES = 0;
 
     @Getter @Setter
     private int numberOfTimelines = 8;
@@ -62,26 +66,49 @@ public class RootCenterArea extends StackPane {
     private AnchorPane directorAnchorPane;
     @Getter
     private DirectorGridPane directorGridPane;
+    
+    public RootCenterArea(RootPane rootPane, int numberOfTimelines, boolean empty) {
+        if (empty) {
+            this.rootPane = rootPane;
+            this.numberOfTimelines = numberOfTimelines;
+            HBox buttonBox = new HBox();
+            buttonBox.setSpacing(10);
+            Button newButton = new Button("Create new project");
+            Button loadButton = new Button("Load project");
+            buttonBox.getChildren().addAll(newButton, loadButton);
+            newButton.setOnMouseClicked(rootPane.getControllerManager()::newProject);
+            loadButton.setOnMouseClicked(rootPane.getControllerManager()::loadProject);
+            this.getChildren().addAll(buttonBox);
+            
+            
+        } else {
+            this.rootPane = rootPane;
+            this.numberOfTimelines = numberOfTimelines;
+    
+            initMainTimeLinePane();
+    
+            counterAndDirectorPane = new HBox();
+            setAlignment(counterAndDirectorPane, Pos.CENTER_LEFT);
+            counterAndDirectorPane.setMaxWidth(counterWidth + timelineWidth);
+            getChildren().add(counterAndDirectorPane);
+    
+            initCounterPane();
+            initDirectorPane();
+            initScrollbar();
+        }
+    }
 
     /**
      * Constructor class
      * @param rootPane parent pane passed through.
      */
-    RootCenterArea(RootPane rootPane) {
-
-        this.rootPane = rootPane;
-
-        initMainTimeLinePane();
-
-        counterAndDirectorPane = new HBox();
-        setAlignment(counterAndDirectorPane, Pos.CENTER_LEFT);
-        counterAndDirectorPane.setMaxWidth(counterWidth + timelineWidth);
-        getChildren().add(counterAndDirectorPane);
-
-        initCounterPane();
-        initDirectorPane();
-        initScrollbar();
+    public RootCenterArea(RootPane rootPane) {
+        this(rootPane, DEFAULT_TIMELINES, false);
+        
     }
+    
+    
+   
 
     /**
      * Initializes the central timeline in this stackpane.

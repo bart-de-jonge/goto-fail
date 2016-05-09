@@ -6,7 +6,9 @@ import data.ScriptingProject;
 import gui.centerarea.ShotBlock;
 import gui.events.NewProjectCreationEvent;
 import gui.modal.NewProjectModalView;
+import gui.root.RootCenterArea;
 import gui.root.RootPane;
+import javafx.scene.input.MouseEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -82,6 +84,13 @@ public class ControllerManager {
         }
         
         scriptingProject = project;
+        RootCenterArea area = new RootCenterArea(rootPane, event.getTimelines().size(), false);
+        rootPane.reInitRootCenterArea(area);
+        
+    }
+    
+    public void newProject(MouseEvent event) {
+        newProject();
     }
 
     /**
@@ -91,6 +100,10 @@ public class ControllerManager {
         timelineControl = new TimelineController(this);
         detailViewController = new DetailViewController(this);
         toolViewController = new ToolViewController(this);
+    }
+    
+    public void loadProject(MouseEvent event) {
+        timelineControl.load();
     }
 
     /**
