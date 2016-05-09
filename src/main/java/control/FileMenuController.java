@@ -15,12 +15,12 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public class SaveLoadController {
+public class FileMenuController {
     
     
     private ControllerManager controllerManager;
     
-    public SaveLoadController(ControllerManager manager) {
+    public FileMenuController(ControllerManager manager) {
         this.controllerManager = manager;
     }
     

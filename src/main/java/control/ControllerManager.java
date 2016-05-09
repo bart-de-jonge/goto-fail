@@ -33,7 +33,7 @@ public class ControllerManager {
     private DetailViewController detailViewController;
     
     @Getter
-    private SaveLoadController saveLoadController;
+    private FileMenuController saveLoadController;
 
     @Getter
     private ShotBlock activeShotBlock;
@@ -106,7 +106,7 @@ public class ControllerManager {
         timelineControl = new TimelineController(this);
         detailViewController = new DetailViewController(this);
         toolViewController = new ToolViewController(this);
-        saveLoadController = new SaveLoadController(this);
+        saveLoadController = new FileMenuController(this);
     }
     
     public void loadProject(MouseEvent event) {
