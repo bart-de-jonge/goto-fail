@@ -2,6 +2,8 @@ package control;
 
 import data.ScriptingProject;
 import gui.centerarea.ShotBlock;
+import gui.events.NewProjectCreationEvent;
+import gui.modal.NewProjectModalView;
 import gui.root.RootPane;
 import lombok.Getter;
 import lombok.Setter;
@@ -60,6 +62,15 @@ public class ControllerManager {
         this.timelineControl = timelineController;
         this.detailViewController = detailViewController;
         this.toolViewController = toolViewController;
+    }
+    
+    public void newProject() {
+        System.out.println("Here");
+        new NewProjectModalView(rootPane, this::createProject);
+    }
+    
+    private void createProject(NewProjectCreationEvent event) {
+        
     }
 
     /**
