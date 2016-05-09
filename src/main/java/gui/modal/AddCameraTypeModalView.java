@@ -30,12 +30,25 @@ public class AddCameraTypeModalView extends ModalView {
         this(rootPane, handler, width, height);
     }
     
-    public AddCameraTypeModalView(RootPane rootPane, EventHandler<AddCameraTypeEvent> handler, int width, int height) {
+    /**
+     * Construct a new AddCameraTypeModalView
+     * @param rootPane the rootPane that uses this modal.
+     * @param handler the handler to handle the reuslt of the modal
+     * @param width the width of the modal screen
+     * @param height the height of the modal screen
+     */
+    public AddCameraTypeModalView(RootPane rootPane,
+                                  EventHandler<AddCameraTypeEvent> handler,
+                                  int width,
+                                  int height) {
         super(rootPane, width, height);
         this.eventHandler = handler;
         initializeView();
     }
     
+    /**
+     * Initialize the view of this modal.
+     */
     private void initializeView() {
         this.viewPane = new VBox(20);
         this.viewPane.getChildren().add(new Text("Create a camera type"));
@@ -50,6 +63,9 @@ public class AddCameraTypeModalView extends ModalView {
         super.displayModal();
     }
     
+    /**
+     * Initialize the fields.
+     */
     private void initFields() {
         final Label nameLabel = new Label("Name:  ");
         nameField = new TextField();
@@ -77,6 +93,10 @@ public class AddCameraTypeModalView extends ModalView {
         this.eventHandler.handle(this.buildEvent());
     }
     
+    /**
+     * Build an AddCameraTypeEvent from the data entered by the user.
+     * @return an AddCameraTypeEvent that can be used to build a camera type.
+     */
     private AddCameraTypeEvent buildEvent() {
         String name = this.nameField.getText();
         String description = this.descriptionField.getText();

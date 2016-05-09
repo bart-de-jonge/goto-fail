@@ -64,9 +64,18 @@ public class FileMenuController {
                 alert.showAndWait();
             } else {
                 controllerManager.setScriptingProject(temp);
-                controllerManager.getRootPane().reInitRootCenterArea(new RootCenterArea(controllerManager.getRootPane(), controllerManager.getScriptingProject().getCameraTimelines().size(), false));
+                controllerManager.getRootPane()
+                                 .reInitRootCenterArea(new RootCenterArea(
+                                                         controllerManager.getRootPane(),
+                                                         controllerManager.getScriptingProject()
+                                                                          .getCameraTimelines()
+                                                                          .size(),
+                                                         false));
                 addLoadedBlocks(controllerManager.getScriptingProject());
-                controllerManager.getTimelineControl().setNumTimelines(controllerManager.getScriptingProject().getCameraTimelines().size());
+                controllerManager.getTimelineControl()
+                                 .setNumTimelines(controllerManager.getScriptingProject()
+                                                                   .getCameraTimelines()
+                                                                   .size());
             }
         }
     }
@@ -94,8 +103,10 @@ public class FileMenuController {
      */
     private void addCameraShotForLoad(int cameraIndex, CameraShot shot) {
         CameraShotBlock shotBlock = new CameraShotBlock(shot, cameraIndex, 
-                                                       controllerManager.getRootPane().getRootCenterArea(),
-                                                       controllerManager.getTimelineControl()::shotChangedHandler);
+                                                       controllerManager.getRootPane()
+                                                                        .getRootCenterArea(),
+                                                       controllerManager.getTimelineControl()
+                                                                        ::shotChangedHandler);
         controllerManager.setActiveShotBlock(shotBlock);
         controllerManager.getTimelineControl().getCameraShotBlocks().add(shotBlock);
     }
@@ -104,9 +115,19 @@ public class FileMenuController {
         new NewProjectModalView(controllerManager.getRootPane(), this::createProject);
     }
     
+    public void newProject(MouseEvent event) {
+        newProject();
+    }
+    
+    /**
+     * Creates a ScriptingProject from the given event.
+     * @param event the NewProjectCreationEvent given by the creation modal
+     */
     private void createProject(NewProjectCreationEvent event) {
-        ScriptingProject project = new ScriptingProject(event.getDescription(), event.getSecondsPerCount());
-        project.setDirectorTimeline(new DirectorTimeline(event.getDirectorTimelineDescription(), null));
+        ScriptingProject project = new ScriptingProject(event.getDescription(),
+                                                        event.getSecondsPerCount());
+        project.setDirectorTimeline(new DirectorTimeline(event.getDirectorTimelineDescription(),
+                                                         null));
         project.setCameras(event.getCameras());
         project.setCameraTimelines(event.getTimelines());
         project.getDirectorTimeline().setProject(project);
@@ -115,13 +136,11 @@ public class FileMenuController {
         }
         
         controllerManager.setScriptingProject(project);
-        RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(), event.getTimelines().size(), false);
+        RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),
+                                                 event.getTimelines().size(),
+                                                 false);
         controllerManager.getRootPane().reInitRootCenterArea(area);
         
-    }
-    
-    public void newProject(MouseEvent event) {
-        newProject();
     }
     
     public void loadProject(MouseEvent event) {

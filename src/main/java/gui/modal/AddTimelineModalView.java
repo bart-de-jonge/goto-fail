@@ -28,17 +28,34 @@ public class AddTimelineModalView extends ModalView {
     private EventHandler<AddTimelineEvent> eventHandler;
     private ArrayList<Camera> cameras;
     
-    public AddTimelineModalView(RootPane rootPane, EventHandler<AddTimelineEvent> handler, ArrayList<Camera> cameras) {
+    public AddTimelineModalView(RootPane rootPane,
+                                EventHandler<AddTimelineEvent> handler, 
+                                ArrayList<Camera> cameras) {
         this(rootPane, handler, cameras, width, height);
     }
     
-    public AddTimelineModalView(RootPane rootPane, EventHandler<AddTimelineEvent> handler, ArrayList<Camera> cameras, int width, int height) {
+    /**
+     * Construct a new AddTimelineModalView.
+     * @param rootPane the rootPane that calls this modal
+     * @param handler the handler to handle the result of this modal
+     * @param cameras the cameras that are available
+     * @param width the width of the modal screen
+     * @param height the height of the modal screen
+     */
+    public AddTimelineModalView(RootPane rootPane,
+                                EventHandler<AddTimelineEvent> handler,
+                                ArrayList<Camera> cameras,
+                                int width, 
+                                int height) {
         super(rootPane, width, height);
         this.eventHandler = handler;
         this.cameras = cameras;
         initializeView();
     }
     
+    /**
+     * Initialize the view of this modal.
+     */
     private void initializeView() {
         this.viewPane = new VBox(20);
         this.viewPane.getChildren().add(new Text("Create a camera timeline"));
@@ -54,6 +71,9 @@ public class AddTimelineModalView extends ModalView {
         super.displayModal();
     }
     
+    /**
+     * Initialize the fields.
+     */
     private void initFields() {
         final Label descriptionLabel = new Label("Description: ");
         descriptionField = new TextField();
@@ -64,6 +84,9 @@ public class AddTimelineModalView extends ModalView {
         this.viewPane.getChildren().add(descriptionBox);
     }
     
+    /**
+     * Initialize the list of available cameras.
+     */
     private void initCameraList() {  
         final Label cameraLabel = new Label("Camera: ");
         cameraList = new ListView<Label>();
@@ -79,7 +102,11 @@ public class AddTimelineModalView extends ModalView {
         super.hideModal();
         this.eventHandler.handle(this.buildEvent());
     }
-    
+
+    /**
+     * Build an AddTimelineEvent from the data entered by the user.
+     * @return an AddTimelineEvent that can be used to build a timeline.
+     */
     private AddTimelineEvent buildEvent() {
         String description = this.descriptionField.getText();
         int selectedIndex = cameraList.getSelectionModel().getSelectedIndex();

@@ -28,7 +28,19 @@ public class NewProjectCreationEvent extends Event {
     public static final EventType<NewProjectCreationEvent> PROJECT_CREATED = 
             new EventType<>(Event.ANY, "PROJECT_CREATED");
     
-    public NewProjectCreationEvent(String description, double secondsPerCount, String directorTimelineDescription, ArrayList<CameraTimeline> timelines, ArrayList<Camera> cameras) {
+    /**
+     * Construct a new NewProjectCreationEvent.
+     * @param description the description of the project
+     * @param secondsPerCount the seconds per count in this project
+     * @param directorTimelineDescription the description of the director timeline
+     * @param timelines the timelines in this project
+     * @param cameras the cameras used in this project
+     */
+    public NewProjectCreationEvent(String description,
+                                   double secondsPerCount,
+                                   String directorTimelineDescription,
+                                   ArrayList<CameraTimeline> timelines,
+                                   ArrayList<Camera> cameras) {
         super(PROJECT_CREATED);
         this.description = description;
         this.secondsPerCount = secondsPerCount;

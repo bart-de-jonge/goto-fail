@@ -67,6 +67,13 @@ public class RootCenterArea extends StackPane {
     @Getter
     private DirectorGridPane directorGridPane;
     
+    /**
+     * Construct a new RootCenterArea.
+     * @param rootPane the rootPane that this RootCenterArea is a part of.
+     * @param numberOfTimelines the number of timelines in this RootCenterArea.
+     * @param empty if the RootCenterArea should be initialized empty or not. Empty in this case
+     means that there are buttons shown to create/load a project instead of timelines.
+     */
     public RootCenterArea(RootPane rootPane, int numberOfTimelines, boolean empty) {
         if (empty) {
             this.rootPane = rootPane;
@@ -76,8 +83,10 @@ public class RootCenterArea extends StackPane {
             Button newButton = new Button("Create new project");
             Button loadButton = new Button("Load project");
             buttonBox.getChildren().addAll(newButton, loadButton);
-            newButton.setOnMouseClicked(rootPane.getControllerManager().getFileMenuController()::newProject);
-            loadButton.setOnMouseClicked(rootPane.getControllerManager().getFileMenuController()::loadProject);
+            newButton.setOnMouseClicked(rootPane.getControllerManager()
+                                                .getFileMenuController()::newProject);
+            loadButton.setOnMouseClicked(rootPane.getControllerManager()
+                                                 .getFileMenuController()::loadProject);
             this.getChildren().addAll(buttonBox);
             
             
