@@ -1,7 +1,9 @@
 package data;
 
-import java.io.File;
-import java.util.ArrayList;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -12,16 +14,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.extern.log4j.Log4j2;
-import xml.XmlReader;
-import xml.XmlWriter;
-
-
-
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by Bart.

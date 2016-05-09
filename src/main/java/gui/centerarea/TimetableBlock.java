@@ -129,7 +129,7 @@ public abstract class TimetableBlock extends Pane {
     /**
      * Inits the necessary eventhandlers for this block.
      * @param horizontalAllowed - specifies if horizontal dragging (between timelines)
-     *                          is allowed
+     *      is allowed
      */
     void addMouseEventHandlers(boolean horizontalAllowed) {
         // mouse event handlers

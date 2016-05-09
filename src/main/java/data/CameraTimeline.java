@@ -1,18 +1,15 @@
 package data;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.stream.Collectors;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 /**
  * Class to store information about a camera timeline.
