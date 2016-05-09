@@ -1,64 +1,45 @@
 .check-box .box {
+    -fx-alignment: center-left;
+    -fx-padding: 1 1 1 1;
+
     -fx-min-height: 20;
     -fx-pref-height: 20;
     -fx-max-height: 20;
-    -fx-padding: 1 1 1 1;
 
     -fx-min-width: 35;
     -fx-pref-width: 35;
     -fx-max-width: 35;
 
-
-
     -fx-background-radius: 10em;
     -fx-background-color: rgb(210,210,210);
 
-    -fx-alignment: center-left;
 }
 
 .check-box:selected .box {
     -fx-padding: 1 1 1 1;
-    /*-fx-alignment: center-right;*/
 }
-
-
 
 .check-box .mark {
     -fx-shape: null;
     -fx-background-radius: 10em;
-    -fx-padding: 0 0 0 0;
-    -fx-min-height: 17;
-    -fx-pref-height: 17;
-    -fx-max-height: 17;
-    -fx-min-width: 17;
-    -fx-pref-width: 17;
-    -fx-max-width: 17;
     -fx-background-color: rgb(255,255,255);
-    -fx-translate-y: 0;
-    /*-fx-effect: innershadow(gaussian, rgba(0,0,0,0.25), 1, 1, -1, 0);*/
+
+    -fx-min-height: 15;
+    -fx-pref-height: 15;
+    -fx-max-height: 15;
+
+    -fx-min-width: 15;
+    -fx-pref-width: 15;
+    -fx-max-width: 15;
 }
 
 .check-box:selected .mark {
-    -fx-padding: 0 0 0 0;
-    -fx-min-width: 17;
-    -fx-pref-width: 17;
-    -fx-max-width: 17;
-    -fx-min-height: 16;
-    -fx-pref-height: 16;
-    -fx-max-height: 16;
-    -fx-translate-y: -0.5;
-    /*-fx-effect: innershadow(gaussian, rgba(0,0,0,0.25), 1, 1, -1, 0);*/
-}
+    -fx-min-width: 16;
+    -fx-pref-width: 16;
+    -fx-max-width: 16;
 
-.check-box:determinate .mark {
-    -fx-padding: 0 0 0 0;
-    -fx-min-width: 17;
-    -fx-pref-width: 17;
-    -fx-max-width: 17;
     -fx-min-height: 16;
     -fx-pref-height: 16;
     -fx-max-height: 16;
-    -fx-translate-y: -0.5;
-    /*-fx-background-color:  rgb(0,255,100);*/
 }
 

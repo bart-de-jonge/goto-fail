@@ -136,7 +136,9 @@ public class mockupModalView extends ModalView {
     }
 
     private void initExampleTextfield() {
-        CheckBox testCheckbox = new StyledCheckbox("tetter");
+        StyledCheckbox testCheckbox = new StyledCheckbox("tetter");
+        testCheckbox.setMarkColor(80, 220, 255);
+        testCheckbox.setBoxColor(230, 230, 230);
         testCheckbox.setSelected(true);
         this.vBox.getChildren().add(testCheckbox);
     }

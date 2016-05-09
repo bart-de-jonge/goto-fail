@@ -231,6 +231,36 @@ public class TransitionHelper {
     }
 
     /**
+     * Run a transition over a certain property of the node. Helpful function,
+     * used instead of EventHandlers because it is
+     * (A) a one-time transition,
+     * (B) run from the current value, which is neat.
+     * (C) not bound to a specific event.
+     * Example usage: when firing a custom event. See StyledCheckbox for usage.
+     * @param property property to transition over.
+     * @param ms duration in milliseconds.
+     * @param v value to transition towards.
+     * @param interpolator type of Interpolation used.
+     * @param <T> generic type.
+     */
+    public <T> void runTransitionToValue(Property<T> property, int ms, T v,
+                                           Interpolator interpolator) {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0),
+                        new KeyValue(property,
+                                property.getValue(),
+                                interpolator)),
+                new KeyFrame(Duration.millis(ms),
+                        new KeyValue(property,
+                                v,
+                                interpolator))
+        );
+        timeline.setCycleCount(1);
+        timeline.setAutoReverse(false);
+        timeline.play();
+    }
+
+    /**
      * Returns an unspecified event handler with an embedded transition.
      * The transition operates over a specified property, with a duration in
      * milliseconds, over an offset value v, and with specified interpolation.
