@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 
-
 /**
  * Class that represents the grid pane in the scrollable camera centerarea.
  */

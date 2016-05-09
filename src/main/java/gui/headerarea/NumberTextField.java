@@ -1,6 +1,5 @@
 package gui.headerarea;
 
-
 import javafx.scene.control.TextField;
 
 /**

@@ -1,9 +1,8 @@
 package data;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * This class extends the Shot class, this one is specific for the CameraTimeline.
