@@ -21,8 +21,6 @@ public class DoubleTextField extends TextField {
     }
     
     private boolean validate(String text) {
-        Pattern pattern = Pattern.compile("[0-9]*[.][0-9]+");
-        return pattern.matcher(text).matches();
+        return text.matches("[0-9]*[.][0-9]+");
     }
-
 }
