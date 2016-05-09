@@ -6,10 +6,19 @@ import gui.events.ShotblockUpdatedEvent;
 import javafx.event.EventHandler;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
+
+import java.lang.reflect.Constructor;
 
 /**
- * Created by Bart.
+ * @author Bart.
+ *
+ *      Abstract superclass for different kind of shots in the gui.
+ *      This class is the edge between the View and the Controller.
+ *      The controller only talks with this class and all the gui stuff
+ *      is done for him.
  */
+@Log4j2
 public abstract class ShotBlock {
 
     // The timetableBlock used for displaying this block
@@ -48,16 +57,30 @@ public abstract class ShotBlock {
      * @param description - the description of this shot
      * @param name - the name of this shot
      * @param shot - the shot of this ShotBlock
+     * @param timetableBlockClass - the class of the timetableblock implementation
+     *        that belongs to this shotblock. This must be a valid subclass of
+     *        TimetableBlock with its default constructor implemented. Otherwise
+     *        timetableBlock is initialized to null.
      */
     public ShotBlock(RootCenterArea rootCenterArea, double beginCount, double endCount,
-                     String description, String name, Shot shot) {
+                     String description, String name, Shot shot, Class<?> timetableBlockClass) {
         this.description = description;
         this.name = name;
-        this.timetableBlock = new TimetableBlock(rootCenterArea, this);
         this.beginCount = beginCount;
         this.endCount = endCount;
         this.shot = shot;
         this.colliding = false;
+
+        // TimetableBlock set in subclass constructors!!
+        try {
+            Constructor<?> constructor = timetableBlockClass
+                    .getConstructor(RootCenterArea.class, ShotBlock.class);
+            this.setTimetableBlock((TimetableBlock) constructor.newInstance(rootCenterArea, this));
+        } catch (Exception e) {
+            log.error("No valid timetableblock class, could not initialize timetableblock!");
+            this.timetableBlock = null;
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -138,6 +161,7 @@ public abstract class ShotBlock {
      */
     public void setDescription(String description) {
         this.description = description;
+
         timetableBlock.getDescriptionNormalLabel().setText(description);
         timetableBlock.getDescriptionDraggedLabel().setText(description);
     }
@@ -154,9 +178,9 @@ public abstract class ShotBlock {
      * Recompute position in grid and repaint with these settings.
      */
     public void recompute() {
-        TimelinesGridPane.setRowIndex(this.timetableBlock,
+        TimelinesGridPane.setRowIndex(timetableBlock,
                 (int) Math.round(beginCount));
-        TimelinesGridPane.setRowSpan(this.timetableBlock,
+        TimelinesGridPane.setRowSpan(timetableBlock,
                 (int) Math.round(endCount - beginCount));
     }
 

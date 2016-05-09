@@ -1,15 +1,11 @@
 package data;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
-
-import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other;
 
 /**
  * Created by martijn.
