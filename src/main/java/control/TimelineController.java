@@ -69,7 +69,10 @@ public class TimelineController {
         log.info("Adding CameraShot to Timeline");
 
         CameraShot newShot = new CameraShot(name,description, startCount, endCount);
-        this.controllerManager.getScriptingProject().getCameraTimelines().get(cameraIndex).addShot(newShot);
+        this.controllerManager.getScriptingProject()
+                              .getCameraTimelines()
+                              .get(cameraIndex)
+                              .addShot(newShot);
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex,
                 rootPane.getRootCenterArea(), startCount, endCount, description,
                 name, this::shotChangedHandler, newShot);
@@ -93,7 +96,8 @@ public class TimelineController {
         }
 
         // Remove the shot from the model
-        CameraTimeline cameraTimeline = this.controllerManager.getScriptingProject().getCameraTimelines()
+        CameraTimeline cameraTimeline = this.controllerManager.getScriptingProject()
+                                                              .getCameraTimelines()
                 .get(cameraShotBlock.getTimetableNumber());
         cameraTimeline.removeShot(cameraShotBlock.getShot());
 
@@ -116,7 +120,8 @@ public class TimelineController {
 
         controllerManager.setActiveShotBlock(changedBlock);
 
-        CameraTimeline previousTimeline = this.controllerManager.getScriptingProject().getCameraTimelines()
+        CameraTimeline previousTimeline = this.controllerManager.getScriptingProject()
+                                                                .getCameraTimelines()
                 .get(event.getOldTimelineNumber());
         // Locate shot to be updated using id
         CameraShot shot = changedBlock.getShot();
@@ -125,7 +130,8 @@ public class TimelineController {
         shot.setBeginCount(changedBlock.getBeginCount());
         shot.setEndCount(changedBlock.getEndCount());
 
-        CameraTimeline newCameraTimeline = this.controllerManager.getScriptingProject().getCameraTimelines()
+        CameraTimeline newCameraTimeline = this.controllerManager.getScriptingProject()
+                                                                 .getCameraTimelines()
                 .get(changedBlock.getTimetableNumber());
 
         // Remove shot from previous timeline and add to new one if changed
@@ -157,7 +163,9 @@ public class TimelineController {
      */
     private void checkCollisions(int timelineNumber, int oldTimelineNumber,
                                  CameraShotBlock cameraShotBlock) {
-        CameraTimeline timeline = controllerManager.getScriptingProject().getCameraTimelines().get(timelineNumber);
+        CameraTimeline timeline = controllerManager.getScriptingProject()
+                                                    .getCameraTimelines()
+                                                    .get(timelineNumber);
         // Remove collisions from shot if added to new timeline
         if (oldTimelineNumber >= 0) {
             removeCollisionFromCameraShotBlock(cameraShotBlock);
@@ -171,7 +179,6 @@ public class TimelineController {
                             });
             this.overlappingCameraShotBlocks.removeAll(toRemove);
         }
-
         // Check for collisions
         ArrayList<CameraShot> overlappingShots = timeline
                 .getOverlappingShots(cameraShotBlock.getShot());
@@ -181,7 +188,6 @@ public class TimelineController {
             Supplier<ArrayList<Integer>> supplier = ArrayList::new;
             ArrayList<Integer> myInts = overlappingShots.stream().map(Shot::getInstance)
                     .collect(Collectors.toCollection(supplier));
-
             // Get CameraShotBlock
             this.cameraShotBlocks.stream().filter(shotBlock ->
                     myInts.contains(shotBlock.getShotId())).forEach(shotBlock -> {
