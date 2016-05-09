@@ -74,16 +74,16 @@ public class RootHeaderArea extends VBox {
         MenuItem saveItem = new MenuItem("Save");
         fileMenu.getItems().add(saveItem);
         saveItem.setOnAction(e -> {
-                rootPane.getControllerManager().getTimelineControl().save();
+                rootPane.getControllerManager().getSaveLoadController().save();
             });
         
         MenuItem loadItem = new MenuItem("Load");
         fileMenu.getItems().add(loadItem);
         loadItem.setOnAction(e -> {
-                rootPane.getControllerManager().getTimelineControl().load();
+                rootPane.getControllerManager().getSaveLoadController().load();
             });
         
-       
+        
         
         Menu editMenu = new Menu("Edit");
         Menu viewMenu = new Menu("View");

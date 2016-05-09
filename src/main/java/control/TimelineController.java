@@ -43,6 +43,7 @@ public class TimelineController {
     @Getter
     private ScriptingProject project;
 
+    @Getter
     // List of all camerashotblocks in this timelinecontroller
     private ArrayList<CameraShotBlock> cameraShotBlocks;
 
@@ -89,18 +90,7 @@ public class TimelineController {
         checkCollisions(cameraIndex, shotBlock);
     }
     
-    /**
-     * Add a camera shot that is loaded from file.
-     * @param cameraIndex the index of the camera timeline to use
-     * @param shot the shot to add
-     */
-    private void addCameraShotForLoad(int cameraIndex, CameraShot shot) {
-        CameraShotBlock shotBlock = new CameraShotBlock(shot, cameraIndex, 
-                                                       rootPane.getRootCenterArea(),
-                                                       this::shotChangedHandler);
-        controllerManager.setActiveShotBlock(shotBlock);
-        this.cameraShotBlocks.add(shotBlock);
-    }
+    
     /**
      * Remove a camera shot from both the display and the timeline.
      * @param cameraShotBlock CameraShotBlock to be removed
@@ -248,19 +238,5 @@ public class TimelineController {
     
     
     
-    /**
-     * Add the blocks that were loaded from file to the UI.
-     * @param project the project that was loaded
-     */
-    public void addLoadedBlocks(ScriptingProject project) {
-        log.info("Adding loaded blocks");
-        for (int i = 0; i < project.getCameraTimelines().size();i++) {
-            CameraTimeline timeline = project.getCameraTimelines().get(i);
-            int amountShots = timeline.getShots().size();
-            for (int j = 0; j < amountShots;j++) {
-                CameraShot shot = timeline.getShots().get(j);
-                addCameraShotForLoad(i, shot);
-            }
-        }
-    }
+   
 }
