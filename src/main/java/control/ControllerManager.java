@@ -36,11 +36,13 @@ public class ControllerManager {
     private ShotBlock activeShotBlock;
 
     // Placeholder project in lieu of XML loading
-    @Getter @Setter
+    @Getter
+    @Setter
     private ScriptingProject scriptingProject = new ScriptingProject("BOSS Project", 1.0);
 
     /**
      * Constructor.
+     *
      * @param rootPane Root Window
      */
     public ControllerManager(RootPane rootPane) {
@@ -52,10 +54,11 @@ public class ControllerManager {
 
     /**
      * Overloaded constructor to directly pass controllers.
-     * @param rootPane - the root window of the application
-     * @param timelineController - the controller that controls the centerarea
+     *
+     * @param rootPane             - the root window of the application
+     * @param timelineController   - the controller that controls the centerarea
      * @param detailViewController - the controller that controls the detailview
-     * @param toolViewController  - the controller that controls the toolview
+     * @param toolViewController   - the controller that controls the toolview
      */
     public ControllerManager(RootPane rootPane, TimelineController timelineController,
                              DetailViewController detailViewController,
@@ -108,6 +111,7 @@ public class ControllerManager {
 
     /**
      * Sets the active ShotBlock and notifies necessary controllers.
+     *
      * @param block ShotBlock to set as active
      */
     public void setActiveShotBlock(ShotBlock block) {
