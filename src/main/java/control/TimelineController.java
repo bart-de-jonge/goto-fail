@@ -60,7 +60,6 @@ public class TimelineController {
         this.controllerManager = controllerManager;
         this.rootPane = controllerManager.getRootPane();
         this.project = controllerManager.getScriptingProject();
-        initializeCameraTimelines();
         this.cameraShotBlocks = new ArrayList<>();
         this.overlappingCameraShotBlocks = new ArrayList<>();
     }
@@ -221,18 +220,7 @@ public class TimelineController {
         shotBlock.getShot().getCollidesWith().removeAll(toRemove);
     }
 
-    /**
-     * Create camera centerarea based on GUI. (Anti-pattern)
-     * TODO: Replace this with proper XML based project creation
-     */
-    private void initializeCameraTimelines() {
-        log.info("Initializing camera Timelines");
-        for (int i = 0; i < numTimelines; i++) {
-            Camera defCam = new Camera("IP Cam " + i, "", defType);
-            CameraTimeline timelineN = new CameraTimeline(defCam, "", project);
-            project.addCameraTimeline(timelineN);
-        }
-    }
+
     
    
     

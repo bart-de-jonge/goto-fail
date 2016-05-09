@@ -68,7 +68,7 @@ public class RootHeaderArea extends VBox {
         MenuItem newItem = new MenuItem("New");
         fileMenu.getItems().add(newItem);
         newItem.setOnAction(e -> {
-            rootPane.getControllerManager().newProject();
+            rootPane.getControllerManager().getFileMenuController().newProject();
         });
         
         MenuItem saveItem = new MenuItem("Save");

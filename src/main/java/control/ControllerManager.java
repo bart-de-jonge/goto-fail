@@ -41,7 +41,7 @@ public class ControllerManager {
     // Placeholder project in lieu of XML loading
     @Getter
     @Setter
-    private ScriptingProject scriptingProject = new ScriptingProject("BOSS Project", 1.0);
+    private ScriptingProject scriptingProject;
 
     /**
      * Constructor.
