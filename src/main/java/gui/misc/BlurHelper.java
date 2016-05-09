@@ -1,15 +1,21 @@
 package gui.misc;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,26 +30,31 @@ public class BlurHelper {
     private SnapshotParameters parameters; // Parameters used for writing snapshots (resolution etc)
     private Bounds bounds; // Bounds of node used for snapshot parameters (x, y, width, height)
 
+    /**
+     * Blur variables
+     */
+
     @Getter
     private GaussianBlur gaussianBlur; // The blur effect we apply (can be replaced by box blur)
-
     @Getter
     private double radius; // Radius of the blur (setblur is defined below)
-
-    @Getter
-    private ImageView imageView; // ImageView region used to display blurred image.
-
-    @Getter @Setter
-    private Node node; // Node behind which we're blurring
-
     @Getter @Setter
     private boolean hideNode; // Whether or not node is included in blurring process
-
     @Getter @Setter
     private Point2D offset; // Pixel offset if we wish to move blur slightly
 
+    /**
+     * Object and scene variables
+     */
     @Getter
-    WritableImage writableImage; // writable image data used to write snapshots to
+    WritableImage writableImage; // writable image used to write snapshots to
+    @Getter
+    private ImageView imageView; // ImageView region used to display blurred result.
+    @Getter @Setter
+    private Node node; // Node (behind) whose area we are blurring.
+    @Getter
+    private Node watcher; // Generic node which we watch for generic changes. (Like a scrollpane)
+
 
     /**
      * Constructor of class.
@@ -117,9 +128,6 @@ public class BlurHelper {
         // Clear old image fist
         writableImage = null;
         imageView.setImage(null);
-        // TODO: DISCUSS THIS WITH TEAM. IS FORCE-CALLING GARBAGE COLLECTOR BAD?
-        // Apparently it is, because it causes massive slowdown.
-        // System.gc();
 
         // create new writable image using these bounds.
         writableImage =  new WritableImage((int) imageSize.getX(), (int) imageSize.getY());
@@ -134,6 +142,96 @@ public class BlurHelper {
         }
 
         imageView.setImage(writableImage);
+        System.out.println("process: " + bounds.getHeight());
+    }
+
+    /**
+     * Process blur using specified bounds.
+     * @param height the specified bounds.
+     */
+    public void processBlurUsingBounds(double height) {
+        // get information on current size of object in scene, and set proper parameters
+        bounds = node.localToScene(node.getBoundsInLocal());
+        Rectangle2D rect = new Rectangle2D(bounds.getMinX() + offset.getX() ,
+                bounds.getMinY() + offset.getY(),
+                bounds.getWidth(), height);
+        parameters.setViewport(rect);
+
+        // just a catch, in case something goes horribly wrong.
+        Point2D imageSize = new Point2D(Math.round(bounds.getWidth()),
+                Math.round(height));
+        if (imageSize.getX() <= 0.0 || imageSize.getY() <= 0.0) {
+            return;
+        }
+
+        // Clear old image fist
+        writableImage = null;
+        imageView.setImage(null);
+
+        // create new writable image using these bounds.
+        writableImage =  new WritableImage((int) imageSize.getX(), (int) imageSize.getY());
+
+        if (hideNode) { // blurs and returns content behind the node
+            double opacity = node.getOpacity();
+            node.setOpacity(0.0);
+            node.getScene().getRoot().snapshot(parameters, writableImage);
+            node.setOpacity(opacity); // restore old node opacity
+        } else { // blurs and returns the node
+            node.getScene().getRoot().snapshot(parameters, writableImage);
+        }
+
+        imageView.setImage(writableImage);
+        System.out.println("derp: " + height);
+    }
+
+    /**
+     * Bind this blurhelper to scrollchanges in a watchable scrollpane.
+     * @param watchable the scrollpane to watch.
+     */
+    public void watchScrolling(ScrollPane watchable) {
+        ChangeListener<Number> listener = new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                System.out.println("watcher: " + watchable.getHeight());
+                processBlurUsingBounds(watchable.getHeight());
+            }
+        };
+
+
+//        watchable.viewportBoundsProperty().addListener(new ChangeListener<Bounds>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
+//                processBlurUsingBounds();
+//            }
+//        });
+//        watchable.widthProperty().addListener(new ChangeListener<Number>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                processBlurUsingBounds();
+//            }
+//        });
+        watchable.heightProperty().addListener(listener);
+        watchable.widthProperty().addListener(listener);
+
+//        watchable.contentProperty().addListener(new ChangeListener<Node>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
+//                processBlurUsingBounds();
+//            }
+//        });
+//        watchable.hvalueProperty().addListener(new ChangeListener<Number>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                processBlurUsingBounds();
+//            }
+//        });
+//        watchable.vvalueProperty().addListener(new ChangeListener<Number>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                processBlurUsingBounds();
+//            }
+//        });
+        this.watcher = watchable;
     }
 
 

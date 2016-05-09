@@ -1,33 +1,19 @@
 package gui.modal;
 
 import gui.misc.BlurHelper;
-import gui.misc.TransitionHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledCheckbox;
 import gui.styling.StyledTextfield;
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 /**
  * Modal view for gui testing and mockups. Temporary until style basics are pretty much worked out.
@@ -83,26 +69,30 @@ public class mockupModalView extends ModalView {
         this.viewPane.getChildren().add(1, blurHelper.getImageView());
         blurHelper.processBlurUsingBounds();
 
-        scrollPane.vvalueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                blurHelper.processBlurUsingBounds();
-            }
-        });
+        blurHelper.watchScrolling(scrollPane);
 
-        this.vBox.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                blurHelper.processBlurUsingBounds();
-            }
-        });
+//        scrollPane.vvalueProperty().addListener(new ChangeListener<Number>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                blurHelper.processBlurUsingBounds();
+//            }
+//        });
 
-        this.vBox.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                blurHelper.processBlurUsingBounds();
-            }
-        });
+//        this.vBox.widthProperty().addListener(new ChangeListener<Number>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                blurHelper.processBlurUsingBounds();
+//            }
+//        });
+//
+//        this.vBox.heightProperty().addListener(new ChangeListener<Number>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                blurHelper.processBlurUsingBounds();
+//            }
+//        });
+
+
     }
 
     private void initExampleTextfields() {
@@ -132,7 +122,7 @@ public class mockupModalView extends ModalView {
                 + "-fx-min-width: 60; -fx-max-width: 60;"
                 + "-fx-min-height: 60; -fx-max-height: 60;");
        // testRoundButton.setButtonColor(54, 200, 178);
-        testRoundButton.setButtonColor(255, 255, 255);
+        testRoundButton.setButtonColor(240, 240, 240);
         testRoundButton.setTextColor(100, 100, 100);
         this.vBox.getChildren().add(testRoundButton);
 
@@ -154,7 +144,7 @@ public class mockupModalView extends ModalView {
     @Override
     public void setModalView(Pane modalView) {
         setDisplayScene(new Scene(modalView));
-        getDisplayScene().getStylesheets().add("mockupstylesheet.css");
+        getDisplayScene().getStylesheets().add("stylesheets/mockupstylesheet.css");
         getModalStage().setScene(getDisplayScene());
     }
 

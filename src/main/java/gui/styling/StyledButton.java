@@ -35,7 +35,7 @@ public class StyledButton extends Button {
     private double darkenAmount = 0.25;
 
     // transition tweaking
-    private int mouseOverDuration = 200;
+    private int mouseOverDuration = 100;
     private int mouseClickDuration = 50;
 
     /**
