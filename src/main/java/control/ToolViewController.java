@@ -6,6 +6,9 @@ import gui.modal.CreationModalView;
 import gui.events.DirectorShotCreationEvent;
 import gui.centerarea.ShotBlock;
 import gui.headerarea.ToolButton;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -17,6 +20,7 @@ public class ToolViewController {
     private ControllerManager controllerManager;
     private ToolButton blockCreationTool;
     private ToolButton blockDeletionTool;
+    private CreationModalView creationModalView;
 
     /**
      * Constructor.
@@ -50,10 +54,56 @@ public class ToolViewController {
      * @param event mouse event
      */
     private void showBlockCreationWindow(MouseEvent event) {
-        new CreationModalView(this.controllerManager.getRootPane(),
+        creationModalView = new CreationModalView(this.controllerManager.getRootPane(),
                               this.controllerManager.getScriptingProject()
                                       .getCameraTimelines().size(),
                               this::createDirectorShot);
+
+        // Add listeners for parsing to startfield
+        creationModalView.getStartField().setOnKeyPressed(e -> {
+            if (e.getCode().equals(KeyCode.ENTER)) {
+                beginCountUpdateHelper();
+            }
+        });
+        creationModalView.getStartField().focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                beginCountUpdateHelper();
+            }
+        });
+
+        // Add listeners for parsing to endfield
+        creationModalView.getEndField().setOnKeyPressed(e -> {
+            if (e.getCode().equals(KeyCode.ENTER)) {
+                endCountUpdateHelper();
+            }
+        });
+        creationModalView.getEndField().focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                endCountUpdateHelper();
+            }
+        });
+    }
+
+    private void beginCountUpdateHelper() {
+        String newValue = creationModalView.getStartField().getText();
+        double newVal = newValue.isEmpty() ? 0 : Double.parseDouble(newValue);
+        newVal = Math.round(newVal * 4) / 4f;
+        creationModalView.getStartField().setText(formatDouble(newVal));
+    }
+
+    private void endCountUpdateHelper() {
+        String newValue = creationModalView.getEndField().getText();
+        double newVal = newValue.isEmpty() ? 0 : Double.parseDouble(newValue);
+        newVal = Math.round(newVal * 4) / 4f;
+        creationModalView.getEndField().setText(formatDouble(newVal));
+    }
+
+    private String formatDouble(double d) {
+        if (d == (long) d) {
+            return String.format("%d", (long) d);
+        } else {
+            return String.format("%s", d);
+        }
     }
 
     /**
@@ -64,15 +114,15 @@ public class ToolViewController {
      */
     private void createDirectorShot(DirectorShotCreationEvent event) {
         ScriptingProject script = this.controllerManager.getScriptingProject();
-        // TODO: Remove cast to int once half-counts etc. are supported
+
         script.getDirectorTimeline().addShot(event.getShotName(), event.getShotDescription(),
-                                             (int) event.getShotStart(), (int) event.getShotEnd());
+                                             event.getShotStart(), event.getShotEnd());
 
         TimelineController timelineController = this.controllerManager.getTimelineControl();
         event.getCamerasInShot().forEach(camInd -> {
                 timelineController.addCameraShot(camInd, event.getShotName(),
-                        event.getShotDescription(), (int) event.getShotStart(),
-                        (int) event.getShotEnd());
+                        event.getShotDescription(), event.getShotStart(),
+                        event.getShotEnd());
             });
     }
 

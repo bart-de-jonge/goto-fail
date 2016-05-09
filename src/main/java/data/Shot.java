@@ -63,7 +63,7 @@ public abstract class Shot {
      * @param beginCount the start count of the Shot
      * @param endCount the end count of the Shot
      */
-    public Shot(int instance, String name, String description, int beginCount, int endCount) {
+    public Shot(int instance, String name, String description, double beginCount, double endCount) {
         log.debug("Adding Shot(instance={}, name={}, description={}, beginCount={}, endCount={})",
                 instance, name, description, beginCount, endCount);
 

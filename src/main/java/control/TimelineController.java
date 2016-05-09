@@ -76,7 +76,7 @@ public class TimelineController {
      * @param endCount End count.
      */
     public void addCameraShot(int cameraIndex, String name, String description,
-                              int startCount, int endCount) {
+                              double startCount, double endCount) {
         log.info("Adding CameraShot to Timeline");
 
         CameraShot newShot = new CameraShot(name,description, startCount, endCount);

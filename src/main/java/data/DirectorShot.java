@@ -31,7 +31,7 @@ public class DirectorShot extends Shot {
      * @param startCount the start count of the Shot
      * @param endCount the end count of the Shot
      */
-    public DirectorShot(String name, String description, int startCount, int endCount) {
+    public DirectorShot(String name, String description, double startCount, double endCount) {
         super(instanceCounter, name, description, startCount, endCount);
         log.debug("Created new DirectorShot");
         instanceCounter++;

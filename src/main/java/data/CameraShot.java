@@ -29,7 +29,7 @@ public class CameraShot extends Shot {
      * @param startCount the count the Shot starts
      * @param endCount the count the Shot ends
      */
-    public CameraShot(String name, String description, int startCount, int endCount) {
+    public CameraShot(String name, String description, double startCount, double endCount) {
         super(instanceCounter, name, description, startCount, endCount);
         log.debug("Created new CameraShot");
         instanceCounter++;
