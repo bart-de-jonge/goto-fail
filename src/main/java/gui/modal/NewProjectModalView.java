@@ -3,9 +3,11 @@ package gui.modal;
 import java.util.ArrayList;
 
 import data.Camera;
+import data.CameraTimeline;
 import data.CameraType;
 import gui.events.AddCameraEvent;
 import gui.events.AddCameraTypeEvent;
+import gui.events.AddTimelineEvent;
 import gui.events.NewProjectCreationEvent;
 import gui.headerarea.NumberTextField;
 import gui.root.RootPane;
@@ -40,6 +42,7 @@ public class NewProjectModalView extends ModalView {
     
     private ArrayList<CameraType> cameraTypes;
     private ArrayList<Camera> cameras;
+    private ArrayList<CameraTimeline> timelines;
     
     private EventHandler<NewProjectCreationEvent> creationEventHandler;
     
@@ -54,6 +57,7 @@ public class NewProjectModalView extends ModalView {
         this.creationEventHandler = creationHandler;
         this.cameraTypes = new ArrayList<CameraType>();
         this.cameras = new ArrayList<Camera>();
+        this.timelines = new ArrayList<CameraTimeline>();
         initializeView();
     }
     
@@ -129,13 +133,18 @@ public class NewProjectModalView extends ModalView {
     }
     
     private void addTimeline(MouseEvent event) {
-        // TODO: Do stuff
-        log.error("Adding timeline");
+        new AddTimelineModalView(rootPane, this::handleAddTimeline, cameras);
     }
     
     private void createProject(MouseEvent event) {
         // TODO: Do stuff
         log.error("Creating project");
+    }
+    
+    private void handleAddTimeline(AddTimelineEvent event) {
+        CameraTimeline timeline = new CameraTimeline(event.getCamera(), event.getDescription() , null);
+        timelines.add(timeline);
+        timelineList.getItems().add(new Label(timeline.getDescription()));
     }
     
     private void addCameraType(MouseEvent event) {
