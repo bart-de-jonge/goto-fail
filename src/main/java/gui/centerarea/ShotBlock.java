@@ -1,20 +1,14 @@
 package gui.centerarea;
 
 import data.Shot;
-import edu.umd.cs.findbugs.gui.Logger;
 import gui.root.RootCenterArea;
 import gui.events.ShotblockUpdatedEvent;
 import javafx.event.EventHandler;
-import javafx.scene.layout.GridPane;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-import sun.java2d.pipe.SpanIterator;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
-import static javafx.scene.input.KeyCode.T;
 
 /**
  * @author Bart.
