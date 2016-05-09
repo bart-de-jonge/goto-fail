@@ -75,20 +75,28 @@ public class DetailView extends VBox {
         nameField.setText(name);
     }
 
+    private String formatDouble(double d) {
+        if (d == (long) d) {
+            return String.format("%d", (long) d);
+        } else {
+            return String.format("%s", d);
+        }
+    }
+
     /**
      * Set the begincount of the detailview.
      * @param count - the count to set
      */
-    public void setBeginCount(int count) {
-        beginCountField.setText(String.format("%d", count));
+    public void setBeginCount(double count) {
+        beginCountField.setText(formatDouble(count));
     }
 
     /**
      * Set the endcount of the detailview.
      * @param count - the count to set
      */
-    public void setEndCount(int count) {
-        endCountField.setText(String.format("%d", count));
+    public void setEndCount(double count) {
+        endCountField.setText(formatDouble(count));
     }
 
     /**

@@ -54,10 +54,6 @@ public class CameraShotBlock extends ShotBlock {
         this.grid = rootCenterArea.getMainTimeLineGridPane();
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
-//                this.setBeginCount(TimelinesGridPane.getRowIndex(
-//                        this.getTimetableBlock()) / 4f, false);
-//                this.setEndCount((TimelinesGridPane.getRowSpan(
-//                    this.getTimetableBlock()) + this.getBeginCount()) / 4f, false);
                 this.timetableNumber = TimelinesGridPane.getColumnIndex(
                     this.getTimetableBlock());
 
