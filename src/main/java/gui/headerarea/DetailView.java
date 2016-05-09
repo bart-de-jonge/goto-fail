@@ -32,10 +32,10 @@ public class DetailView extends VBox {
     private TextField descriptionField;
 
     @Getter
-    private NumberTextField beginCountField;
+    private DoubleTextField beginCountField;
 
     @Getter
-    private NumberTextField endCountField;
+    private DoubleTextField endCountField;
 
     /**
      * Constructor.
@@ -95,7 +95,7 @@ public class DetailView extends VBox {
      * Init the begincount part of the detailview.
      */
     private  void initBeginCount() {
-        beginCountField = new NumberTextField();
+        beginCountField = new DoubleTextField();
         beginCountField.setText("123");
         beginCountField.setPrefWidth(50);
 
@@ -110,7 +110,7 @@ public class DetailView extends VBox {
      * Init the endcount part of the detailview.
      */
     private  void initEndCount() {
-        endCountField = new NumberTextField();
+        endCountField = new DoubleTextField();
         endCountField.setText("123");
         endCountField.setPrefWidth(50);
 
