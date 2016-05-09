@@ -98,6 +98,10 @@ public class StyledButton extends Button {
         transitionHelper.addMouseClickTransition(colorAdjust.brightnessProperty(), mouseClickDuration, -darkenAmount);
     }
 
+    public void resetMouse() {
+
+    }
+
     /**
      * Simple function to set color of button, rgb style, 0-255.
      * @param r red component of color.

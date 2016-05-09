@@ -3,12 +3,18 @@ package gui.modal;
 import gui.root.RootPane;
 import gui.events.DirectorShotCreationEvent;
 import gui.headerarea.NumberTextField;
+import gui.styling.StyledButton;
+import gui.styling.StyledCheckbox;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -24,8 +30,8 @@ import java.util.List;
  */
 public class CreationModalView extends ModalView {
 
-    private static final int width = 600;
-    private static final int height = 600;
+    private static final int width = 680;
+    private static final int height = 290;
 
     private int numberOfCameras;
 
@@ -35,12 +41,17 @@ public class CreationModalView extends ModalView {
     private String defaultEndCount = "1";
 
     private VBox viewPane;
-    private List<CheckBox> cameraCheckboxes;
+    private HBox contentPane;
+    private VBox textfieldPane;
+    private HBox buttonPane;
+    private FlowPane checkboxPane;
+    private List<StyledCheckbox> cameraCheckboxes;
     private TextField descripField;
     private TextField nameField;
     private NumberTextField startField;
     private NumberTextField endField;
-    private Button creationButton;
+    private StyledButton creationButton;
+    private StyledButton cancelButton;
 
     private EventHandler<DirectorShotCreationEvent> shotCreationEventHandler;
 
@@ -76,20 +87,114 @@ public class CreationModalView extends ModalView {
      * Initialize and display the modal view.
      */
     private void initializeCreationView() {
-        // Create a new VBox with spacing between children of 20
-        this.viewPane = new VBox(20);
-        this.viewPane.getChildren().add(new Text("Add a new shot"));
+        // force minimum size
+        getModalStage().setMinWidth(width);
+        getModalStage().setMinHeight(height);
 
-        initNameDescriptionFields();
-        initCountFields();
+        // Create a new VBox for vertical layout
+        this.viewPane = new VBox();
+
+        // Add label at top
+        Label label = new Label("Add a new shot");
+        label.setStyle("-fx-background-color: rgba(0,0,0,0.1);"
+            + "-fx-text-fill: black; -fx-font-size: 20;");
+        label.setAlignment(Pos.CENTER);
+        label.setPrefWidth(10000);
+        label.setPrefHeight(10000);
+        this.viewPane.getChildren().add(label);
+
+        // add space for textfields and checkboxes
+        this.contentPane = new HBox();
+        this.contentPane.setAlignment(Pos.CENTER);
+        this.contentPane.setPadding(new Insets(0, 20, 0, 0));
+        this.contentPane.setPrefHeight(10000);
+        this.contentPane.setSpacing(40.0);
+        this.viewPane.getChildren().add(contentPane);
+
+        // actually add textfields and checkboxes
+        initTextFields();
         initCamCheckBoxes();
 
-        creationButton = new Button("Create");
-        creationButton.setOnMouseClicked(this::createShot);
-        this.viewPane.getChildren().add(creationButton);
+        // add space for buttons at bottom
+        this.buttonPane = new HBox();
+        this.buttonPane.setSpacing(20.0);
+        this.buttonPane.setAlignment(Pos.CENTER);
+        this.buttonPane.setPrefHeight(10000);
+        this.buttonPane.setStyle("-fx-background-color: rgba(0,0,0,0.05);");
+        this.viewPane.getChildren().add(buttonPane);
+
+        // actually add buttons
+        initButtons();
 
         super.setModalView(this.viewPane);
         super.displayModal();
+    }
+
+    private void initButtons() {
+        // Add cancel button
+        cancelButton = new StyledButton("Cancel");
+        cancelButton.setOnMouseReleased(e -> {
+            getModalStage().close();
+        });
+        cancelButton.setAlignment(Pos.CENTER);
+
+        // Add creation button
+        creationButton = new StyledButton("Create");
+        creationButton.setOnMouseReleased(this::createShot);
+        creationButton.setAlignment(Pos.CENTER);
+
+        this.buttonPane.getChildren().addAll(creationButton, cancelButton);
+    }
+
+    /**
+     * Initialize all textfields, add them to a left-central VBox.
+     */
+    private void initTextFields() {
+        VBox content = new VBox();
+        content.setSpacing(10);
+        content.setMinWidth(350.0);
+        content.setAlignment(Pos.CENTER_LEFT);
+        content.setPrefWidth(10000);
+        content.setPrefHeight(10000);
+        content.setPadding(new Insets(20, 20, 20, 20));
+        //content.setStyle("-fx-background-color: rgba(0,0,0,0.1);");
+
+        // init name field
+        final Label nameLabel = new Label("Shot Name: ");
+        nameField = new TextField();
+        HBox nameBox = new HBox();
+        nameBox.getChildren().addAll(nameLabel, nameField);
+        nameBox.setSpacing(10);
+        nameBox.setAlignment(Pos.CENTER_RIGHT);
+
+        // init description field
+        final Label descripLabel = new Label("Shot Description: ");
+        descripField = new TextField();
+        HBox descripBox = new HBox();
+        descripBox.getChildren().addAll(descripLabel, descripField);
+        descripBox.setSpacing(10);;
+        descripBox.setAlignment(Pos.CENTER_RIGHT);
+
+        // init start count field
+        final Label startLabel = new Label("Start:");
+        startField = new NumberTextField();
+        startField.setText(this.defaultStartCount);
+        HBox startBox = new HBox();
+        startBox.getChildren().addAll(startLabel, startField);
+        startBox.setSpacing(10);;
+        startBox.setAlignment(Pos.CENTER_RIGHT);
+
+        // init end count field
+        final Label endLabel = new Label("End:");
+        endField = new NumberTextField();
+        endField.setText(this.defaultEndCount);
+        HBox endBox = new HBox();
+        endBox.getChildren().addAll(endLabel, endField);
+        endBox.setSpacing(10);;
+        endBox.setAlignment(Pos.CENTER_RIGHT);
+
+        content.getChildren().addAll(nameBox, descripBox, startBox, endBox);
+        this.contentPane.getChildren().add(content);
     }
 
     /**
@@ -133,16 +238,30 @@ public class CreationModalView extends ModalView {
     }
 
     /**
-     * Initialize the checkboxes with labels for each camera.
+     * Initialize the checkboxes with labels for each camera, in a flowpane.
      */
     private void initCamCheckBoxes() {
+        // Create new Gridpane to hold the checkboxes instead.
+        this.checkboxPane = new FlowPane();
+        this.checkboxPane.setHgap(20.0);
+        this.checkboxPane.setVgap(20.0);
+        this.checkboxPane.setMinWidth(300.0);
+        this.checkboxPane.setPrefWidth(10000);
+        this.checkboxPane.setPrefWidth(10000);
+        this.checkboxPane.setStyle("-fx-background-color: rgba(0,0,0,0.025);");
+        this.checkboxPane.setAlignment(Pos.CENTER);
+
         cameraCheckboxes = new ArrayList<>();
+        int j = 0;
         for (int i = 0; i < numberOfCameras; i++) {
+            j = (j > 4) ? 0 : j + 1;
             String checkBoxString = "Camera " + (i + 1);
-            CheckBox checkBox = new CheckBox(checkBoxString);
+            StyledCheckbox checkBox = new StyledCheckbox(checkBoxString);
+            checkBox.setMarkColor(100, 200, 255);
             cameraCheckboxes.add(checkBox);
         }
-        this.viewPane.getChildren().addAll(cameraCheckboxes);
+        this.checkboxPane.getChildren().addAll(cameraCheckboxes);
+        this.contentPane.getChildren().add(this.checkboxPane);
     }
 
     /**

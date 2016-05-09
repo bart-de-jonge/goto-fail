@@ -12,11 +12,14 @@
 
     -fx-background-radius: 10em;
     -fx-background-color: rgb(210,210,210);
-
 }
 
 .check-box:selected .box {
     -fx-padding: 1 1 1 1;
+
+    -fx-min-height: 20;
+    -fx-pref-height: 20;
+    -fx-max-height: 20;
 }
 
 .check-box .mark {

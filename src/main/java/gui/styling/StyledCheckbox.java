@@ -25,11 +25,11 @@ public class StyledCheckbox extends CheckBox {
      * Effect and transition tweaking.
      */
     private double shadowRadius = 10;
-    private double shadowOpacity = 0.25;
+    private double shadowOpacity = 0.1;
     private double bezelThickness = 1;
     private double bezelOpacity = 0.15;
     private double bezelInnerThickness = 1;
-    private double bezelInnerOpacity = 0.05;
+    private double bezelInnerOpacity = 0.15;
     @Getter @Setter
     private int transitionTime = 200;
     @Getter @Setter
@@ -212,6 +212,15 @@ public class StyledCheckbox extends CheckBox {
                         + b + ");"));
             }
         });
+    }
+
+    /**
+     * Set opacity of drop shadow to a certain value.
+     * @param value to set.
+     */
+    public void setShadowOpacity(double value) {
+        shadowOpacity = value;
+        dropShadow.setColor(Color.rgb(0, 0, 0, shadowOpacity));
     }
 
 }

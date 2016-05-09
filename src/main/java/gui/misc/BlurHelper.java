@@ -26,10 +26,6 @@ import lombok.Setter;
  */
 public class BlurHelper {
 
-   // private WritableImage writableImage;    // Image used for writing snapshots to.
-    private SnapshotParameters parameters; // Parameters used for writing snapshots (resolution etc)
-    private Bounds bounds; // Bounds of node used for snapshot parameters (x, y, width, height)
-
     /**
      * Blur variables
      */
@@ -46,14 +42,16 @@ public class BlurHelper {
     /**
      * Object and scene variables
      */
-    @Getter
-    WritableImage writableImage; // writable image used to write snapshots to
+    private WritableImage writableImage; // writable image used to write snapshots to
     @Getter
     private ImageView imageView; // ImageView region used to display blurred result.
     @Getter @Setter
     private Node node; // Node (behind) whose area we are blurring.
     @Getter
     private Node watcher; // Generic node which we watch for generic changes. (Like a scrollpane)
+    private SnapshotParameters parameters; // Parameters used for writing snapshots (resolution etc)
+    @Getter
+    private Bounds bounds; // Bounds of node used for snapshot parameters (x, y, width, height)
 
 
     /**
@@ -142,14 +140,13 @@ public class BlurHelper {
         }
 
         imageView.setImage(writableImage);
-        System.out.println("process: " + bounds.getHeight());
     }
 
     /**
      * Process blur using specified bounds.
      * @param height the specified bounds.
      */
-    public void processBlurUsingBounds(double height) {
+    /*public void processBlurUsingBounds(double height) {
         // get information on current size of object in scene, and set proper parameters
         bounds = node.localToScene(node.getBoundsInLocal());
         Rectangle2D rect = new Rectangle2D(bounds.getMinX() + offset.getX() ,
@@ -182,7 +179,7 @@ public class BlurHelper {
 
         imageView.setImage(writableImage);
         System.out.println("derp: " + height);
-    }
+    }*/
 
     /**
      * Bind this blurhelper to scrollchanges in a watchable scrollpane.
@@ -192,48 +189,13 @@ public class BlurHelper {
         ChangeListener<Number> listener = new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                //System.out.println("watcher: " + watchable.getHeight());
-                //processBlurUsingBounds(watchable.getHeight());
                 processBlurUsingBounds();
             }
         };
-
-
-//        watchable.viewportBoundsProperty().addListener(new ChangeListener<Bounds>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
-//                processBlurUsingBounds();
-//            }
-//        });
-//        watchable.widthProperty().addListener(new ChangeListener<Number>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-//                processBlurUsingBounds();
-//            }
-//        });
         watchable.heightProperty().addListener(listener);
         watchable.widthProperty().addListener(listener);
         watchable.vvalueProperty().addListener(listener);
         watchable.hvalueProperty().addListener(listener);
-
-//        watchable.contentProperty().addListener(new ChangeListener<Node>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
-//                processBlurUsingBounds();
-//            }
-//        });
-//        watchable.hvalueProperty().addListener(new ChangeListener<Number>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-//                processBlurUsingBounds();
-//            }
-//        });
-//        watchable.vvalueProperty().addListener(new ChangeListener<Number>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-//                processBlurUsingBounds();
-//            }
-//        });
         this.watcher = watchable;
     }
 

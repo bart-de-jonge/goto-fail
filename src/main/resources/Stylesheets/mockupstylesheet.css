@@ -9,6 +9,10 @@
   -c-block-borders: #DDF2FC;
   -c-block-highlight: #005482;
   -c-block-text: #047FB7;
+  -fx-background-color: white;
+}
+
+.region {
 }
 
 .scroll-pane > .viewport {
