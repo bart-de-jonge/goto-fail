@@ -75,6 +75,11 @@ public class DetailView extends VBox {
         nameField.setText(name);
     }
 
+    /**
+     * Format double into a nice displayable string.
+     * @param d - the double to format
+     * @return - a formatted string containng the double
+     */
     private String formatDouble(double d) {
         if (d == (long) d) {
             return String.format("%d", (long) d);

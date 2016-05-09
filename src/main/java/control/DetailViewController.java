@@ -1,18 +1,9 @@
 package control;
 
-import data.CameraShot;
 import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
 import gui.headerarea.DetailView;
-import gui.centerarea.ShotBlock;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
-import javafx.scene.input.DataFormat;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-
-import java.text.DecimalFormat;
 
 /**
  * Created by Bart.
@@ -22,6 +13,8 @@ public class DetailViewController {
     private DetailView detailView;
     private ControllerManager manager;
     private ScriptingProject project;
+
+    private final int numberOfCellsPerCount = 4;
 
     /**
      * Constructor.
@@ -43,20 +36,26 @@ public class DetailViewController {
     private void initBeginCount() {
         detailView.setBeginCount(0);
 
-        detailView.getBeginCountField().focusedProperty().addListener((observable, oldValue, newValue) -> {
-            // exiting focus
-            if (!newValue) {
-                beginCountUpdateHelper();
-            }
-        });
+        detailView.getBeginCountField().focusedProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                // exiting focus
+                if (!newValue) {
+                    beginCountUpdateHelper();
+                }
+            });
 
         detailView.getBeginCountField().setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.ENTER)) {
-                beginCountUpdateHelper();
-            }
-        });
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    beginCountUpdateHelper();
+                }
+            });
     }
 
+    /**
+     * Format double into a nice displayable string.
+     * @param d - the double to format
+     * @return - a formatted string containng the double
+     */
     private String formatDouble(double d) {
         if (d == (long) d) {
             return String.format("%d", (long) d);
@@ -65,12 +64,17 @@ public class DetailViewController {
         }
     }
 
+    /**
+     * Helper for when the begincount field is edited.
+     * Parses entry to quarters and updates all the values
+     */
     private void beginCountUpdateHelper() {
         if (manager.getActiveShotBlock() != null) {
 
             String newValue = detailView.getBeginCountField().getText();
             double newVal = newValue.isEmpty() ? 0 : Double.parseDouble(newValue);
-            newVal = Math.round(newVal*4)/4f;
+            newVal = Math.round(newVal * numberOfCellsPerCount)
+                    / (double) numberOfCellsPerCount;
             detailView.getBeginCountField().setText(formatDouble(newVal));
 
             manager.getActiveShotBlock().setBeginCount(newVal);
@@ -87,26 +91,32 @@ public class DetailViewController {
     private void initEndCount() {
         detailView.setEndCount(0);
 
-        detailView.getEndCountField().focusedProperty().addListener((observable, oldValue, newValue) -> {
-            // exiting focus
-            if (!newValue) {
-                endCountUpdateHelper();
-            }
-        });
+        detailView.getEndCountField().focusedProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                // exiting focus
+                if (!newValue) {
+                    endCountUpdateHelper();
+                }
+            });
 
         detailView.getEndCountField().setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.ENTER)) {
-                endCountUpdateHelper();
-            }
-        });
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    endCountUpdateHelper();
+                }
+            });
     }
 
+    /**
+     * Helper for when the endcount field is edited.
+     * Parses entry to quarters and updates all the values
+     */
     private void endCountUpdateHelper() {
         if (manager.getActiveShotBlock() != null) {
 
             String newValue = detailView.getEndCountField().getText();
             double newVal = newValue.isEmpty() ? 0 : Double.parseDouble(newValue);
-            newVal = Math.round(newVal*4)/4f;
+            newVal = Math.round(newVal * numberOfCellsPerCount)
+                    / (double) numberOfCellsPerCount;
             detailView.getEndCountField().setText(formatDouble(newVal));
 
             manager.getActiveShotBlock().setEndCount(newVal);

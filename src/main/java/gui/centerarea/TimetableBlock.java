@@ -46,6 +46,8 @@ public abstract class TimetableBlock extends Pane {
     private double margin = 5.0;
     private double blurRadius = 20.0;
 
+    private final int numberOfCellsPerCount = 4;
+
     /**
      *  Content variables.
      *  Directly displaying block content, such as the name.
@@ -376,9 +378,11 @@ public abstract class TimetableBlock extends Pane {
             snapPane(thisBlock, draggedPane, e.getSceneX(), e.getSceneY(), draggingType);
 
             // Update ShotBlock
-            double newBeginCount = TimelinesGridPane.getRowIndex(thisBlock)/4f;
+            double newBeginCount = TimelinesGridPane.getRowIndex(thisBlock)
+                    / (double) numberOfCellsPerCount;
             parentBlock.setBeginCount(newBeginCount, false);
-            parentBlock.setEndCount(newBeginCount + TimelinesGridPane.getRowSpan(thisBlock)/4f, false);
+            parentBlock.setEndCount(newBeginCount + TimelinesGridPane.getRowSpan(thisBlock)
+                    / (double) numberOfCellsPerCount, false);
 
             this.fireEvent(parentBlock.getShotBlockUpdatedEvent());
         };
