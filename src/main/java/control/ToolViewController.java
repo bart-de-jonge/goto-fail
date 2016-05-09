@@ -2,10 +2,11 @@ package control;
 
 import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
-import gui.modal.CreationModalView;
-import gui.events.DirectorShotCreationEvent;
 import gui.centerarea.ShotBlock;
+import gui.events.CameraShotCreationEvent;
+import gui.events.DirectorShotCreationEvent;
 import gui.headerarea.ToolButton;
+import gui.modal.CameraShotCreationModalView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 
@@ -16,9 +17,10 @@ import javafx.scene.input.MouseEvent;
 public class ToolViewController {
 
     private ControllerManager controllerManager;
-    private ToolButton blockCreationTool;
+    private ToolButton cameraBlockCreationTool;
     private ToolButton blockDeletionTool;
-    private CreationModalView creationModalView;
+    private CameraShotCreationModalView creationModalView;
+    private ToolButton directorBlockCreationTool;
 
     /**
      * Constructor.
@@ -34,10 +36,10 @@ public class ToolViewController {
      * the event handlers.
      */
     private void initializeTools() {
-        blockCreationTool = new ToolButton("Add a block",
+        cameraBlockCreationTool = new ToolButton("Add camerashot",
                                            this.controllerManager
                                                               .getRootPane().getRootHeaderArea(),
-                                           this::showBlockCreationWindow);
+                                           this::showCameraCreationWindow);
         blockDeletionTool = new ToolButton("Delete shot",
                                            this.controllerManager.getRootPane().getRootHeaderArea(),
                                            this::deleteActiveCameraShot);
@@ -51,11 +53,11 @@ public class ToolViewController {
      * When triggered, this initializes and displays the modal view for the creation of a new block.
      * @param event mouse event
      */
-    private void showBlockCreationWindow(MouseEvent event) {
-        creationModalView = new CreationModalView(this.controllerManager.getRootPane(),
+    private void showCameraCreationWindow(MouseEvent event) {
+        creationModalView = new CameraShotCreationModalView(this.controllerManager.getRootPane(),
                               this.controllerManager.getScriptingProject()
                                       .getCameraTimelines().size(),
-                              this::createDirectorShot);
+                              this::createCameraShot);
 
         // Add listeners for parsing to startfield
         creationModalView.getStartField().setOnKeyPressed(e -> {
@@ -93,16 +95,33 @@ public class ToolViewController {
     }
 
     /**
-     * Event handler for the creation of a director shot.
-     * It adds the DirectorShot to the DirectorTimeline and adds the corresponding
+     * Event handler for the creation of a camera shot.
+     * It adds the CameraShot to the CameraTimeline and adds the corresponding
      * camera shots via the TimelineController.
+     * @param event shot creation event
+     */
+    private void createCameraShot(CameraShotCreationEvent event) {
+        ScriptingProject script = this.controllerManager.getScriptingProject();
+
+        TimelineController tlineControl = this.controllerManager.getTimelineControl();
+        event.getCamerasInShot().forEach(camInd -> {
+                tlineControl.addCameraShot(camInd,
+                        event.getShotName(), event.getShotDescription(),
+                        event.getShotStart(), event.getShotEnd());
+            });
+    }
+
+    /**
+     * Event handler for the creation of a director shot.
+     * It adds the DirectorShot to the DirectorTimeline.
      * @param event shot creation event
      */
     private void createDirectorShot(DirectorShotCreationEvent event) {
         ScriptingProject script = this.controllerManager.getScriptingProject();
 
         script.getDirectorTimeline().addShot(event.getShotName(), event.getShotDescription(),
-                                             event.getShotStart(), event.getShotEnd());
+                event.getShotStart(), event.getShotEnd(),
+                event.getFrontPadding(), event.getEndPadding());
 
         TimelineController timelineController = this.controllerManager.getTimelineControl();
         event.getCamerasInShot().forEach(camInd -> {

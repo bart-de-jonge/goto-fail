@@ -13,7 +13,6 @@ public class DirectorGridPane extends ScrollableGridPane {
      * @param verticalElementSize -  size of vertical grid lanes.
      */
     public DirectorGridPane(int numberOfCounts, int width, int verticalElementSize) {
-
         super(1, numberOfCounts, width, verticalElementSize);
 
         setGridLinesVisible(true);

@@ -50,14 +50,18 @@ public class DirectorTimeline extends Timeline {
      * @param description the description of the Shot
      * @param startCount the start count of the Shot
      * @param endCount the end count of the Shot
+     * @param frontPadding the additional time to record before the shot
+     * @param endPadding the additional time to record after the shot
      * @return If no overlap is found, only the newly added shot will be returned. If any
        colliding shots are found, all colliding shots will be returned. If any colliding
        shots are found, the shot that was added will be the last one in the list.
      * @see DirectorTimeline#addShot(DirectorShot)
      */
     public ArrayList<DirectorShot> addShot(String name, String description,
-                                           double startCount, double endCount) {
-        return addShot(new DirectorShot(name, description, startCount, endCount));
+                                           double startCount, double endCount,
+                                           double frontPadding, double endPadding) {
+        return addShot(new DirectorShot(name, description, startCount, endCount,
+                frontPadding, endPadding));
     }
 
     /**

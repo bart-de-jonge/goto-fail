@@ -6,9 +6,9 @@ import java.util.List;
 
 /**
  * Class that represents a director shot creation event.
- * @author alex
+ * @author martijn
  */
-public class DirectorShotCreationEvent extends ModalEvent {
+public class CameraShotCreationEvent extends ModalEvent {
 
     @Getter
     private String shotName;
@@ -20,10 +20,6 @@ public class DirectorShotCreationEvent extends ModalEvent {
     private double shotStart;
     @Getter
     private double shotEnd;
-    @Getter
-    private double frontPadding;
-    @Getter
-    private double endPadding;
 
     /**
      * Constructor.
@@ -32,19 +28,15 @@ public class DirectorShotCreationEvent extends ModalEvent {
      * @param camerasInShot List of cameras in the shot
      * @param start Start count of the shot
      * @param end End count of the shot
-     * @param frontPadding Padding at the front
-     * @param endPadding Padding at the back
      */
-    public DirectorShotCreationEvent(String shotName, String shotDescription,
+    public CameraShotCreationEvent(String shotName, String shotDescription,
                                      List<Integer> camerasInShot, double start,
-                                     double end, double frontPadding, double endPadding) {
+                                     double end) {
         super(ModalEventType.CONFIRM);
         this.shotName = shotName;
         this.shotDescription = shotDescription;
         this.camerasInShot = camerasInShot;
         this.shotStart = start;
         this.shotEnd = end;
-        this.frontPadding = frontPadding;
-        this.endPadding = endPadding;
     }
 }
