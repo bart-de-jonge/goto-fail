@@ -90,13 +90,13 @@ public class DetailViewController {
         detailView.getEndCountField().focusedProperty().addListener((observable, oldValue, newValue) -> {
             // exiting focus
             if (!newValue) {
-                beginCountUpdateHelper();
+                endCountUpdateHelper();
             }
         });
 
         detailView.getEndCountField().setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
-                beginCountUpdateHelper();
+                endCountUpdateHelper();
             }
         });
     }
