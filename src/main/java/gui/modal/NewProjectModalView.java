@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import data.Camera;
 import data.CameraType;
+import gui.events.AddCameraEvent;
 import gui.events.AddCameraTypeEvent;
 import gui.events.NewProjectCreationEvent;
 import gui.headerarea.NumberTextField;
@@ -124,8 +125,7 @@ public class NewProjectModalView extends ModalView {
     }
     
     private void addCamera(MouseEvent event) {
-        // TODO: Do stuff
-        log.error("Adding camera");
+        new AddCameraModalView(rootPane, this::handleAddCamera, cameraTypes);
     }
     
     private void addTimeline(MouseEvent event) {
@@ -146,6 +146,12 @@ public class NewProjectModalView extends ModalView {
         CameraType type = new CameraType(event.getName(), event.getDescription(), event.getMovementMargin());
         cameraTypes.add(type);
         cameraTypeList.getItems().add(new Label(type.getName()));
+    }
+    
+    private void handleAddCamera(AddCameraEvent event) {
+        Camera camera = new Camera(event.getName(), event.getDescription(), event.getType());
+        cameras.add(camera);
+        cameraList.getItems().add(new Label(camera.getName()));
     }
     
 
