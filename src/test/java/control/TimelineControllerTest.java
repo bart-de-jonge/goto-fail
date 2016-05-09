@@ -36,18 +36,14 @@ public class TimelineControllerTest {
 
         ScriptingProject defaultProject = new ScriptingProject();
         defaultProject.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), "kek", null));
+        defaultProject.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), "kek", null));
         
         timelineController = new TimelineController(controllerManager);
         timelineController.getControllerManager().setScriptingProject(defaultProject);
-        timelineController.setProject(defaultProject);
 
         project = timelineController.getControllerManager().getScriptingProject();
 
         shot = new CameraShot("Shot test", "", 1, 2);
-        System.out.println(project);
-        System.out.println(project.getCameraTimelines());
-        System.out.println(project.getCameraTimelines().get(0));
-        System.out.println(project.getCameraTimelines().get(0).addShot(shot));
         project.getCameraTimelines().get(0).addShot(shot);
 
         shotBlock = Mockito.mock(CameraShotBlock.class);

@@ -36,9 +36,6 @@ public class TimelineController {
     @Getter
     private ControllerManager controllerManager;
 
-   // @Getter @Setter
-   // private ScriptingProject project;
-
     @Getter
     // List of all camerashotblocks in this timelinecontroller
     private ArrayList<CameraShotBlock> cameraShotBlocks;
@@ -55,7 +52,6 @@ public class TimelineController {
 
         this.controllerManager = controllerManager;
         this.rootPane = controllerManager.getRootPane();
-       // this.project = controllerManager.getScriptingProject();
         this.cameraShotBlocks = new ArrayList<>();
         this.overlappingCameraShotBlocks = new ArrayList<>();
     }
