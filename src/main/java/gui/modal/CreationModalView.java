@@ -1,5 +1,6 @@
 package gui.modal;
 
+import gui.headerarea.DoubleTextField;
 import gui.root.RootPane;
 import gui.events.DirectorShotCreationEvent;
 import gui.headerarea.NumberTextField;
@@ -13,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -38,10 +40,13 @@ public class CreationModalView extends ModalView {
     private List<CheckBox> cameraCheckboxes;
     private TextField descripField;
     private TextField nameField;
-    private NumberTextField startField;
-    private NumberTextField endField;
-    private Button creationButton;
 
+    @Getter
+    private DoubleTextField startField;
+    @Getter
+    private DoubleTextField endField;
+
+    private Button creationButton;
     private EventHandler<DirectorShotCreationEvent> shotCreationEventHandler;
 
     /**
@@ -118,9 +123,9 @@ public class CreationModalView extends ModalView {
     private void initCountFields() {
         // Start and end points
         final Label startLabel = new Label("Start:");
-        startField = new NumberTextField();
+        startField = new DoubleTextField();
         final Label endLabel = new Label("End:");
-        endField = new NumberTextField();
+        endField = new DoubleTextField();
 
         // Add default values as a cue
         startField.setText(this.defaultStartCount);

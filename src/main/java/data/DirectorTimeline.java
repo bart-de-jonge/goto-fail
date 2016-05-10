@@ -56,7 +56,7 @@ public class DirectorTimeline extends Timeline {
      * @see DirectorTimeline#addShot(DirectorShot)
      */
     public ArrayList<DirectorShot> addShot(String name, String description,
-                                           int startCount, int endCount) {
+                                           double startCount, double endCount) {
         return addShot(new DirectorShot(name, description, startCount, endCount));
     }
 

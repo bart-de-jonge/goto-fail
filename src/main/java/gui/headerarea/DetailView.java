@@ -32,10 +32,10 @@ public class DetailView extends VBox {
     private TextField descriptionField;
 
     @Getter
-    private NumberTextField beginCountField;
+    private DoubleTextField beginCountField;
 
     @Getter
-    private NumberTextField endCountField;
+    private DoubleTextField endCountField;
 
     /**
      * Constructor.
@@ -76,26 +76,39 @@ public class DetailView extends VBox {
     }
 
     /**
+     * Format double into a nice displayable string.
+     * @param d - the double to format
+     * @return - a formatted string containng the double
+     */
+    private String formatDouble(double d) {
+        if (d == (long) d) {
+            return String.format("%d", (long) d);
+        } else {
+            return String.format("%s", d);
+        }
+    }
+
+    /**
      * Set the begincount of the detailview.
      * @param count - the count to set
      */
-    public void setBeginCount(int count) {
-        beginCountField.setText(String.format("%d", count));
+    public void setBeginCount(double count) {
+        beginCountField.setText(formatDouble(count));
     }
 
     /**
      * Set the endcount of the detailview.
      * @param count - the count to set
      */
-    public void setEndCount(int count) {
-        endCountField.setText(String.format("%d", count));
+    public void setEndCount(double count) {
+        endCountField.setText(formatDouble(count));
     }
 
     /**
      * Init the begincount part of the detailview.
      */
     private  void initBeginCount() {
-        beginCountField = new NumberTextField();
+        beginCountField = new DoubleTextField();
         beginCountField.setText("123");
         beginCountField.setPrefWidth(50);
 
@@ -110,7 +123,7 @@ public class DetailView extends VBox {
      * Init the endcount part of the detailview.
      */
     private  void initEndCount() {
-        endCountField = new NumberTextField();
+        endCountField = new DoubleTextField();
         endCountField.setText("123");
         endCountField.setPrefWidth(50);
 
