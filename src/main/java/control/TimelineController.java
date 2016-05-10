@@ -5,11 +5,8 @@ import java.util.ArrayList;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
-import data.CameraType;
-import data.ScriptingProject;
 import data.Shot;
 import gui.centerarea.CameraShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;

@@ -1,7 +1,6 @@
 package gui.modal;
 
 import gui.events.CameraShotCreationEvent;
-import gui.events.DirectorShotCreationEvent;
 import gui.headerarea.DoubleTextField;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
@@ -58,7 +57,6 @@ public class CameraShotCreationModalView extends ModalView {
     private Point3D checkboxColor = new Point3D(250, 120, 50);
 
     // variables for the title label
-    private Point3D titlelabelColor = new Point3D(255, 255, 255);
     private int titlelabelOffsetFromLeft = 20;
 
     // variables for the shadow effects
@@ -75,11 +73,11 @@ public class CameraShotCreationModalView extends ModalView {
 
     // No touching these constants. They work well for all general cases,
     // and there is no reason to change them ever again.
-    private final int generalSize = 10000;
-    private final int generalSpacing = 10;
-    private final int generalPadding = 20;
-    private final int textAreaMinWidth = 350;
-    private final int cameraAreaMinWidth = 250;
+    private static final int GENERAL_SIZE = 10000;
+    private static final int GENERAL_SPACING = 10;
+    private static final int GENERAL_PADDING = 20;
+    private static final int TEXT_AREA_MIN_WIDTH = 350;
+    private static final int CAMERA_AREA_MIN_WIDTH = 250;
 
     private int numberOfCameras;
 
@@ -158,8 +156,8 @@ public class CameraShotCreationModalView extends ModalView {
         // add space for textfields and checkboxes
         this.contentPane = new HBox();
         this.contentPane.setAlignment(Pos.CENTER);
-        this.contentPane.setPadding(new Insets(0, generalPadding, 0, 0));
-        this.contentPane.setPrefHeight(generalSize);
+        this.contentPane.setPadding(new Insets(0, GENERAL_PADDING, 0, 0));
+        this.contentPane.setPrefHeight(GENERAL_SIZE);
         this.contentPane.setSpacing(40.0);
         this.contentPane.setStyle(centerStyle);
         this.viewPane.getChildren().add(contentPane);
@@ -186,8 +184,8 @@ public class CameraShotCreationModalView extends ModalView {
         titleLabel.setStyle(topStyle);
         titleLabel.setAlignment(Pos.CENTER_LEFT);
         titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(generalSize);
-        titleLabel.setPrefHeight(generalSize);
+        titleLabel.setPrefWidth(GENERAL_SIZE);
+        titleLabel.setPrefHeight(GENERAL_SIZE);
         this.viewPane.getChildren().add(titleLabel);
     }
 
@@ -214,7 +212,7 @@ public class CameraShotCreationModalView extends ModalView {
         this.buttonPane = new HBox();
         this.buttonPane.setSpacing(buttonSpacing);
         this.buttonPane.setAlignment(Pos.CENTER_LEFT);
-        this.buttonPane.setPrefHeight(generalSize);
+        this.buttonPane.setPrefHeight(GENERAL_SIZE);
         this.buttonPane.setStyle(bottomStyle);
         this.buttonPane.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
         this.viewPane.getChildren().add(buttonPane);
@@ -247,38 +245,38 @@ public class CameraShotCreationModalView extends ModalView {
      * Initialize all textfields, add them to a left-central VBox.
      */
     private void initTextFields() {
-        VBox content = new VBox(generalSpacing);
+        VBox content = new VBox(GENERAL_SPACING);
         content.setAlignment(Pos.CENTER_LEFT);
-        content.setMinWidth(textAreaMinWidth);
-        content.setPrefWidth(generalSize);
-        content.setPrefHeight(generalSize);
-        content.setPadding(new Insets(generalPadding));
+        content.setMinWidth(TEXT_AREA_MIN_WIDTH);
+        content.setPrefWidth(GENERAL_SIZE);
+        content.setPrefHeight(GENERAL_SIZE);
+        content.setPadding(new Insets(GENERAL_PADDING));
 
         // init name field
         final Label nameLabel = new Label("Shot Name: ");
         nameField = new TextField();
-        HBox nameBox = new HBox(generalSpacing);
+        HBox nameBox = new HBox(GENERAL_SPACING);
         nameBox.getChildren().addAll(nameLabel, nameField);
         nameBox.setAlignment(Pos.CENTER_RIGHT);
 
         // init description field
         final Label descripLabel = new Label("Shot Description: ");
         descriptionField = new TextField();
-        HBox descripBox = new HBox(generalSpacing);
+        HBox descripBox = new HBox(GENERAL_SPACING);
         descripBox.getChildren().addAll(descripLabel, descriptionField);
         descripBox.setAlignment(Pos.CENTER_RIGHT);
 
         // init start count field
         final Label startLabel = new Label("Start:");
         startField = new DoubleTextField(this.defaultStartCount);
-        HBox startBox = new HBox(generalSpacing);
+        HBox startBox = new HBox(GENERAL_SPACING);
         startBox.getChildren().addAll(startLabel, startField);
         startBox.setAlignment(Pos.CENTER_RIGHT);
 
         // init end count field
         final Label endLabel = new Label("End:");
         endField = new DoubleTextField(this.defaultEndCount);
-        HBox endBox = new HBox(generalSpacing);
+        HBox endBox = new HBox(GENERAL_SPACING);
         endBox.getChildren().addAll(endLabel, endField);
         endBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -293,10 +291,10 @@ public class CameraShotCreationModalView extends ModalView {
     private void initCamCheckBoxes() {
         // Create new FlowPane to hold the checkboxes.
         this.checkboxPane = new FlowPane();
-        this.checkboxPane.setHgap(generalPadding);
-        this.checkboxPane.setVgap(generalPadding);
-        this.checkboxPane.setMinWidth(cameraAreaMinWidth);
-        this.checkboxPane.setPrefWidth(generalSize);
+        this.checkboxPane.setHgap(GENERAL_PADDING);
+        this.checkboxPane.setVgap(GENERAL_PADDING);
+        this.checkboxPane.setMinWidth(CAMERA_AREA_MIN_WIDTH);
+        this.checkboxPane.setPrefWidth(GENERAL_SIZE);
         this.checkboxPane.setAlignment(Pos.CENTER);
 
         // add checkboxes

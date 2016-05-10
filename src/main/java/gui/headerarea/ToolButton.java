@@ -3,12 +3,7 @@ package gui.headerarea;
 import gui.root.RootHeaderArea;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Effect;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import lombok.Getter;
 
 /**

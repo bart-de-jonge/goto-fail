@@ -17,10 +17,8 @@ import javafx.scene.input.MouseEvent;
 public class ToolViewController {
 
     private ControllerManager controllerManager;
-    private ToolButton cameraBlockCreationTool;
     private ToolButton blockDeletionTool;
     private CameraShotCreationModalView creationModalView;
-    private ToolButton directorBlockCreationTool;
 
     /**
      * Constructor.
@@ -36,10 +34,10 @@ public class ToolViewController {
      * the event handlers.
      */
     private void initializeTools() {
-        cameraBlockCreationTool = new ToolButton("Add camerashot",
+        new ToolButton("Add camerashot",
                 this.controllerManager.getRootPane().getRootHeaderArea(),
                 this::showCameraCreationWindow);
-        directorBlockCreationTool = new ToolButton("Add directorshot",
+        new ToolButton("Add directorshot",
                 this.controllerManager.getRootPane().getRootHeaderArea(),
                 this::showDirectorBlockCreationWindow);
         blockDeletionTool = new ToolButton("Delete shot",

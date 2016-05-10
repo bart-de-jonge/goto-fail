@@ -8,7 +8,6 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BlendMode;
@@ -374,7 +373,7 @@ public abstract class TimetableBlock extends Pane {
             feedbackPane.setVisible(false);
             feedbackPane.getChildren().remove(0);
             dragging = false;
-            snapPane(thisBlock, draggedPane, e.getSceneX(), e.getSceneY(), draggingType);
+            snapPane(thisBlock, draggedPane, e.getSceneY(), draggingType);
 
             // Update ShotBlock
             double newBeginCount = TimelinesGridPane.getRowIndex(thisBlock)
@@ -400,8 +399,6 @@ public abstract class TimetableBlock extends Pane {
         mouseCurrentXMovement = event.getSceneX() - mouseCurrentXPosition;
         mouseCurrentYMovement = event.getSceneY() - mouseCurrentYPosition;
 
-        // useful items to convert local coordinates into parent (scrollable) coordinates.
-        Parent localToScrollPane = pane.getParent();
 
         // determine what kind of dragging we're going to do.
         if (draggingType == DraggingTypes.Resize_Bottom
@@ -414,7 +411,7 @@ public abstract class TimetableBlock extends Pane {
         }
 
         // set feedbackpane
-        if (snapPane(feedbackPane, draggedPane, event.getSceneX(), event.getSceneY(),
+        if (snapPane(feedbackPane, draggedPane, event.getSceneY(),
                 draggingType)) {
             feedbackPane.setVisible(true);
         } else {
@@ -430,13 +427,12 @@ public abstract class TimetableBlock extends Pane {
      * Snap the targetregion to a grid using the model provided by the mappingPane.
      * @param targetRegion - the target region to snap
      * @param mappingPane - the model mappingPane to follow while snapping
-     * @param x - the X coordinate of the mouse during this snap
      * @param y - the Y coordinate of the mouse during this snap
      * @param dragType - The type of drag used while snapping (move, resize)
      * @return - boolean that indicates if the snap was possible and completed
      */
     private boolean snapPane(Region targetRegion, Region mappingPane,
-                             double x, double y, DraggingTypes dragType) {
+                              double y, DraggingTypes dragType) {
         // set feedback pane
         double yCoordinate;
         double xCoordinate;
