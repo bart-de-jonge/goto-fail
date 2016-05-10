@@ -34,7 +34,7 @@ import lombok.Setter;
  */
 public class CreationModalView extends ModalView {
 
-    /**
+    /*
      * Tweakable styling variables.
      */
 
@@ -61,7 +61,7 @@ public class CreationModalView extends ModalView {
     // misc
     private Point3D titlelabelColor = new Point3D(255, 255, 255);
 
-    /**
+    /*
      * Misc variables.
      */
 

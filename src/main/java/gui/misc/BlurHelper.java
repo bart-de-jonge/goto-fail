@@ -27,7 +27,7 @@ import lombok.Setter;
  */
 public class BlurHelper {
 
-    /**
+    /*
      * Blur variables.
      */
     @Getter
@@ -39,7 +39,7 @@ public class BlurHelper {
     @Getter @Setter
     private Point2D offset; // Pixel offset if we wish to move blur slightly
 
-    /**
+    /*
      * Object and scene variables.
      */
     private WritableImage writableImage; // writable image used to write snapshots to

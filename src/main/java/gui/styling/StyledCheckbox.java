@@ -22,7 +22,7 @@ import lombok.Setter;
  */
 public class StyledCheckbox extends CheckBox {
 
-    /**
+    /*
      * Effect and transition tweaking.
      */
     private double shadowRadius = 10;
@@ -36,7 +36,7 @@ public class StyledCheckbox extends CheckBox {
     @Getter @Setter
     private Interpolator interpolator = Interpolator.EASE_BOTH;
 
-    /**
+    /*
      * Effects used on checkbox and subpanes.
      */
     @Getter
@@ -51,7 +51,7 @@ public class StyledCheckbox extends CheckBox {
     private InnerShadow markInnerShadow; // adds inner bound bezel.
     private TransitionHelper transitionHelper;
 
-    /**
+    /*
      * Subpanes and their initialization.
      */
     private StackPane box; // the surrounding box of a checkbox, extracted.
