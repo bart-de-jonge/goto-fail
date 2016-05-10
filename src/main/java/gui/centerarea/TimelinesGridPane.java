@@ -41,9 +41,9 @@ public class TimelinesGridPane extends ScrollableGridPane {
      */
     public void addCameraShotBlock(CameraShotBlock block) {
         this.add(block.getTimetableBlock(), block.getTimetableNumber(),
-                (int) Math.round(block.getBeginCount() * CountUtilities.numberOfCellsPerCount), 1,
+                (int) Math.round(block.getBeginCount() * CountUtilities.NUMBER_OF_CELLS_PER_COUNT), 1,
                 (int) Math.round((block.getEndCount()
-                        - block.getBeginCount()) * CountUtilities.numberOfCellsPerCount));
+                        - block.getBeginCount()) * CountUtilities.NUMBER_OF_CELLS_PER_COUNT));
     }
 
     /**
@@ -66,7 +66,7 @@ public class TimelinesGridPane extends ScrollableGridPane {
                 SnappingPane pane = new SnappingPane(j, i);
                 this.add(pane, i, j);
                 panes.add(pane);
-                if (c > CountUtilities.numberOfCellsPerCount) {
+                if (c > CountUtilities.NUMBER_OF_CELLS_PER_COUNT) {
                     pane.getStyleClass().add("timeline_Background_Lines");
                     c = 2;
                 } else {

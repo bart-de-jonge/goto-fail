@@ -378,10 +378,10 @@ public abstract class TimetableBlock extends Pane {
 
             // Update ShotBlock
             double newBeginCount = TimelinesGridPane.getRowIndex(thisBlock)
-                    / (double) CountUtilities.numberOfCellsPerCount;
+                    / (double) CountUtilities.NUMBER_OF_CELLS_PER_COUNT;
             parentBlock.setBeginCount(newBeginCount, false);
             parentBlock.setEndCount(newBeginCount + TimelinesGridPane.getRowSpan(thisBlock)
-                    / (double) CountUtilities.numberOfCellsPerCount, false);
+                    / (double) CountUtilities.NUMBER_OF_CELLS_PER_COUNT, false);
 
             this.fireEvent(parentBlock.getShotBlockUpdatedEvent());
         };

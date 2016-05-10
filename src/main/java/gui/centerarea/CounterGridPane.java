@@ -63,7 +63,7 @@ public class CounterGridPane extends ScrollableGridPane {
      * @param verticalElementSize size of usual vertical elements.
      */
     private void initGridNumbers(int numberOfCounts, int verticalElementSize) {
-        int cellsPerCount = CountUtilities.numberOfCellsPerCount;
+        int cellsPerCount = CountUtilities.NUMBER_OF_CELLS_PER_COUNT;
         for (int i = cellsPerCount; i < numberOfCounts; i += cellsPerCount) {
             Label label = new Label(Integer.toString(i / cellsPerCount));
             label.setStyle(labelStyle);
