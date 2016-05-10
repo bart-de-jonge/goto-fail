@@ -1,10 +1,9 @@
 package control;
 
-import data.CameraShot;
 import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
 import gui.headerarea.DetailView;
-import gui.centerarea.ShotBlock;
+import javafx.scene.input.KeyCode;
 
 /**
  * Created by Bart.
@@ -35,17 +34,38 @@ public class DetailViewController {
     private void initBeginCount() {
         detailView.setBeginCount(0);
 
-        detailView.getBeginCountField().textProperty().addListener(
+        detailView.getBeginCountField().focusedProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                if (manager.getActiveShotBlock() != null) {
-                    int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
-                    manager.getActiveShotBlock().setBeginCount(newVal);
-                    if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                        ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
-                                .setBeginCount(newVal);
-                    }
+                // exiting focus
+                if (!newValue) {
+                    beginCountUpdateHelper();
                 }
             });
+
+        detailView.getBeginCountField().setOnKeyPressed(event -> {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    beginCountUpdateHelper();
+                }
+            });
+    }
+
+    /**
+     * Helper for when the begincount field is edited.
+     * Parses entry to quarters and updates all the values
+     */
+    private void beginCountUpdateHelper() {
+        if (manager.getActiveShotBlock() != null) {
+            String newValue = CountUtilities.parseCountNumber(
+                    detailView.getBeginCountField().getText());
+            detailView.getBeginCountField().setText(newValue);
+            double newVal = Double.parseDouble(newValue);
+
+            manager.getActiveShotBlock().setBeginCount(newVal);
+            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
+                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
+                        .setBeginCount(newVal);
+            }
+        }
     }
 
     /**
@@ -54,19 +74,40 @@ public class DetailViewController {
     private void initEndCount() {
         detailView.setEndCount(0);
 
-        detailView.getEndCountField().textProperty().addListener(
+        detailView.getEndCountField().focusedProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                if (manager.getActiveShotBlock() != null) {
-                    int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
-                    ShotBlock block = manager.getActiveShotBlock();
-
-                    block.setEndCount(newVal);
-                    if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                        ((CameraShotBlock) manager.getActiveShotBlock())
-                                .getShot().setEndCount(newVal);
-                    }
+                // exiting focus
+                if (!newValue) {
+                    endCountUpdateHelper();
                 }
             });
+
+        detailView.getEndCountField().setOnKeyPressed(event -> {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    endCountUpdateHelper();
+                }
+            });
+    }
+
+    /**
+     * Helper for when the endcount field is edited.
+     * Parses entry to quarters and updates all the values
+     */
+    private void endCountUpdateHelper() {
+        if (manager.getActiveShotBlock() != null) {
+
+            String newValue = CountUtilities.parseCountNumber(
+                    detailView.getEndCountField().getText());
+            detailView.getBeginCountField().setText(newValue);
+            double newVal = Double.parseDouble(newValue);
+            detailView.getEndCountField().setText(newValue);
+
+            manager.getActiveShotBlock().setEndCount(newVal);
+            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
+                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
+                        .setEndCount(newVal);
+            }
+        }
     }
 
     /**
@@ -113,9 +154,8 @@ public class DetailViewController {
             detailView.setDescription(manager.getActiveShotBlock().getDescription());
             detailView.setName(manager.getActiveShotBlock().getName());
 
-            // TODO: Make doubles possible in detailview
-            detailView.setBeginCount((int) manager.getActiveShotBlock().getBeginCount());
-            detailView.setEndCount((int) manager.getActiveShotBlock().getEndCount());
+            detailView.setBeginCount(manager.getActiveShotBlock().getBeginCount());
+            detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
         } else {
             detailView.resetDetails();
         }

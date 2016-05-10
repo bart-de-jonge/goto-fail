@@ -1,28 +1,28 @@
 package gui.modal;
 
-import gui.root.RootPane;
 import gui.events.DirectorShotCreationEvent;
-import gui.headerarea.NumberTextField;
+import gui.headerarea.DoubleTextField;
+import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledCheckbox;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * Class responsible for displaying a modal view for the creation of shots.
@@ -48,10 +48,15 @@ public class CreationModalView extends ModalView {
     private List<StyledCheckbox> cameraCheckboxes;
     private TextField descripField;
     private TextField nameField;
-    private NumberTextField startField;
-    private NumberTextField endField;
+
     private StyledButton creationButton;
     private StyledButton cancelButton;
+
+
+    @Getter
+    private DoubleTextField startField;
+    @Getter
+    private DoubleTextField endField;
 
     private EventHandler<DirectorShotCreationEvent> shotCreationEventHandler;
 
@@ -177,7 +182,7 @@ public class CreationModalView extends ModalView {
 
         // init start count field
         final Label startLabel = new Label("Start:");
-        startField = new NumberTextField();
+        startField = new DoubleTextField();
         startField.setText(this.defaultStartCount);
         HBox startBox = new HBox();
         startBox.getChildren().addAll(startLabel, startField);
@@ -186,7 +191,7 @@ public class CreationModalView extends ModalView {
 
         // init end count field
         final Label endLabel = new Label("End:");
-        endField = new NumberTextField();
+        endField = new DoubleTextField();
         endField.setText(this.defaultEndCount);
         HBox endBox = new HBox();
         endBox.getChildren().addAll(endLabel, endField);
@@ -223,9 +228,9 @@ public class CreationModalView extends ModalView {
     private void initCountFields() {
         // Start and end points
         final Label startLabel = new Label("Start:");
-        startField = new NumberTextField();
+        startField = new DoubleTextField();
         final Label endLabel = new Label("End:");
-        endField = new NumberTextField();
+        endField = new DoubleTextField();
 
         // Add default values as a cue
         startField.setText(this.defaultStartCount);
