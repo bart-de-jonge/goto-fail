@@ -1,14 +1,8 @@
 package control;
 
-import data.CameraTimeline;
-import data.DirectorTimeline;
 import data.ScriptingProject;
 import gui.centerarea.ShotBlock;
-import gui.events.NewProjectCreationEvent;
-import gui.modal.NewProjectModalView;
-import gui.root.RootCenterArea;
 import gui.root.RootPane;
-import javafx.scene.input.MouseEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;

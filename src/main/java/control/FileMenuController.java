@@ -139,6 +139,7 @@ public class FileMenuController {
     }
     
     private void cameraAdded(MouseEvent event) {
+        cameraModal.hideModal();
         String name = cameraModal.getNameField().getText();
         String description = cameraModal.getDescriptionField().getText();
         int selectedIndex = cameraModal.getCameraTypes().getSelectionModel().getSelectedIndex();
@@ -154,6 +155,7 @@ public class FileMenuController {
     }
     
     private void typeAdded(MouseEvent event) {
+        cameraTypeModal.hideModal();
         String name = cameraTypeModal.getNameField().getText();
         String description = cameraTypeModal.getDescriptionField().getText();
         double movementMargin = Double.parseDouble(cameraTypeModal.getMovementMarginField().getText());
@@ -169,6 +171,7 @@ public class FileMenuController {
     }
     
     private void timelineAdded(MouseEvent event) {
+        timelineModal.hideModal();
         String description = timelineModal.getDescriptionField().getText();
         int selectedIndex = timelineModal.getCameraList().getSelectionModel().getSelectedIndex();
         Camera camera = timelineModal.getCameras().get(selectedIndex);
