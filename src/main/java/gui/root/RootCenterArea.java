@@ -31,6 +31,8 @@ public class RootCenterArea extends StackPane {
     @Getter
     private int counterWidth = 10;
     @Getter
+    private int directorTimelineWidth = 200;
+    @Getter
     private int timelineWidth = 100; // 100 works well, if you've changed this.
     @Getter
     private RootPane rootPane;
@@ -115,11 +117,7 @@ public class RootCenterArea extends StackPane {
      */
     public RootCenterArea(RootPane rootPane) {
         this(rootPane, DEFAULT_TIMELINES, false);
-        
     }
-    
-    
-   
 
     /**
      * Initializes the central timeline in this stackpane.
@@ -129,7 +127,7 @@ public class RootCenterArea extends StackPane {
         mainTimelineScrollpane = new ScrollPane();
         mainTimeLineAnchorPane = new AnchorPane();
         mainTimeLineGridPane = new TimelinesGridPane(numberOfTimelines, numberOfCounts,
-                timelineWidth,  countHeight, counterWidth + timelineWidth);
+                timelineWidth,  countHeight, counterWidth + directorTimelineWidth);
         mainTimeLineAnchorPane.setLeftAnchor(mainTimeLineGridPane, 0.0);
         mainTimeLineAnchorPane.setRightAnchor(mainTimeLineGridPane, 0.0);
         mainTimeLineAnchorPane.setTopAnchor(mainTimeLineGridPane, 0.0);
@@ -166,7 +164,7 @@ public class RootCenterArea extends StackPane {
     private void initDirectorPane() {
         directorScrollpane = new ScrollPane();
         directorAnchorPane = new AnchorPane();
-        directorGridPane = new DirectorGridPane(numberOfCounts, timelineWidth, countHeight);
+        directorGridPane = new DirectorGridPane(numberOfCounts, directorTimelineWidth, countHeight);
         directorAnchorPane.setLeftAnchor(directorGridPane, 0.0);
         directorAnchorPane.setRightAnchor(directorGridPane, 0.0);
         directorAnchorPane.setTopAnchor(directorGridPane, 0.0);
@@ -174,7 +172,7 @@ public class RootCenterArea extends StackPane {
         directorScrollpane.setContent(directorAnchorPane);
         directorScrollpane.setFitToWidth(true);
         directorScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        directorScrollpane.setStyle("-fx-background-color: orange"); // debugcolor for now
+        directorScrollpane.setStyle("-fx-background-color: lightblue"); // debugcolor for now
         directorScrollpane.vvalueProperty().bindBidirectional(
                 mainTimelineScrollpane.vvalueProperty());
         counterAndDirectorPane.getChildren().add(directorScrollpane);
@@ -187,7 +185,8 @@ public class RootCenterArea extends StackPane {
         ScrollBar scrollbar = new ScrollBar();
         scrollbar.setMin(0);
         scrollbar.setMax(1);
-        scrollbar.maxWidthProperty().bind(widthProperty().subtract(counterWidth + timelineWidth));
+        scrollbar.maxWidthProperty().bind(widthProperty()
+                .subtract(counterWidth + directorTimelineWidth));
         mainTimelineScrollpane.hvalueProperty().bind(scrollbar.valueProperty());
         getChildren().add(scrollbar);
         setAlignment(scrollbar, Pos.BOTTOM_RIGHT);

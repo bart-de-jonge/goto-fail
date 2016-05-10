@@ -64,7 +64,7 @@ public class CameraTimeline extends Timeline {
      * @see CameraTimeline#addShot(CameraShot)
      */
     public ArrayList<CameraShot> addShot(String name, String description,
-                                         int startCount, int endCount) {
+                                         double startCount, double endCount) {
         return addShot(new CameraShot(name, description, startCount, endCount));
     }
 

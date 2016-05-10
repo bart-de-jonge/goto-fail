@@ -12,7 +12,7 @@ public class DirectorShotTest {
     DirectorShot shot;
     @Before
     public void initializeTest() {
-        shot = new DirectorShot("directorshot-1", "A test director shot", 1, 2);
+        shot = new DirectorShot("directorshot-1", "A test director shot", 1, 2, 0, 0);
     }
 
     @Test
@@ -34,7 +34,7 @@ public class DirectorShotTest {
     @Test
     public void getInstanceTest() {
         int oldInstance = shot.getInstance();
-        DirectorShot newShot = new DirectorShot("name", "description", 1, 2);
+        DirectorShot newShot = new DirectorShot("name", "description", 1, 2, 0, 0);
         assertEquals(oldInstance + 1, newShot.getInstance());
     }
 
