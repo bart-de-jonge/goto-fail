@@ -60,7 +60,6 @@ public class CounterGridPane extends ScrollableGridPane {
     /**
      * Add number labels to all the correct grids.
      * @param numberOfCounts number of counts used.
-     * @param verticalElementSize size of usual vertical elements.
      */
     private void initGridNumbers(int numberOfCounts) {
         int cellsPerCount = CountUtilities.NUMBER_OF_CELLS_PER_COUNT;

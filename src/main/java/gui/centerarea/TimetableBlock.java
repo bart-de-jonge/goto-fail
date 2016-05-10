@@ -427,7 +427,6 @@ public abstract class TimetableBlock extends Pane {
      * Snap the targetregion to a grid using the model provided by the mappingPane.
      * @param targetRegion - the target region to snap
      * @param mappingPane - the model mappingPane to follow while snapping
-     * @param x - the X coordinate of the mouse during this snap
      * @param y - the Y coordinate of the mouse during this snap
      * @param dragType - The type of drag used while snapping (move, resize)
      * @return - boolean that indicates if the snap was possible and completed
