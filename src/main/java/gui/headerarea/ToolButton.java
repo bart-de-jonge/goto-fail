@@ -3,7 +3,12 @@ package gui.headerarea;
 import gui.root.RootHeaderArea;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import lombok.Getter;
 
 /**
@@ -15,6 +20,10 @@ public class ToolButton {
     private String name;
     @Getter
     private Button button;
+
+    private InnerShadow firstEffect;
+    private InnerShadow secondEffect;
+    private DropShadow thirdEffect;
 
     private EventHandler<MouseEvent> clickHandler;
 
@@ -39,6 +48,14 @@ public class ToolButton {
         this.button = new Button(this.name);
 
         this.button.setOnMouseClicked(clickHandler);
+
+        firstEffect = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.15),
+                1, 1, -2, -1);
+        thirdEffect = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.15),
+                10, 0.1, 2, 1);
+
+        thirdEffect.setInput(firstEffect);
+        this.button.setEffect(thirdEffect);
 
         headerArea.getToolView().addToolButton(this);
     }

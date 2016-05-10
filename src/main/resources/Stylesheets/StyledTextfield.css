@@ -1,0 +1,13 @@
+.text-field {
+    -fx-background-color: rgb(210,210,210);
+    -fx-background-radius: 10;
+    -fx-alignment: center-left;
+    -fx-font-size: 13;
+    -fx-text-fill: white;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.15), 1, 1, 1, 1);
+}
+
+.text-field:focused {
+    -fx-background-color: rgb(200,200,200);
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.15), 1, 1, 1, 1);
+}

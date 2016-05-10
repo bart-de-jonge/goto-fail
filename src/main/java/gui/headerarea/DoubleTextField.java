@@ -1,12 +1,28 @@
 package gui.headerarea;
 
+import gui.styling.StyledTextfield;
 import javafx.scene.control.TextField;
 import java.text.DecimalFormat;
 
 /**
  * Created by Bart.
  */
-public class DoubleTextField extends TextField {
+public class DoubleTextField extends StyledTextfield {
+
+    /**
+     * Constructor of class.
+     */
+    public DoubleTextField() {
+        super();
+    }
+
+    /**
+     * Constructor of class.
+     * @param text text to setup initially.
+     */
+    public DoubleTextField(String text) {
+        super(text);
+    }
 
     /**
      * Replace text while typing if needed (when it is not a double).

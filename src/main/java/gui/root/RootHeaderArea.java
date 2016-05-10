@@ -62,7 +62,6 @@ public class RootHeaderArea extends VBox {
      */
     private MenuBar initMenus() {
         
-        
         Menu fileMenu = new Menu("File");
         
         MenuItem newItem = new MenuItem("New");
@@ -90,6 +89,7 @@ public class RootHeaderArea extends VBox {
         Menu helpMenu = new Menu("Help");
 
         MenuBar topMenuBar = new MenuBar();
+        topMenuBar.setUseSystemMenuBar(true); // giggidy
         topMenuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
         return topMenuBar;
     }

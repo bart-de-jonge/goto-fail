@@ -30,6 +30,9 @@ public class ControllerManager {
     private FileMenuController fileMenuController;
 
     @Getter
+    private CreationModalViewController creationModalViewController;
+
+    @Getter
     private ShotBlock activeShotBlock;
 
     // Placeholder project in lieu of XML loading
@@ -74,6 +77,7 @@ public class ControllerManager {
     private void initializeControllers() {
         timelineControl = new TimelineController(this);
         detailViewController = new DetailViewController(this);
+        creationModalViewController = new CreationModalViewController(this);
         toolViewController = new ToolViewController(this);
         fileMenuController = new FileMenuController(this);
     }

@@ -1,0 +1,48 @@
+.check-box .box {
+    -fx-alignment: center-left;
+    -fx-padding: 1 1 1 1;
+
+    -fx-min-height: 20;
+    -fx-pref-height: 20;
+    -fx-max-height: 20;
+
+    -fx-min-width: 35;
+    -fx-pref-width: 35;
+    -fx-max-width: 35;
+
+    -fx-background-radius: 10em;
+    -fx-background-color: rgb(210,210,210);
+}
+
+.check-box:selected .box {
+    -fx-padding: 1 1 1 1;
+
+    -fx-min-height: 20;
+    -fx-pref-height: 20;
+    -fx-max-height: 20;
+}
+
+.check-box .mark {
+    -fx-shape: null;
+    -fx-background-radius: 10em;
+    -fx-background-color: rgb(255,255,255);
+
+    -fx-min-height: 15;
+    -fx-pref-height: 15;
+    -fx-max-height: 15;
+
+    -fx-min-width: 15;
+    -fx-pref-width: 15;
+    -fx-max-width: 15;
+}
+
+.check-box:selected .mark {
+    -fx-min-width: 16;
+    -fx-pref-width: 16;
+    -fx-max-width: 16;
+
+    -fx-min-height: 16;
+    -fx-pref-height: 16;
+    -fx-max-height: 16;
+}
+

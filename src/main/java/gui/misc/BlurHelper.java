@@ -1,44 +1,58 @@
 package gui.misc;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelFormat;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * Created by markv on 5/3/2016.
  * Class to assist in quickly blurring behind a supplied node.
- * Also has support for moving elements!
+ * Also has support for moving elements.
+ * Is kind of extremely buggy. May have horrible performance impact.
  */
 public class BlurHelper {
 
-    private WritableImage writableImage;    // Image used for writing snapshots to.
-    private SnapshotParameters parameters; // Parameters used for writing snapshots (resolution etc)
-    private Bounds bounds; // Bounds of node used for snapshot parameters (x, y, width, height)
-
+    /*
+     * Blur variables.
+     */
     @Getter
     private GaussianBlur gaussianBlur; // The blur effect we apply (can be replaced by box blur)
-
     @Getter
     private double radius; // Radius of the blur (setblur is defined below)
-
-    @Getter
-    private ImageView imageView; // ImageView region used to display blurred image.
-
-    @Getter @Setter
-    private Node node; // Node behind which we're blurring
-
     @Getter @Setter
     private boolean hideNode; // Whether or not node is included in blurring process
-
     @Getter @Setter
     private Point2D offset; // Pixel offset if we wish to move blur slightly
+
+    /*
+     * Object and scene variables.
+     */
+    private WritableImage writableImage; // writable image used to write snapshots to
+    @Getter
+    private ImageView imageView; // ImageView region used to display blurred result.
+    @Getter @Setter
+    private Node node; // Node (behind) whose area we are blurring.
+    @Getter
+    private Node watcher; // Generic node which we watch for generic changes. (Like a scrollpane)
+    private SnapshotParameters parameters; // Parameters used for writing snapshots (resolution etc)
+    @Getter
+    private Bounds bounds; // Bounds of node used for snapshot parameters (x, y, width, height)
+
 
     /**
      * Constructor of class.
@@ -102,15 +116,19 @@ public class BlurHelper {
                 bounds.getWidth(), bounds.getHeight());
         parameters.setViewport(rect);
 
-        // just a catch, in case something goes wrong.
+        // just a catch, in case something goes horribly wrong.
         Point2D imageSize = new Point2D(Math.round(bounds.getWidth()),
                 Math.round(bounds.getHeight()));
         if (imageSize.getX() <= 0.0 || imageSize.getY() <= 0.0) {
             return;
         }
 
-        // create writable image using these bounds.
-        writableImage = new WritableImage((int) imageSize.getX(), (int) imageSize.getY());
+        // Clear old image fist
+        writableImage = null;
+        imageView.setImage(null);
+
+        // create new writable image using these bounds.
+        writableImage =  new WritableImage((int) imageSize.getX(), (int) imageSize.getY());
 
         if (hideNode) { // blurs and returns content behind the node
             double opacity = node.getOpacity();
