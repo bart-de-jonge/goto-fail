@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.List;
 
 /**
- * Class that represents a director shot creation event.
+ * Class that represents a camera shot creation event.
  * @author martijn
  */
 public class CameraShotCreationEvent extends ModalEvent {

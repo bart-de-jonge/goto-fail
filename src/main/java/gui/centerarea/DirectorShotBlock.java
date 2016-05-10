@@ -65,14 +65,6 @@ public class DirectorShotBlock extends ShotBlock {
         grid.addDirectorShotBlock(this);
     }
 
-    /**
-     * Recompute the position in the grid and repaint with new values.
-     */
-    @Override
-    public void recompute() {
-        super.recompute();
-    }
-
     @Override
     public ShotblockUpdatedEvent getShotBlockUpdatedEvent() {
         return new DirectorShotBlockUpdatedEvent(this);
