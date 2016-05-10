@@ -5,34 +5,42 @@ import java.util.ArrayList;
 import data.CameraType;
 import gui.events.AddCameraEvent;
 import gui.root.RootPane;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import lombok.Getter;
 
 public class AddCameraModalView extends ModalView {
     
     private static final int width = 300;
     private static final int height = 300;
     
+    @Getter
     private TextField nameField;
+    
+    @Getter
     private TextField descriptionField;
+    
+    @Getter
     private ListView<Label> cameraTypes;
+    
+    @Getter
     private Button addCameraButton;
+    
+    @Getter
     private VBox viewPane;
+    
+    @Getter
     private ArrayList<CameraType> cameraTypeList;
     
-    private EventHandler<AddCameraEvent> eventHandler;
     
     public AddCameraModalView(RootPane rootPane,
-                              EventHandler<AddCameraEvent> handler,
                               ArrayList<CameraType> types) {
-        this(rootPane, handler, types, width, height);
+        this(rootPane, types, width, height);
     }
     
     /**
@@ -44,12 +52,10 @@ public class AddCameraModalView extends ModalView {
      * @param height the height of the modal screen
      */
     public AddCameraModalView(RootPane rootPane,
-                              EventHandler<AddCameraEvent> handler,
                               ArrayList<CameraType> types, 
                               int width, 
                               int height) {
         super(rootPane, width, height);
-        this.eventHandler = handler;
         this.cameraTypeList = types;
         initializeView();
     }
@@ -65,7 +71,6 @@ public class AddCameraModalView extends ModalView {
         initTypeList();
         
         addCameraButton = new Button("Add Camera");
-        addCameraButton.setOnMouseClicked(this::addCamera);
         this.viewPane.getChildren().add(addCameraButton);
         
         super.setModalView(this.viewPane);
@@ -106,10 +111,6 @@ public class AddCameraModalView extends ModalView {
         
     }
     
-    private void addCamera(MouseEvent event) {
-        super.hideModal();
-        this.eventHandler.handle(this.buildEvent());
-    }
     
     /**
      * Build a AddCameraEvent from the data entered by the user.

@@ -20,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -28,28 +29,54 @@ public class NewProjectModalView extends ModalView {
     private static final int width = 700;
     private static final int height = 700;
     
+    @Getter
     private TextField descriptionField;
+    
+    @Getter
     private NumberTextField secondsPerCountField;
+    
+    @Getter
     private TextField directorTimelineDescriptionField;
+    
+    @Getter
     private Button addCameraButton;
+    
+    @Getter
     private Button addTimelineButton;
+    
+    @Getter
     private Button creationButton;
+    
+    @Getter
     private Button addCameraTypeButton;
+    
+    @Getter
     private VBox viewPane;
+    
+    @Getter
     private ListView<Label> cameraList;
+    
+    @Getter
     private ListView<Label> timelineList;
+    
+    @Getter
     private ListView<Label> cameraTypeList;
+    
+    @Getter
     private RootPane rootPane;
     
+    @Getter
     private ArrayList<CameraType> cameraTypes;
+    
+    @Getter
     private ArrayList<Camera> cameras;
+    
+    @Getter
     private ArrayList<CameraTimeline> timelines;
     
-    private EventHandler<NewProjectCreationEvent> creationEventHandler;
     
-    public NewProjectModalView(RootPane rootPane,
-                               EventHandler<NewProjectCreationEvent> creationHandler) {
-        this(rootPane, creationHandler, width, height);
+    public NewProjectModalView(RootPane rootPane) {
+        this(rootPane, width, height);
     }
     
     /**
@@ -60,12 +87,10 @@ public class NewProjectModalView extends ModalView {
      * @param height the modal screen height
      */
     public NewProjectModalView(RootPane rootPane,
-                               EventHandler<NewProjectCreationEvent> creationHandler,
                                int width,
                                int height) {
         super(rootPane, width, height);
         this.rootPane = rootPane;
-        this.creationEventHandler = creationHandler;
         this.cameraTypes = new ArrayList<CameraType>();
         this.cameras = new ArrayList<Camera>();
         this.timelines = new ArrayList<CameraTimeline>();
@@ -85,7 +110,6 @@ public class NewProjectModalView extends ModalView {
         initAddTimeline();
         
         creationButton = new Button("Create new project");
-        creationButton.setOnMouseClicked(this::createProject);
         this.viewPane.getChildren().add(creationButton);
         
         super.setModalView(this.viewPane);
@@ -97,7 +121,6 @@ public class NewProjectModalView extends ModalView {
      */
     private void initAddTimeline() {
         addTimelineButton = new Button("Add Camera Timeline");
-        addTimelineButton.setOnMouseClicked(this::addTimeline);
         
         timelineList = new ListView<Label>();
         timelineList.setMaxHeight(100);
@@ -110,7 +133,6 @@ public class NewProjectModalView extends ModalView {
      */
     private void initAddCameraType() {
         addCameraTypeButton = new Button("Add Camera Type");
-        addCameraTypeButton.setOnMouseClicked(this::addCameraType);
         
         cameraTypeList = new ListView<Label>();
         cameraTypeList.setMaxHeight(100);
@@ -123,7 +145,6 @@ public class NewProjectModalView extends ModalView {
      */
     private void initAddCamera() {
         addCameraButton = new Button("Add Camera");
-        addCameraButton.setOnMouseClicked(this::addCamera);
         
         cameraList = new ListView<Label>();
         cameraList.setMaxHeight(100);
@@ -159,33 +180,10 @@ public class NewProjectModalView extends ModalView {
                                            directorTimelineDescriptionBox);
     }
     
-    private void addCamera(MouseEvent event) {
-        new AddCameraModalView(rootPane, this::handleAddCamera, cameraTypes);
-    }
+   
+   
     
-    private void addTimeline(MouseEvent event) {
-        new AddTimelineModalView(rootPane, this::handleAddTimeline, cameras);
-    }
     
-    private void createProject(MouseEvent event) {
-        super.hideModal();
-        creationEventHandler.handle(this.buildEvent());
-    }
-    
-    /**
-     * Build a NewProjectCreationEvent from the data entered by the user.
-     * @return a NewProjectCreationEvent that can be used to build a ScriptingProject
-     */
-    private NewProjectCreationEvent buildEvent() {
-        String description = descriptionField.getText();
-        String directorTimelineDescription = directorTimelineDescriptionField.getText();
-        double secondsPerCount = Double.parseDouble(secondsPerCountField.getText());
-        return new NewProjectCreationEvent(description,
-                                           secondsPerCount,
-                                           directorTimelineDescription,
-                                           timelines,
-                                           cameras);
-    }
     
     /**
      * Handle an added Timeline.
@@ -199,9 +197,6 @@ public class NewProjectModalView extends ModalView {
         timelineList.getItems().add(new Label(timeline.getDescription()));
     }
     
-    private void addCameraType(MouseEvent event) {
-        new AddCameraTypeModalView(rootPane, this::handleAddCameraType);
-    }
     
     /**
      * Handle an added camera type.

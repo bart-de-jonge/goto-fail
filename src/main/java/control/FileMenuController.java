@@ -2,17 +2,21 @@ package control;
 
 import java.io.File;
 
+import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
+import data.CameraType;
 import data.DirectorTimeline;
 import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
-import gui.events.NewProjectCreationEvent;
+import gui.modal.AddCameraModalView;
+import gui.modal.AddCameraTypeModalView;
+import gui.modal.AddTimelineModalView;
 import gui.modal.NewProjectModalView;
 import gui.root.RootCenterArea;
-import gui.root.RootPane;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -23,6 +27,11 @@ public class FileMenuController {
     
     
     private ControllerManager controllerManager;
+    
+    private NewProjectModalView newProjectModal;
+    private AddCameraModalView cameraModal;
+    private AddCameraTypeModalView cameraTypeModal;
+    private AddTimelineModalView timelineModal;
     
     public FileMenuController(ControllerManager manager) {
         this.controllerManager = manager;
@@ -117,7 +126,75 @@ public class FileMenuController {
      * Method to show the modal to create a new project.
      */
     public void newProject() {
-        new NewProjectModalView(controllerManager.getRootPane(), this::createProject);
+        newProjectModal = new NewProjectModalView(controllerManager.getRootPane());
+        newProjectModal.getCreationButton().setOnMouseClicked(this::createProject);
+        newProjectModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
+        newProjectModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);
+        newProjectModal.getAddTimelineButton().setOnMouseClicked(this::addTimeline);
+    }
+    
+    private void addCamera(MouseEvent event) {
+        cameraModal = new AddCameraModalView(controllerManager.getRootPane(), newProjectModal.getCameraTypes());
+        cameraModal.getAddCameraButton().setOnMouseClicked(this::cameraAdded);
+    }
+    
+    private void cameraAdded(MouseEvent event) {
+        String name = cameraModal.getNameField().getText();
+        String description = cameraModal.getDescriptionField().getText();
+        int selectedIndex = cameraModal.getCameraTypes().getSelectionModel().getSelectedIndex();
+        CameraType type = cameraModal.getCameraTypeList().get(selectedIndex);
+        Camera camera = new Camera(name, description, type);
+        newProjectModal.getCameras().add(camera);
+        newProjectModal.getCameraList().getItems().add(new Label(camera.getName()));
+    }
+    
+    private void addCameraType(MouseEvent event) {
+        cameraTypeModal = new AddCameraTypeModalView(controllerManager.getRootPane());
+        cameraTypeModal.getAddCameraTypeButton().setOnMouseClicked(this::typeAdded);
+    }
+    
+    private void typeAdded(MouseEvent event) {
+        String name = cameraTypeModal.getNameField().getText();
+        String description = cameraTypeModal.getDescriptionField().getText();
+        double movementMargin = Double.parseDouble(cameraTypeModal.getMovementMarginField().getText());
+        CameraType type = new CameraType(name, description, movementMargin);
+        newProjectModal.getCameraTypes().add(type);
+        newProjectModal.getCameraTypeList().getItems().add(new Label(type.getName()));
+        
+    }
+    
+    private void addTimeline(MouseEvent event) {
+        timelineModal = new AddTimelineModalView(controllerManager.getRootPane(), newProjectModal.getCameras());
+        timelineModal.getAddTimelineButton().setOnMouseClicked(this::timelineAdded);
+    }
+    
+    private void timelineAdded(MouseEvent event) {
+        String description = timelineModal.getDescriptionField().getText();
+        int selectedIndex = timelineModal.getCameraList().getSelectionModel().getSelectedIndex();
+        Camera camera = timelineModal.getCameras().get(selectedIndex);
+        CameraTimeline timeline = new CameraTimeline(camera, description, null);
+        newProjectModal.getTimelines().add(timeline);
+        newProjectModal.getTimelineList().getItems().add(new Label(description));
+    }
+    
+    
+    
+    private void createProject(MouseEvent event) {
+        newProjectModal.hideModal();
+        String description = newProjectModal.getDescriptionField().getText();
+        String directorTimelineDescription = newProjectModal.getDirectorTimelineDescriptionField().getText();
+        double secondsPerCount = Double.parseDouble(newProjectModal.getSecondsPerCountField().getText());
+        ScriptingProject project = new ScriptingProject(description, secondsPerCount);
+        project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
+        project.setCameras(newProjectModal.getCameras());
+        project.setCameraTimelines(newProjectModal.getTimelines());
+        project.getDirectorTimeline().setProject(project);
+        for (CameraTimeline timeline : project.getCameraTimelines()) {
+            timeline.setProject(project);
+        }
+        controllerManager.setScriptingProject(project);
+        RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(), newProjectModal.getTimelines().size(), false);
+        controllerManager.getRootPane().reInitRootCenterArea(area);
     }
     
     /**
@@ -129,29 +206,7 @@ public class FileMenuController {
         newProject();
     }
     
-    /**
-     * Creates a ScriptingProject from the given event.
-     * @param event the NewProjectCreationEvent given by the creation modal
-     */
-    private void createProject(NewProjectCreationEvent event) {
-        ScriptingProject project = new ScriptingProject(event.getDescription(),
-                                                        event.getSecondsPerCount());
-        project.setDirectorTimeline(new DirectorTimeline(event.getDirectorTimelineDescription(),
-                                                         null));
-        project.setCameras(event.getCameras());
-        project.setCameraTimelines(event.getTimelines());
-        project.getDirectorTimeline().setProject(project);
-        for (CameraTimeline timeline : project.getCameraTimelines()) {
-            timeline.setProject(project);
-        }
-        
-        controllerManager.setScriptingProject(project);
-        RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),
-                                                 event.getTimelines().size(),
-                                                 false);
-        controllerManager.getRootPane().reInitRootCenterArea(area);
-        
-    }
+   
     
     public void loadProject(MouseEvent event) {
         load();

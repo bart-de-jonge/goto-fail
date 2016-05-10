@@ -3,10 +3,8 @@ package gui.modal;
 import java.util.ArrayList;
 
 import data.Camera;
-import data.CameraType;
 import gui.events.AddTimelineEvent;
 import gui.root.RootPane;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -15,23 +13,31 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import lombok.Getter;
 
 public class AddTimelineModalView extends ModalView {
     
     private static final int width = 300;
     private static final int height = 300;
     
+    @Getter
     private TextField descriptionField;
+    
+    @Getter
     private ListView<Label> cameraList;
+    
+    @Getter
     private Button addTimelineButton;
+    
+    @Getter
     private VBox viewPane;
-    private EventHandler<AddTimelineEvent> eventHandler;
+    
+    @Getter
     private ArrayList<Camera> cameras;
     
     public AddTimelineModalView(RootPane rootPane,
-                                EventHandler<AddTimelineEvent> handler, 
                                 ArrayList<Camera> cameras) {
-        this(rootPane, handler, cameras, width, height);
+        this(rootPane, cameras, width, height);
     }
     
     /**
@@ -43,12 +49,10 @@ public class AddTimelineModalView extends ModalView {
      * @param height the height of the modal screen
      */
     public AddTimelineModalView(RootPane rootPane,
-                                EventHandler<AddTimelineEvent> handler,
                                 ArrayList<Camera> cameras,
                                 int width, 
                                 int height) {
         super(rootPane, width, height);
-        this.eventHandler = handler;
         this.cameras = cameras;
         initializeView();
     }
@@ -64,7 +68,6 @@ public class AddTimelineModalView extends ModalView {
         initCameraList();
         
         addTimelineButton = new Button("Add Timeline");
-        addTimelineButton.setOnMouseClicked(this::addTimeline);
         this.viewPane.getChildren().add(addTimelineButton);
         
         super.setModalView(this.viewPane);
@@ -100,7 +103,6 @@ public class AddTimelineModalView extends ModalView {
     
     private void addTimeline(MouseEvent event) {
         super.hideModal();
-        this.eventHandler.handle(this.buildEvent());
     }
 
     /**
