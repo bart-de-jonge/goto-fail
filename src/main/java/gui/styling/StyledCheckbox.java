@@ -201,9 +201,7 @@ public class StyledCheckbox extends CheckBox {
             @Override
             public void run() {
                 mark.setStyle(mark.getStyle().concat("-fx-background-color: rgb("
-                    + r + ","
-                    + g + ","
-                    + b + ");"));
+                    + r + "," + g + "," + b + ");"));
             }
         });
     }
@@ -230,9 +228,7 @@ public class StyledCheckbox extends CheckBox {
             @Override
             public void run() {
                 box.setStyle(box.getStyle().concat("-fx-background-color: rgb("
-                        + r + ","
-                        + g + ","
-                        + b + ");"));
+                        + r + "," + g + "," + b + ");"));
             }
         });
     }

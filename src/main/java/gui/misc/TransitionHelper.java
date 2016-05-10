@@ -15,8 +15,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import lombok.Getter;
 
-
-
 /**
  * Class to assist in easy setup of transitions for Nodes on common events
  * such as mouse-over, buttonclick, etc.
@@ -31,7 +29,7 @@ public class TransitionHelper {
     private ArrayList<Double> transitionStores;
 
     /**
-     * Constructor of class.
+     * Constructor of TransitionHelper.
      * @param node the node for which we want transitions.
      */
     public TransitionHelper(Node node) {
@@ -39,7 +37,7 @@ public class TransitionHelper {
         transitionStores = new ArrayList<Double>();
     }
 
-    /**
+    /*
      * Transition functions below.
      */
 
@@ -69,29 +67,12 @@ public class TransitionHelper {
         Timeline t1 = new Timeline();
         Timeline t2 = new Timeline();
 
-        // Create event handlers from x to y, and from y to x.
-        EventHandler<MouseEvent> mouseInHandler = createHandlerTowardsDouble(property, t1, t2, ms,
-                v, false, interpolator);
-        EventHandler<MouseEvent> mouseOutHandler = createHandlerTowardsDouble(property, t1, t2, ms,
-                v, true, interpolator);
-
-        // Bind event handlers on mouse enter and exit for this Node.
-        node.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseInHandler);
-        node.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseOutHandler);
-    }
-
-    /**
-     * Add a transition event, on mouse press and release, between two values,
-     * with a specified transition half-time, over a specified property.
-     * @param property property being modified. (for example, color property)
-     * @param ms time in milliseconds for transition.
-     * @param x value before transition.
-     * @param y value after transition.
-     * @param <T> generic type.
-     */
-    public <T> void addMouseClickTransition(Property<T> property, int ms,
-                                            T x, T y) {
-        addMouseClickTransition(property, ms, x, y, Interpolator.LINEAR);
+        // Create event handlers from x to y, and from y to x. Then bind
+        // them on mouse enter and exit for this Node.
+        node.addEventHandler(MouseEvent.MOUSE_PRESSED,
+                createHandlerTowardsDouble(property, t1, t2, ms, v, false, interpolator));
+        node.addEventHandler(MouseEvent.MOUSE_RELEASED,
+                createHandlerTowardsDouble(property, t1, t2, ms, v, true, interpolator));
     }
 
     /**
@@ -115,18 +96,6 @@ public class TransitionHelper {
         // Bind event handlers on mouse press and release for this Node.
         node.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseInHandler);
         node.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseOutHandler);
-    }
-
-    /**
-     * Add a transition event, on mouse enter and exit, between a specified double
-     * value and a specified double offset.
-     * @param property the property being modified.
-     * @param ms the time in milliseconds for transition.
-     * @param v the offset value.
-     */
-    public void addMouseOverTransition(DoubleProperty property, int ms,
-                                       double v) {
-        addMouseOverTransition(property, ms, v, Interpolator.LINEAR);
     }
 
     /**
@@ -161,20 +130,6 @@ public class TransitionHelper {
      * @param ms time in milliseconds for transition.
      * @param x value before transition.
      * @param y value after transition.
-     * @param <T> generic type.
-     */
-    public <T> void addMouseOverTransition(Property<T> property, int ms,
-                                       T x, T y) {
-        addMouseOverTransition(property, ms, x, y, Interpolator.LINEAR);
-    }
-
-    /**
-     * Add a transition event, on mouse enter and exit, between two values,
-     * with a specified transition half-time, over a specified property
-     * @param property property being modified. (for example, color property)
-     * @param ms time in milliseconds for transition.
-     * @param x value before transition.
-     * @param y value after transition.
      * @param interpolator type of interpolation used.
      * @param <T> generic type.
      */
@@ -191,7 +146,7 @@ public class TransitionHelper {
         node.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_EXITED, mouseOutHandler);
     }
 
-    /**
+    /*
      * Event handler creation functions below.
      */
 

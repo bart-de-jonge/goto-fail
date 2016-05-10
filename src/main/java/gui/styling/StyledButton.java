@@ -1,6 +1,7 @@
 package gui.styling;
 
 import gui.misc.TransitionHelper;
+import javafx.animation.Interpolator;
 import javafx.geometry.Point3D;
 import javafx.scene.control.Button;
 import javafx.scene.effect.BlurType;
@@ -82,15 +83,15 @@ public class StyledButton extends Button {
      */
     private void initMouseOverTransitions() {
         transitionHelper.addMouseOverTransition(this.translateYProperty(),
-                mouseOverDuration, -1);
+                mouseOverDuration, -1, Interpolator.LINEAR);
         transitionHelper.addMouseOverTransition(dropShadow.radiusProperty(),
-                mouseOverDuration, 20);
+                mouseOverDuration, 20,  Interpolator.LINEAR);
         transitionHelper.addMouseOverTransition(dropShadow.offsetXProperty(),
-                mouseOverDuration, 3);
+                mouseOverDuration, 3,  Interpolator.LINEAR);
         transitionHelper.addMouseOverTransition(dropShadow.offsetYProperty(),
-                mouseOverDuration, 3);
+                mouseOverDuration, 3,  Interpolator.LINEAR);
         transitionHelper.addMouseOverTransition(colorAdjust.brightnessProperty(),
-                mouseOverDuration, highlightAmount);
+                mouseOverDuration, highlightAmount, Interpolator.LINEAR);
     }
 
     /**
@@ -98,19 +99,15 @@ public class StyledButton extends Button {
      */
     private void initMouseClickTransitions() {
         transitionHelper.addMouseClickTransition(this.translateYProperty(),
-                mouseClickDuration, 2);
+                mouseClickDuration, 2, Interpolator.LINEAR);
         transitionHelper.addMouseClickTransition(dropShadow.radiusProperty(),
-                mouseClickDuration, -25);
+                mouseClickDuration, -25, Interpolator.LINEAR);
         transitionHelper.addMouseClickTransition(dropShadow.offsetXProperty(),
-                mouseClickDuration, -5);
+                mouseClickDuration, -5, Interpolator.LINEAR);
         transitionHelper.addMouseClickTransition(dropShadow.offsetYProperty(),
-                mouseClickDuration, -5);
+                mouseClickDuration, -5, Interpolator.LINEAR);
         transitionHelper.addMouseClickTransition(colorAdjust.brightnessProperty(),
-                mouseClickDuration, -darkenAmount);
-    }
-
-    public void resetMouse() {
-
+                mouseClickDuration, -darkenAmount, Interpolator.LINEAR);
     }
 
     /**
@@ -131,9 +128,7 @@ public class StyledButton extends Button {
      */
     public void setButtonColor(int r, int g, int b) {
         setStyle(getStyle().concat("-fx-background-color: rgb("
-                + r + ","
-                + g + ","
-                + b + ");"));
+                + r + "," + g + "," + b + ");"));
     }
 
     /**
@@ -154,9 +149,7 @@ public class StyledButton extends Button {
      */
     public void setTextColor(int r, int g, int b) {
         setStyle(getStyle().concat("-fx-text-fill: rgb("
-                + r + ","
-                + g + ","
-                + b + ");"));
+                + r + "," + g + "," + b + ");"));
     }
 
     /**

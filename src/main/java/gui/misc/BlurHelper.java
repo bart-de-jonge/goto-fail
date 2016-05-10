@@ -142,24 +142,4 @@ public class BlurHelper {
         imageView.setImage(writableImage);
     }
 
-    /**
-     * Bind this blurhelper to scrollchanges in a watchable scrollpane.
-     * @param watchable the scrollpane to watch.
-     */
-    public void watchScrolling(ScrollPane watchable) {
-        ChangeListener<Number> listener = new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable,
-                                Number oldValue, Number newValue) {
-                processBlurUsingBounds();
-            }
-        };
-        watchable.heightProperty().addListener(listener);
-        watchable.widthProperty().addListener(listener);
-        watchable.vvalueProperty().addListener(listener);
-        watchable.hvalueProperty().addListener(listener);
-        this.watcher = watchable;
-    }
-
-
 }
