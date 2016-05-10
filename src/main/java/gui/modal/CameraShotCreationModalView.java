@@ -1,5 +1,6 @@
 package gui.modal;
 
+import gui.events.CameraShotCreationEvent;
 import gui.events.DirectorShotCreationEvent;
 import gui.headerarea.DoubleTextField;
 import gui.root.RootPane;
@@ -7,7 +8,6 @@ import gui.styling.StyledButton;
 import gui.styling.StyledCheckbox;
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point3D;
@@ -32,7 +32,7 @@ import lombok.Setter;
  * Class responsible for displaying a modal view for the creation of shots.
  * @author alex
  */
-public class CreationModalView extends ModalView {
+public class CameraShotCreationModalView extends ModalView {
 
     /*
      * Tweakable styling variables.
@@ -77,7 +77,7 @@ public class CreationModalView extends ModalView {
     private HBox buttonPane;
     private FlowPane checkboxPane;
     private List<StyledCheckbox> cameraCheckboxes;
-    private TextField descripField;
+    private TextField descriptionField;
     private TextField nameField;
     private Label titleLabel;
 
@@ -97,14 +97,16 @@ public class CreationModalView extends ModalView {
 
     private EventHandler<DirectorShotCreationEvent> shotCreationEventHandler;
 
+    private EventHandler<CameraShotCreationEvent> cameraShotCreationEventHandler;
+
     /**
      * Constructor with default modal size.
      * @param rootPane Pane to display modal on top of
      * @param numberOfCamerasInTimeline Amount of cameras in timeline
      * @param creationHandler Event handler for the creation of a shot
      */
-    public CreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
-                             EventHandler<DirectorShotCreationEvent> creationHandler) {
+    public CameraShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
+                                       EventHandler<CameraShotCreationEvent> creationHandler) {
         this(rootPane, numberOfCamerasInTimeline, creationHandler, width, height);
     }
 
@@ -116,12 +118,12 @@ public class CreationModalView extends ModalView {
      * @param modalWidth Modal display width
      * @param modalHeight Modal display height
      */
-    public CreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
-                             EventHandler<DirectorShotCreationEvent> creationHandler,
-                             int modalWidth, int modalHeight) {
+    public CameraShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
+                                       EventHandler<CameraShotCreationEvent> creationHandler,
+                                       int modalWidth, int modalHeight) {
         super(rootPane, modalWidth, modalHeight);
         this.numberOfCameras = numberOfCamerasInTimeline;
-        this.shotCreationEventHandler = creationHandler;
+        this.cameraShotCreationEventHandler = creationHandler;
         initializeCreationView();
     }
 
@@ -247,9 +249,9 @@ public class CreationModalView extends ModalView {
 
         // init description field
         final Label descripLabel = new Label("Shot Description: ");
-        descripField = new TextField();
+        descriptionField = new TextField();
         HBox descripBox = new HBox(10);
-        descripBox.getChildren().addAll(descripLabel, descripField);
+        descripBox.getChildren().addAll(descripLabel, descriptionField);
         descripBox.setAlignment(Pos.CENTER_RIGHT);
 
         // init start count field
@@ -306,7 +308,7 @@ public class CreationModalView extends ModalView {
     private void createShot(MouseEvent event) {
         if (validateShot()) {
             super.hideModal();
-            this.shotCreationEventHandler.handle(this.buildCreationEvent());
+            this.cameraShotCreationEventHandler.handle(this.buildCreationEvent());
         }
     }
 
@@ -335,7 +337,7 @@ public class CreationModalView extends ModalView {
             errorString = "Please make sure that the shot ends after it begins.\n";
         }
 
-        if (descripField.getText().isEmpty()) {
+        if (descriptionField.getText().isEmpty()) {
             errorString = "Please add a description.\n";
         }
 
@@ -356,14 +358,14 @@ public class CreationModalView extends ModalView {
      * Build the shot creation event.
      * @return the shot creation event
      */
-    private DirectorShotCreationEvent buildCreationEvent() {
+    private CameraShotCreationEvent buildCreationEvent() {
         String shotName = this.nameField.getText();
-        String shotDescrip = this.descripField.getText();
+        String shotDescrip = this.descriptionField.getText();
         List<Integer> camerasInShot = getCamerasInShot();
         double startPoint = Double.parseDouble(this.startField.getText());
         double endPoint = Double.parseDouble(this.endField.getText());
 
-        return new DirectorShotCreationEvent(shotName, shotDescrip, camerasInShot,
+        return new CameraShotCreationEvent(shotName, shotDescrip, camerasInShot,
                                              startPoint, endPoint);
     }
 
