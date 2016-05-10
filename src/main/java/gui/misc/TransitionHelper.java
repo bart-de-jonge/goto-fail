@@ -1,6 +1,5 @@
 package gui.misc;
 
-import java.util.ArrayList;
 
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
@@ -108,8 +107,8 @@ public class TransitionHelper {
                 v, true, interpolator);
 
         // Bind event handlers on mouse enter and exit for this Node.
-        node.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_ENTERED, mouseInHandler);
-        node.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_EXITED, mouseOutHandler);
+        node.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseInHandler);
+        node.addEventHandler(MouseEvent.MOUSE_EXITED, mouseOutHandler);
     }
 
     /**
@@ -131,8 +130,8 @@ public class TransitionHelper {
                 y, x, interpolator);
 
         // Bind event handlers on mouse enter and exit for this Node.
-        node.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_ENTERED, mouseInHandler);
-        node.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_EXITED, mouseOutHandler);
+        node.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseInHandler);
+        node.addEventHandler(MouseEvent.MOUSE_EXITED, mouseOutHandler);
     }
 
     /**

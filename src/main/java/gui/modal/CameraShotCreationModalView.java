@@ -1,7 +1,6 @@
 package gui.modal;
 
 import gui.events.CameraShotCreationEvent;
-import gui.events.DirectorShotCreationEvent;
 import gui.headerarea.DoubleTextField;
 import gui.root.RootPane;
 import gui.styling.StyledButton;

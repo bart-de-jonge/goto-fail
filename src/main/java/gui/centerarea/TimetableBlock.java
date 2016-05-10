@@ -8,7 +8,6 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BlendMode;
@@ -374,7 +373,7 @@ public abstract class TimetableBlock extends Pane {
             feedbackPane.setVisible(false);
             feedbackPane.getChildren().remove(0);
             dragging = false;
-            snapPane(thisBlock, draggedPane, e.getSceneX(), e.getSceneY(), draggingType);
+            snapPane(thisBlock, draggedPane, e.getSceneY(), draggingType);
 
             // Update ShotBlock
             double newBeginCount = TimelinesGridPane.getRowIndex(thisBlock)
@@ -412,7 +411,7 @@ public abstract class TimetableBlock extends Pane {
         }
 
         // set feedbackpane
-        if (snapPane(feedbackPane, draggedPane, event.getSceneX(), event.getSceneY(),
+        if (snapPane(feedbackPane, draggedPane, event.getSceneY(),
                 draggingType)) {
             feedbackPane.setVisible(true);
         } else {
@@ -434,7 +433,7 @@ public abstract class TimetableBlock extends Pane {
      * @return - boolean that indicates if the snap was possible and completed
      */
     private boolean snapPane(Region targetRegion, Region mappingPane,
-                             double x, double y, DraggingTypes dragType) {
+                              double y, DraggingTypes dragType) {
         // set feedback pane
         double yCoordinate;
         double xCoordinate;

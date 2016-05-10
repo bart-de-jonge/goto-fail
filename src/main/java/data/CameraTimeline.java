@@ -86,11 +86,9 @@ public class CameraTimeline extends Timeline {
         // Add the new Shot the the shots
         for (int i = 0; i < shots.size(); i++) {
             CameraShot other = shots.get(i);
-            if (!added) {
-                if (shot.compareTo(other) <= 0) {
-                    shots.add(i, shot);
-                    added = true;
-                }
+            if (!added && shot.compareTo(other) <= 0) {
+                shots.add(i, shot);
+                added = true; 
             }
         }
         if (!added) {

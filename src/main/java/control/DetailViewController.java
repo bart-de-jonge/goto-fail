@@ -1,6 +1,5 @@
 package control;
 
-import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
 import gui.headerarea.DetailView;
 import javafx.scene.input.KeyCode;
