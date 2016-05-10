@@ -290,7 +290,8 @@ public class FileMenuController {
             timelineModal.hideModal();
             String name = timelineModal.getNameField().getText();
             String description = timelineModal.getDescriptionField().getText();
-            int selectedIndex = timelineModal.getCameraList().getSelectionModel().getSelectedIndex();
+            int selectedIndex = timelineModal.getCameraList().getSelectionModel()
+                                                             .getSelectedIndex();
             Camera camera = timelineModal.getCameras().get(selectedIndex);
             CameraTimeline timeline = new CameraTimeline(name, camera, description, null);
             newProjectModal.getTimelines().add(timeline);
@@ -337,8 +338,8 @@ public class FileMenuController {
             newProjectModal.hideModal();
             String name = newProjectModal.getNameField().getText();
             String description = newProjectModal.getDescriptionField().getText();
-            String directorTimelineDescription = newProjectModal.getDirectorTimelineDescriptionField()
-                                                                .getText();
+            String directorTimelineDescription = 
+                    newProjectModal.getDirectorTimelineDescriptionField().getText();
             double secondsPerCount = Double.parseDouble(newProjectModal.getSecondsPerCountField()
                                                                         .getText());
             ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
@@ -368,7 +369,6 @@ public class FileMenuController {
         String description = newProjectModal.getDescriptionField().getText();
         String directorTimelineDescription = newProjectModal.getDirectorTimelineDescriptionField()
                                                             .getText();
-        String secondsPerCount = newProjectModal.getSecondsPerCountField().getText();
         
         if (name.isEmpty()) {
             errorString += "Please enter a project name\n";
@@ -381,6 +381,9 @@ public class FileMenuController {
         if (directorTimelineDescription.isEmpty()) {
             errorString += "Please enter a director timeline description\n";
         }
+        
+        String secondsPerCount = newProjectModal.getSecondsPerCountField()
+                .getText();
         
         if (secondsPerCount.isEmpty()) {
             errorString += "Please enter the seconds per count\n";

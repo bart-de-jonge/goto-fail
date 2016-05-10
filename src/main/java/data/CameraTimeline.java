@@ -62,7 +62,8 @@ public class CameraTimeline extends Timeline {
      * @param description the description of the timeline
      * @param project the project this timeline is a part of
      */
-    public CameraTimeline(String name, Camera camera, String description, ScriptingProject project) {
+    public CameraTimeline(String name, Camera camera,
+            String description, ScriptingProject project) {
         this(camera, description, project);
         this.name = name;
     }

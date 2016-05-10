@@ -68,6 +68,9 @@ public class AddCameraTypeModalView extends ModalView {
         super.displayModal();
     }
     
+    /**
+     * Initialize the label that shows validation error messages.
+     */
     private void initErrorLabel() {
         errorLabel = new Label("");
         viewPane.getChildren().add(errorLabel);
