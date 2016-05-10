@@ -3,13 +3,6 @@ package gui.root;
 import gui.centerarea.CounterGridPane;
 import gui.centerarea.DirectorGridPane;
 import gui.centerarea.TimelinesGridPane;
-<<<<<<< HEAD
-import gui.misc.BlurHelper;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-=======
-import javafx.geometry.Insets;
->>>>>>> develop
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
@@ -124,9 +117,6 @@ public class RootCenterArea extends StackPane {
         this(rootPane, DEFAULT_TIMELINES, false);
     }
     
-    
-   
-
     /**
      * Initializes the central timeline in this stackpane.
      */
