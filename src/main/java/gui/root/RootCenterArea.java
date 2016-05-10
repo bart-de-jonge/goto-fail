@@ -3,10 +3,6 @@ package gui.root;
 import gui.centerarea.CounterGridPane;
 import gui.centerarea.DirectorGridPane;
 import gui.centerarea.TimelinesGridPane;
-import gui.misc.BlurHelper;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
@@ -106,7 +102,8 @@ public class RootCenterArea extends StackPane {
             counterAndDirectorPane = new HBox();
             setAlignment(counterAndDirectorPane, Pos.CENTER_LEFT);
             counterAndDirectorPane.setMaxWidth(counterWidth + timelineWidth);
-            counterAndDirectorPane.maxHeightProperty().bind(mainTimelineScrollpane.heightProperty());
+            counterAndDirectorPane.maxHeightProperty()
+                    .bind(mainTimelineScrollpane.heightProperty());
             getChildren().add(counterAndDirectorPane);
     
             initCounterPane();

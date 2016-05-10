@@ -82,9 +82,7 @@ public class StyledTextfield extends TextField {
      */
     public void setTextfieldColor(int r, int g, int b) {
         setStyle(getStyle().concat("-fx-background-color: rgb("
-                + r + ","
-                + g + ","
-                + b + ");"));
+                + r + "," + g + "," + b + ");"));
     }
 
     /**
@@ -105,9 +103,7 @@ public class StyledTextfield extends TextField {
      */
     public void setTextColor(int r, int g, int b) {
         setStyle(getStyle().concat("-fx-text-fill: rgb("
-                + r + ","
-                + g + ","
-                + b + ");"));
+                + r + "," + g + "," + b + ");"));
     }
 
 }

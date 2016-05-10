@@ -26,8 +26,6 @@ import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
 
-
-
 /**
  * Class responsible for displaying a modal view for the creation of shots.
  * @author alex
@@ -38,32 +36,50 @@ public class CameraShotCreationModalView extends ModalView {
      * Tweakable styling variables.
      */
 
-    // width and height of screen. 680 and 290 work very well.
+    // width and height of screen. 680 and 290 work very, very well.
     private static final int width = 680;
     private static final int height = 290;
 
-    // background styles of the three main areas.
+    // simple background styles of the three main areas.
     private String topStyle = "-fx-background-color: rgb(240,240,240);"
             + "-fx-text-fill: black; -fx-font-size: 20;";
     private String centerStyle = "-fx-background-color: rgb(230, 230, 230);";
     private String bottomStyle = "-fx-background-color: rgb(240, 240, 240);";
 
-    // width, height, colors and font size of the Create and Cancel buttons.
+    // variables for the Create and Cancel buttons
     private int buttonWidth = 90;
     private int buttonHeight = 25;
     private Point3D createButtonColor = new Point3D(200, 200, 200);
     private Point3D cancelButtonColor = new Point3D(200, 200, 200);
     private int buttonFontSize = 16;
+    private int buttonSpacing = 20;
 
     // color of the "active" element of a checkbox
     private Point3D checkboxColor = new Point3D(250, 120, 50);
 
-    // misc
+    // variables for the title label
     private Point3D titlelabelColor = new Point3D(255, 255, 255);
+    private int titlelabelOffsetFromLeft = 20;
+
+    // variables for the shadow effects
+    private double softShadowRadius = 15;
+    private double softShadowCutoff = 0.2;
+    private double softShadowOpacity = 0.05;
+    private double hardShadowRadius = 1;
+    private double hardShadowCutoff = 1;
+    private double hardShadowOpacity = 0.15;
 
     /*
-     * Misc variables.
+     * Other variables.
      */
+
+    // No touching these constants. They work well for all general cases,
+    // and there is no reason to change them ever again.
+    private int generalSize = 10000;
+    private int generalSpacing = 10;
+    private int generalPadding = 20;
+    private int textAreaMinWidth = 350;
+    private int cameraAreaMinWidth = 250;
 
     private int numberOfCameras;
 
@@ -94,8 +110,6 @@ public class CameraShotCreationModalView extends ModalView {
     private InnerShadow topInnerShadow;
     private InnerShadow topOuterShadow;
     private DropShadow bottomOuterShadow;
-
-    private EventHandler<DirectorShotCreationEvent> shotCreationEventHandler;
 
     private EventHandler<CameraShotCreationEvent> cameraShotCreationEventHandler;
 
@@ -144,8 +158,8 @@ public class CameraShotCreationModalView extends ModalView {
         // add space for textfields and checkboxes
         this.contentPane = new HBox();
         this.contentPane.setAlignment(Pos.CENTER);
-        this.contentPane.setPadding(new Insets(0, 20, 0, 0));
-        this.contentPane.setPrefHeight(10000);
+        this.contentPane.setPadding(new Insets(0, generalPadding, 0, 0));
+        this.contentPane.setPrefHeight(generalSize);
         this.contentPane.setSpacing(40.0);
         this.contentPane.setStyle(centerStyle);
         this.viewPane.getChildren().add(contentPane);
@@ -171,9 +185,9 @@ public class CameraShotCreationModalView extends ModalView {
         titleLabel = new Label("Add a new shot...");
         titleLabel.setStyle(topStyle);
         titleLabel.setAlignment(Pos.CENTER_LEFT);
-        titleLabel.setPadding(new Insets(0, 0, 0, 20));
-        titleLabel.setPrefWidth(10000);
-        titleLabel.setPrefHeight(10000);
+        titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
+        titleLabel.setPrefWidth(generalSize);
+        titleLabel.setPrefHeight(generalSize);
         this.viewPane.getChildren().add(titleLabel);
     }
 
@@ -181,12 +195,12 @@ public class CameraShotCreationModalView extends ModalView {
      * Sets up effects and adds them to the appropriate panes.
      */
     private void initEffects() {
-        topInnerShadow = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.15),
-                1, 1, 0, -2);
-        topOuterShadow = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.05),
-                15, 0.2, 0, 1);
-        bottomOuterShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.05),
-                15, 0.2, 0, -1);
+        topInnerShadow = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, hardShadowOpacity),
+                hardShadowRadius, hardShadowCutoff, 0, -2);
+        topOuterShadow = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, softShadowOpacity),
+                softShadowRadius, softShadowCutoff, 0, 1);
+        bottomOuterShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, softShadowOpacity),
+                softShadowRadius, softShadowCutoff, 0, -1);
         titleLabel.setEffect(topInnerShadow);
         contentPane.setEffect(topOuterShadow);
         buttonPane.setEffect(bottomOuterShadow);
@@ -198,17 +212,17 @@ public class CameraShotCreationModalView extends ModalView {
     private void initButtons() {
         // setup button pane
         this.buttonPane = new HBox();
-        this.buttonPane.setSpacing(20.0);
+        this.buttonPane.setSpacing(buttonSpacing);
         this.buttonPane.setAlignment(Pos.CENTER_LEFT);
-        this.buttonPane.setPrefHeight(10000);
+        this.buttonPane.setPrefHeight(generalSize);
         this.buttonPane.setStyle(bottomStyle);
-        this.buttonPane.setPadding(new Insets(0, 0, 0, 20));
+        this.buttonPane.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
         this.viewPane.getChildren().add(buttonPane);
 
         // Add cancel button
         cancelButton = new StyledButton("Cancel");
         cancelButton.setOnMouseReleased(e -> {
-                getModalStage().close();
+                getModalStage().close(); // kill window
             }
         );
         cancelButton.setPrefWidth(buttonWidth);
@@ -233,38 +247,38 @@ public class CameraShotCreationModalView extends ModalView {
      * Initialize all textfields, add them to a left-central VBox.
      */
     private void initTextFields() {
-        VBox content = new VBox(10);
+        VBox content = new VBox(generalSpacing);
         content.setAlignment(Pos.CENTER_LEFT);
-        content.setMinWidth(350.0);
-        content.setPrefWidth(10000);
-        content.setPrefHeight(10000);
-        content.setPadding(new Insets(20, 20, 20, 20));
+        content.setMinWidth(textAreaMinWidth);
+        content.setPrefWidth(generalSize);
+        content.setPrefHeight(generalSize);
+        content.setPadding(new Insets(generalPadding));
 
         // init name field
         final Label nameLabel = new Label("Shot Name: ");
         nameField = new TextField();
-        HBox nameBox = new HBox(10);
+        HBox nameBox = new HBox(generalSpacing);
         nameBox.getChildren().addAll(nameLabel, nameField);
         nameBox.setAlignment(Pos.CENTER_RIGHT);
 
         // init description field
         final Label descripLabel = new Label("Shot Description: ");
         descriptionField = new TextField();
-        HBox descripBox = new HBox(10);
+        HBox descripBox = new HBox(generalSpacing);
         descripBox.getChildren().addAll(descripLabel, descriptionField);
         descripBox.setAlignment(Pos.CENTER_RIGHT);
 
         // init start count field
         final Label startLabel = new Label("Start:");
         startField = new DoubleTextField(this.defaultStartCount);
-        HBox startBox = new HBox(10);
+        HBox startBox = new HBox(generalSpacing);
         startBox.getChildren().addAll(startLabel, startField);
         startBox.setAlignment(Pos.CENTER_RIGHT);
 
         // init end count field
         final Label endLabel = new Label("End:");
         endField = new DoubleTextField(this.defaultEndCount);
-        HBox endBox = new HBox(10);
+        HBox endBox = new HBox(generalSpacing);
         endBox.getChildren().addAll(endLabel, endField);
         endBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -279,10 +293,10 @@ public class CameraShotCreationModalView extends ModalView {
     private void initCamCheckBoxes() {
         // Create new FlowPane to hold the checkboxes.
         this.checkboxPane = new FlowPane();
-        this.checkboxPane.setHgap(20.0);
-        this.checkboxPane.setVgap(20.0);
-        this.checkboxPane.setMinWidth(300.0);
-        this.checkboxPane.setPrefWidth(10000);
+        this.checkboxPane.setHgap(generalPadding);
+        this.checkboxPane.setVgap(generalPadding);
+        this.checkboxPane.setMinWidth(cameraAreaMinWidth);
+        this.checkboxPane.setPrefWidth(generalSize);
         this.checkboxPane.setAlignment(Pos.CENTER);
 
         // add checkboxes
