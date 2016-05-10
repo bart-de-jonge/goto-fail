@@ -51,13 +51,13 @@ public class NewProjectModalView extends ModalView {
     private VBox viewPane;
     
     @Getter
-    private ListView<Label> cameraList;
+    private ListView<HBox> cameraList;
     
     @Getter
-    private ListView<Label> timelineList;
+    private ListView<HBox> timelineList;
     
     @Getter
-    private ListView<Label> cameraTypeList;
+    private ListView<HBox> cameraTypeList;
     
     @Getter
     private RootPane rootPane;
@@ -118,7 +118,7 @@ public class NewProjectModalView extends ModalView {
     private void initAddTimeline() {
         addTimelineButton = new Button("Add Camera Timeline");
         
-        timelineList = new ListView<Label>();
+        timelineList = new ListView<HBox>();
         timelineList.setMaxHeight(100);
         
         this.viewPane.getChildren().addAll(addTimelineButton, timelineList); 
@@ -130,7 +130,7 @@ public class NewProjectModalView extends ModalView {
     private void initAddCameraType() {
         addCameraTypeButton = new Button("Add Camera Type");
         
-        cameraTypeList = new ListView<Label>();
+        cameraTypeList = new ListView<HBox>();
         cameraTypeList.setMaxHeight(100);
         
         this.viewPane.getChildren().addAll(addCameraTypeButton, cameraTypeList);
@@ -142,7 +142,7 @@ public class NewProjectModalView extends ModalView {
     private void initAddCamera() {
         addCameraButton = new Button("Add Camera");
         
-        cameraList = new ListView<Label>();
+        cameraList = new ListView<HBox>();
         cameraList.setMaxHeight(100);
         
         this.viewPane.getChildren().addAll(addCameraButton, cameraList);

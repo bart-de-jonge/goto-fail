@@ -18,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.extern.log4j.Log4j2;
@@ -176,7 +177,9 @@ public class FileMenuController {
         CameraType type = cameraModal.getCameraTypeList().get(selectedIndex);
         Camera camera = new Camera(name, description, type);
         newProjectModal.getCameras().add(camera);
-        newProjectModal.getCameraList().getItems().add(new Label(camera.getName()));
+        HBox box = new HBox();
+        box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
+        newProjectModal.getCameraList().getItems().add(box);
     }
     
     /**
@@ -200,7 +203,9 @@ public class FileMenuController {
                 cameraTypeModal.getMovementMarginField().getText());
         CameraType type = new CameraType(name, description, movementMargin);
         newProjectModal.getCameraTypes().add(type);
-        newProjectModal.getCameraTypeList().getItems().add(new Label(type.getName()));
+        HBox box = new HBox();
+        box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
+        newProjectModal.getCameraTypeList().getItems().add(box);
         
     }
     
@@ -226,7 +231,9 @@ public class FileMenuController {
         Camera camera = timelineModal.getCameras().get(selectedIndex);
         CameraTimeline timeline = new CameraTimeline(name, camera, description, null);
         newProjectModal.getTimelines().add(timeline);
-        newProjectModal.getTimelineList().getItems().add(new Label(name));
+        HBox box = new HBox();
+        box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
+        newProjectModal.getTimelineList().getItems().add(box);
     }
     
     /**
