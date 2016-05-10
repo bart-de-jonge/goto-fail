@@ -33,8 +33,16 @@ public class FileMenuController {
     private AddCameraTypeModalView cameraTypeModal;
     private AddTimelineModalView timelineModal;
     
+    /**
+     * Construct a new FileMenuController.
+     * @param manager the controllermanager that manages this controller
+     */
     public FileMenuController(ControllerManager manager) {
         this.controllerManager = manager;
+        controllerManager.getRootPane().getRootCenterArea().getNewButton()
+                         .setOnMouseClicked(this::newProject);
+        controllerManager.getRootPane().getRootCenterArea().getLoadButton()
+                         .setOnMouseClicked(this::loadProject);
     }
     
     /**

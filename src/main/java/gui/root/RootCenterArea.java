@@ -67,6 +67,12 @@ public class RootCenterArea extends StackPane {
     @Getter
     private DirectorGridPane directorGridPane;
     
+    @Getter
+    private Button newButton;
+    
+    @Getter
+    private Button loadButton;
+    
     /**
      * Construct a new RootCenterArea.
      * @param rootPane the rootPane that this RootCenterArea is a part of.
@@ -80,13 +86,9 @@ public class RootCenterArea extends StackPane {
             this.numberOfTimelines = numberOfTimelines;
             HBox buttonBox = new HBox();
             buttonBox.setSpacing(10);
-            Button newButton = new Button("Create new project");
-            Button loadButton = new Button("Load project");
+            newButton = new Button("Create new project");
+            loadButton = new Button("Load project");
             buttonBox.getChildren().addAll(newButton, loadButton);
-            newButton.setOnMouseClicked(rootPane.getControllerManager()
-                                                .getFileMenuController()::newProject);
-            loadButton.setOnMouseClicked(rootPane.getControllerManager()
-                                                 .getFileMenuController()::loadProject);
             this.getChildren().addAll(buttonBox);
             
             
