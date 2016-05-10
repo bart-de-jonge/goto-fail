@@ -105,7 +105,7 @@ public abstract class ShotBlock {
      * @param recompute - should we recompute after setting
      */
     public void setBeginCount(double count, boolean recompute) {
-        if (count <= this.endCount - 1) {
+        if (count <= this.endCount - 1 || !recompute) {
             this.beginCount = count;
         }
         if (recompute) {
@@ -128,7 +128,7 @@ public abstract class ShotBlock {
      * @param recompute - should we recompute after setting
      */
     public void setEndCount(double count, boolean recompute) {
-        if (count >= this.beginCount + 1) {
+        if (count >= this.beginCount + 1 || !recompute) {
             this.endCount = count;
         }
         if (recompute) {
@@ -179,9 +179,9 @@ public abstract class ShotBlock {
      */
     public void recompute() {
         TimelinesGridPane.setRowIndex(timetableBlock,
-                (int) Math.round(beginCount));
+                (int) Math.round(beginCount * 4));
         TimelinesGridPane.setRowSpan(timetableBlock,
-                (int) Math.round(endCount - beginCount));
+                (int) Math.round((endCount - beginCount) * 4));
     }
 
     /**

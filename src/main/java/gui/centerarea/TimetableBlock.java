@@ -1,5 +1,6 @@
 package gui.centerarea;
 
+import control.CountUtilities;
 import gui.misc.BlurHelper;
 import gui.root.RootCenterArea;
 import javafx.event.EventHandler;
@@ -376,9 +377,11 @@ public abstract class TimetableBlock extends Pane {
             snapPane(thisBlock, draggedPane, e.getSceneX(), e.getSceneY(), draggingType);
 
             // Update ShotBlock
-            int newBeginCount = TimelinesGridPane.getRowIndex(thisBlock);
+            double newBeginCount = TimelinesGridPane.getRowIndex(thisBlock)
+                    / (double) CountUtilities.NUMBER_OF_CELLS_PER_COUNT;
             parentBlock.setBeginCount(newBeginCount, false);
-            parentBlock.setEndCount(newBeginCount + TimelinesGridPane.getRowSpan(thisBlock), false);
+            parentBlock.setEndCount(newBeginCount + TimelinesGridPane.getRowSpan(thisBlock)
+                    / (double) CountUtilities.NUMBER_OF_CELLS_PER_COUNT, false);
 
             this.fireEvent(parentBlock.getShotBlockUpdatedEvent());
         };

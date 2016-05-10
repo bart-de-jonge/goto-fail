@@ -1,5 +1,6 @@
 package gui.centerarea;
 
+import control.CountUtilities;
 import javafx.geometry.HPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Priority;
@@ -62,8 +63,9 @@ public class CounterGridPane extends ScrollableGridPane {
      * @param verticalElementSize size of usual vertical elements.
      */
     private void initGridNumbers(int numberOfCounts, int verticalElementSize) {
-        for (int i = 4; i < numberOfCounts; i += 4) {
-            Label label = new Label(Integer.toString(i));
+        int cellsPerCount = CountUtilities.NUMBER_OF_CELLS_PER_COUNT;
+        for (int i = cellsPerCount; i < numberOfCounts; i += cellsPerCount) {
+            Label label = new Label(Integer.toString(i / cellsPerCount));
             label.setStyle(labelStyle);
             setHalignment(label, HPos.RIGHT);
             this.add(label, 0, i);
