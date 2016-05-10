@@ -5,6 +5,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Class that creates and displays a modal (popup) view.
@@ -12,10 +14,13 @@ import javafx.stage.Stage;
  */
 public abstract class ModalView {
 
+    @Getter
     private Stage modalStage;
+    @Getter @Setter
     private Scene displayScene;
-
+    @Getter
     private final int width;
+    @Getter
     private final int height;
 
     /**
@@ -54,6 +59,10 @@ public abstract class ModalView {
      */
     public void setModalView(Pane modalView) {
         this.displayScene = new Scene(modalView, width, height);
+        this.displayScene.getStylesheets().add("stylesheets/Misc.css");
+        this.displayScene.getStylesheets().add("stylesheets/StyledButton.css");
+        this.displayScene.getStylesheets().add("stylesheets/StyledCheckbox.css");
+        this.displayScene.getStylesheets().add("stylesheets/StyledTextfield.css");
         this.modalStage.setScene(displayScene);
     }
 }
