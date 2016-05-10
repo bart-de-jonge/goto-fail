@@ -51,6 +51,10 @@ public class DirectorShot extends Shot {
         this.frontShotPadding = frontShotPadding;
         this.endShotPadding = endShotPadding;
         log.debug("Created new DirectorShot");
+        DirectorShot.incrementCounter();
+    }
+    
+    public static void incrementCounter() {
         instanceCounter++;
     }
 }

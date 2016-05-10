@@ -12,7 +12,6 @@ public class DetailViewController {
 
     private DetailView detailView;
     private ControllerManager manager;
-    private ScriptingProject project;
 
     /**
      * Constructor.
@@ -21,7 +20,6 @@ public class DetailViewController {
     public DetailViewController(ControllerManager manager) {
         this.detailView = manager.getRootPane().getRootHeaderArea().getDetailView();
         this.manager = manager;
-        this.project = manager.getScriptingProject();
         initDescription();
         initName();
         initBeginCount();

@@ -58,7 +58,6 @@ public class CameraShotCreationModalView extends ModalView {
     private Point3D checkboxColor = new Point3D(250, 120, 50);
 
     // variables for the title label
-    private Point3D titlelabelColor = new Point3D(255, 255, 255);
     private int titlelabelOffsetFromLeft = 20;
 
     // variables for the shadow effects
@@ -75,11 +74,11 @@ public class CameraShotCreationModalView extends ModalView {
 
     // No touching these constants. They work well for all general cases,
     // and there is no reason to change them ever again.
-    private final int generalSize = 10000;
-    private final int generalSpacing = 10;
-    private final int generalPadding = 20;
-    private final int textAreaMinWidth = 350;
-    private final int cameraAreaMinWidth = 250;
+    private static final int generalSize = 10000;
+    private static final int generalSpacing = 10;
+    private static final int generalPadding = 20;
+    private static final int textAreaMinWidth = 350;
+    private static final int cameraAreaMinWidth = 250;
 
     private int numberOfCameras;
 

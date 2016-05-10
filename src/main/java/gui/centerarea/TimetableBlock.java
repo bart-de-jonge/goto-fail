@@ -400,8 +400,6 @@ public abstract class TimetableBlock extends Pane {
         mouseCurrentXMovement = event.getSceneX() - mouseCurrentXPosition;
         mouseCurrentYMovement = event.getSceneY() - mouseCurrentYPosition;
 
-        // useful items to convert local coordinates into parent (scrollable) coordinates.
-        Parent localToScrollPane = pane.getParent();
 
         // determine what kind of dragging we're going to do.
         if (draggingType == DraggingTypes.Resize_Bottom

@@ -26,7 +26,6 @@ public class TransitionHelper {
 
     @Getter
     private Node node;
-    private ArrayList<Double> transitionStores;
 
     /**
      * Constructor of class.
@@ -34,7 +33,6 @@ public class TransitionHelper {
      */
     public TransitionHelper(Node node) {
         this.node = node;
-        transitionStores = new ArrayList<Double>();
     }
 
     /**
