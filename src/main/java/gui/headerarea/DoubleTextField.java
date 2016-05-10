@@ -1,10 +1,11 @@
 package gui.headerarea;
 
 import javafx.scene.control.TextField;
+import java.text.DecimalFormat;
 
 /**
-* Created by Bart.
-*/
+ * Created by Bart.
+ */
 public class DoubleTextField extends TextField {
 
     @Override
