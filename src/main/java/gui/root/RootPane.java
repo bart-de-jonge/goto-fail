@@ -36,6 +36,8 @@ public class RootPane extends Application {
     public void start(Stage primaryStage) throws Exception {
         log.info("Starting RootPane.");
         this.primaryStage = primaryStage;
+        
+        
 
         // Create a BorderPane,
         // a layout with 5 areas: top, bottom, left, right and center,
@@ -59,7 +61,6 @@ public class RootPane extends Application {
         rootHeaderArea = new RootHeaderArea(this);
         topLevelPane.setTop(rootHeaderArea);
         
-        controllerManager = new ControllerManager(this);
 
 
         // represents simple bar at bottom of gui.
@@ -68,6 +69,8 @@ public class RootPane extends Application {
 
         rootCenterArea = new RootCenterArea(this, 0, true);
         topLevelPane.setCenter(rootCenterArea);
+
+        controllerManager = new ControllerManager(this);
 
 
         primaryStage.centerOnScreen();
