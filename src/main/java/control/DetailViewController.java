@@ -14,8 +14,6 @@ public class DetailViewController {
     private ControllerManager manager;
     private ScriptingProject project;
 
-    private final int numberOfCellsPerCount = 4;
-
     /**
      * Constructor.
      * @param manager - the controller manager this controller belongs to
@@ -52,30 +50,14 @@ public class DetailViewController {
     }
 
     /**
-     * Format double into a nice displayable string.
-     * @param d - the double to format
-     * @return - a formatted string containng the double
-     */
-    private String formatDouble(double d) {
-        if (d == (long) d) {
-            return String.format("%d", (long) d);
-        } else {
-            return String.format("%s", d);
-        }
-    }
-
-    /**
      * Helper for when the begincount field is edited.
      * Parses entry to quarters and updates all the values
      */
     private void beginCountUpdateHelper() {
         if (manager.getActiveShotBlock() != null) {
-
-            String newValue = detailView.getBeginCountField().getText();
-            double newVal = newValue.isEmpty() ? 0 : Double.parseDouble(newValue);
-            newVal = Math.round(newVal * numberOfCellsPerCount)
-                    / (double) numberOfCellsPerCount;
-            detailView.getBeginCountField().setText(formatDouble(newVal));
+            String newValue = CountUtilities.parseCountNumber(detailView.getBeginCountField().getText());
+            detailView.getBeginCountField().setText(newValue);
+            double newVal = Double.parseDouble(newValue);
 
             manager.getActiveShotBlock().setBeginCount(newVal);
             if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
@@ -113,11 +95,10 @@ public class DetailViewController {
     private void endCountUpdateHelper() {
         if (manager.getActiveShotBlock() != null) {
 
-            String newValue = detailView.getEndCountField().getText();
-            double newVal = newValue.isEmpty() ? 0 : Double.parseDouble(newValue);
-            newVal = Math.round(newVal * numberOfCellsPerCount)
-                    / (double) numberOfCellsPerCount;
-            detailView.getEndCountField().setText(formatDouble(newVal));
+            String newValue = CountUtilities.parseCountNumber(detailView.getBeginCountField().getText());
+            detailView.getBeginCountField().setText(newValue);
+            double newVal = Double.parseDouble(newValue);
+            detailView.getEndCountField().setText(newValue);
 
             manager.getActiveShotBlock().setEndCount(newVal);
             if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
@@ -171,7 +152,6 @@ public class DetailViewController {
             detailView.setDescription(manager.getActiveShotBlock().getDescription());
             detailView.setName(manager.getActiveShotBlock().getName());
 
-            // TODO: Make doubles possible in detailview
             detailView.setBeginCount(manager.getActiveShotBlock().getBeginCount());
             detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
         } else {

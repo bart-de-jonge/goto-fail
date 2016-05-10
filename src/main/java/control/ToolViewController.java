@@ -20,8 +20,6 @@ public class ToolViewController {
     private ToolButton blockDeletionTool;
     private CreationModalView creationModalView;
 
-    private final int numberOfCellsPerCount = 4;
-
     /**
      * Constructor.
      * @param controllerManager Manager of the controllers.
@@ -62,65 +60,32 @@ public class ToolViewController {
         // Add listeners for parsing to startfield
         creationModalView.getStartField().setOnKeyPressed(e -> {
                 if (e.getCode().equals(KeyCode.ENTER)) {
-                    beginCountUpdateHelper();
+                    creationModalView.getStartField().setText(
+                            CountUtilities.parseCountNumber(creationModalView.getStartField().getText()));
                 }
             });
         creationModalView.getStartField().focusedProperty().addListener(
                 (observable, oldValue, newValue) -> {
                 if (!newValue) {
-                    beginCountUpdateHelper();
+                    creationModalView.getStartField().setText(
+                            CountUtilities.parseCountNumber(creationModalView.getStartField().getText()));
                 }
             });
 
         // Add listeners for parsing to endfield
         creationModalView.getEndField().setOnKeyPressed(e -> {
                 if (e.getCode().equals(KeyCode.ENTER)) {
-                    endCountUpdateHelper();
+                    creationModalView.getStartField().setText(
+                            CountUtilities.parseCountNumber(creationModalView.getEndField().getText()));
                 }
             });
         creationModalView.getEndField().focusedProperty().addListener(
                 (observable, oldValue, newValue) -> {
                 if (!newValue) {
-                    endCountUpdateHelper();
+                    creationModalView.getStartField().setText(
+                            CountUtilities.parseCountNumber(creationModalView.getEndField().getText()));
                 }
             });
-    }
-
-    /**
-     * Helper for when the begincount field is updated.
-     * Input is parsed to quarters here
-     */
-    private void beginCountUpdateHelper() {
-        String newValue = creationModalView.getStartField().getText();
-        double newVal = newValue.isEmpty() ? 0 : Double.parseDouble(newValue);
-        newVal = Math.round(newVal * numberOfCellsPerCount)
-                / (double) numberOfCellsPerCount;
-        creationModalView.getStartField().setText(formatDouble(newVal));
-    }
-
-    /**
-     * Helper for when the endcount field is updated.
-     * Input is parsed to quarters here
-     */
-    private void endCountUpdateHelper() {
-        String newValue = creationModalView.getEndField().getText();
-        double newVal = newValue.isEmpty() ? 0 : Double.parseDouble(newValue);
-        newVal = Math.round(newVal * numberOfCellsPerCount)
-                / (double) numberOfCellsPerCount;
-        creationModalView.getEndField().setText(formatDouble(newVal));
-    }
-
-    /**
-     * Format double into a nice displayable string.
-     * @param d - the double to format
-     * @return - a formatted string containng the double
-     */
-    private String formatDouble(double d) {
-        if (d == (long) d) {
-            return String.format("%d", (long) d);
-        } else {
-            return String.format("%s", d);
-        }
     }
 
     /**

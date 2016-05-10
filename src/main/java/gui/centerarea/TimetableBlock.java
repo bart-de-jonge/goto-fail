@@ -1,5 +1,6 @@
 package gui.centerarea;
 
+import control.CountUtilities;
 import gui.misc.BlurHelper;
 import gui.root.RootCenterArea;
 import javafx.event.EventHandler;
@@ -45,8 +46,6 @@ public abstract class TimetableBlock extends Pane {
     private double verticalBorderSize = 4.0;
     private double margin = 5.0;
     private double blurRadius = 20.0;
-
-    private final int numberOfCellsPerCount = 4;
 
     /**
      *  Content variables.
@@ -379,10 +378,10 @@ public abstract class TimetableBlock extends Pane {
 
             // Update ShotBlock
             double newBeginCount = TimelinesGridPane.getRowIndex(thisBlock)
-                    / (double) numberOfCellsPerCount;
+                    / (double) CountUtilities.numberOfCellsPerCount;
             parentBlock.setBeginCount(newBeginCount, false);
             parentBlock.setEndCount(newBeginCount + TimelinesGridPane.getRowSpan(thisBlock)
-                    / (double) numberOfCellsPerCount, false);
+                    / (double) CountUtilities.numberOfCellsPerCount, false);
 
             this.fireEvent(parentBlock.getShotBlockUpdatedEvent());
         };
