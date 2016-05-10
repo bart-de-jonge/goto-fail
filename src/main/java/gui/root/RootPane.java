@@ -37,8 +37,6 @@ public class RootPane extends Application {
         log.info("Starting RootPane.");
         this.primaryStage = primaryStage;
         
-        
-
         // Create a BorderPane,
         // a layout with 5 areas: top, bottom, left, right and center,
         // and add our views to it.
@@ -55,13 +53,9 @@ public class RootPane extends Application {
         primaryStage.setHeight(startingResolutionY);
         primaryStage.setWidth(startingResolutionX);
         
-
-
         // represents file-view-help bar and button bars at top of gui.
         rootHeaderArea = new RootHeaderArea(this);
         topLevelPane.setTop(rootHeaderArea);
-        
-
 
         // represents simple bar at bottom of gui.
         rootFooterArea = new RootFooterArea();
@@ -71,7 +65,6 @@ public class RootPane extends Application {
         topLevelPane.setCenter(rootCenterArea);
 
         controllerManager = new ControllerManager(this);
-
 
         primaryStage.centerOnScreen();
         primaryStage.show();

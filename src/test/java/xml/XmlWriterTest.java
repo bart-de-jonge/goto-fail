@@ -60,6 +60,7 @@ public class XmlWriterTest {
         cameras.add(c);
         
         project.setCameras(cameras);
+        writer.setFileName("src/test/java/xml/test_files/test-write.xml");
 
         writer.writeProject(project);
         
