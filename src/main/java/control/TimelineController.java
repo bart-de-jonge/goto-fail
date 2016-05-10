@@ -114,7 +114,6 @@ public class TimelineController {
      */
     public void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
         log.info("Shot moved to new TimeLine");
-        log.error("Handling changed shot");
 
         CameraShotBlock changedBlock = event.getCameraShotBlock();
 
@@ -164,8 +163,8 @@ public class TimelineController {
     private void checkCollisions(int timelineNumber, int oldTimelineNumber,
                                  CameraShotBlock cameraShotBlock) {
         CameraTimeline timeline = controllerManager.getScriptingProject()
-                                                    .getCameraTimelines()
-                                                    .get(timelineNumber);
+                                                   .getCameraTimelines()
+                                                   .get(timelineNumber);
         // Remove collisions from shot if added to new timeline
         if (oldTimelineNumber >= 0) {
             removeCollisionFromCameraShotBlock(cameraShotBlock);
@@ -217,13 +216,5 @@ public class TimelineController {
             }
         }
         shotBlock.getShot().getCollidesWith().removeAll(toRemove);
-    }
-
-
-    
-   
-    
-    
-    
-   
+    }   
 }

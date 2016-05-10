@@ -102,9 +102,7 @@ public class NewProjectModalView extends ModalView {
         timelineList = new ListView<Label>();
         timelineList.setMaxHeight(100);
         
-       
-        this.viewPane.getChildren().addAll(addTimelineButton, timelineList);
-        
+        this.viewPane.getChildren().addAll(addTimelineButton, timelineList); 
     }
     
     /**
@@ -131,8 +129,6 @@ public class NewProjectModalView extends ModalView {
         cameraList.setMaxHeight(100);
         
         this.viewPane.getChildren().addAll(addCameraButton, cameraList);
-
-        
     }
 
     /**

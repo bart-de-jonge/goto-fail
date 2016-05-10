@@ -73,10 +73,6 @@ public class ControllerManager {
         this.detailViewController = detailViewController;
         this.toolViewController = toolViewController;
     }
-    
-    
-    
-
 
     /**
      * Initialize all necessary controllers.
@@ -88,8 +84,6 @@ public class ControllerManager {
         fileMenuController = new FileMenuController(this);
     }
     
-   
-
     /**
      * Sets the active ShotBlock and notifies necessary controllers.
      *

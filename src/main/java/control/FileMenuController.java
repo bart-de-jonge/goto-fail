@@ -36,7 +36,7 @@ public class FileMenuController {
         log.info("Saving Project to file");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save");
-        ExtensionFilter extFilter = new ExtensionFilter("txt files", "*.txt");
+        ExtensionFilter extFilter = new ExtensionFilter("Scripting Project", "*.scp");
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(controllerManager.getRootPane().getPrimaryStage());
         if (file != null) {
@@ -52,7 +52,7 @@ public class FileMenuController {
         log.info("Loading Project from file");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load");
-        ExtensionFilter extFilter = new ExtensionFilter("txt files", "*.txt");
+        ExtensionFilter extFilter = new ExtensionFilter("Scripting Project", "*.scp");
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showOpenDialog(controllerManager.getRootPane().getPrimaryStage());
         if (file != null) {
@@ -65,12 +65,13 @@ public class FileMenuController {
             } else {
                 controllerManager.setScriptingProject(temp);
                 controllerManager.getRootPane()
-                                 .reInitRootCenterArea(new RootCenterArea(
-                                                         controllerManager.getRootPane(),
-                                                         controllerManager.getScriptingProject()
-                                                                          .getCameraTimelines()
-                                                                          .size(),
-                                                         false));
+                                 .reInitRootCenterArea(
+                                         new RootCenterArea(
+                                                 controllerManager.getRootPane(),
+                                                 controllerManager.getScriptingProject()
+                                                                  .getCameraTimelines()
+                                                                  .size(),
+                                                 false));
                 addLoadedBlocks(controllerManager.getScriptingProject());
                 controllerManager.getTimelineControl()
                                  .setNumTimelines(controllerManager.getScriptingProject()
@@ -90,8 +91,7 @@ public class FileMenuController {
             CameraTimeline timeline = project.getCameraTimelines().get(i);
             int amountShots = timeline.getShots().size();
             for (int j = 0; j < amountShots;j++) {
-                CameraShot shot = timeline.getShots().get(j);
-                addCameraShotForLoad(i, shot);
+                addCameraShotForLoad(i, timeline.getShots().get(j));
             }
         }
     }
@@ -102,19 +102,29 @@ public class FileMenuController {
      * @param shot the shot to add
      */
     private void addCameraShotForLoad(int cameraIndex, CameraShot shot) {
-        CameraShotBlock shotBlock = new CameraShotBlock(shot, cameraIndex, 
-                                                       controllerManager.getRootPane()
-                                                                        .getRootCenterArea(),
-                                                       controllerManager.getTimelineControl()
-                                                                        ::shotChangedHandler);
+        CameraShotBlock shotBlock = 
+                new CameraShotBlock(shot,
+                                    cameraIndex, 
+                                    controllerManager.getRootPane()
+                                                     .getRootCenterArea(),
+                                    controllerManager.getTimelineControl()
+                                                     ::shotChangedHandler);
         controllerManager.setActiveShotBlock(shotBlock);
         controllerManager.getTimelineControl().getCameraShotBlocks().add(shotBlock);
     }
     
+    /**
+     * Method to show the modal to create a new project.
+     */
     public void newProject() {
         new NewProjectModalView(controllerManager.getRootPane(), this::createProject);
     }
     
+    /**
+     * Method to show the modal to create a new project.
+     Has MouseEvent so it can be used in an onclick for a button.
+     * @param event the MouseEvent, e.g. when clicking the new project button
+     */
     public void newProject(MouseEvent event) {
         newProject();
     }
