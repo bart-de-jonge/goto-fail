@@ -5,18 +5,12 @@ import java.util.ArrayList;
 import data.Camera;
 import data.CameraTimeline;
 import data.CameraType;
-import gui.events.AddCameraEvent;
-import gui.events.AddCameraTypeEvent;
-import gui.events.AddTimelineEvent;
-import gui.events.NewProjectCreationEvent;
 import gui.headerarea.NumberTextField;
 import gui.root.RootPane;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -179,46 +173,4 @@ public class NewProjectModalView extends ModalView {
                                            secondsPerCountBox,
                                            directorTimelineDescriptionBox);
     }
-    
-   
-   
-    
-    
-    
-    /**
-     * Handle an added Timeline.
-     * @param event the event thrown by the AddTimelineModalView
-     */
-    private void handleAddTimeline(AddTimelineEvent event) {
-        CameraTimeline timeline = new CameraTimeline(event.getCamera(),
-                                                     event.getDescription(),
-                                                     null);
-        timelines.add(timeline);
-        timelineList.getItems().add(new Label(timeline.getDescription()));
-    }
-    
-    
-    /**
-     * Handle an added camera type.
-     * @param event the event thrown by the AddCameraTypeModalView
-     */
-    private void handleAddCameraType(AddCameraTypeEvent event) {
-        CameraType type = new CameraType(event.getName(),
-                                         event.getDescription(), 
-                                         event.getMovementMargin());
-        cameraTypes.add(type);
-        cameraTypeList.getItems().add(new Label(type.getName()));
-    }
-    
-    /**
-     * Handle an added camera.
-     * @param event the event thrown by the AddCameraModalView
-     */
-    private void handleAddCamera(AddCameraEvent event) {
-        Camera camera = new Camera(event.getName(), event.getDescription(), event.getType());
-        cameras.add(camera);
-        cameraList.getItems().add(new Label(camera.getName()));
-    }
-    
-
 }

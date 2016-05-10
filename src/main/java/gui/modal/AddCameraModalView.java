@@ -3,7 +3,6 @@ package gui.modal;
 import java.util.ArrayList;
 
 import data.CameraType;
-import gui.events.AddCameraEvent;
 import gui.root.RootPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

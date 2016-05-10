@@ -1,12 +1,10 @@
 package gui.modal;
 
-import gui.events.AddCameraTypeEvent;
 import gui.headerarea.DoubleTextField;
 import gui.root.RootPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
