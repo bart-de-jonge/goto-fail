@@ -36,6 +36,9 @@ public class AddTimelineModalView extends ModalView {
     @Getter
     private ArrayList<Camera> cameras;
     
+    @Getter
+    private Label errorLabel;
+    
     public AddTimelineModalView(RootPane rootPane,
                                 ArrayList<Camera> cameras) {
         this(rootPane, cameras, width, height);
@@ -66,12 +69,18 @@ public class AddTimelineModalView extends ModalView {
         
         initFields();
         initCameraList();
+        initErrorLabel();
         
         addTimelineButton = new Button("Add Timeline");
         this.viewPane.getChildren().add(addTimelineButton);
         
         super.setModalView(this.viewPane);
         super.displayModal();
+    }
+    
+    private void initErrorLabel() {
+        errorLabel = new Label("");
+        viewPane.getChildren().add(errorLabel);
     }
     
     /**

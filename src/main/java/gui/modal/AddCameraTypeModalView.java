@@ -30,6 +30,9 @@ public class AddCameraTypeModalView extends ModalView {
     @Getter
     private VBox viewPane;
     
+    @Getter
+    private Label errorLabel;
+    
     
     public AddCameraTypeModalView(RootPane rootPane) {
         this(rootPane, width, height);
@@ -56,12 +59,18 @@ public class AddCameraTypeModalView extends ModalView {
         this.viewPane.getChildren().add(new Text("Create a camera type"));
         
         initFields();
+        initErrorLabel();
         
         addCameraTypeButton = new Button("Add Camera Type");
         this.viewPane.getChildren().add(addCameraTypeButton);
         
         super.setModalView(this.viewPane);
         super.displayModal();
+    }
+    
+    private void initErrorLabel() {
+        errorLabel = new Label("");
+        viewPane.getChildren().add(errorLabel);
     }
     
     /**

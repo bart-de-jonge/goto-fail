@@ -71,6 +71,9 @@ public class NewProjectModalView extends ModalView {
     @Getter
     private ArrayList<CameraTimeline> timelines;
     
+    @Getter
+    private Label errorLabel;
+    
     
     public NewProjectModalView(RootPane rootPane) {
         this(rootPane, width, height);
@@ -104,12 +107,18 @@ public class NewProjectModalView extends ModalView {
         initAddCameraType();
         initAddCamera();
         initAddTimeline();
+        initErrorLabel();
         
         creationButton = new Button("Create new project");
         this.viewPane.getChildren().add(creationButton);
         
         super.setModalView(this.viewPane);
         super.displayModal();
+    }
+    
+    private void initErrorLabel() {
+        errorLabel = new Label("");
+        viewPane.getChildren().add(errorLabel);
     }
 
     /**
