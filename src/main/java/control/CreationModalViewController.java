@@ -34,11 +34,12 @@ public class CreationModalViewController {
                 this.controllerManager.getScriptingProject().getCameraTimelines().size());
 
         // add escape key listener (this kills the window!)
-        creationModalView.getDisplayScene().setOnKeyPressed(e -> {
-            if (e.getCode().equals(KeyCode.ESCAPE)) {
-                creationModalView.getModalStage().close();
-            }
-        });
+        creationModalView.getDisplayScene().setOnKeyPressed(
+            e -> {
+                if (e.getCode().equals(KeyCode.ESCAPE)) {
+                    creationModalView.getModalStage().close();
+                }
+            });
 
         // add all the other listeners for specific gui components.
         addStartfieldListeners();
@@ -51,13 +52,14 @@ public class CreationModalViewController {
      * Add listeners for parsing to startfield.
      */
     private void addStartfieldListeners() {
-        creationModalView.getStartField().setOnKeyPressed(e -> {
-            if (e.getCode().equals(KeyCode.ENTER)) {
-                creationModalView.getStartField().setText(
-                        CountUtilities.parseCountNumber(
-                                creationModalView.getStartField().getText()));
-            }
-        });
+        creationModalView.getStartField().setOnKeyPressed(
+            e -> {
+                if (e.getCode().equals(KeyCode.ENTER)) {
+                    creationModalView.getStartField().setText(
+                            CountUtilities.parseCountNumber(
+                                    creationModalView.getStartField().getText()));
+                }
+            });
         creationModalView.getStartField().focusedProperty().addListener(
             (observable, oldValue, newValue) -> {
                 if (!newValue) {
@@ -72,13 +74,14 @@ public class CreationModalViewController {
      * Add listeners for parsing to endfield.
      */
     private void addEndfieldListeners() {
-        creationModalView.getEndField().setOnKeyPressed(e -> {
-            if (e.getCode().equals(KeyCode.ENTER)) {
-                creationModalView.getEndField().setText(
-                        CountUtilities.parseCountNumber(
-                                creationModalView.getEndField().getText()));
-            }
-        });
+        creationModalView.getEndField().setOnKeyPressed(
+            e -> {
+                if (e.getCode().equals(KeyCode.ENTER)) {
+                    creationModalView.getEndField().setText(
+                            CountUtilities.parseCountNumber(
+                                    creationModalView.getEndField().getText()));
+                }
+            });
         creationModalView.getEndField().focusedProperty().addListener(
             (observable, oldValue, newValue) -> {
                 if (!newValue) {
@@ -93,21 +96,23 @@ public class CreationModalViewController {
      * Add listeners for the create button.
      */
     private void addCreateButtonListeners() {
-        creationModalView.getCreationButton().setOnAction(e -> {
-            if (validateShot()) {
-                creationModalView.hideModal();
-                createDirectorShot(createDirectorShotEvent());
-            }
-        });
+        creationModalView.getCreationButton().setOnAction(
+            e -> {
+                if (validateShot()) {
+                    creationModalView.hideModal();
+                    createDirectorShot(createDirectorShotEvent());
+                }
+            });
     }
 
     /**
      * Add listeners for the cancel button. (kills the window)
      */
     private void addCancelButtonListeners() {
-        creationModalView.getCancelButton().setOnAction(e -> {
-            creationModalView.getModalStage().close();
-        });
+        creationModalView.getCancelButton().setOnAction(
+            e -> {
+                creationModalView.getModalStage().close();
+            });
     }
 
     /**
@@ -195,10 +200,11 @@ public class CreationModalViewController {
                 event.getShotStart(), event.getShotEnd());
 
         TimelineController timelineController = this.controllerManager.getTimelineControl();
-        event.getCamerasInShot().forEach(camInd -> {
-            timelineController.addCameraShot(camInd, event.getShotName(),
-                    event.getShotDescription(), event.getShotStart(),
-                    event.getShotEnd());
-        });
+        event.getCamerasInShot().forEach(
+            camInd -> {
+                timelineController.addCameraShot(camInd, event.getShotName(),
+                        event.getShotDescription(), event.getShotStart(),
+                        event.getShotEnd());
+            });
     }
 }

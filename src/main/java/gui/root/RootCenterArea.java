@@ -100,7 +100,8 @@ public class RootCenterArea extends StackPane {
             counterAndDirectorPane = new HBox();
             setAlignment(counterAndDirectorPane, Pos.CENTER_LEFT);
             counterAndDirectorPane.setMaxWidth(counterWidth + timelineWidth);
-            counterAndDirectorPane.maxHeightProperty().bind(mainTimelineScrollpane.heightProperty());
+            counterAndDirectorPane.maxHeightProperty()
+                    .bind(mainTimelineScrollpane.heightProperty());
             getChildren().add(counterAndDirectorPane);
     
             initCounterPane();
@@ -116,7 +117,7 @@ public class RootCenterArea extends StackPane {
     public RootCenterArea(RootPane rootPane) {
         this(rootPane, DEFAULT_TIMELINES, false);
     }
-    
+
     /**
      * Initializes the central timeline in this stackpane.
      */
