@@ -21,10 +21,6 @@ public class ToolButton {
     @Getter
     private Button button;
 
-    private InnerShadow firstEffect;
-    private InnerShadow secondEffect;
-    private DropShadow thirdEffect;
-
     private EventHandler<MouseEvent> clickHandler;
 
     /**
@@ -48,14 +44,6 @@ public class ToolButton {
         this.button = new Button(this.name);
 
         this.button.setOnMouseClicked(clickHandler);
-
-        firstEffect = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.15),
-                1, 1, -2, -1);
-        thirdEffect = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.15),
-                10, 0.1, 2, 1);
-
-        thirdEffect.setInput(firstEffect);
-        this.button.setEffect(thirdEffect);
 
         headerArea.getToolView().addToolButton(this);
     }

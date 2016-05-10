@@ -75,11 +75,11 @@ public class CameraShotCreationModalView extends ModalView {
 
     // No touching these constants. They work well for all general cases,
     // and there is no reason to change them ever again.
-    private int generalSize = 10000;
-    private int generalSpacing = 10;
-    private int generalPadding = 20;
-    private int textAreaMinWidth = 350;
-    private int cameraAreaMinWidth = 250;
+    private final int generalSize = 10000;
+    private final int generalSpacing = 10;
+    private final int generalPadding = 20;
+    private final int textAreaMinWidth = 350;
+    private final int cameraAreaMinWidth = 250;
 
     private int numberOfCameras;
 
