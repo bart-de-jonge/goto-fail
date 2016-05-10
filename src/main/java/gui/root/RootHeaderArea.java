@@ -82,14 +82,12 @@ public class RootHeaderArea extends VBox {
                 rootPane.getControllerManager().getFileMenuController().load();
             });
         
-        
-        
         Menu editMenu = new Menu("Edit");
         Menu viewMenu = new Menu("View");
         Menu helpMenu = new Menu("Help");
 
         MenuBar topMenuBar = new MenuBar();
-        topMenuBar.setUseSystemMenuBar(true); // giggidy
+        topMenuBar.setUseSystemMenuBar(true);
         topMenuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
         return topMenuBar;
     }
