@@ -74,7 +74,6 @@ public class NewProjectModalView extends ModalView {
     @Getter
     private Label errorLabel;
     
-    
     public NewProjectModalView(RootPane rootPane) {
         this(rootPane, width, height);
     }

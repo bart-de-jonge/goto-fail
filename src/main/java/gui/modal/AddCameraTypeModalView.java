@@ -33,7 +33,6 @@ public class AddCameraTypeModalView extends ModalView {
     @Getter
     private Label errorLabel;
     
-    
     public AddCameraTypeModalView(RootPane rootPane) {
         this(rootPane, width, height);
     }

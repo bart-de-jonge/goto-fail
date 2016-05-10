@@ -336,14 +336,17 @@ public class FileMenuController {
     private void createProject(MouseEvent event) {
         if (validateProjectData()) {
             newProjectModal.hideModal();
+            
+            // Fetch necessary data
             String name = newProjectModal.getNameField().getText();
             String description = newProjectModal.getDescriptionField().getText();
             String directorTimelineDescription = 
                     newProjectModal.getDirectorTimelineDescriptionField().getText();
             double secondsPerCount = Double.parseDouble(newProjectModal.getSecondsPerCountField()
                                                                         .getText());
+            
+            // Construct ScriptingProject from entered data
             ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
-            controllerManager.getRootPane().getPrimaryStage().setTitle(name);
             project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
             project.setCameras(newProjectModal.getCameras());
             project.setCameraTimelines(newProjectModal.getTimelines());
@@ -351,7 +354,14 @@ public class FileMenuController {
             for (CameraTimeline timeline : project.getCameraTimelines()) {
                 timeline.setProject(project);
             }
+            
+            // Set title of program to be the title of the current project
+            controllerManager.getRootPane().getPrimaryStage().setTitle(name);
+
+            // Set constructed project to be *the* project currently used
             controllerManager.setScriptingProject(project);
+            
+            // Re-init RootCenterArea with new number of timelines
             RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),
                                                      newProjectModal.getTimelines().size(),
                                                      false);
