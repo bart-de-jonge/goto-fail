@@ -95,7 +95,7 @@ public class DetailViewController {
     private void endCountUpdateHelper() {
         if (manager.getActiveShotBlock() != null) {
 
-            String newValue = CountUtilities.parseCountNumber(detailView.getBeginCountField().getText());
+            String newValue = CountUtilities.parseCountNumber(detailView.getEndCountField().getText());
             detailView.getBeginCountField().setText(newValue);
             double newVal = Double.parseDouble(newValue);
             detailView.getEndCountField().setText(newValue);

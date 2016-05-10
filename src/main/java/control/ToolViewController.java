@@ -75,14 +75,14 @@ public class ToolViewController {
         // Add listeners for parsing to endfield
         creationModalView.getEndField().setOnKeyPressed(e -> {
                 if (e.getCode().equals(KeyCode.ENTER)) {
-                    creationModalView.getStartField().setText(
+                    creationModalView.getEndField().setText(
                             CountUtilities.parseCountNumber(creationModalView.getEndField().getText()));
                 }
             });
         creationModalView.getEndField().focusedProperty().addListener(
                 (observable, oldValue, newValue) -> {
                 if (!newValue) {
-                    creationModalView.getStartField().setText(
+                    creationModalView.getEndField().setText(
                             CountUtilities.parseCountNumber(creationModalView.getEndField().getText()));
                 }
             });
