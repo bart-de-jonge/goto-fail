@@ -46,7 +46,6 @@ public class AddCameraModalView extends ModalView {
     /**
      * Construct a new AddCameraModalView.
      * @param rootPane the rootPane that uses this modal
-     * @param handler the handler to handle the result of the modal
      * @param types the camera types that can be used
      * @param width the width of the modal screen
      * @param height the height of the modal screen
@@ -110,18 +109,4 @@ public class AddCameraModalView extends ModalView {
         this.viewPane.getChildren().addAll(cameraTypeLabel, cameraTypes);
         
     }
-    
-    
-    /**
-     * Build a AddCameraEvent from the data entered by the user.
-     * @return an AddCameraEvent that can be used to construct a Camera
-     */
-    private AddCameraEvent buildEvent() {
-        String name = this.nameField.getText();
-        String description = this.descriptionField.getText();
-        int selectedIndex = cameraTypes.getSelectionModel().getSelectedIndex();
-        CameraType type = cameraTypeList.get(selectedIndex);
-        return new AddCameraEvent(name, description, type);
-    }
-
 }

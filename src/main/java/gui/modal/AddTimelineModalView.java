@@ -43,7 +43,6 @@ public class AddTimelineModalView extends ModalView {
     /**
      * Construct a new AddTimelineModalView.
      * @param rootPane the rootPane that calls this modal
-     * @param handler the handler to handle the result of this modal
      * @param cameras the cameras that are available
      * @param width the width of the modal screen
      * @param height the height of the modal screen
@@ -100,20 +99,4 @@ public class AddTimelineModalView extends ModalView {
         
         this.viewPane.getChildren().addAll(cameraLabel, cameraList);
     }
-    
-    private void addTimeline(MouseEvent event) {
-        super.hideModal();
-    }
-
-    /**
-     * Build an AddTimelineEvent from the data entered by the user.
-     * @return an AddTimelineEvent that can be used to build a timeline.
-     */
-    private AddTimelineEvent buildEvent() {
-        String description = this.descriptionField.getText();
-        int selectedIndex = cameraList.getSelectionModel().getSelectedIndex();
-        Camera camera = cameras.get(selectedIndex);
-        return new AddTimelineEvent(description, camera);
-    }
-    
 }
