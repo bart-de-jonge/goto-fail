@@ -1,6 +1,7 @@
 package gui.styling;
 
 import gui.misc.TransitionHelper;
+import javafx.geometry.Point3D;
 import javafx.scene.control.Button;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.ColorAdjust;
@@ -29,13 +30,13 @@ public class StyledButton extends Button {
 
     // effect tweaking
     private double shadowRadius = 15;
-    private double shadowOpacity = 0.25;
+    private double shadowOpacity = 0.1;
     private double bezelOpacity = 0.1;
-    private double highlightAmount = 0.2;
-    private double darkenAmount = 0.25;
+    private double highlightAmount = 0.1;
+    private double darkenAmount = 0.15;
 
     // transition tweaking
-    private int mouseOverDuration = 100;
+    private int mouseOverDuration = 50;
     private int mouseClickDuration = 50;
 
     /**
@@ -80,26 +81,46 @@ public class StyledButton extends Button {
      * Initializes mouse over transitions.
      */
     private void initMouseOverTransitions() {
-        transitionHelper.addMouseOverTransition(this.translateYProperty(), mouseOverDuration, -1);
-        transitionHelper.addMouseOverTransition(dropShadow.radiusProperty(), mouseOverDuration, 20);
-        transitionHelper.addMouseOverTransition(dropShadow.offsetXProperty(), mouseOverDuration, 3);
-        transitionHelper.addMouseOverTransition(dropShadow.offsetYProperty(), mouseOverDuration, 3);
-        transitionHelper.addMouseOverTransition(colorAdjust.brightnessProperty(), mouseOverDuration, highlightAmount);
+        transitionHelper.addMouseOverTransition(this.translateYProperty(),
+                mouseOverDuration, -1);
+        transitionHelper.addMouseOverTransition(dropShadow.radiusProperty(),
+                mouseOverDuration, 20);
+        transitionHelper.addMouseOverTransition(dropShadow.offsetXProperty(),
+                mouseOverDuration, 3);
+        transitionHelper.addMouseOverTransition(dropShadow.offsetYProperty(),
+                mouseOverDuration, 3);
+        transitionHelper.addMouseOverTransition(colorAdjust.brightnessProperty(),
+                mouseOverDuration, highlightAmount);
     }
 
     /**
      * Initializes mouse click transitions.
      */
     private void initMouseClickTransitions() {
-        transitionHelper.addMouseClickTransition(this.translateYProperty(), mouseClickDuration, 2);
-        transitionHelper.addMouseClickTransition(dropShadow.radiusProperty(), mouseClickDuration, -25);
-        transitionHelper.addMouseClickTransition(dropShadow.offsetXProperty(), mouseClickDuration, -5);
-        transitionHelper.addMouseClickTransition(dropShadow.offsetYProperty(), mouseClickDuration, -5);
-        transitionHelper.addMouseClickTransition(colorAdjust.brightnessProperty(), mouseClickDuration, -darkenAmount);
+        transitionHelper.addMouseClickTransition(this.translateYProperty(),
+                mouseClickDuration, 2);
+        transitionHelper.addMouseClickTransition(dropShadow.radiusProperty(),
+                mouseClickDuration, -25);
+        transitionHelper.addMouseClickTransition(dropShadow.offsetXProperty(),
+                mouseClickDuration, -5);
+        transitionHelper.addMouseClickTransition(dropShadow.offsetYProperty(),
+                mouseClickDuration, -5);
+        transitionHelper.addMouseClickTransition(colorAdjust.brightnessProperty(),
+                mouseClickDuration, -darkenAmount);
     }
 
     public void resetMouse() {
 
+    }
+
+    /**
+     * Simple function to set color of button, rgb style, 0-255.
+     * @param color 3d vector of 0-255 values.
+     */
+    public void setButtonColor(Point3D color) {
+        setButtonColor((int) Math.round(color.getX()),
+                (int) Math.round(color.getY()),
+                (int) Math.round(color.getZ()));
     }
 
     /**
@@ -117,6 +138,16 @@ public class StyledButton extends Button {
 
     /**
      * Simple function to set color of text, rgb style, 0-255.
+     * @param color 3d vector of 0-255 values.
+     */
+    public void setTextColor(Point3D color) {
+        setTextColor((int) Math.round(color.getX()),
+                (int) Math.round(color.getY()),
+                (int) Math.round(color.getZ()));
+    }
+
+    /**
+     * Simple function to set color of text, rgb style, 0-255.
      * @param r red component of color.
      * @param g green component of color.
      * @param b blue component of color.
@@ -126,6 +157,14 @@ public class StyledButton extends Button {
                 + r + ","
                 + g + ","
                 + b + ");"));
+    }
+
+    /**
+     * Simple function to set size of text, with integer value.
+     * @param s size to set.
+     */
+    public void setFontSize(int s) {
+        setStyle(getStyle().concat("-fx-font-size: " + s + ";"));
     }
 
 }

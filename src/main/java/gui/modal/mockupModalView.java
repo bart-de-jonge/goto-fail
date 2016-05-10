@@ -5,21 +5,19 @@ import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledCheckbox;
 import gui.styling.StyledTextfield;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
- * Modal view for gui testing and mockups. Temporary until style basics are pretty much worked out.
+ * Modal view for gui testing and mockups.
+ * Temporary until style basics are pretty much worked out.
+ * NOTE: style basics are now worked out. I'll remove this when I'm really done.
  * @author Mark
  */
-public class mockupModalView extends ModalView {
+public class MockupModalView extends ModalView {
 
     private StackPane viewPane;
     private ScrollPane scrollPane;
@@ -30,13 +28,11 @@ public class mockupModalView extends ModalView {
      * Constructor.
      * @param rootPane the root pane at which application starts.
      */
-    public mockupModalView(RootPane rootPane) {
+    public MockupModalView(RootPane rootPane) {
         super(rootPane, 400, 600);
 
         this.viewPane = new StackPane();
         this.viewPane.setStyle("-fx-background-color: rgb(255,255,255);");
-        //this.viewPane.getChildren().add(new Label("Lol ben een label!"));
-        //this.viewPane.setPadding(new Insets(10,10,10,10));
 
         this.scrollPane = new ScrollPane();
         this.vBoxScrollable = new VBox();
@@ -49,9 +45,9 @@ public class mockupModalView extends ModalView {
         this.vBox.setMaxHeight(400.0);
         this.vBox.setPadding(new Insets(20, 20, 20, 20));
         this.vBox.setSpacing(20.0);
-        this.vBox.setStyle("-fx-border-width: 0 0 1 0;" +
-                "-fx-border-color: rgba(0,0,0, 0.5);" +
-                "-fx-border-style: solid inside;");
+        this.vBox.setStyle("-fx-border-width: 0 0 1 0;"
+                + "-fx-border-color: rgba(0,0,0, 0.5);"
+                +  "-fx-border-style: solid inside;");
         this.viewPane.setAlignment(vBox, Pos.TOP_CENTER);
         this.viewPane.getChildren().add(scrollPane);
         this.viewPane.getChildren().add(vBox);
@@ -59,7 +55,7 @@ public class mockupModalView extends ModalView {
         initExampleButtons();
         initExampleTextfields();
         initExampleButtons2();
-        initExampleTextfield();
+        initExampleCheckbox();
 
         super.setModalView(this.viewPane);
         super.displayModal();
@@ -71,39 +67,22 @@ public class mockupModalView extends ModalView {
 
         blurHelper.watchScrolling(scrollPane);
 
-//        scrollPane.vvalueProperty().addListener(new ChangeListener<Number>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-//                blurHelper.processBlurUsingBounds();
-//            }
-//        });
-
-//        this.vBox.widthProperty().addListener(new ChangeListener<Number>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-//                blurHelper.processBlurUsingBounds();
-//            }
-//        });
-//
-//        this.vBox.heightProperty().addListener(new ChangeListener<Number>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-//                blurHelper.processBlurUsingBounds();
-//            }
-//        });
-
-
     }
 
+    /**
+     * Adds some example textfields to scene.
+     */
     private void initExampleTextfields() {
         for (int i = 0; i < 30; i++) {
             StyledTextfield textTextField = new StyledTextfield("I'm a textfield!");
-
             this.vBoxScrollable.getChildren().add(textTextField);
         }
 
     }
 
+    /**
+     * Adds some example buttons to scene.
+     */
     private void initExampleButtons() {
         StyledButton testButton = new StyledButton("I'm a button!");
         testButton.setButtonColor(100, 195, 50);
@@ -115,13 +94,15 @@ public class mockupModalView extends ModalView {
 
     }
 
+    /**
+     * Adds a different kind of 'round' example buttons to scene.
+     */
     private void initExampleButtons2() {
         StyledButton testRoundButton = new StyledButton("+");
         testRoundButton.setStyle("-fx-font-size: 32;"
                 + "-fx-background-radius: 5em;"
                 + "-fx-min-width: 60; -fx-max-width: 60;"
                 + "-fx-min-height: 60; -fx-max-height: 60;");
-       // testRoundButton.setButtonColor(54, 200, 178);
         testRoundButton.setButtonColor(240, 240, 240);
         testRoundButton.setTextColor(100, 100, 100);
         this.vBox.getChildren().add(testRoundButton);
@@ -135,7 +116,10 @@ public class mockupModalView extends ModalView {
         this.vBox.getChildren().add(testRoundButton2);
     }
 
-    private void initExampleTextfield() {
+    /**
+     * Adds an example checkbox to scene.
+     */
+    private void initExampleCheckbox() {
         StyledCheckbox testCheckbox = new StyledCheckbox("tetter");
         testCheckbox.setMarkColor(80, 220, 255);
         testCheckbox.setBoxColor(225, 225, 225);
@@ -143,11 +127,5 @@ public class mockupModalView extends ModalView {
         this.vBox.getChildren().add(testCheckbox);
     }
 
-    @Override
-    public void setModalView(Pane modalView) {
-        setDisplayScene(new Scene(modalView));
-        getDisplayScene().getStylesheets().add("stylesheets/mockupstylesheet.css");
-        getModalStage().setScene(getDisplayScene());
-    }
 
 }

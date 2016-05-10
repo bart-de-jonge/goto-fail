@@ -12,8 +12,6 @@
   -fx-background-color: white;
 }
 
-.region {
-}
 
 .scroll-pane > .viewport {
     -fx-background-color: transparent;

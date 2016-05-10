@@ -1,6 +1,7 @@
 package gui.styling;
 
 
+import javafx.geometry.Point3D;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.ColorAdjust;
@@ -65,6 +66,16 @@ public class StyledTextfield extends TextField {
 
     /**
      * Simple function to set color of textfield, rgb style, 0-255.
+     * @param color 3d vector of 0-255 values.
+     */
+    public void setTextfieldColor(Point3D color) {
+        setTextfieldColor((int) Math.round(color.getX()),
+                (int) Math.round(color.getY()),
+                (int) Math.round(color.getZ()));
+    }
+
+    /**
+     * Simple function to set color of textfield, rgb style, 0-255.
      * @param r red component of color.
      * @param g green component of color.
      * @param b blue component of color.
@@ -74,6 +85,16 @@ public class StyledTextfield extends TextField {
                 + r + ","
                 + g + ","
                 + b + ");"));
+    }
+
+    /**
+     * Simple function to set color of text, rgb style, 0-255.
+     * @param color 3d vector of 0-255 values.
+     */
+    public void setTextColor(Point3D color) {
+        setTextColor((int) Math.round(color.getX()),
+                (int) Math.round(color.getY()),
+                (int) Math.round(color.getZ()));
     }
 
     /**

@@ -1,7 +1,7 @@
 package gui.root;
 
 import control.ControllerManager;
-import gui.modal.mockupModalView;
+import gui.modal.MockupModalView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -70,7 +70,8 @@ public class RootPane extends Application {
         primaryStage.centerOnScreen();
         primaryStage.show();
 
-        mockupModalView mockupView = new mockupModalView(this);
+        // enable to popup the gui mocking view.
+        //MockupModalView mockupView = new MockupModalView(this);
 
     }
 

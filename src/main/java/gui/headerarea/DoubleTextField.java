@@ -10,6 +10,21 @@ import java.text.DecimalFormat;
  */
 public class DoubleTextField extends StyledTextfield {
 
+    /**
+     * Constructor of class.
+     */
+    public DoubleTextField() {
+        super();
+    }
+
+    /**
+     * Constructor of class.
+     * @param text text to setup initially.
+     */
+    public DoubleTextField(String text) {
+        super(text);
+    }
+
     @Override
     public void replaceText(int start, int end, String text) {
         String newText = this.getText().substring(0, start) + text

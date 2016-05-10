@@ -22,14 +22,14 @@ import lombok.Setter;
 /**
  * Created by markv on 5/3/2016.
  * Class to assist in quickly blurring behind a supplied node.
- * Also has support for moving elements!
+ * Also has support for moving elements.
+ * Is kind of extremely buggy. May have horrible performance impact.
  */
 public class BlurHelper {
 
     /**
-     * Blur variables
+     * Blur variables.
      */
-
     @Getter
     private GaussianBlur gaussianBlur; // The blur effect we apply (can be replaced by box blur)
     @Getter
@@ -40,7 +40,7 @@ public class BlurHelper {
     private Point2D offset; // Pixel offset if we wish to move blur slightly
 
     /**
-     * Object and scene variables
+     * Object and scene variables.
      */
     private WritableImage writableImage; // writable image used to write snapshots to
     @Getter
@@ -143,52 +143,14 @@ public class BlurHelper {
     }
 
     /**
-     * Process blur using specified bounds.
-     * @param height the specified bounds.
-     */
-    /*public void processBlurUsingBounds(double height) {
-        // get information on current size of object in scene, and set proper parameters
-        bounds = node.localToScene(node.getBoundsInLocal());
-        Rectangle2D rect = new Rectangle2D(bounds.getMinX() + offset.getX() ,
-                bounds.getMinY() + offset.getY(),
-                bounds.getWidth(), height);
-        parameters.setViewport(rect);
-
-        // just a catch, in case something goes horribly wrong.
-        Point2D imageSize = new Point2D(Math.round(bounds.getWidth()),
-                Math.round(height));
-        if (imageSize.getX() <= 0.0 || imageSize.getY() <= 0.0) {
-            return;
-        }
-
-        // Clear old image fist
-        writableImage = null;
-        imageView.setImage(null);
-
-        // create new writable image using these bounds.
-        writableImage =  new WritableImage((int) imageSize.getX(), (int) imageSize.getY());
-
-        if (hideNode) { // blurs and returns content behind the node
-            double opacity = node.getOpacity();
-            node.setOpacity(0.0);
-            node.getScene().getRoot().snapshot(parameters, writableImage);
-            node.setOpacity(opacity); // restore old node opacity
-        } else { // blurs and returns the node
-            node.getScene().getRoot().snapshot(parameters, writableImage);
-        }
-
-        imageView.setImage(writableImage);
-        System.out.println("derp: " + height);
-    }*/
-
-    /**
      * Bind this blurhelper to scrollchanges in a watchable scrollpane.
      * @param watchable the scrollpane to watch.
      */
     public void watchScrolling(ScrollPane watchable) {
         ChangeListener<Number> listener = new ChangeListener<Number>() {
             @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+            public void changed(ObservableValue<? extends Number> observable,
+                                Number oldValue, Number newValue) {
                 processBlurUsingBounds();
             }
         };

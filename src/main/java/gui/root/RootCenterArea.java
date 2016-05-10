@@ -51,7 +51,6 @@ public class RootCenterArea extends StackPane {
 
     @Getter
     private HBox counterAndDirectorPane;
-    private BlurHelper counterAndDirectorBlur;
 
     @Getter
     private ScrollPane counterScrollpane;
@@ -76,41 +75,17 @@ public class RootCenterArea extends StackPane {
         this.rootPane = rootPane;
 
         initMainTimeLinePane();
-        //initScrollbar();
+        initScrollbar();
 
         counterAndDirectorPane = new HBox();
         setAlignment(counterAndDirectorPane, Pos.CENTER_LEFT);
         counterAndDirectorPane.setMaxWidth(counterWidth + timelineWidth);
         counterAndDirectorPane.maxHeightProperty().bind(mainTimelineScrollpane.heightProperty());
 
-        counterAndDirectorBlur = new BlurHelper(counterAndDirectorPane);
-        setAlignment(counterAndDirectorBlur.getImageView(), Pos.CENTER_LEFT);
-        counterAndDirectorBlur.getImageView().fitWidthProperty().bind(counterAndDirectorPane.widthProperty());
-        counterAndDirectorBlur.getImageView().fitHeightProperty().bind(counterAndDirectorPane.heightProperty());
-        getChildren().add(counterAndDirectorBlur.getImageView());
-
-        counterAndDirectorPane.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                System.out.println("pane: " + counterAndDirectorPane.heightProperty().getValue());
-            }
-        });
-
-        mainTimelineScrollpane.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                System.out.println("scrollpane: " + mainTimelineScrollpane.heightProperty().getValue());
-            }
-        });
-
-
         getChildren().add(counterAndDirectorPane);
-        counterAndDirectorBlur.processBlurUsingBounds();
 
         initCounterPane();
-        //initDirectorPane();
-
-        counterAndDirectorBlur.watchScrolling(mainTimelineScrollpane);
+        initDirectorPane();
     }
 
     /**

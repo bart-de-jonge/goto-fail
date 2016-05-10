@@ -5,6 +5,7 @@ import javafx.animation.Interpolator;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Point3D;
 import javafx.scene.control.CheckBox;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.ColorAdjust;
@@ -25,13 +26,13 @@ public class StyledCheckbox extends CheckBox {
      * Effect and transition tweaking.
      */
     private double shadowRadius = 10;
-    private double shadowOpacity = 0.1;
+    private double shadowOpacity = 0.05;
     private double bezelThickness = 1;
     private double bezelOpacity = 0.15;
     private double bezelInnerThickness = 1;
     private double bezelInnerOpacity = 0.15;
     @Getter @Setter
-    private int transitionTime = 200;
+    private int transitionTime = 100;
     @Getter @Setter
     private Interpolator interpolator = Interpolator.EASE_BOTH;
 
@@ -179,6 +180,17 @@ public class StyledCheckbox extends CheckBox {
     }
 
     /**
+     * Simple function to set color of active element,
+     * rgb style, 0-255.
+     * @param color 3d vector of 0-255 values.
+     */
+    public void setMarkColor(Point3D color) {
+        setMarkColor((int) Math.round(color.getX()),
+                (int) Math.round(color.getY()),
+                (int) Math.round(color.getZ()));
+    }
+
+    /**
      * set color of active check element of checkbutton.
      * @param r component of color.
      * @param g component of color.
@@ -194,6 +206,17 @@ public class StyledCheckbox extends CheckBox {
                     + b + ");"));
             }
         });
+    }
+
+    /**
+     * Simple function to set color of background element,
+     * rgb style, 0-255.
+     * @param color 3d vector of 0-255 values.
+     */
+    public void setBoxColor(Point3D color) {
+        setBoxColor((int) Math.round(color.getX()),
+                (int) Math.round(color.getY()),
+                (int) Math.round(color.getZ()));
     }
 
     /**
