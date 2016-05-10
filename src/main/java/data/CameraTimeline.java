@@ -18,6 +18,10 @@ import java.util.stream.Collectors;
 @XmlRootElement(name = "cameraTimeline")
 @ToString
 public class CameraTimeline extends Timeline {
+    
+    // Name of this timeline
+    @Getter @Setter
+    private String name;
 
     // The camera that is associated with this timeline.
     @Getter @Setter
@@ -49,6 +53,18 @@ public class CameraTimeline extends Timeline {
         super(description, project);
         this.camera = camera;
         shots = new LinkedList<>();
+    }
+    
+    /**
+     * Constructor with name variable.
+     * @param name the name of the timeline
+     * @param camera the camera of this timeline
+     * @param description the description of the timeline
+     * @param project the project this timeline is a part of
+     */
+    public CameraTimeline(String name, Camera camera, String description, ScriptingProject project) {
+        this(camera, description, project);
+        this.name = name;
     }
 
     /**

@@ -19,6 +19,9 @@ public class AddTimelineModalView extends ModalView {
     private static final int height = 300;
     
     @Getter
+    private TextField nameField;
+    
+    @Getter
     private TextField descriptionField;
     
     @Getter
@@ -75,13 +78,19 @@ public class AddTimelineModalView extends ModalView {
      * Initialize the fields.
      */
     private void initFields() {
+        final Label nameLabel = new Label("Name: ");
+        nameField = new TextField();
+        HBox nameBox = new HBox();
+        nameBox.getChildren().addAll(nameLabel, nameField);
+        nameBox.setSpacing(10);
+        
         final Label descriptionLabel = new Label("Description: ");
         descriptionField = new TextField();
         HBox descriptionBox = new HBox();
         descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
         descriptionBox.setSpacing(10);
         
-        this.viewPane.getChildren().add(descriptionBox);
+        this.viewPane.getChildren().addAll(nameBox, descriptionBox);
     }
     
     /**

@@ -220,12 +220,13 @@ public class FileMenuController {
      */
     private void timelineAdded(MouseEvent event) {
         timelineModal.hideModal();
+        String name = timelineModal.getNameField().getText();
         String description = timelineModal.getDescriptionField().getText();
         int selectedIndex = timelineModal.getCameraList().getSelectionModel().getSelectedIndex();
         Camera camera = timelineModal.getCameras().get(selectedIndex);
-        CameraTimeline timeline = new CameraTimeline(camera, description, null);
+        CameraTimeline timeline = new CameraTimeline(name, camera, description, null);
         newProjectModal.getTimelines().add(timeline);
-        newProjectModal.getTimelineList().getItems().add(new Label(description));
+        newProjectModal.getTimelineList().getItems().add(new Label(name));
     }
     
     /**
