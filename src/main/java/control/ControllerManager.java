@@ -2,7 +2,6 @@ package control;
 
 import data.ScriptingProject;
 import gui.centerarea.ShotBlock;
-import gui.centerarea.TimetableBlock;
 import gui.root.RootPane;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +25,9 @@ public class ControllerManager {
 
     @Getter
     private DetailViewController detailViewController;
+    
+    @Getter
+    private FileMenuController fileMenuController;
 
     @Getter
     private CreationModalViewController creationModalViewController;
@@ -36,7 +38,7 @@ public class ControllerManager {
     // Placeholder project in lieu of XML loading
     @Getter
     @Setter
-    private ScriptingProject scriptingProject = new ScriptingProject("BOSS Project", 1.0);
+    private ScriptingProject scriptingProject;
 
     /**
      * Constructor.
@@ -77,8 +79,9 @@ public class ControllerManager {
         detailViewController = new DetailViewController(this);
         creationModalViewController = new CreationModalViewController(this);
         toolViewController = new ToolViewController(this);
+        fileMenuController = new FileMenuController(this);
     }
-
+    
     /**
      * Sets the active ShotBlock and notifies necessary controllers.
      *
