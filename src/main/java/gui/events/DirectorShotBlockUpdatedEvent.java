@@ -10,9 +10,6 @@ import javafx.event.EventType;
  */
 public class DirectorShotBlockUpdatedEvent extends ShotblockUpdatedEvent {
 
-    /**
-     * The eventtype.
-     */
     public static final EventType<DirectorShotBlockUpdatedEvent> DIRECTORSHOTBLOCK_UPDATED =
             new EventType<>(Event.ANY, "DIRECTORSHOTBLOCK_UPDATED");
 
