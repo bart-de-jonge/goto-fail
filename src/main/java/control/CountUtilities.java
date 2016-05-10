@@ -5,7 +5,7 @@ package control;
  */
 public class CountUtilities {
 
-    public static int numberOfCellsPerCount = 4;
+    public static final int numberOfCellsPerCount = 4;
 
     /**
      * Format double into a nice displayable string.
@@ -20,6 +20,11 @@ public class CountUtilities {
         }
     }
 
+    /**
+     * Parse a string containing a count number to a correctly parsed and formatted string.
+     * @param countNumber - the string containing the countNumber to parse
+     * @return - the parsed and formatted countnumber
+     */
     public static String parseCountNumber(String countNumber) {
         double res = countNumber.isEmpty() ? 0 : Double.parseDouble(countNumber);
         res = Math.round(res * numberOfCellsPerCount)

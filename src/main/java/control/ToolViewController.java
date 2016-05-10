@@ -61,14 +61,16 @@ public class ToolViewController {
         creationModalView.getStartField().setOnKeyPressed(e -> {
                 if (e.getCode().equals(KeyCode.ENTER)) {
                     creationModalView.getStartField().setText(
-                            CountUtilities.parseCountNumber(creationModalView.getStartField().getText()));
+                            CountUtilities.parseCountNumber(
+                                    creationModalView.getStartField().getText()));
                 }
             });
         creationModalView.getStartField().focusedProperty().addListener(
                 (observable, oldValue, newValue) -> {
                 if (!newValue) {
                     creationModalView.getStartField().setText(
-                            CountUtilities.parseCountNumber(creationModalView.getStartField().getText()));
+                            CountUtilities.parseCountNumber(
+                                    creationModalView.getStartField().getText()));
                 }
             });
 
@@ -76,14 +78,16 @@ public class ToolViewController {
         creationModalView.getEndField().setOnKeyPressed(e -> {
                 if (e.getCode().equals(KeyCode.ENTER)) {
                     creationModalView.getEndField().setText(
-                            CountUtilities.parseCountNumber(creationModalView.getEndField().getText()));
+                            CountUtilities.parseCountNumber(
+                                    creationModalView.getEndField().getText()));
                 }
             });
         creationModalView.getEndField().focusedProperty().addListener(
                 (observable, oldValue, newValue) -> {
                 if (!newValue) {
                     creationModalView.getEndField().setText(
-                            CountUtilities.parseCountNumber(creationModalView.getEndField().getText()));
+                            CountUtilities.parseCountNumber(
+                                    creationModalView.getEndField().getText()));
                 }
             });
     }

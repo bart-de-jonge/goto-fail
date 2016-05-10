@@ -42,7 +42,8 @@ public class TimelinesGridPane extends ScrollableGridPane {
     public void addCameraShotBlock(CameraShotBlock block) {
         this.add(block.getTimetableBlock(), block.getTimetableNumber(),
                 (int) Math.round(block.getBeginCount() * CountUtilities.numberOfCellsPerCount), 1,
-                (int) Math.round((block.getEndCount() - block.getBeginCount()) * CountUtilities.numberOfCellsPerCount));
+                (int) Math.round((block.getEndCount()
+                        - block.getBeginCount()) * CountUtilities.numberOfCellsPerCount));
     }
 
     /**
