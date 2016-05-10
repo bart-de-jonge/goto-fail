@@ -1,12 +1,12 @@
 package control;
 
-import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.ShotBlock;
 import gui.events.CameraShotCreationEvent;
 import gui.events.DirectorShotCreationEvent;
 import gui.headerarea.ToolButton;
 import gui.modal.CameraShotCreationModalView;
+import gui.modal.DirectorShotCreationModalView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 
@@ -37,12 +37,14 @@ public class ToolViewController {
      */
     private void initializeTools() {
         cameraBlockCreationTool = new ToolButton("Add camerashot",
-                                           this.controllerManager
-                                                              .getRootPane().getRootHeaderArea(),
-                                           this::showCameraCreationWindow);
+                this.controllerManager.getRootPane().getRootHeaderArea(),
+                this::showCameraCreationWindow);
+        directorBlockCreationTool = new ToolButton("Add directorshot",
+                this.controllerManager.getRootPane().getRootHeaderArea(),
+                this::showDirectorBlockCreationWindow);
         blockDeletionTool = new ToolButton("Delete shot",
-                                           this.controllerManager.getRootPane().getRootHeaderArea(),
-                                           this::deleteActiveCameraShot);
+                this.controllerManager.getRootPane().getRootHeaderArea(),
+                this::deleteActiveCameraShot);
         // If there is no active ShotBlock, then disable the delete button
         if (this.controllerManager.getActiveShotBlock() == null) {
             blockDeletionTool.disableButton();
@@ -50,14 +52,14 @@ public class ToolViewController {
     }
 
     /**
-     * When triggered, this initializes and displays the modal view for the creation of a new block.
+     * When triggered, this initializes and displays the modal view for the creation of
+     * a new CameraBlock.
      * @param event mouse event
      */
     private void showCameraCreationWindow(MouseEvent event) {
         creationModalView = new CameraShotCreationModalView(this.controllerManager.getRootPane(),
-                              this.controllerManager.getScriptingProject()
-                                      .getCameraTimelines().size(),
-                              this::createCameraShot);
+                this.controllerManager.getScriptingProject().getCameraTimelines().size(),
+                this::createCameraShot);
 
         // Add listeners for parsing to startfield
         creationModalView.getStartField().setOnKeyPressed(e -> {
@@ -95,19 +97,28 @@ public class ToolViewController {
     }
 
     /**
+     * When triggered, this initializes and displays the modal view for the creation of
+     * a new DirectorBlock.
+     * @param event mouse event
+     */
+    private void showDirectorBlockCreationWindow(MouseEvent event) {
+        new DirectorShotCreationModalView(this.controllerManager.getRootPane(),
+            this.controllerManager.getScriptingProject().getCameraTimelines().size(),
+            this::createDirectorShot);
+    }
+
+    /**
      * Event handler for the creation of a camera shot.
      * It adds the CameraShot to the CameraTimeline and adds the corresponding
      * camera shots via the TimelineController.
      * @param event shot creation event
      */
     private void createCameraShot(CameraShotCreationEvent event) {
-        ScriptingProject script = this.controllerManager.getScriptingProject();
-
         TimelineController tlineControl = this.controllerManager.getTimelineControl();
         event.getCamerasInShot().forEach(camInd -> {
                 tlineControl.addCameraShot(camInd,
-                        event.getShotName(), event.getShotDescription(),
-                        event.getShotStart(), event.getShotEnd());
+                    event.getShotName(), event.getShotDescription(),
+                    event.getShotStart(), event.getShotEnd());
             });
     }
 
@@ -117,18 +128,7 @@ public class ToolViewController {
      * @param event shot creation event
      */
     private void createDirectorShot(DirectorShotCreationEvent event) {
-        ScriptingProject script = this.controllerManager.getScriptingProject();
-
-        script.getDirectorTimeline().addShot(event.getShotName(), event.getShotDescription(),
-                event.getShotStart(), event.getShotEnd(),
-                event.getFrontPadding(), event.getEndPadding());
-
-        TimelineController timelineController = this.controllerManager.getTimelineControl();
-        event.getCamerasInShot().forEach(camInd -> {
-                timelineController.addCameraShot(camInd, event.getShotName(),
-                        event.getShotDescription(), event.getShotStart(),
-                        event.getShotEnd());
-            });
+        // TODO: Implement adding a DirectorShot
     }
 
     /**

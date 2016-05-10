@@ -18,4 +18,18 @@ public class DirectorGridPane extends ScrollableGridPane {
         setGridLinesVisible(true);
     }
 
+    /**
+     * Adds a DirectorShotBlock to the gridpane.
+     * @param block to add to the grid
+     */
+    public void addDirectorShotBlock(DirectorShotBlock block) {
+        this.add(block.getGrid(), 0,
+            (int) Math.round(block.getBeginCount()), 1,
+            (int) Math.round(block.getEndCount() - block.getBeginCount()));
+    }
+
+
+    public void removeDirectorShotBlock(DirectorShotBlock block) {
+        this.getChildren().remove(block.getGrid());
+    }
 }
