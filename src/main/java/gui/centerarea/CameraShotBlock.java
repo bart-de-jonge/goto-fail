@@ -20,6 +20,9 @@ public class CameraShotBlock extends ShotBlock {
     @Getter
     private int shotId;
 
+    private double previousBeginCount;
+    private double previousEndCount;
+
     // The grid this camershotblock belongs to
     @Getter
     private TimelinesGridPane grid;
@@ -52,6 +55,9 @@ public class CameraShotBlock extends ShotBlock {
         this.shotId = shotId;
         this.timetableNumber = timetableNumber;
         this.grid = rootCenterArea.getMainTimeLineGridPane();
+
+        this.previousBeginCount = -1;
+        this.previousEndCount = -1;
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
                 this.timetableNumber = TimelinesGridPane.getColumnIndex(
@@ -97,10 +103,31 @@ public class CameraShotBlock extends ShotBlock {
         return (CameraShot) super.getShot();
     }
 
+    @Override
+    public void setBeginCount(double count, boolean recompute) {
+        this.previousBeginCount = this.getBeginCount();
+        super.setBeginCount(count, recompute);
+    }
+
+    @Override
+    public void setEndCount(double count, boolean recompute) {
+        this.previousEndCount = this.getEndCount();
+        super.setEndCount(count, recompute);
+    }
+
     /**
      * Remove this CameraShotBlock's view from the view that it's in.
      */
     public void removeFromView() {
         this.grid.removeCameraShotBlock(this);
+    }
+
+    /**
+     * Restore this CameraShotBlock to its previous position.
+     */
+    public void restorePreviousPosition() {
+        this.setBeginCount(this.previousBeginCount);
+        this.setEndCount(this.previousEndCount);
+        this.recompute();
     }
 }

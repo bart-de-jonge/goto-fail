@@ -43,6 +43,9 @@ public class ToolViewController {
         blockDeletionTool = new ToolButton("Delete shot",
                 this.controllerManager.getRootPane().getRootHeaderArea(),
                 this::deleteActiveCameraShot);
+        new ToolButton("Generate Camera Shots",
+                this.controllerManager.getRootPane().getRootHeaderArea(),
+                this::generateCameraShots);
         // If there is no active ShotBlock, then disable the delete button
         if (this.controllerManager.getActiveShotBlock() == null) {
             blockDeletionTool.disableButton();
@@ -141,6 +144,14 @@ public class ToolViewController {
             CameraShotBlock cameraShotBlock = (CameraShotBlock) currentShot;
             this.controllerManager.getTimelineControl().removeCameraShot(cameraShotBlock);
         }
+    }
+
+    /**
+     * Create the director shot's corresponding camera shots
+     * @param event mouse event
+     */
+    private void generateCameraShots(MouseEvent event) {
+        // TODO: Generate the camera shots
     }
 
     /**
