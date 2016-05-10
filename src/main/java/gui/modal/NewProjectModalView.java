@@ -24,6 +24,9 @@ public class NewProjectModalView extends ModalView {
     private static final int height = 700;
     
     @Getter
+    private TextField nameField;
+    
+    @Getter
     private TextField descriptionField;
     
     @Getter
@@ -149,6 +152,12 @@ public class NewProjectModalView extends ModalView {
      * Initialize fields.
      */
     private void initFields() {
+        final Label nameLabel = new Label("Project name: ");
+        nameField = new TextField();
+        HBox nameBox = new HBox();
+        nameBox.getChildren().addAll(nameLabel, nameField);
+        nameBox.setSpacing(10);
+        
         final Label descriptionLabel = new Label("Project description: ");
         descriptionField = new TextField();
         HBox descriptionBox = new HBox();
@@ -168,7 +177,8 @@ public class NewProjectModalView extends ModalView {
                                                             directorTimelineDescriptionField);
         directorTimelineDescriptionBox.setSpacing(10);
         
-        this.viewPane.getChildren().addAll(descriptionBox,
+        this.viewPane.getChildren().addAll(nameBox,
+                                           descriptionBox,
                                            secondsPerCountBox,
                                            directorTimelineDescriptionBox);
     }

@@ -234,12 +234,14 @@ public class FileMenuController {
      */
     private void createProject(MouseEvent event) {
         newProjectModal.hideModal();
+        String name = newProjectModal.getNameField().getText();
         String description = newProjectModal.getDescriptionField().getText();
         String directorTimelineDescription = newProjectModal.getDirectorTimelineDescriptionField()
                                                             .getText();
         double secondsPerCount = Double.parseDouble(newProjectModal.getSecondsPerCountField()
                                                                     .getText());
-        ScriptingProject project = new ScriptingProject(description, secondsPerCount);
+        ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
+        controllerManager.getRootPane().getPrimaryStage().setTitle(name);
         project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
         project.setCameras(newProjectModal.getCameras());
         project.setCameraTimelines(newProjectModal.getTimelines());
