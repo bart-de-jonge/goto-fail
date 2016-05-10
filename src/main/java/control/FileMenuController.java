@@ -50,6 +50,8 @@ public class FileMenuController {
         File file = fileChooser.showSaveDialog(controllerManager.getRootPane().getPrimaryStage());
         if (file != null) {
             controllerManager.getScriptingProject().write(file);
+        } else {
+            log.info("User did not select a file");
         }
     }
     
@@ -87,6 +89,8 @@ public class FileMenuController {
                                                                    .getCameraTimelines()
                                                                    .size());
             }
+        } else {
+            log.info("User did not select a file");
         }
     }
     
@@ -133,11 +137,29 @@ public class FileMenuController {
         newProjectModal.getAddTimelineButton().setOnMouseClicked(this::addTimeline);
     }
     
+    /**
+     * Method to show the modal to create a new project.
+     Has MouseEvent so it can be used in an onclick for a button.
+     * @param event the MouseEvent, e.g. when clicking the new project button
+     */
+    public void newProject(MouseEvent event) {
+        newProject();
+    }
+
+    /**
+     * Event handler for when the add camera button in the NewProjectModalView is clicked.
+     * @param event the mouse event related to this event
+     */
     private void addCamera(MouseEvent event) {
-        cameraModal = new AddCameraModalView(controllerManager.getRootPane(), newProjectModal.getCameraTypes());
+        cameraModal = new AddCameraModalView(controllerManager.getRootPane(),
+                                             newProjectModal.getCameraTypes());
         cameraModal.getAddCameraButton().setOnMouseClicked(this::cameraAdded);
     }
     
+    /**
+     * Event handler for when the add camera button is clicked in the AddCameraModalView.
+     * @param event the mouse event related to this event
+     */
     private void cameraAdded(MouseEvent event) {
         cameraModal.hideModal();
         String name = cameraModal.getNameField().getText();
@@ -149,27 +171,45 @@ public class FileMenuController {
         newProjectModal.getCameraList().getItems().add(new Label(camera.getName()));
     }
     
+    /**
+     * Event handler for when the add camera type button in the NewProjectModalView is clicked.
+     * @param event the mouse event related to this event
+     */
     private void addCameraType(MouseEvent event) {
         cameraTypeModal = new AddCameraTypeModalView(controllerManager.getRootPane());
         cameraTypeModal.getAddCameraTypeButton().setOnMouseClicked(this::typeAdded);
     }
     
+    /**
+     * Event handler for when the add camera type button in the AddCameraTypeModalView is clicked.
+     * @param event the the mouse event related to this event
+     */
     private void typeAdded(MouseEvent event) {
         cameraTypeModal.hideModal();
         String name = cameraTypeModal.getNameField().getText();
         String description = cameraTypeModal.getDescriptionField().getText();
-        double movementMargin = Double.parseDouble(cameraTypeModal.getMovementMarginField().getText());
+        double movementMargin = Double.parseDouble(
+                cameraTypeModal.getMovementMarginField().getText());
         CameraType type = new CameraType(name, description, movementMargin);
         newProjectModal.getCameraTypes().add(type);
         newProjectModal.getCameraTypeList().getItems().add(new Label(type.getName()));
         
     }
     
+    /**
+     * Event handler for when the add timeline button is clicked in the NewProjectModalView.
+     * @param event the mouse event related to this event
+     */
     private void addTimeline(MouseEvent event) {
-        timelineModal = new AddTimelineModalView(controllerManager.getRootPane(), newProjectModal.getCameras());
+        timelineModal = new AddTimelineModalView(controllerManager.getRootPane(),
+                                                 newProjectModal.getCameras());
         timelineModal.getAddTimelineButton().setOnMouseClicked(this::timelineAdded);
     }
     
+    /**
+     * Event handler for when the add timeline button is clicked in the AddTimelineModalView.
+     * @param event the mouse event related to this event
+     */
     private void timelineAdded(MouseEvent event) {
         timelineModal.hideModal();
         String description = timelineModal.getDescriptionField().getText();
@@ -180,13 +220,17 @@ public class FileMenuController {
         newProjectModal.getTimelineList().getItems().add(new Label(description));
     }
     
-    
-    
+    /**
+     * Event handler for when the create project button is clicked in the NewProjectModalView.
+     * @param event the mouse event related to this event
+     */
     private void createProject(MouseEvent event) {
         newProjectModal.hideModal();
         String description = newProjectModal.getDescriptionField().getText();
-        String directorTimelineDescription = newProjectModal.getDirectorTimelineDescriptionField().getText();
-        double secondsPerCount = Double.parseDouble(newProjectModal.getSecondsPerCountField().getText());
+        String directorTimelineDescription = newProjectModal.getDirectorTimelineDescriptionField()
+                                                            .getText();
+        double secondsPerCount = Double.parseDouble(newProjectModal.getSecondsPerCountField()
+                                                                    .getText());
         ScriptingProject project = new ScriptingProject(description, secondsPerCount);
         project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
         project.setCameras(newProjectModal.getCameras());
@@ -196,21 +240,12 @@ public class FileMenuController {
             timeline.setProject(project);
         }
         controllerManager.setScriptingProject(project);
-        RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(), newProjectModal.getTimelines().size(), false);
+        RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),
+                                                 newProjectModal.getTimelines().size(),
+                                                 false);
         controllerManager.getRootPane().reInitRootCenterArea(area);
     }
-    
-    /**
-     * Method to show the modal to create a new project.
-     Has MouseEvent so it can be used in an onclick for a button.
-     * @param event the MouseEvent, e.g. when clicking the new project button
-     */
-    public void newProject(MouseEvent event) {
-        newProject();
-    }
-    
-   
-    
+     
     public void loadProject(MouseEvent event) {
         load();
     }

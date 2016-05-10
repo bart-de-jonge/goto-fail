@@ -76,7 +76,6 @@ public class NewProjectModalView extends ModalView {
     /**
      * Construct a new NewProjectModalView.
      * @param rootPane the rootPane that calls this modal.
-     * @param creationHandler the handler to handle the result of this modal
      * @param width the modal screen width
      * @param height the modal screen height
      */
