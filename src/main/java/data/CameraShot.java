@@ -5,7 +5,6 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Optional;
 
 /**
  * This class extends the Shot class, this one is specific for the CameraTimeline.

@@ -22,8 +22,10 @@ public class DirectorShot extends Shot {
     // Counter that ensures no shots with duplicate numbers will be created.
     private static int instanceCounter = 0;
 
+    @Getter
     private Set<Integer> timelineIndices;
 
+    @Getter
     private Set<CameraShot> cameraShots;
 
     // Additional time to film before the real shot starts

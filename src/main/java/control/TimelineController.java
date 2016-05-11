@@ -63,16 +63,26 @@ public class TimelineController {
      */
     public void addCameraShot(int cameraIndex, String name, String description,
                               double startCount, double endCount) {
-        log.info("Adding CameraShot to Timeline");
 
         CameraShot newShot = new CameraShot(name,description, startCount, endCount);
+        this.addCameraShot(cameraIndex, newShot);
+    }
+
+    /**
+     * Add an existing CameraShot to the corresponding timeline.
+     * @param cameraIndex Index of the camera track
+     * @param newShot CameraShot to add to the timeline
+     */
+    public void addCameraShot(int cameraIndex, CameraShot newShot) {
+        log.info("Adding CameraShot to Timeline");
+
         this.controllerManager.getScriptingProject()
                               .getCameraTimelines()
                               .get(cameraIndex)
                               .addShot(newShot);
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex,
-                rootPane.getRootCenterArea(), startCount, endCount, description,
-                name, this::shotChangedHandler, newShot);
+                rootPane.getRootCenterArea(), newShot.getBeginCount(), newShot.getEndCount(),
+                newShot.getDescription(), newShot.getName(), this::shotChangedHandler, newShot);
 
         controllerManager.setActiveShotBlock(shotBlock);
         this.cameraShotBlocks.add(shotBlock);
@@ -81,8 +91,7 @@ public class TimelineController {
         // Check for collisions
         checkCollisions(cameraIndex, shotBlock);
     }
-    
-    
+
     /**
      * Remove a camera shot from both the display and the timeline.
      * @param cameraShotBlock CameraShotBlock to be removed
