@@ -55,7 +55,6 @@ public class FileMenuController {
         log.info("Saving Project to file");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save");
-        fileChooser.setInitialFileName(".scp");
         ExtensionFilter scpFilter = new ExtensionFilter("Scripting Project", "*.scp");
         ExtensionFilter allFilter = new ExtensionFilter("All files", "*.*");
         fileChooser.getExtensionFilters().addAll(scpFilter, allFilter);
