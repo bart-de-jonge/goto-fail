@@ -401,13 +401,13 @@ public abstract class TimetableBlock extends Pane {
         // Fix dragging out of grid
         if (draggingType == DraggingTypes.Resize_Bottom
                 || draggingType == DraggingTypes.Resize_Top) {
-            TimelinesGridPane gridPane = pane.getRootPane().getRootCenterArea().getMainTimeLineGridPane();
+            TimelinesGridPane gridPane = pane.getRootPane()
+                    .getRootCenterArea().getMainTimeLineGridPane();
             Bounds sceneBounds = gridPane.localToScene(gridPane.getLayoutBounds());
             if (y < sceneBounds.getMinY()) {
                 y = sceneBounds.getMinY();
             }
         }
-
         // Mouse movement in pixels during this event.
         mouseCurrentXMovement = x - mouseCurrentXPosition;
         mouseCurrentYMovement = y - mouseCurrentYPosition;
@@ -459,7 +459,7 @@ public abstract class TimetableBlock extends Pane {
         }
 
         SnappingPane myPane = pane.getMainTimeLineGridPane()
-                .getMyPane(xCoordinate, yCoordinate, dragType);
+                .getMyPane(xCoordinate, yCoordinate);
         if (myPane != null) {
             int numCounts = (int) Math.round(mappingPane.getHeight()
                     / pane.getMainTimeLineGridPane().getVerticalElementSize());
@@ -485,7 +485,8 @@ public abstract class TimetableBlock extends Pane {
 
     /**
      * Helper function for MouseDragged event. Normal (actual dragging) part.
-     * @param event the mousedrag event in question.
+     * @param x - the x coordinate needed to process the vertical dragging
+     * @param y - the y coordinate needed to process the vertical dragging
      */
     private void onMouseDraggedHelperNormal(double x, double y) {
         AnchorPane parentPane = pane.getMainTimeLineAnchorPane();
@@ -497,7 +498,8 @@ public abstract class TimetableBlock extends Pane {
 
     /**
      * Helper function for MouseDragged event. Vertical part.
-     * @param event the mousedrag event in question.
+     * @param x - the x coordinate needed to process the vertical dragging
+     * @param y - the y coordinate needed to process the vertical dragging
      */
     private void onMouseDraggedHelperVertical(double x, double y) {
         double newLayoutY = 0;
@@ -522,7 +524,6 @@ public abstract class TimetableBlock extends Pane {
 
         draggedPane.setLayoutY(newLayoutY);
         draggedPane.setPrefHeight(newPrefHeight);
-
     }
 
     /**

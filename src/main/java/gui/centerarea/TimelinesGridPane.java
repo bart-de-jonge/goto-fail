@@ -85,18 +85,18 @@ public class TimelinesGridPane extends ScrollableGridPane {
      * @param y - the y coordinate
      * @return - the SnappingPane, null if none applicable
      */
-    public SnappingPane getMyPane(double x, double y, TimetableBlock.DraggingTypes dragType) {
+    public SnappingPane getMyPane(double x, double y) {
 
         // Correct for points outside grid
         Bounds sceneBounds = this.localToScene(this.getLayoutBounds());
         if (sceneBounds.getMinX() + offsetFromLeft > x) {
-            return getMyPane(sceneBounds.getMinX() + offsetFromLeft, y, dragType);
+            return getMyPane(sceneBounds.getMinX() + offsetFromLeft, y);
         } else if (sceneBounds.getMaxX() < x) {
-            return getMyPane(sceneBounds.getMaxX(), y, dragType);
+            return getMyPane(sceneBounds.getMaxX(), y);
         } else if (sceneBounds.getMinY() > y) {
-            return getMyPane(x, sceneBounds.getMinY(), dragType);
+            return getMyPane(x, sceneBounds.getMinY());
         } else if (sceneBounds.getMaxY() < y) {
-            return getMyPane(x, sceneBounds.getMaxY(), dragType);
+            return getMyPane(x, sceneBounds.getMaxY());
         }
         for (SnappingPane pane : panes) {
             Bounds bounds = pane.localToScene(pane.getBoundsInLocal());
