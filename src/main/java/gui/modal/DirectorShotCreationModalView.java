@@ -35,6 +35,7 @@ public class DirectorShotCreationModalView extends ModalView {
     private String defaultEndCount = "1";
 
     private VBox viewPane;
+    @Getter
     private List<CheckBox> cameraCheckboxes;
     @Getter
     private TextField descriptionField;
@@ -44,40 +45,36 @@ public class DirectorShotCreationModalView extends ModalView {
     private NumberTextField startField;
     @Getter
     private NumberTextField endField;
+    @Getter
     private Button creationButton;
+    @Getter
+    private Button cancelButton;
 
     @Getter
     private NumberTextField frontPaddingField;
     @Getter
     private NumberTextField endPaddingField;
 
-    private EventHandler<MouseEvent> directorShotCreationEventEventHandler;
-
     /**
      * Constructor with default modal size.
      * @param rootPane Pane to display modal on top of
      * @param numberOfCamerasInTimeline Amount of cameras in timeline
-     * @param creationHandler Event handler for the creation of a shot
      */
-    public DirectorShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
-                                 EventHandler<MouseEvent> creationHandler) {
-        this(rootPane, numberOfCamerasInTimeline, creationHandler, width, height);
+    public DirectorShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline) {
+        this(rootPane, numberOfCamerasInTimeline, width, height);
     }
 
     /**
      * Constructor.
      * @param rootPane Pane to display modal on top of
      * @param numberOfCamerasInTimeline Amount of cameras in timeline
-     * @param creationHandler Event handler for the creation of a shot
      * @param modalWidth Modal display width
      * @param modalHeight Modal display height
      */
     public DirectorShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
-                                 EventHandler<MouseEvent> creationHandler,
                                  int modalWidth, int modalHeight) {
         super(rootPane, modalWidth, modalHeight);
         this.numberOfCameras = numberOfCamerasInTimeline;
-        this.directorShotCreationEventEventHandler = creationHandler;
         initializeCreationView();
     }
 
@@ -94,8 +91,10 @@ public class DirectorShotCreationModalView extends ModalView {
         initCamCheckBoxes();
 
         creationButton = new Button("Create");
-        creationButton.setOnMouseClicked(this::createShot);
         this.viewPane.getChildren().add(creationButton);
+
+        cancelButton = new Button("Cancel");
+        this.viewPane.getChildren().add(cancelButton);
 
         super.setModalView(this.viewPane);
         super.displayModal();
@@ -165,78 +164,10 @@ public class DirectorShotCreationModalView extends ModalView {
     }
 
     /**
-     * Validate and then pass shot information along.
-     * @param event Creation button event
-     */
-    private void createShot(MouseEvent event) {
-        if (validateShot()) {
-            super.hideModal();
-            this.directorShotCreationEventEventHandler.handle(event);
-        }
-    }
-
-    /**
-     * Validates that the fields are correctly filled, and if not, displays
-     * a corresponding error message.
-     * @return whether or not the fields are valid
-     */
-    private boolean validateShot() {
-        String errorString = "";
-        if (nameField.getText().isEmpty()) {
-            errorString += "Please name your shot.\n";
-        }
-
-        if (descriptionField.getText().isEmpty()) {
-            errorString += "Please add a description.\n";
-        }
-
-        errorString = validateShotCounts(errorString);
-
-        boolean aCameraSelected = false;
-        for (CheckBox cb : this.cameraCheckboxes) {
-            if (cb.isSelected()) {
-                aCameraSelected = true;
-            }
-        }
-
-        if (!aCameraSelected) {
-            errorString += "Please select at least one camera for this shot.";
-        }
-
-        if (errorString.isEmpty()) {
-            return true;
-        } else {
-            displayError(errorString);
-            return false;
-        }
-    }
-
-    /**
-     * Validates the fields with numbers in the CreationModalView.
-     * @param errorString the string to add the error messages to
-     * @return returns the appended errorstring
-     */
-    private String validateShotCounts(String errorString) {
-        double startVal = Double.parseDouble(startField.getText());
-        double endVal = Double.parseDouble(endField.getText());
-        if (startVal >= endVal) {
-            errorString += "Please make sure that the shot ends after it begins.\n";
-        }
-
-        double frontPadding = Double.parseDouble(frontPaddingField.getText());
-        double endPadding = Double.parseDouble(endPaddingField.getText());
-        if (frontPadding < 0 || endPadding < 0) {
-            errorString += "Please make sure that the padding before "
-                    + "and after the shot is positive.\n";
-        }
-        return errorString;
-    }
-
-    /**
      * Displays an error message in the view.
      * @param errorString Error to be displayed.
      */
-    private void displayError(String errorString) {
+    public void displayError(String errorString) {
         Text errText = new Text(errorString);
         errText.setFill(Color.RED);
         this.viewPane.getChildren().add(this.viewPane.getChildren().size() - 1, errText);

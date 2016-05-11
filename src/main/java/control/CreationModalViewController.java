@@ -2,6 +2,7 @@ package control;
 
 import gui.modal.CameraShotCreationModalView;
 import gui.modal.DirectorShotCreationModalView;
+import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
@@ -80,7 +81,7 @@ public class CreationModalViewController {
      * @param event - the event to handle
      */
     private void createCameraShot(MouseEvent event) {
-        if(validateShot()) {
+        if(validateCameraShot()) {
             TimelineController timelineController = this.controllerManager.getTimelineControl();
 
             cameraShotCreationModalView.getCamerasInShot().forEach(cameraIndex -> {
@@ -100,7 +101,7 @@ public class CreationModalViewController {
      * a corresponding error message.
      * @return whether or not the fields are valid
      */
-    private boolean validateShot() {
+    private boolean validateCameraShot() {
         String errorString = "";
 
         boolean aCameraSelected = false;
@@ -145,8 +146,11 @@ public class CreationModalViewController {
     public void showDirectorCreationWindow() {
         directorShotCreationModalView = new DirectorShotCreationModalView(
                 this.controllerManager.getRootPane(),
-                this.controllerManager.getScriptingProject().getCameraTimelines().size(),
-                this::createDirectorShot);
+                this.controllerManager.getScriptingProject().getCameraTimelines().size());
+
+        // add mouse handlers
+        directorShotCreationModalView.getCancelButton().setOnMouseReleased(event -> directorShotCreationModalView.getModalStage().close());
+        directorShotCreationModalView.getCreationButton().setOnMouseReleased(this::createDirectorShot);
 
         // todo: add parsing of counts to the right fields
         // see showCameraCreationWindow
@@ -162,18 +166,81 @@ public class CreationModalViewController {
     private void createDirectorShot(MouseEvent event) {
         // TODO: Implement adding a DirectorShot
 
-        // Placeholder variables for creating director shot, please inline them when used
-        String shotName = directorShotCreationModalView.getNameField().getText();
-        String shotDescrip = directorShotCreationModalView.getDescriptionField().getText();
-        double startPoint = Double.parseDouble(
-                directorShotCreationModalView.getStartField().getText());
-        double endPoint = Double.parseDouble(
-                directorShotCreationModalView.getEndField().getText());
-        double frontPadding = Double.parseDouble(
-                directorShotCreationModalView.getFrontPaddingField().getText());
-        double endPadding = Double.parseDouble(
-                directorShotCreationModalView.getEndPaddingField().getText());
+        if (validateDirectorShot()) {
+            // Placeholder variables for creating director shot, please inline them when used
+            String shotName = directorShotCreationModalView.getNameField().getText();
+            String shotDescrip = directorShotCreationModalView.getDescriptionField().getText();
+            double startPoint = Double.parseDouble(
+                    directorShotCreationModalView.getStartField().getText());
+            double endPoint = Double.parseDouble(
+                    directorShotCreationModalView.getEndField().getText());
+            double frontPadding = Double.parseDouble(
+                    directorShotCreationModalView.getFrontPaddingField().getText());
+            double endPadding = Double.parseDouble(
+                    directorShotCreationModalView.getEndPaddingField().getText());
 
-        List<Integer> camerasInShot = directorShotCreationModalView.getCamerasInShot();
+            List<Integer> camerasInShot = directorShotCreationModalView.getCamerasInShot();
+
+
+            // keep at end of if statement
+            directorShotCreationModalView.getModalStage().close();
+        }
+    }
+
+    /**
+     * Validates that the fields are correctly filled, and if not, displays
+     * a corresponding error message.
+     * @return whether or not the fields are valid
+     */
+    private boolean validateDirectorShot() {
+        String errorString = "";
+        if (directorShotCreationModalView.getNameField().getText().isEmpty()) {
+            errorString += "Please name your shot.\n";
+        }
+
+        if (directorShotCreationModalView.getDescriptionField().getText().isEmpty()) {
+            errorString += "Please add a description.\n";
+        }
+
+        errorString = validateDirectorShotCounts(errorString);
+
+        boolean aCameraSelected = false;
+        for (CheckBox cb : directorShotCreationModalView.getCameraCheckboxes()) {
+            if (cb.isSelected()) {
+                aCameraSelected = true;
+            }
+        }
+
+        if (!aCameraSelected) {
+            errorString += "Please select at least one camera for this shot.";
+        }
+
+        if (errorString.isEmpty()) {
+            return true;
+        } else {
+            directorShotCreationModalView.displayError(errorString);
+            return false;
+        }
+    }
+
+    /**
+     * Validates the fields with numbers in the CreationModalView.
+     * @param errorString the string to add the error messages to
+     * @return returns the appended errorstring
+     */
+    private String validateDirectorShotCounts(String errorString) {
+        double startVal = Double.parseDouble(directorShotCreationModalView.getStartField().getText());
+        double endVal = Double.parseDouble(directorShotCreationModalView.getEndField().getText());
+        if (startVal >= endVal) {
+            errorString += "Please make sure that the shot ends after it begins.\n";
+        }
+
+        double frontPadding = Double.parseDouble(directorShotCreationModalView.getFrontPaddingField().getText());
+        double endPadding = Double.parseDouble(directorShotCreationModalView.getEndPaddingField().getText());
+        if (frontPadding < 0 || endPadding < 0) {
+            errorString += "Please make sure that the padding before "
+                    + "and after the shot is positive.\n";
+        }
+        return errorString;
     }
 }
