@@ -10,7 +10,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.BlurType;
@@ -89,12 +88,14 @@ public class CameraShotCreationModalView extends ModalView {
     private HBox contentPane;
     private HBox buttonPane;
     private FlowPane checkboxPane;
+    @Getter
     private List<StyledCheckbox> cameraCheckboxes;
 
     @Getter
     private TextField descriptionField;
     @Getter
     private TextField nameField;
+    @Getter
     private Label titleLabel;
 
     @Getter
@@ -111,33 +112,26 @@ public class CameraShotCreationModalView extends ModalView {
     private InnerShadow topOuterShadow;
     private DropShadow bottomOuterShadow;
 
-    private EventHandler<MouseEvent> cameraShotCreationEventHandler;
-
     /**
      * Constructor with default modal size.
      * @param rootPane Pane to display modal on top of
      * @param numberOfCamerasInTimeline Amount of cameras in timeline
-     * @param creationHandler Event handler for the creation of a shot
      */
-    public CameraShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
-                                       EventHandler<MouseEvent> creationHandler) {
-        this(rootPane, numberOfCamerasInTimeline, creationHandler, width, height);
+    public CameraShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline) {
+        this(rootPane, numberOfCamerasInTimeline, width, height);
     }
 
     /**
      * Constructor.
      * @param rootPane Pane to display modal on top of
      * @param numberOfCamerasInTimeline Amount of cameras in timeline
-     * @param creationHandler Event handler for the creation of a shot
      * @param modalWidth Modal display width
      * @param modalHeight Modal display height
      */
     public CameraShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
-                                       EventHandler<MouseEvent> creationHandler,
                                        int modalWidth, int modalHeight) {
         super(rootPane, modalWidth, modalHeight);
         this.numberOfCameras = numberOfCamerasInTimeline;
-        this.cameraShotCreationEventHandler = creationHandler;
         initializeCreationView();
     }
 
@@ -221,10 +215,6 @@ public class CameraShotCreationModalView extends ModalView {
 
         // Add cancel button
         cancelButton = new StyledButton("Cancel");
-        cancelButton.setOnMouseReleased(e -> {
-                getModalStage().close(); // kill window
-            }
-        );
         cancelButton.setPrefWidth(buttonWidth);
         cancelButton.setPrefHeight(buttonHeight);
         cancelButton.setFontSize(buttonFontSize);
@@ -233,7 +223,6 @@ public class CameraShotCreationModalView extends ModalView {
 
         // Add creation button
         creationButton = new StyledButton("Create");
-        creationButton.setOnMouseReleased(this::createShot);
         creationButton.setPrefWidth(buttonWidth);
         creationButton.setPrefHeight(buttonHeight);
         creationButton.setFontSize(buttonFontSize);
@@ -313,59 +302,6 @@ public class CameraShotCreationModalView extends ModalView {
         // add all to scene
         this.checkboxPane.getChildren().addAll(cameraCheckboxes);
         this.contentPane.getChildren().add(this.checkboxPane);
-    }
-
-    /**
-     * Validate and then pass shot information along.
-     * @param event Creation button event
-     */
-    private void createShot(MouseEvent event) {
-        if (validateShot()) {
-            super.hideModal();
-            this.cameraShotCreationEventHandler.handle(event);
-        }
-    }
-
-    /**
-     * Validates that the fields are correctly filled, and if not, isplays
-     * a corresponding error message.
-     * @return whether or not the fields are valid
-     */
-    private boolean validateShot() {
-        String errorString = "";
-
-        boolean aCameraSelected = false;
-        for (CheckBox cb : this.cameraCheckboxes) {
-            if (cb.isSelected()) {
-                aCameraSelected = true;
-            }
-        }
-
-        if (!aCameraSelected) {
-            errorString = "Please select at least one camera for this shot.";
-        }
-
-        double startVal = Double.parseDouble(startField.getText());
-        double endVal = Double.parseDouble(endField.getText());
-        if (startVal >= endVal) {
-            errorString = "Please make sure that the shot ends after it begins.\n";
-        }
-
-        if (descriptionField.getText().isEmpty()) {
-            errorString = "Please add a description.\n";
-        }
-
-        if (nameField.getText().isEmpty()) {
-            errorString = "Please name your shot.\n";
-        }
-
-        if (errorString.isEmpty()) {
-            return true;
-        } else {
-            titleLabel.setText(errorString);
-            titleLabel.setTextFill(Color.RED);
-            return false;
-        }
     }
 
     /**

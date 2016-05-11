@@ -2,8 +2,10 @@ package control;
 
 import gui.modal.CameraShotCreationModalView;
 import gui.modal.DirectorShotCreationModalView;
+import javafx.scene.control.CheckBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 import java.util.List;
 
@@ -28,8 +30,13 @@ public class CreationModalViewController {
     public void showCameraCreationWindow() {
         cameraShotCreationModalView = new CameraShotCreationModalView(
                 this.controllerManager.getRootPane(),
-                this.controllerManager.getScriptingProject().getCameraTimelines().size(),
-                this::createCameraShot);
+                this.controllerManager.getScriptingProject().getCameraTimelines().size());
+
+        // Add mouse handlers
+        cameraShotCreationModalView.getCreationButton().setOnMouseReleased(this::createCameraShot);
+        cameraShotCreationModalView.getCancelButton().setOnMouseReleased(e -> {
+            cameraShotCreationModalView.getModalStage().close();
+        });
 
         // Add listeners for parsing to startfield
         cameraShotCreationModalView.getStartField().setOnKeyPressed(e -> {
@@ -73,15 +80,61 @@ public class CreationModalViewController {
      * @param event - the event to handle
      */
     private void createCameraShot(MouseEvent event) {
-        TimelineController timelineController = this.controllerManager.getTimelineControl();
+        if(validateShot()) {
+            TimelineController timelineController = this.controllerManager.getTimelineControl();
 
-        cameraShotCreationModalView.getCamerasInShot().forEach(cameraIndex -> {
+            cameraShotCreationModalView.getCamerasInShot().forEach(cameraIndex -> {
                 timelineController.addCameraShot(cameraIndex,
                         cameraShotCreationModalView.getNameField().getText(),
                         cameraShotCreationModalView.getDescriptionField().getText(),
                         Double.parseDouble(cameraShotCreationModalView.getStartField().getText()),
                         Double.parseDouble(cameraShotCreationModalView.getEndField().getText()));
             });
+
+            cameraShotCreationModalView.getModalStage().close();
+        }
+    }
+
+    /**
+     * Validates that the fields are correctly filled, and if not, isplays
+     * a corresponding error message.
+     * @return whether or not the fields are valid
+     */
+    private boolean validateShot() {
+        String errorString = "";
+
+        boolean aCameraSelected = false;
+        for (CheckBox cb : cameraShotCreationModalView.getCameraCheckboxes()) {
+            if (cb.isSelected()) {
+                aCameraSelected = true;
+            }
+        }
+
+        if (!aCameraSelected) {
+            errorString = "Please select at least one camera for this shot.";
+        }
+
+        double startVal = Double.parseDouble(cameraShotCreationModalView.getStartField().getText());
+        double endVal = Double.parseDouble(cameraShotCreationModalView.getEndField().getText());
+        if (startVal >= endVal) {
+            errorString = "Please make sure that the shot ends after it begins.\n";
+        }
+
+        if (cameraShotCreationModalView.getDescriptionField().getText().isEmpty()) {
+            errorString = "Please add a description.\n";
+        }
+
+        if (cameraShotCreationModalView.getNameField().getText().isEmpty()) {
+            errorString = "Please name your shot.\n";
+        }
+
+        if (errorString.isEmpty()) {
+            return true;
+        } else {
+            cameraShotCreationModalView.getTitleLabel().setText(errorString);
+            cameraShotCreationModalView.getTitleLabel().setTextFill(Color.RED);
+            return false;
+        }
     }
 
 
