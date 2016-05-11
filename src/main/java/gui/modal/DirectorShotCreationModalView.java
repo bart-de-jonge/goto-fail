@@ -3,20 +3,26 @@ package gui.modal;
 import gui.events.DirectorShotCreationEvent;
 import gui.headerarea.NumberTextField;
 import gui.root.RootPane;
+import gui.styling.StyledButton;
+import gui.styling.StyledCheckbox;
+import gui.styling.StyledTextfield;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class responsible for displaying a modal view for the creation of shots.
@@ -27,22 +33,52 @@ public class DirectorShotCreationModalView extends ModalView {
     private static final int width = 600;
     private static final int height = 600;
 
+    private String topStyle = "-fx-background-color: rgb(240,240,240);"
+            + "-fx-text-fill: black; -fx-font-size: 20;";
+    private String centerStyle = "-fx-background-color: rgb(230, 230, 230);";
+    private String bottomStyle = "-fx-background-color: rgb(240, 240, 240);";
+
+    private int titlelabelOffsetFromLeft = 20;
+
     private int numberOfCameras;
+
+    // No touching these constants. They work well for all general cases,
+    // and there is no reason to change them ever again.
+    private static final int GENERAL_SIZE = 10000;
+    private static final int GENERAL_SPACING = 10;
+    private static final int GENERAL_PADDING = 20;
+    private static final int TEXT_AREA_MIN_WIDTH = 350;
+    private static final int CAMERA_AREA_MIN_WIDTH = 250;
 
     @Setter
     private String defaultStartCount = "0";
     @Setter
     private String defaultEndCount = "1";
 
-    private VBox viewPane;
-    private List<CheckBox> cameraCheckboxes;
-    private TextField descriptionField;
-    private TextField nameField;
+    // General panes used
+    private VBox rootPane;
+    private HBox centerPane;
+    private FlowPane checkboxPane;
+    private HBox buttonPane;
+    private Label titleLabel;
+
+    // Text fields
+    private StyledTextfield descriptionField;
+    private StyledTextfield nameField;
     private NumberTextField startField;
     private NumberTextField endField;
-    private Button creationButton;
     private NumberTextField frontPaddingField;
     private NumberTextField endPaddingField;
+
+    // Buttons
+    private StyledButton creationButton;
+    private StyledButton cancelButton;
+    private List<StyledCheckbox> cameraCheckboxes;
+
+    // Effects
+    private InnerShadow topInnerShadow;
+    private InnerShadow topOuterShadow;
+    private DropShadow bottomOuterShadow;
 
     private EventHandler<DirectorShotCreationEvent> directorShotCreationEventEventHandler;
 
@@ -78,20 +114,107 @@ public class DirectorShotCreationModalView extends ModalView {
      * Initialize and display the modal view.
      */
     private void initializeCreationView() {
+        getModalStage().setMinWidth(width);
+        getModalStage().setMinHeight(height);
+
         // Create a new VBox with spacing between children of 20
-        this.viewPane = new VBox(20);
-        this.viewPane.getChildren().add(new Text("Add a new directorshot"));
+        this.rootPane = new VBox();
+        initTitleLabel();
 
-        initNameDescriptionFields();
-        initCountFields();
-        initCamCheckBoxes();
+        this.centerPane = new HBox(40.0);
+        this.centerPane.setAlignment(Pos.CENTER);
+        this.centerPane.setPadding(new Insets(0, GENERAL_PADDING, 0, 0));
+        this.centerPane.setPrefHeight(GENERAL_SIZE);
+        this.centerPane.setStyle(centerStyle);
+        this.rootPane.getChildren().add(centerPane);
 
-        creationButton = new Button("Create");
+        initTextfields();
+
+        //initNameDescriptionFields();
+        //initCountFields();
+        //initCamCheckBoxes();
+
+        creationButton = new StyledButton("Create");
         creationButton.setOnMouseClicked(this::createShot);
-        this.viewPane.getChildren().add(creationButton);
+        this.rootPane.getChildren().add(creationButton);
 
-        super.setModalView(this.viewPane);
+        super.setModalView(this.rootPane);
         super.displayModal();
+    }
+
+    /**
+     * Initialize title label.
+     */
+    private void initTitleLabel() {
+        titleLabel = new Label("Add a directorshot...");
+        titleLabel.setStyle(topStyle);
+        titleLabel.setAlignment(Pos.CENTER_LEFT);
+        titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
+        titleLabel.setPrefWidth(GENERAL_SIZE);
+        titleLabel.setPrefHeight(GENERAL_SIZE);
+        this.rootPane.getChildren().add(titleLabel);
+    }
+
+    /**
+     * Initialize all six of the text fields.
+     */
+    private void initTextfields() {
+        VBox content = new VBox(GENERAL_SPACING);
+        content.setAlignment(Pos.CENTER_LEFT);
+        content.setMinWidth(TEXT_AREA_MIN_WIDTH);
+        content.setPrefWidth(GENERAL_SIZE);
+        content.setPrefHeight(GENERAL_SIZE);
+        content.setPadding(new Insets(GENERAL_PADDING));
+
+        // init name field
+        final Label nameLabel = new Label("Shot Name: ");
+        nameField = new StyledTextfield();
+        HBox nameBox = new HBox(GENERAL_SPACING);
+        nameBox.getChildren().addAll(nameLabel, nameField);
+        nameBox.setSpacing(GENERAL_SPACING);
+
+        // init description field
+        final Label descriptionLabel = new Label("Shot Description: ");
+        descriptionField = new StyledTextfield();
+        HBox descriptionBox = new HBox(GENERAL_SPACING);
+        descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
+        descriptionBox.setSpacing(GENERAL_SPACING);
+
+        // init start field
+        final Label startLabel = new Label("Start:");
+        startField = new NumberTextField();
+        startField.setText(this.defaultStartCount);
+        HBox startBox = new HBox(GENERAL_SPACING);
+        startBox.getChildren().addAll(startLabel, startField);
+        startBox.setSpacing(GENERAL_SPACING);
+
+        // init end field
+        final Label endLabel = new Label("End:");
+        endField = new NumberTextField();
+        endField.setText(this.defaultEndCount);
+        HBox endBox = new HBox(GENERAL_SPACING);
+        endBox.getChildren().addAll(endLabel, endField);
+        endBox.setSpacing(GENERAL_SPACING);
+
+        // init padding before field
+        final Label frontPaddingLabel = new Label("Padding before shot:");
+        frontPaddingField = new NumberTextField();
+        frontPaddingField.setText("0.0");
+        HBox frontPaddingBox = new HBox(GENERAL_SPACING);
+        frontPaddingBox.getChildren().addAll(frontPaddingLabel, frontPaddingField);
+        frontPaddingBox.setSpacing(GENERAL_SPACING);
+
+        // init padding after field
+        final Label endPaddingLabel = new Label("Padding after shot:");
+        endPaddingField = new NumberTextField();
+        endPaddingField.setText("0.0");
+        HBox endPaddingBox = new HBox(GENERAL_SPACING);
+        endPaddingBox.getChildren().addAll(endPaddingLabel, endPaddingField);
+        endPaddingBox.setSpacing(GENERAL_SPACING);
+
+        content.getChildren().addAll(nameBox, descriptionBox, startBox, endBox,
+                frontPaddingBox, endPaddingBox);
+        this.centerPane.getChildren().add(content);
     }
 
     /**
@@ -99,19 +222,19 @@ public class DirectorShotCreationModalView extends ModalView {
      */
     private void initNameDescriptionFields() {
         // Add the textfields for shot's name & description
-        final Label nameLabel = new Label("Directorshot Name: ");
-        nameField = new TextField();
+        final Label nameLabel = new Label("Shot Name: ");
+        nameField = new StyledTextfield();
         HBox nameBox = new HBox();
         nameBox.getChildren().addAll(nameLabel, nameField);
-        nameBox.setSpacing(10);
+        nameBox.setSpacing(GENERAL_SPACING);
 
-        final Label descripLabel = new Label("Directorshot Description: ");
-        descriptionField = new TextField();
-        HBox descripBox = new HBox();
-        descripBox.getChildren().addAll(descripLabel, descriptionField);
-        descripBox.setSpacing(10);
+        final Label descriptionLabel = new Label("Shot Description: ");
+        descriptionField = new StyledTextfield();
+        HBox descriptionBox = new HBox();
+        descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
+        descriptionBox.setSpacing(GENERAL_SPACING);
 
-        this.viewPane.getChildren().addAll(nameBox, descripBox);
+        this.rootPane.getChildren().addAll(nameBox, descriptionBox);
     }
 
     /**
@@ -141,7 +264,7 @@ public class DirectorShotCreationModalView extends ModalView {
         countBox.getChildren()
                 .addAll(startLabel, startField, endLabel, endField,
                         frontPaddingLabel, frontPaddingField, endPaddingLabel, endPaddingField);
-        this.viewPane.getChildren().add(countBox);
+        this.rootPane.getChildren().add(countBox);
     }
 
     /**
@@ -151,10 +274,10 @@ public class DirectorShotCreationModalView extends ModalView {
         cameraCheckboxes = new ArrayList<>();
         for (int i = 0; i < numberOfCameras; i++) {
             String checkBoxString = "Camera " + (i + 1);
-            CheckBox checkBox = new CheckBox(checkBoxString);
+            StyledCheckbox checkBox = new StyledCheckbox(checkBoxString);
             cameraCheckboxes.add(checkBox);
         }
-        this.viewPane.getChildren().addAll(cameraCheckboxes);
+        this.rootPane.getChildren().addAll(cameraCheckboxes);
     }
 
     /**
@@ -232,7 +355,7 @@ public class DirectorShotCreationModalView extends ModalView {
     private void displayError(String errorString) {
         Text errText = new Text(errorString);
         errText.setFill(Color.RED);
-        this.viewPane.getChildren().add(this.viewPane.getChildren().size() - 1, errText);
+        this.rootPane.getChildren().add(this.rootPane.getChildren().size() - 1, errText);
     }
 
     /**
