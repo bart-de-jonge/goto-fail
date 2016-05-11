@@ -30,7 +30,7 @@ public class StyledCheckbox extends CheckBox {
     private double bezelThickness = 1;
     private double bezelOpacity = 0.15;
     private double bezelInnerThickness = 1;
-    private double bezelInnerOpacity = 0.15;
+    private double bezelInnerOpacity = 0.05;
     @Getter @Setter
     private int transitionTime = 100;
     @Getter @Setter

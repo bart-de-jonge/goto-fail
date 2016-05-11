@@ -24,6 +24,9 @@ public class NewProjectModalView extends ModalView {
     private static final int height = 700;
     
     @Getter
+    private TextField nameField;
+    
+    @Getter
     private TextField descriptionField;
     
     @Getter
@@ -48,13 +51,13 @@ public class NewProjectModalView extends ModalView {
     private VBox viewPane;
     
     @Getter
-    private ListView<Label> cameraList;
+    private ListView<HBox> cameraList;
     
     @Getter
-    private ListView<Label> timelineList;
+    private ListView<HBox> timelineList;
     
     @Getter
-    private ListView<Label> cameraTypeList;
+    private ListView<HBox> cameraTypeList;
     
     @Getter
     private RootPane rootPane;
@@ -68,6 +71,8 @@ public class NewProjectModalView extends ModalView {
     @Getter
     private ArrayList<CameraTimeline> timelines;
     
+    @Getter
+    private Label errorLabel;
     
     public NewProjectModalView(RootPane rootPane) {
         this(rootPane, width, height);
@@ -101,12 +106,21 @@ public class NewProjectModalView extends ModalView {
         initAddCameraType();
         initAddCamera();
         initAddTimeline();
+        initErrorLabel();
         
         creationButton = new Button("Create new project");
         this.viewPane.getChildren().add(creationButton);
         
         super.setModalView(this.viewPane);
         super.displayModal();
+    }
+    
+    /**
+     * Initialize the label that shows validation error messages.
+     */
+    private void initErrorLabel() {
+        errorLabel = new Label("");
+        viewPane.getChildren().add(errorLabel);
     }
 
     /**
@@ -115,7 +129,7 @@ public class NewProjectModalView extends ModalView {
     private void initAddTimeline() {
         addTimelineButton = new Button("Add Camera Timeline");
         
-        timelineList = new ListView<Label>();
+        timelineList = new ListView<HBox>();
         timelineList.setMaxHeight(100);
         
         this.viewPane.getChildren().addAll(addTimelineButton, timelineList); 
@@ -127,7 +141,7 @@ public class NewProjectModalView extends ModalView {
     private void initAddCameraType() {
         addCameraTypeButton = new Button("Add Camera Type");
         
-        cameraTypeList = new ListView<Label>();
+        cameraTypeList = new ListView<HBox>();
         cameraTypeList.setMaxHeight(100);
         
         this.viewPane.getChildren().addAll(addCameraTypeButton, cameraTypeList);
@@ -139,7 +153,7 @@ public class NewProjectModalView extends ModalView {
     private void initAddCamera() {
         addCameraButton = new Button("Add Camera");
         
-        cameraList = new ListView<Label>();
+        cameraList = new ListView<HBox>();
         cameraList.setMaxHeight(100);
         
         this.viewPane.getChildren().addAll(addCameraButton, cameraList);
@@ -149,6 +163,12 @@ public class NewProjectModalView extends ModalView {
      * Initialize fields.
      */
     private void initFields() {
+        final Label nameLabel = new Label("Project name: ");
+        nameField = new TextField();
+        HBox nameBox = new HBox();
+        nameBox.getChildren().addAll(nameLabel, nameField);
+        nameBox.setSpacing(10);
+        
         final Label descriptionLabel = new Label("Project description: ");
         descriptionField = new TextField();
         HBox descriptionBox = new HBox();
@@ -168,7 +188,8 @@ public class NewProjectModalView extends ModalView {
                                                             directorTimelineDescriptionField);
         directorTimelineDescriptionBox.setSpacing(10);
         
-        this.viewPane.getChildren().addAll(descriptionBox,
+        this.viewPane.getChildren().addAll(nameBox,
+                                           descriptionBox,
                                            secondsPerCountBox,
                                            directorTimelineDescriptionBox);
     }

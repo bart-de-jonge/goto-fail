@@ -34,6 +34,9 @@ public class AddCameraModalView extends ModalView {
     private VBox viewPane;
     
     @Getter
+    private Label errorLabel;
+    
+    @Getter
     private ArrayList<CameraType> cameraTypeList;
     
     
@@ -67,12 +70,21 @@ public class AddCameraModalView extends ModalView {
         
         initFields();
         initTypeList();
+        initErrorLabel();
         
         addCameraButton = new Button("Add Camera");
         this.viewPane.getChildren().add(addCameraButton);
         
         super.setModalView(this.viewPane);
         super.displayModal();
+    }
+    
+    /**
+     * Initialize the label that shows validation error messages.
+     */
+    private void initErrorLabel() {
+        errorLabel = new Label("");
+        viewPane.getChildren().add(errorLabel);
     }
     
     /**
