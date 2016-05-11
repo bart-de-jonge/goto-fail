@@ -147,7 +147,7 @@ public class ToolViewController {
     }
 
     /**
-     * Create the director shot's corresponding camera shots
+     * Create the director shot's corresponding camera shots.
      * @param event mouse event
      */
     private void generateCameraShots(MouseEvent event) {

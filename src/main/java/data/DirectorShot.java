@@ -7,6 +7,9 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * The DirectorShot class has more elaborate information for the Director, like the description.
  * Created by martijn.
@@ -18,6 +21,10 @@ public class DirectorShot extends Shot {
 
     // Counter that ensures no shots with duplicate numbers will be created.
     private static int instanceCounter = 0;
+
+    private Set<Integer> timelineIndices;
+
+    private Set<CameraShot> cameraShots;
 
     // Additional time to film before the real shot starts
     @Getter
@@ -50,11 +57,39 @@ public class DirectorShot extends Shot {
         super(instanceCounter, name, description, startCount, endCount);
         this.frontShotPadding = frontShotPadding;
         this.endShotPadding = endShotPadding;
+        this.timelineIndices = new HashSet<>();
+        this.cameraShots = new HashSet<>();
         log.debug("Created new DirectorShot");
         DirectorShot.incrementCounter();
     }
     
     public static void incrementCounter() {
         instanceCounter++;
+    }
+
+    /**
+     * Add a camera timeline index (but not an actual shot).
+     * @param index timeline index to add
+     */
+    public void addCameraTimelineIndex(int index) {
+        this.timelineIndices.add(index);
+    }
+
+    /**
+     * Add a CameraShot that belongs to this DirectorShot.
+     * @param shot CameraShot to be added
+     */
+    public void addCameraShot(CameraShot shot) {
+        this.cameraShots.add(shot);
+    }
+
+    /**
+     * Remove/Free an associated CameraShot from this DirectorShot.
+     * @param shot Shot to be removed
+     * @param index Timeline index of the removed shot
+     */
+    public void removeCameraShot(CameraShot shot, int index) {
+        this.timelineIndices.remove(index);
+        this.cameraShots.remove(shot);
     }
 }
