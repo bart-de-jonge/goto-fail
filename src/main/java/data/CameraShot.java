@@ -32,6 +32,13 @@ public class CameraShot extends Shot {
     public CameraShot(String name, String description, double startCount, double endCount) {
         super(instanceCounter, name, description, startCount, endCount);
         log.debug("Created new CameraShot");
+        CameraShot.incrementCounter();
+    }
+    
+    /**
+     * Static method to increment the instance counter.
+     */
+    public static void incrementCounter() {
         instanceCounter++;
     }
 }
