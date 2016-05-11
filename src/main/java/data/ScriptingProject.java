@@ -26,6 +26,10 @@ import java.util.ArrayList;
 @ToString
 @Log4j2
 public class ScriptingProject {
+    
+    // Name of this project
+    @Getter @Setter
+    private String name;
 
     // Description of this project
     @Getter @Setter
@@ -72,6 +76,17 @@ public class ScriptingProject {
         this.cameras = new ArrayList<Camera>();
         this.cameraTimelines = new ArrayList<CameraTimeline>();
         this.directorTimeline = new DirectorTimeline(description, this);
+    }
+    
+    /**
+     * Constructor with name variable.
+     * @param name the name of the project
+     * @param description the description of the project
+     * @param secondsPerCount the seconds per count in this project
+     */
+    public ScriptingProject(String name, String description, double secondsPerCount) {
+        this(description, secondsPerCount);
+        this.name = name;
     }
 
     /**
