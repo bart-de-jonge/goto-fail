@@ -84,18 +84,29 @@ public class ControllerManager {
         fileMenuController = new FileMenuController(this);
     }
     
+    /**
+     * Set up a handler for when the close button is clicked.
+     */
     private void initOnCloseOperation() {
         rootPane.getPrimaryStage().setOnCloseRequest(this::handleOnClose);
     }
     
+    /**
+     * Handler for the on close event.
+     * @param event the WindowEvent for this handler
+     */
     private void handleOnClose(WindowEvent event) {
-        
-        if (scriptingProject.isChanged()) {
-            event.consume();
-            initSaveModal();
+        if (scriptingProject != null) {
+            if (scriptingProject.isChanged()) {
+                event.consume();
+                initSaveModal();
+            }
         }
     }
     
+    /**
+     * Init the modal that will be displayed if there are unsaved changes.
+     */
     private void initSaveModal() {
         saveModal = new SaveModalView(rootPane);
         saveModal.getSaveButton().setOnMouseClicked(this::handleSave);
@@ -103,16 +114,29 @@ public class ControllerManager {
         saveModal.getCancelButton().setOnMouseClicked(this::handleCancel);
     }
     
+    /**
+     * Handle a click on the save button.
+     * @param event the MouseEvent for this handler.
+     */
     private void handleSave(MouseEvent event) {
         fileMenuController.save();
         saveModal.hideModal();
+        rootPane.getPrimaryStage().close();
     }
     
+    /**
+     * Handle a click on the don't save button.
+     * @param event the MouseEvent for this handler
+     */
     private void handleDontSave(MouseEvent event) {
         rootPane.getPrimaryStage().close();
         saveModal.hideModal();
     }
     
+    /**
+     * Handle a click on the cancel button.
+     * @param event the MouseEvent for this handler
+     */
     private void handleCancel(MouseEvent event) {
         saveModal.hideModal();
     }

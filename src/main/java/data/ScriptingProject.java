@@ -170,6 +170,8 @@ public class ScriptingProject {
             ScriptingProject result =  (ScriptingProject) um.unmarshal(file);
             result.getDirectorTimeline().setProject(result);
             result.getCameraTimelines().forEach(e -> e.setProject(result));
+            result.setFilePath(file.getAbsolutePath());
+            result.saved();
             return result;
         } catch (JAXBException e) {
             e.printStackTrace();
