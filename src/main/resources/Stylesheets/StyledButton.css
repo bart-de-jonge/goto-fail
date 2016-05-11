@@ -1,6 +1,6 @@
 .button {
-    -fx-background-radius: 4;
-    -fx-background-color: rgb(200,200,200);
+    -fx-background-radius: 8;
+    -fx-background-color: rgb(210,210,210);
     -fx-text-fill: white;
     -fx-font-size: 14;
     -fx-padding: 5 15 5 15;

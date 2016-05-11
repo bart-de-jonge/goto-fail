@@ -163,7 +163,7 @@ public class StyledCheckbox extends CheckBox {
             // perform transitions.
             if (self.isSelected()) {
                 transitionHelper.runTransitionToValue(mark.translateXProperty(),
-                        transitionTime, 15.0, interpolator);
+                        transitionTime, 22.0, interpolator);
                 transitionHelper.runTransitionToValue(markColorAdjust.saturationProperty(),
                         transitionTime, 0.0, interpolator);
                 transitionHelper.runTransitionToValue(markColorAdjust.brightnessProperty(),

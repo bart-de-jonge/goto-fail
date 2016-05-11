@@ -18,27 +18,33 @@ import lombok.Setter;
  */
 public class StyledButton extends Button {
 
-    @Getter @Setter
-    private ColorAdjust colorAdjust; // can be used for highlighting.
+    /*
+     * Tweakable variables
+     */
 
-    @Getter @Setter
-    private DropShadow dropShadow; // adds simple drop shadow.
-
-    @Getter @Setter
-    private InnerShadow innerShadow; // adds inner bound bezel.
-
-    private TransitionHelper transitionHelper; // provides transition-effects.
-
-    // effect tweaking
+    // effects
     private double shadowRadius = 15;
     private double shadowOpacity = 0.1;
     private double bezelOpacity = 0.1;
     private double highlightAmount = 0.1;
     private double darkenAmount = 0.15;
 
-    // transition tweaking
+    // transitions
     private int mouseOverDuration = 50;
     private int mouseClickDuration = 50;
+
+    /*
+     * Misc variables
+     */
+
+    @Getter @Setter
+    private ColorAdjust colorAdjust; // can be used for highlighting.
+    @Getter @Setter
+    private DropShadow dropShadow; // adds simple drop shadow.
+    @Getter @Setter
+    private InnerShadow innerShadow; // adds inner bound bezel.
+
+    private TransitionHelper transitionHelper; // provides transition-effects.
 
     /**
      * Constructor class.
