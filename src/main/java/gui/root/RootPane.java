@@ -1,5 +1,9 @@
 package gui.root;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 import control.ControllerManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -18,6 +22,9 @@ public class RootPane extends Application {
     private int minimumResolutionY = 480;
     private int startingResolutionX = 800;
     private int startingResolutionY = 600;
+    
+    @Getter
+    private static final String CONFIG_FILEPATH = "config.txt";
 
     @Getter
     Stage primaryStage;
@@ -31,6 +38,7 @@ public class RootPane extends Application {
     private RootCenterArea rootCenterArea;
     @Getter
     private ControllerManager controllerManager;
+    
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -64,12 +72,38 @@ public class RootPane extends Application {
 
         rootCenterArea = new RootCenterArea(this, 0, true);
         topLevelPane.setCenter(rootCenterArea);
+        
+       
 
         controllerManager = new ControllerManager(this);
+        
+        String recentProjectPath = readPathFromConfig();
+        if (recentProjectPath != null) {
+            controllerManager.getFileMenuController().load(recentProjectPath);
+        }
 
         primaryStage.centerOnScreen();
         primaryStage.show();
 
+    }
+    
+    private String readPathFromConfig() {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(CONFIG_FILEPATH));
+            return reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
     
     public void reInitRootCenterArea(RootCenterArea area) {
