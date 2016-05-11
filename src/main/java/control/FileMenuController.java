@@ -16,8 +16,10 @@ import gui.modal.NewProjectModalView;
 import gui.root.RootCenterArea;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.extern.log4j.Log4j2;
@@ -169,14 +171,46 @@ public class FileMenuController {
      * @param event the mouse event related to this event
      */
     private void cameraAdded(MouseEvent event) {
-        cameraModal.hideModal();
+        if (validateCameraData()) {
+            cameraModal.hideModal();
+            String name = cameraModal.getNameField().getText();
+            String description = cameraModal.getDescriptionField().getText();
+            int selectedIndex = cameraModal.getCameraTypes().getSelectionModel().getSelectedIndex();
+            CameraType type = cameraModal.getCameraTypeList().get(selectedIndex);
+            Camera camera = new Camera(name, description, type);
+            newProjectModal.getCameras().add(camera);
+            HBox box = new HBox();
+            box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
+            newProjectModal.getCameraList().getItems().add(box);
+        }
+    }
+    
+    /**
+     * Validate the data entered by the user in the modal to add a camera.
+     * @return true is the data is legit, false otherwise
+     */
+    private boolean validateCameraData() {
+        String errorString = "";
         String name = cameraModal.getNameField().getText();
         String description = cameraModal.getDescriptionField().getText();
         int selectedIndex = cameraModal.getCameraTypes().getSelectionModel().getSelectedIndex();
-        CameraType type = cameraModal.getCameraTypeList().get(selectedIndex);
-        Camera camera = new Camera(name, description, type);
-        newProjectModal.getCameras().add(camera);
-        newProjectModal.getCameraList().getItems().add(new Label(camera.getName()));
+        
+        if (name.isEmpty()) {
+            errorString += "Please enter a camera name\n";
+        }
+        
+        if (description.isEmpty()) {
+            errorString += "Please enter a camera description\n";
+        }
+        
+        if (selectedIndex == -1) {
+            errorString += "Please select a camera type\n";
+        }
+        
+        cameraModal.getErrorLabel().setText(errorString);
+        cameraModal.getErrorLabel().setTextFill(Color.RED);
+        
+        return errorString.isEmpty();
     }
     
     /**
@@ -193,15 +227,47 @@ public class FileMenuController {
      * @param event the the mouse event related to this event
      */
     private void typeAdded(MouseEvent event) {
-        cameraTypeModal.hideModal();
+        if (validateCameraTypeData()) {
+            cameraTypeModal.hideModal();
+            String name = cameraTypeModal.getNameField().getText();
+            String description = cameraTypeModal.getDescriptionField().getText();
+            double movementMargin = Double.parseDouble(
+                    cameraTypeModal.getMovementMarginField().getText());
+            CameraType type = new CameraType(name, description, movementMargin);
+            newProjectModal.getCameraTypes().add(type);
+            HBox box = new HBox();
+            box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
+            newProjectModal.getCameraTypeList().getItems().add(box);
+        }
+        
+    }
+    
+    /**
+     * Validate the data entered by the user in the modal to add a camera type.
+     * @return true is the data is legit, false otherwise
+     */
+    private boolean validateCameraTypeData() {
+        String errorString = "";
         String name = cameraTypeModal.getNameField().getText();
         String description = cameraTypeModal.getDescriptionField().getText();
-        double movementMargin = Double.parseDouble(
-                cameraTypeModal.getMovementMarginField().getText());
-        CameraType type = new CameraType(name, description, movementMargin);
-        newProjectModal.getCameraTypes().add(type);
-        newProjectModal.getCameraTypeList().getItems().add(new Label(type.getName()));
+        String movementMargin = cameraTypeModal.getMovementMarginField().getText();
         
+        if (name.isEmpty()) {
+            errorString += "Please enter a name\n";
+        }
+        
+        if (description.isEmpty()) {
+            errorString += "Please enter a description\n";
+        }
+        
+        if (movementMargin.isEmpty()) {
+            errorString += "Please enter a movement margin\n";
+        }
+        
+        cameraTypeModal.getErrorLabel().setText(errorString);
+        cameraTypeModal.getErrorLabel().setTextFill(Color.RED);
+        
+        return errorString.isEmpty();
     }
     
     /**
@@ -219,13 +285,48 @@ public class FileMenuController {
      * @param event the mouse event related to this event
      */
     private void timelineAdded(MouseEvent event) {
-        timelineModal.hideModal();
+        log.error(timelineModal.getCameraList().getSelectionModel().getSelectedIndex());
+        if (validateTimelineData()) {
+            timelineModal.hideModal();
+            String name = timelineModal.getNameField().getText();
+            String description = timelineModal.getDescriptionField().getText();
+            int selectedIndex = timelineModal.getCameraList().getSelectionModel()
+                                                             .getSelectedIndex();
+            Camera camera = timelineModal.getCameras().get(selectedIndex);
+            CameraTimeline timeline = new CameraTimeline(name, camera, description, null);
+            newProjectModal.getTimelines().add(timeline);
+            HBox box = new HBox();
+            box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
+            newProjectModal.getTimelineList().getItems().add(box);
+        }
+    }
+    
+    /**
+     * Validate the data entered by the user in the modal to add a timeline.
+     * @return true is the data is legit, false otherwise
+     */
+    private boolean validateTimelineData() {
+        String errorString = "";
+        String name = timelineModal.getNameField().getText();
         String description = timelineModal.getDescriptionField().getText();
         int selectedIndex = timelineModal.getCameraList().getSelectionModel().getSelectedIndex();
-        Camera camera = timelineModal.getCameras().get(selectedIndex);
-        CameraTimeline timeline = new CameraTimeline(camera, description, null);
-        newProjectModal.getTimelines().add(timeline);
-        newProjectModal.getTimelineList().getItems().add(new Label(description));
+        
+        if (name.isEmpty()) {
+            errorString += "Please enter a timeline name\n";
+        }
+        
+        if (description.isEmpty()) {
+            errorString += "Please enter a timeline description\n";
+        }
+        
+        if (selectedIndex == -1) {
+            errorString += "Please select a camera\n";
+        }
+        
+        timelineModal.getErrorLabel().setText(errorString);
+        timelineModal.getErrorLabel().setTextFill(Color.RED);
+        
+        return errorString.isEmpty();
     }
     
     /**
@@ -233,25 +334,75 @@ public class FileMenuController {
      * @param event the mouse event related to this event
      */
     private void createProject(MouseEvent event) {
-        newProjectModal.hideModal();
+        if (validateProjectData()) {
+            newProjectModal.hideModal();
+            
+            // Fetch necessary data
+            String name = newProjectModal.getNameField().getText();
+            String description = newProjectModal.getDescriptionField().getText();
+            String directorTimelineDescription = 
+                    newProjectModal.getDirectorTimelineDescriptionField().getText();
+            double secondsPerCount = Double.parseDouble(newProjectModal.getSecondsPerCountField()
+                                                                        .getText());
+            
+            // Construct ScriptingProject from entered data
+            ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
+            project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
+            project.setCameras(newProjectModal.getCameras());
+            project.setCameraTimelines(newProjectModal.getTimelines());
+            project.getDirectorTimeline().setProject(project);
+            for (CameraTimeline timeline : project.getCameraTimelines()) {
+                timeline.setProject(project);
+            }
+            
+            // Set title of program to be the title of the current project
+            controllerManager.getRootPane().getPrimaryStage().setTitle(name);
+
+            // Set constructed project to be *the* project currently used
+            controllerManager.setScriptingProject(project);
+            
+            // Re-init RootCenterArea with new number of timelines
+            RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),
+                                                     newProjectModal.getTimelines().size(),
+                                                     false);
+            controllerManager.getRootPane().reInitRootCenterArea(area);
+        }
+    }
+    
+    /**
+     * Validate the data entered by the user in the modal to create a project.
+     * @return true is the data is legit, false otherwise
+     */
+    private boolean validateProjectData() {
+        String errorString = "";
+        String name = newProjectModal.getNameField().getText();
         String description = newProjectModal.getDescriptionField().getText();
         String directorTimelineDescription = newProjectModal.getDirectorTimelineDescriptionField()
                                                             .getText();
-        double secondsPerCount = Double.parseDouble(newProjectModal.getSecondsPerCountField()
-                                                                    .getText());
-        ScriptingProject project = new ScriptingProject(description, secondsPerCount);
-        project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
-        project.setCameras(newProjectModal.getCameras());
-        project.setCameraTimelines(newProjectModal.getTimelines());
-        project.getDirectorTimeline().setProject(project);
-        for (CameraTimeline timeline : project.getCameraTimelines()) {
-            timeline.setProject(project);
+        
+        if (name.isEmpty()) {
+            errorString += "Please enter a project name\n";
         }
-        controllerManager.setScriptingProject(project);
-        RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),
-                                                 newProjectModal.getTimelines().size(),
-                                                 false);
-        controllerManager.getRootPane().reInitRootCenterArea(area);
+        
+        if (description.isEmpty()) {
+            errorString += "Please enter a project description\n";
+        }
+        
+        if (directorTimelineDescription.isEmpty()) {
+            errorString += "Please enter a director timeline description\n";
+        }
+        
+        String secondsPerCount = newProjectModal.getSecondsPerCountField()
+                .getText();
+        
+        if (secondsPerCount.isEmpty()) {
+            errorString += "Please enter the seconds per count\n";
+        }
+        
+        newProjectModal.getErrorLabel().setText(errorString);
+        newProjectModal.getErrorLabel().setTextFill(Color.RED);
+        
+        return errorString.isEmpty();
     }
      
     public void loadProject(MouseEvent event) {
