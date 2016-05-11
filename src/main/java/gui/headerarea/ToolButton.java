@@ -16,31 +16,20 @@ public class ToolButton {
     @Getter
     private Button button;
 
-    private EventHandler<MouseEvent> clickHandler;
-
     /**
      * Constructor.
      * @param toolName the tool's name
-     * @param headerArea Header area to which to add this tool button
-     * @param clickHandler Event handler for click on the tool button
      */
-    public ToolButton(String toolName, RootHeaderArea headerArea,
-                      EventHandler<MouseEvent> clickHandler) {
+    public ToolButton(String toolName) {
         this.name = toolName;
-        this.clickHandler = clickHandler;
-        initializeButton(headerArea);
+        initializeButton();
     }
 
     /**
      * Instantiates the button and adds it to the tool view.
-     * @param headerArea Area in which the tool view is found.
      */
-    private void initializeButton(RootHeaderArea headerArea) {
+    private void initializeButton() {
         this.button = new Button(this.name);
-
-        this.button.setOnMouseClicked(clickHandler);
-
-        headerArea.getToolView().addToolButton(this);
     }
 
     /**
