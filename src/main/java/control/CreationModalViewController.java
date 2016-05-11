@@ -36,9 +36,16 @@ public class CreationModalViewController {
         // Add mouse handlers
         cameraShotCreationModalView.getCreationButton().setOnMouseReleased(this::createCameraShot);
         cameraShotCreationModalView.getCancelButton().setOnMouseReleased(e -> {
-            cameraShotCreationModalView.getModalStage().close();
-        });
+                cameraShotCreationModalView.getModalStage().close();
+            });
 
+        addCameraShotCreationParsingHandlers();
+    }
+
+    /**
+     * Add handlers for parsing quarters to the camera shot creation view.
+     */
+    private void addCameraShotCreationParsingHandlers() {
         // Add listeners for parsing to startfield
         cameraShotCreationModalView.getStartField().setOnKeyPressed(e -> {
                 if (e.getCode().equals(KeyCode.ENTER)) {
@@ -81,16 +88,18 @@ public class CreationModalViewController {
      * @param event - the event to handle
      */
     private void createCameraShot(MouseEvent event) {
-        if(validateCameraShot()) {
+        if (validateCameraShot()) {
             TimelineController timelineController = this.controllerManager.getTimelineControl();
 
             cameraShotCreationModalView.getCamerasInShot().forEach(cameraIndex -> {
-                timelineController.addCameraShot(cameraIndex,
-                        cameraShotCreationModalView.getNameField().getText(),
-                        cameraShotCreationModalView.getDescriptionField().getText(),
-                        Double.parseDouble(cameraShotCreationModalView.getStartField().getText()),
-                        Double.parseDouble(cameraShotCreationModalView.getEndField().getText()));
-            });
+                    timelineController.addCameraShot(cameraIndex,
+                            cameraShotCreationModalView.getNameField().getText(),
+                            cameraShotCreationModalView.getDescriptionField().getText(),
+                            Double.parseDouble(
+                                    cameraShotCreationModalView.getStartField().getText()),
+                            Double.parseDouble(
+                                    cameraShotCreationModalView.getEndField().getText()));
+                });
 
             cameraShotCreationModalView.getModalStage().close();
         }
@@ -149,8 +158,10 @@ public class CreationModalViewController {
                 this.controllerManager.getScriptingProject().getCameraTimelines().size());
 
         // add mouse handlers
-        directorShotCreationModalView.getCancelButton().setOnMouseReleased(event -> directorShotCreationModalView.getModalStage().close());
-        directorShotCreationModalView.getCreationButton().setOnMouseReleased(this::createDirectorShot);
+        directorShotCreationModalView.getCancelButton().setOnMouseReleased(
+                event -> directorShotCreationModalView.getModalStage().close());
+        directorShotCreationModalView.getCreationButton().setOnMouseReleased(
+                this::createDirectorShot);
 
         // todo: add parsing of counts to the right fields
         // see showCameraCreationWindow
@@ -229,14 +240,18 @@ public class CreationModalViewController {
      * @return returns the appended errorstring
      */
     private String validateDirectorShotCounts(String errorString) {
-        double startVal = Double.parseDouble(directorShotCreationModalView.getStartField().getText());
-        double endVal = Double.parseDouble(directorShotCreationModalView.getEndField().getText());
+        double startVal = Double.parseDouble(
+                directorShotCreationModalView.getStartField().getText());
+        double endVal = Double.parseDouble(
+                directorShotCreationModalView.getEndField().getText());
         if (startVal >= endVal) {
             errorString += "Please make sure that the shot ends after it begins.\n";
         }
 
-        double frontPadding = Double.parseDouble(directorShotCreationModalView.getFrontPaddingField().getText());
-        double endPadding = Double.parseDouble(directorShotCreationModalView.getEndPaddingField().getText());
+        double frontPadding = Double.parseDouble(
+                directorShotCreationModalView.getFrontPaddingField().getText());
+        double endPadding = Double.parseDouble(
+                directorShotCreationModalView.getEndPaddingField().getText());
         if (frontPadding < 0 || endPadding < 0) {
             errorString += "Please make sure that the padding before "
                     + "and after the shot is positive.\n";
