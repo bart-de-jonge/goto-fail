@@ -1,16 +1,21 @@
 package data;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Created by Bart.
  */
 public class ScriptingProjectTest {
+    
+    private static final String TEST_PATH = "src/test/java/data/project_write_test.txt";
 
     ScriptingProject project;
 
@@ -109,6 +114,86 @@ public class ScriptingProjectTest {
     public void setSecondsPerCountTest() {
         project.setSecondsPerCount(4.5);
         assertEquals(4.5, project.getSecondsPerCount(), 0);
+    }
+    
+    @Test
+    public void toStringTest() {
+        assertEquals("ScriptingProject(name=null, description=A test scripting project, cameras=[], directorTimeline=DirectorTimeline(shots=[]), cameraTimelines=[], secondsPerCount=2.0, filePath=null, changed=true)", project.toString());
+    }
+    
+    @Test
+    public void setNameTest() {
+        project.setName("Kek");
+        assertEquals("Kek", project.getName());
+    }
+    
+    @Test
+    public void getFilePathTest() {
+        project.setFilePath("path/to/file");
+        assertEquals("path/to/file", project.getFilePath());
+    }
+    
+    @Test
+    public void setFilePathTest() {
+        project.setFilePath("path/to/file");
+        project.setFilePath("other/path");
+        assertEquals("other/path", project.getFilePath());
+    }
+    
+    @Test
+    public void savedTest() {
+        project.setChanged(true);
+        project.saved();
+        assertFalse(project.isChanged());
+    }
+    
+    @Test
+    public void changedTest() {
+        project.setChanged(false);
+        project.changed();
+        assertTrue(project.isChanged());
+    }
+    
+    @Test
+    public void constructorWithNoArgumentsTest() {
+        ScriptingProject project = new ScriptingProject();
+        assertEquals(null, project.getName());
+    }
+    
+    @Test
+    public void constructorWithThreeArgumentsTest() {
+        ScriptingProject project = new ScriptingProject("Name", "Description", 0);
+        assertEquals("Name", project.getName());
+    }
+    
+    @Test
+    public void writeTest() {
+        project.setFilePath("project_write_test.txt");
+        assertTrue(project.write());
+    }
+    
+    @Test
+    public void writeFileTest() {
+        assertTrue(project.write(new File(TEST_PATH)));
+    }
+    
+    @Test
+    public void writeStringTest() {
+        assertTrue(project.write(new String(TEST_PATH)));
+    }
+    
+    @Test
+    public void readTest() {
+        project.write(new File(TEST_PATH));
+        ScriptingProject project = ScriptingProject.read(new File("project_write_test.txt"));
+        assertEquals("A test scripting project", project.getDescription());
+    }
+    
+    @Test
+    public void readStringTest() {
+        project.write(new File(TEST_PATH));
+        ScriptingProject project = ScriptingProject.read("project_write_test.txt");
+        assertEquals("A test scripting project", project.getDescription());
     }
 
 }

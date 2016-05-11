@@ -29,6 +29,17 @@ public class CameraTest {
     public void getNameTest() {
         assertEquals("camera-1", camera.getName());
     }
+    
+    @Test
+    public void ConstructorWithNoArgumentsTest() {
+        Camera camera = new Camera();
+        assertEquals("", camera.getName());
+    }
+    
+    @Test
+    public void toStringTest() {
+        assertEquals("Camera(name=camera-1, description=A test camera, cameraType=CameraType(name=cameratype-1, description=A test cameratype, movementMargin=2.0), movementMargin=2.0)", camera.toString());
+    }
 
     @Test
     public void getDescriptionTest() {

@@ -28,7 +28,7 @@ public class DirectorTimeline extends Timeline {
      * Default constructor.
      */
     public DirectorTimeline() {
-        super("", null);
+        super();
         shots = null;
     }
 
