@@ -55,6 +55,12 @@ public class ScriptingProject {
     @Getter @Setter
     private double secondsPerCount;
     
+    @Getter @Setter
+    private String filePath;
+    
+    @Getter @Setter
+    private boolean changed;
+    
     /**
      * Default constructor.
      */
@@ -76,6 +82,7 @@ public class ScriptingProject {
         this.cameras = new ArrayList<Camera>();
         this.cameraTimelines = new ArrayList<CameraTimeline>();
         this.directorTimeline = new DirectorTimeline(description, this);
+        this.changed = true;
     }
     
     /**
@@ -89,6 +96,22 @@ public class ScriptingProject {
         this.name = name;
     }
 
+    
+    /**
+     * Project changed -> set changed variable to true.
+     */
+    public void changed() {
+        this.changed = true;
+    }
+    
+    /**
+     * Changes saved -> reset changed variable.
+     */
+    public void saved() {
+        this.changed = false;
+    }
+    
+   
     /**
      * Method to write the current project to a file.
      * @param fileName  - the file to write the project to
@@ -97,6 +120,10 @@ public class ScriptingProject {
     public boolean write(String fileName) {
         File file = new File(fileName);
         return write(file);
+    }
+    
+    public boolean write() {
+        return write(new File(filePath));
     }
     
     /**
@@ -111,6 +138,7 @@ public class ScriptingProject {
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             m.marshal(this, file);
+            saved();
             return true;
         } catch (JAXBException e) {
             e.printStackTrace();
@@ -142,6 +170,8 @@ public class ScriptingProject {
             ScriptingProject result =  (ScriptingProject) um.unmarshal(file);
             result.getDirectorTimeline().setProject(result);
             result.getCameraTimelines().forEach(e -> e.setProject(result));
+            result.setFilePath(file.getAbsolutePath());
+            result.saved();
             return result;
         } catch (JAXBException e) {
             e.printStackTrace();

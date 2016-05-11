@@ -71,6 +71,11 @@ public class RootHeaderArea extends VBox {
                 rootPane.getControllerManager().getFileMenuController().save();
             });
 
+        MenuItem saveAsItem = new MenuItem("Save as");
+        saveAsItem.setOnAction(e -> {
+                rootPane.getControllerManager().getFileMenuController().saveAs();
+            });
+        
         MenuItem loadItem = new MenuItem("Load");
         loadItem.setOnAction(e -> {
                 rootPane.getControllerManager().getFileMenuController().load();
@@ -78,12 +83,14 @@ public class RootHeaderArea extends VBox {
 
         MenuItem quit = new MenuItem("Quit");
         quit.setOnAction(e -> {
-                System.exit(0);
+                if (rootPane.getControllerManager().getScriptingProject() != null) {
+                    if (rootPane.getControllerManager().getScriptingProject().isChanged()) {
+                        rootPane.getControllerManager().initSaveModal();
+                    }
+                }
             });
-
         Menu fileMenu = new Menu("File");
-        fileMenu.getItems().addAll(newItem, saveItem, loadItem, quit);
-
+        fileMenu.getItems().addAll(newItem, saveItem, saveAsItem, loadItem, quit);
         Menu editMenu = new Menu("Edit");
         Menu viewMenu = new Menu("View");
         Menu helpMenu = new Menu("Help");
