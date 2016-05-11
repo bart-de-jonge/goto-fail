@@ -1,12 +1,11 @@
 package gui.modal;
 
-import java.util.ArrayList;
-
 import data.Camera;
 import data.CameraTimeline;
 import data.CameraType;
 import gui.headerarea.NumberTextField;
 import gui.root.RootPane;
+import java.util.ArrayList;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -19,7 +18,7 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class NewProjectModalView extends ModalView {
-    
+
     private static final int width = 700;
     private static final int height = 700;
     
@@ -37,9 +36,6 @@ public class NewProjectModalView extends ModalView {
     
     @Getter
     private Button addCameraButton;
-    
-    @Getter
-    private Button addTimelineButton;
     
     @Getter
     private Button creationButton;
@@ -127,12 +123,9 @@ public class NewProjectModalView extends ModalView {
      * Initialize the section to add timelines.
      */
     private void initAddTimeline() {
-        addTimelineButton = new Button("Add Camera Timeline");
-        
         timelineList = new ListView<HBox>();
         timelineList.setMaxHeight(100);
-        
-        this.viewPane.getChildren().addAll(addTimelineButton, timelineList); 
+        this.viewPane.getChildren().add(timelineList);
     }
     
     /**

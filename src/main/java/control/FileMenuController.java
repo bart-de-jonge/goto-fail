@@ -1,6 +1,5 @@
 package control;
 
-import java.io.File;
 
 import data.Camera;
 import data.CameraShot;
@@ -14,19 +13,19 @@ import gui.modal.AddCameraTypeModalView;
 import gui.modal.AddTimelineModalView;
 import gui.modal.NewProjectModalView;
 import gui.root.RootCenterArea;
+import java.io.File;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class FileMenuController {
-    
     
     private ControllerManager controllerManager;
     
@@ -144,7 +143,6 @@ public class FileMenuController {
         newProjectModal.getCreationButton().setOnMouseClicked(this::createProject);
         newProjectModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
         newProjectModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);
-        newProjectModal.getAddTimelineButton().setOnMouseClicked(this::addTimeline);
     }
     
     /**
@@ -168,10 +166,12 @@ public class FileMenuController {
     
     /**
      * Event handler for when the add camera button is clicked in the AddCameraModalView.
+     * This adds a camera, and a timeline, all in one.
      * @param event the mouse event related to this event
      */
     private void cameraAdded(MouseEvent event) {
         if (validateCameraData()) {
+            // add camera
             cameraModal.hideModal();
             String name = cameraModal.getNameField().getText();
             String description = cameraModal.getDescriptionField().getText();
@@ -182,6 +182,12 @@ public class FileMenuController {
             HBox box = new HBox();
             box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
             newProjectModal.getCameraList().getItems().add(box);
+            // add timeline
+            CameraTimeline timeline = new CameraTimeline(name, camera, description, null);
+            newProjectModal.getTimelines().add(timeline);
+            HBox box2 = new HBox();
+            box2.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
+            newProjectModal.getTimelineList().getItems().add(box2);
         }
     }
     
@@ -239,7 +245,6 @@ public class FileMenuController {
             box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
             newProjectModal.getCameraTypeList().getItems().add(box);
         }
-        
     }
     
     /**
@@ -268,37 +273,6 @@ public class FileMenuController {
         cameraTypeModal.getErrorLabel().setTextFill(Color.RED);
         
         return errorString.isEmpty();
-    }
-    
-    /**
-     * Event handler for when the add timeline button is clicked in the NewProjectModalView.
-     * @param event the mouse event related to this event
-     */
-    private void addTimeline(MouseEvent event) {
-        timelineModal = new AddTimelineModalView(controllerManager.getRootPane(),
-                                                 newProjectModal.getCameras());
-        timelineModal.getAddTimelineButton().setOnMouseClicked(this::timelineAdded);
-    }
-    
-    /**
-     * Event handler for when the add timeline button is clicked in the AddTimelineModalView.
-     * @param event the mouse event related to this event
-     */
-    private void timelineAdded(MouseEvent event) {
-        log.error(timelineModal.getCameraList().getSelectionModel().getSelectedIndex());
-        if (validateTimelineData()) {
-            timelineModal.hideModal();
-            String name = timelineModal.getNameField().getText();
-            String description = timelineModal.getDescriptionField().getText();
-            int selectedIndex = timelineModal.getCameraList().getSelectionModel()
-                                                             .getSelectedIndex();
-            Camera camera = timelineModal.getCameras().get(selectedIndex);
-            CameraTimeline timeline = new CameraTimeline(name, camera, description, null);
-            newProjectModal.getTimelines().add(timeline);
-            HBox box = new HBox();
-            box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
-            newProjectModal.getTimelineList().getItems().add(box);
-        }
     }
     
     /**
