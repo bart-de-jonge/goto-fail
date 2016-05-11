@@ -55,6 +55,9 @@ public class ScriptingProject {
     @Getter @Setter
     private double secondsPerCount;
     
+    @Getter @Setter
+    private String filePath;
+    
     /**
      * Default constructor.
      */
@@ -97,6 +100,10 @@ public class ScriptingProject {
     public boolean write(String fileName) {
         File file = new File(fileName);
         return write(file);
+    }
+    
+    public boolean write() {
+        return write(new File(filePath));
     }
     
     /**

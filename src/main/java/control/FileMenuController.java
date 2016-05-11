@@ -51,7 +51,7 @@ public class FileMenuController {
      * Save the current project state to file.
      * A file chooser window will be opened to select a file
      */
-    public void save() {
+    public void saveAs() {
         log.info("Saving Project to file");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save");
@@ -59,9 +59,18 @@ public class FileMenuController {
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(controllerManager.getRootPane().getPrimaryStage());
         if (file != null) {
+            controllerManager.getScriptingProject().setFilePath(file.getAbsolutePath());
             controllerManager.getScriptingProject().write(file);
         } else {
             log.info("User did not select a file");
+        }
+    }
+    
+    public void save() {
+        if (controllerManager.getScriptingProject().getFilePath() == null) {
+            saveAs();
+        } else {
+            controllerManager.getScriptingProject().write();
         }
     }
     
