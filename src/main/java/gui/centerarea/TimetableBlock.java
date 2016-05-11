@@ -3,6 +3,7 @@ package gui.centerarea;
 import control.CountUtilities;
 import gui.misc.BlurHelper;
 import gui.root.RootCenterArea;
+import gui.root.RootPane;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -373,7 +374,8 @@ public abstract class TimetableBlock extends Pane {
             feedbackPane.setVisible(false);
             feedbackPane.getChildren().remove(0);
             dragging = false;
-            snapPane(thisBlock, draggedPane, e.getSceneY(), draggingType);
+
+            snapPane(thisBlock, feedbackPane, e.getSceneY(), draggingType);
 
             // Update ShotBlock
             double newBeginCount = TimelinesGridPane.getRowIndex(thisBlock)
@@ -386,8 +388,6 @@ public abstract class TimetableBlock extends Pane {
         };
     }
 
-
-
     /**
      * Helper function for MouseDragged event. Normal (actual dragging) part.
      * @param event the mousedrag event in question.
@@ -395,23 +395,35 @@ public abstract class TimetableBlock extends Pane {
      *                          is allowed
      */
     private void onMouseDraggedHelper(MouseEvent event, boolean horizontalAllowed) {
-        // Mouse movement in pixels during this event.
-        mouseCurrentXMovement = event.getSceneX() - mouseCurrentXPosition;
-        mouseCurrentYMovement = event.getSceneY() - mouseCurrentYPosition;
+        double x = event.getSceneX();
+        double y = event.getSceneY();
 
+        // Fix dragging out of grid
+        if (draggingType == DraggingTypes.Resize_Bottom
+                || draggingType == DraggingTypes.Resize_Top) {
+            TimelinesGridPane gridPane = pane.getRootPane().getRootCenterArea().getMainTimeLineGridPane();
+            Bounds sceneBounds = gridPane.localToScene(gridPane.getLayoutBounds());
+            if (y < sceneBounds.getMinY()) {
+                y = sceneBounds.getMinY();
+            }
+        }
+
+        // Mouse movement in pixels during this event.
+        mouseCurrentXMovement = x - mouseCurrentXPosition;
+        mouseCurrentYMovement = y - mouseCurrentYPosition;
 
         // determine what kind of dragging we're going to do.
         if (draggingType == DraggingTypes.Resize_Bottom
                 || draggingType == DraggingTypes.Resize_Top
                 || (draggingType == DraggingTypes.Move && !horizontalAllowed)) {
             // handle vertical drags in helper.
-            onMouseDraggedHelperVertical(event);
+            onMouseDraggedHelperVertical(x, y);
         } else if (draggingType == Move) { // handle just general dragging
-            onMouseDraggedHelperNormal(event);
+            onMouseDraggedHelperNormal(x, y);
         }
 
         // set feedbackpane
-        if (snapPane(feedbackPane, draggedPane, event.getSceneY(),
+        if (snapPane(feedbackPane, draggedPane, y,
                 draggingType)) {
             feedbackPane.setVisible(true);
         } else {
@@ -419,8 +431,8 @@ public abstract class TimetableBlock extends Pane {
         }
 
         // store current mouse position for next mouse movement calculation
-        mouseCurrentXPosition = event.getSceneX();
-        mouseCurrentYPosition = event.getSceneY();
+        mouseCurrentXPosition = x;
+        mouseCurrentYPosition = y;
     }
 
     /**
@@ -447,7 +459,8 @@ public abstract class TimetableBlock extends Pane {
             xCoordinate = mappingPane.getLayoutX() + mappingPane.getWidth() / 2;
         }
 
-        SnappingPane myPane = pane.getMainTimeLineGridPane().getMyPane(xCoordinate, yCoordinate);
+        SnappingPane myPane = pane.getMainTimeLineGridPane()
+                .getMyPane(xCoordinate, yCoordinate, dragType);
         if (myPane != null) {
             int numCounts = (int) Math.round(mappingPane.getHeight()
                     / pane.getMainTimeLineGridPane().getVerticalElementSize());
@@ -476,26 +489,25 @@ public abstract class TimetableBlock extends Pane {
      * Helper function for MouseDragged event. Normal (actual dragging) part.
      * @param event the mousedrag event in question.
      */
-    private void onMouseDraggedHelperNormal(MouseEvent event) {
+    private void onMouseDraggedHelperNormal(double x, double y) {
         AnchorPane parentPane = pane.getMainTimeLineAnchorPane();
         Bounds parentBounds = parentPane.localToScene(parentPane.getBoundsInLocal());
 
-        draggedPane.setLayoutX(event.getSceneX() - parentBounds.getMinX() - dragXOffset);
-        draggedPane.setLayoutY(event.getSceneY() - parentBounds.getMinY() - dragYOffset);
+        draggedPane.setLayoutX(x - parentBounds.getMinX() - dragXOffset);
+        draggedPane.setLayoutY(y - parentBounds.getMinY() - dragYOffset);
     }
 
     /**
      * Helper function for MouseDragged event. Vertical part.
      * @param event the mousedrag event in question.
      */
-    private void onMouseDraggedHelperVertical(MouseEvent event) {
+    private void onMouseDraggedHelperVertical(double x, double y) {
         double newLayoutY = 0;
         double newPrefHeight = 0;
-        Point2D bounds = pane.getMainTimeLineAnchorPane().sceneToLocal(event.getSceneX(),
-                event.getSceneY());
+        Point2D bounds = pane.getMainTimeLineAnchorPane().sceneToLocal(x, y);
 
         if (thisBlock.draggingType == DraggingTypes.Resize_Top) {
-            newPrefHeight = startingY - event.getSceneY();
+            newPrefHeight = startingY - y;
             newLayoutY = bounds.getY();
         } else if (thisBlock.draggingType == DraggingTypes.Resize_Bottom) {
             newLayoutY = pane.getMainTimeLineAnchorPane().sceneToLocal(0, startingY).getY();
