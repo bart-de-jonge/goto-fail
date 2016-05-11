@@ -2,9 +2,12 @@ package control;
 
 import gui.modal.CameraShotCreationModalView;
 import gui.modal.DirectorShotCreationModalView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
@@ -39,46 +42,65 @@ public class CreationModalViewController {
                 cameraShotCreationModalView.getModalStage().close();
             });
 
-        addCameraShotCreationParsingHandlers();
+        // Add listeners for parsing to startfield
+        cameraShotCreationModalView.getStartField().setOnKeyPressed(this::cameraShotStartCountEnterHandler);
+        cameraShotCreationModalView.getStartField().focusedProperty().addListener(this::cameraShotStartCountFocusHandler);
+
+        // Add listeners for parsing to endfield
+        cameraShotCreationModalView.getEndField().setOnKeyPressed(this::cameraShotEndCountEnterHandler);
+        cameraShotCreationModalView.getEndField().focusedProperty().addListener(this::cameraShotEndCountFocusHandler);
     }
 
     /**
-     * Add handlers for parsing quarters to the camera shot creation view.
+     * Handler for when enter is pressed on the startcount field in camera creation.
+     * @param event - the keyevent
      */
-    private void addCameraShotCreationParsingHandlers() {
-        // Add listeners for parsing to startfield
-        cameraShotCreationModalView.getStartField().setOnKeyPressed(e -> {
-                if (e.getCode().equals(KeyCode.ENTER)) {
-                    cameraShotCreationModalView.getStartField().setText(
-                            CountUtilities.parseCountNumber(
-                                    cameraShotCreationModalView.getStartField().getText()));
-                }
-            });
-        cameraShotCreationModalView.getStartField().focusedProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                if (!newValue) {
-                    cameraShotCreationModalView.getStartField().setText(
-                            CountUtilities.parseCountNumber(
-                                    cameraShotCreationModalView.getStartField().getText()));
-                }
-            });
+    private void cameraShotStartCountEnterHandler(KeyEvent event) {
+        if (event.getCode().equals(KeyCode.ENTER)) {
+            cameraShotCreationModalView.getStartField().setText(
+                    CountUtilities.parseCountNumber(
+                            cameraShotCreationModalView.getStartField().getText()));
+        }
+    }
 
-        // Add listeners for parsing to endfield
-        cameraShotCreationModalView.getEndField().setOnKeyPressed(e -> {
-                if (e.getCode().equals(KeyCode.ENTER)) {
-                    cameraShotCreationModalView.getEndField().setText(
-                            CountUtilities.parseCountNumber(
-                                    cameraShotCreationModalView.getEndField().getText()));
-                }
-            });
-        cameraShotCreationModalView.getEndField().focusedProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                if (!newValue) {
-                    cameraShotCreationModalView.getEndField().setText(
-                            CountUtilities.parseCountNumber(
-                                    cameraShotCreationModalView.getEndField().getText()));
-                }
-            });
+    /**
+     * Handler for when focus is lost on the startcount field in camera creation.
+     * @param observable - the observable
+     * @param oldValue - the old value of the focus
+     * @param newValue - the new value of the focus
+     */
+    private void cameraShotEndCountFocusHandler(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+        if (!newValue) {
+            cameraShotCreationModalView.getEndField().setText(
+                    CountUtilities.parseCountNumber(
+                            cameraShotCreationModalView.getEndField().getText()));
+        }
+    }
+
+    /**
+     * Handler for when enter is pressed on the endcount field in camera creation.
+     * @param event - the keyevent
+     */
+    private void cameraShotEndCountEnterHandler(KeyEvent event) {
+        if (event.getCode().equals(KeyCode.ENTER)) {
+            cameraShotCreationModalView.getEndField().setText(
+                    CountUtilities.parseCountNumber(
+                            cameraShotCreationModalView.getEndField().getText()));
+        }
+    }
+
+    /**
+     * Handler for when focus is lost on the endcount field in camera creation.
+     * @param observable - the observable
+     * @param oldValue - the old value of the focus
+     * @param newValue - the new value of the focus
+     */
+    private void cameraShotStartCountFocusHandler(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+        if (!newValue) {
+            cameraShotCreationModalView.getStartField().setText(
+                    CountUtilities.parseCountNumber(
+                            cameraShotCreationModalView.getStartField().getText()));
+        }
     }
 
     /**
