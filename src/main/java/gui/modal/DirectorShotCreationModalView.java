@@ -1,5 +1,6 @@
 package gui.modal;
 
+import gui.headerarea.DoubleTextField;
 import gui.headerarea.NumberTextField;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
@@ -98,14 +99,14 @@ public class DirectorShotCreationModalView extends ModalView {
     @Getter
     private StyledTextfield nameField;
     @Getter
-    private NumberTextField startField;
+    private DoubleTextField startField;
     @Getter
-    private NumberTextField endField;
+    private DoubleTextField endField;
 
     @Getter
-    private NumberTextField frontPaddingField;
+    private DoubleTextField frontPaddingField;
     @Getter
-    private NumberTextField endPaddingField;
+    private DoubleTextField endPaddingField;
 
     // Buttons
     @Getter
@@ -245,7 +246,7 @@ public class DirectorShotCreationModalView extends ModalView {
     private void initCountTextfields(VBox content) {
         // init start field
         final Label startLabel = new Label("Start:");
-        startField = new NumberTextField();
+        startField = new DoubleTextField();
         startField.setText(this.defaultStartCount);
         HBox startBox = new HBox(GENERAL_SPACING);
         startBox.getChildren().addAll(startLabel, startField);
@@ -253,7 +254,7 @@ public class DirectorShotCreationModalView extends ModalView {
 
         // init end field
         final Label endLabel = new Label("End:");
-        endField = new NumberTextField();
+        endField = new DoubleTextField();
         endField.setText(this.defaultEndCount);
         HBox endBox = new HBox(GENERAL_SPACING);
         endBox.getChildren().addAll(endLabel, endField);
@@ -269,7 +270,7 @@ public class DirectorShotCreationModalView extends ModalView {
     private void initPaddingTextfields(VBox content) {
         // init padding before field
         final Label frontPaddingLabel = new Label("Padding before shot:");
-        frontPaddingField = new NumberTextField();
+        frontPaddingField = new DoubleTextField();
         frontPaddingField.setText("0.0");
         HBox frontPaddingBox = new HBox(GENERAL_SPACING);
         frontPaddingBox.getChildren().addAll(frontPaddingLabel, frontPaddingField);
@@ -277,7 +278,7 @@ public class DirectorShotCreationModalView extends ModalView {
 
         // init padding after field
         final Label endPaddingLabel = new Label("Padding after shot:");
-        endPaddingField = new NumberTextField();
+        endPaddingField = new DoubleTextField();
         endPaddingField.setText("0.0");
         HBox endPaddingBox = new HBox(GENERAL_SPACING);
         endPaddingBox.getChildren().addAll(endPaddingLabel, endPaddingField);

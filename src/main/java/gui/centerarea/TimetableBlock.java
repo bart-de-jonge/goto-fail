@@ -445,7 +445,6 @@ public abstract class TimetableBlock extends Pane {
             Bounds bounds = mappingPane.localToScene(mappingPane.getBoundsInLocal());
             yCoordinate = bounds.getMinY();
             xCoordinate = mappingPane.getLayoutX() + mappingPane.getWidth() / 2;
-            yCoordinate++;
         }
 
         SnappingPane myPane = pane.getMainTimeLineGridPane().getMyPane(xCoordinate, yCoordinate);
@@ -468,6 +467,7 @@ public abstract class TimetableBlock extends Pane {
             GridPane.setRowSpan(targetRegion, Math.max(numCounts, 1));
             return true;
         } else {
+            System.out.println("falseasldkjasldkfj");
             return false;
         }
     }
