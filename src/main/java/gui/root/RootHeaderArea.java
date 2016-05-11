@@ -84,7 +84,11 @@ public class RootHeaderArea extends VBox {
 
         MenuItem quit = new MenuItem("Quit");
         quit.setOnAction(e -> {
-                System.exit(0);
+                if (rootPane.getControllerManager().getScriptingProject() != null) {
+                    if (rootPane.getControllerManager().getScriptingProject().isChanged()) {
+                        rootPane.getControllerManager().initSaveModal();
+                    }
+                }
             });
 
         Menu fileMenu = new Menu("File");

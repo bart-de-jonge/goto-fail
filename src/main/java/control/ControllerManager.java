@@ -107,7 +107,7 @@ public class ControllerManager {
     /**
      * Init the modal that will be displayed if there are unsaved changes.
      */
-    private void initSaveModal() {
+    public void initSaveModal() {
         saveModal = new SaveModalView(rootPane);
         saveModal.getSaveButton().setOnMouseClicked(this::handleSave);
         saveModal.getDontSaveButton().setOnMouseClicked(this::handleDontSave);
