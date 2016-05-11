@@ -61,27 +61,36 @@ public class RootHeaderArea extends VBox {
      * @return MenuBar containing menus.
      */
     private MenuBar initMenus() {
-        
-        Menu fileMenu = new Menu("File");
-        
         MenuItem newItem = new MenuItem("New");
-        fileMenu.getItems().add(newItem);
         newItem.setOnAction(e -> {
                 rootPane.getControllerManager().getFileMenuController().newProject();
             });
-        
+
         MenuItem saveItem = new MenuItem("Save");
-        fileMenu.getItems().add(saveItem);
         saveItem.setOnAction(e -> {
                 rootPane.getControllerManager().getFileMenuController().save();
             });
+
+        MenuItem saveAsItem = new MenuItem("Save as");
+        saveAsItem.setOnAction(e -> {
+                rootPane.getControllerManager().getFileMenuController().saveAs();
+            });
         
         MenuItem loadItem = new MenuItem("Load");
-        fileMenu.getItems().add(loadItem);
         loadItem.setOnAction(e -> {
                 rootPane.getControllerManager().getFileMenuController().load();
             });
-        
+
+        MenuItem quit = new MenuItem("Quit");
+        quit.setOnAction(e -> {
+                if (rootPane.getControllerManager().getScriptingProject() != null) {
+                    if (rootPane.getControllerManager().getScriptingProject().isChanged()) {
+                        rootPane.getControllerManager().initSaveModal();
+                    }
+                }
+            });
+        Menu fileMenu = new Menu("File");
+        fileMenu.getItems().addAll(newItem, saveItem, saveAsItem, loadItem, quit);
         Menu editMenu = new Menu("Edit");
         Menu viewMenu = new Menu("View");
         Menu helpMenu = new Menu("Help");

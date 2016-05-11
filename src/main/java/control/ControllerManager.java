@@ -2,7 +2,10 @@ package control;
 
 import data.ScriptingProject;
 import gui.centerarea.ShotBlock;
+import gui.modal.SaveModalView;
 import gui.root.RootPane;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -31,6 +34,8 @@ public class ControllerManager {
 
     @Getter
     private ShotBlock activeShotBlock;
+    
+    private SaveModalView saveModal;
 
     // Placeholder project in lieu of XML loading
     @Getter
@@ -47,6 +52,7 @@ public class ControllerManager {
 
         this.rootPane = rootPane;
         initializeControllers();
+        initOnCloseOperation();
     }
 
     /**
@@ -76,6 +82,63 @@ public class ControllerManager {
         detailViewController = new DetailViewController(this);
         toolViewController = new ToolViewController(this);
         fileMenuController = new FileMenuController(this);
+    }
+    
+    /**
+     * Set up a handler for when the close button is clicked.
+     */
+    private void initOnCloseOperation() {
+        rootPane.getPrimaryStage().setOnCloseRequest(this::handleOnClose);
+    }
+    
+    /**
+     * Handler for the on close event.
+     * @param event the WindowEvent for this handler
+     */
+    private void handleOnClose(WindowEvent event) {
+        if (scriptingProject != null) {
+            if (scriptingProject.isChanged()) {
+                event.consume();
+                initSaveModal();
+            }
+        }
+    }
+    
+    /**
+     * Init the modal that will be displayed if there are unsaved changes.
+     */
+    public void initSaveModal() {
+        saveModal = new SaveModalView(rootPane);
+        saveModal.getSaveButton().setOnMouseClicked(this::handleSave);
+        saveModal.getDontSaveButton().setOnMouseClicked(this::handleDontSave);
+        saveModal.getCancelButton().setOnMouseClicked(this::handleCancel);
+    }
+    
+    /**
+     * Handle a click on the save button.
+     * @param event the MouseEvent for this handler.
+     */
+    private void handleSave(MouseEvent event) {
+        fileMenuController.save();
+        saveModal.hideModal();
+        rootPane.getPrimaryStage().close();
+    }
+    
+    /**
+     * Handle a click on the don't save button.
+     * @param event the MouseEvent for this handler
+     */
+    private void handleDontSave(MouseEvent event) {
+        rootPane.getPrimaryStage().close();
+        saveModal.hideModal();
+    }
+    
+    /**
+     * Handle a click on the cancel button.
+     * @param event the MouseEvent for this handler
+     */
+    private void handleCancel(MouseEvent event) {
+        saveModal.hideModal();
     }
     
     /**

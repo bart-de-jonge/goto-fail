@@ -76,6 +76,7 @@ public class TimelineController {
 
         controllerManager.setActiveShotBlock(shotBlock);
         this.cameraShotBlocks.add(shotBlock);
+        controllerManager.getScriptingProject().changed();
 
         // Check for collisions
         checkCollisions(cameraIndex, shotBlock);
@@ -97,6 +98,7 @@ public class TimelineController {
                                                               .getCameraTimelines()
                 .get(cameraShotBlock.getTimetableNumber());
         cameraTimeline.removeShot(cameraShotBlock.getShot());
+        controllerManager.getScriptingProject().changed();
 
         // Then remove the shot from the view
         cameraShotBlock.removeFromView();
@@ -110,6 +112,7 @@ public class TimelineController {
      * @param event Camera shot change event.
      */
     public void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
+        controllerManager.getScriptingProject().changed();
         log.info("Shot moved to new TimeLine");
 
         CameraShotBlock changedBlock = event.getCameraShotBlock();

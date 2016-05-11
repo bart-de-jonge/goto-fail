@@ -12,7 +12,7 @@ import lombok.Getter;
 
 public class AddCameraTypeModalView extends ModalView {
     
-    private static final int width = 300;
+    private static final int width = 450;
     private static final int height = 300;
     
     @Getter
@@ -30,6 +30,8 @@ public class AddCameraTypeModalView extends ModalView {
     @Getter
     private VBox viewPane;
     
+    @Getter
+    private Label errorLabel;
     
     public AddCameraTypeModalView(RootPane rootPane) {
         this(rootPane, width, height);
@@ -56,12 +58,21 @@ public class AddCameraTypeModalView extends ModalView {
         this.viewPane.getChildren().add(new Text("Create a camera type"));
         
         initFields();
+        initErrorLabel();
         
         addCameraTypeButton = new Button("Add Camera Type");
         this.viewPane.getChildren().add(addCameraTypeButton);
         
         super.setModalView(this.viewPane);
         super.displayModal();
+    }
+    
+    /**
+     * Initialize the label that shows validation error messages.
+     */
+    private void initErrorLabel() {
+        errorLabel = new Label("");
+        viewPane.getChildren().add(errorLabel);
     }
     
     /**
@@ -80,7 +91,7 @@ public class AddCameraTypeModalView extends ModalView {
         descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
         descriptionBox.setSpacing(10);
         
-        final Label marginLabel = new Label("Movement margin: ");
+        final Label marginLabel = new Label("Movement margin (in seconds): ");
         movementMarginField = new DoubleTextField();
         HBox movementMarginBox = new HBox();
         movementMarginBox.getChildren().addAll(marginLabel, movementMarginField);

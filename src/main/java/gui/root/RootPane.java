@@ -1,5 +1,9 @@
 package gui.root;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 import control.ControllerManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -18,6 +22,9 @@ public class RootPane extends Application {
     private int minimumResolutionY = 480;
     private int startingResolutionX = 800;
     private int startingResolutionY = 600;
+    
+    @Getter
+    private static final String CONFIG_FILEPATH = "config.ini";
 
     @Getter
     Stage primaryStage;
@@ -31,21 +38,18 @@ public class RootPane extends Application {
     private RootCenterArea rootCenterArea;
     @Getter
     private ControllerManager controllerManager;
-
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         log.info("Starting RootPane.");
         this.primaryStage = primaryStage;
-        
-        // Create a BorderPane,
-        // a layout with 5 areas: top, bottom, left, right and center,
+        // Create a BorderPane, a layout with 5 areas: top, bottom, left, right and center,
         // and add our views to it.
         topLevelPane = new BorderPane();
         // Create scene and set the stage. This is where the window is basically
         // created. Also has some useful settings.
-
         Scene scene = new Scene(topLevelPane);
-        scene.getStylesheets().add("stylesheets/stylesheet.css");
+        scene.getStylesheets().add("Stylesheets/stylesheet.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("Hoi ben een titel lol.");
         primaryStage.setMinHeight(minimumResolutionY);
@@ -63,12 +67,39 @@ public class RootPane extends Application {
 
         rootCenterArea = new RootCenterArea(this, 0, true);
         topLevelPane.setCenter(rootCenterArea);
-
+        
         controllerManager = new ControllerManager(this);
+        
+        String recentProjectPath = readPathFromConfig();
+        if (recentProjectPath != null) {
+            controllerManager.getFileMenuController().load(recentProjectPath);
+        }
 
         primaryStage.centerOnScreen();
         primaryStage.show();
-
+    }
+    
+    /**
+     * Read the most recent project filepath from the config file, for auto load.
+     * @return the filepath if one is found, null otherwise
+     */
+    private String readPathFromConfig() {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(CONFIG_FILEPATH));
+            return reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
     
     public void reInitRootCenterArea(RootCenterArea area) {

@@ -31,6 +31,7 @@ public class Camera {
     private CameraType cameraType;
 
     // The movementMargin, the time it takes for the Camera to move to a new position
+    // Defined in seconds
     @Setter
     private double movementMargin;
     

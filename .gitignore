@@ -9,3 +9,4 @@ logs/*
 .settings/
 .checkstyle
 src/test/java/xml/test_files/test-write.xml
+config.ini
