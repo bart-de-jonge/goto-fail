@@ -33,55 +33,55 @@ public class CreationModalViewController {
 
         // Add listeners for parsing to startfield
         cameraShotCreationModalView.getStartField().setOnKeyPressed(e -> {
-            if (e.getCode().equals(KeyCode.ENTER)) {
-                cameraShotCreationModalView.getStartField().setText(
-                        CountUtilities.parseCountNumber(
-                                cameraShotCreationModalView.getStartField().getText()));
-            }
-        });
+                if (e.getCode().equals(KeyCode.ENTER)) {
+                    cameraShotCreationModalView.getStartField().setText(
+                            CountUtilities.parseCountNumber(
+                                    cameraShotCreationModalView.getStartField().getText()));
+                }
+            });
         cameraShotCreationModalView.getStartField().focusedProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    if (!newValue) {
-                        cameraShotCreationModalView.getStartField().setText(
-                                CountUtilities.parseCountNumber(
-                                        cameraShotCreationModalView.getStartField().getText()));
-                    }
-                });
+                if (!newValue) {
+                    cameraShotCreationModalView.getStartField().setText(
+                            CountUtilities.parseCountNumber(
+                                    cameraShotCreationModalView.getStartField().getText()));
+                }
+            });
 
         // Add listeners for parsing to endfield
         cameraShotCreationModalView.getEndField().setOnKeyPressed(e -> {
-            if (e.getCode().equals(KeyCode.ENTER)) {
-                cameraShotCreationModalView.getEndField().setText(
-                        CountUtilities.parseCountNumber(
-                                cameraShotCreationModalView.getEndField().getText()));
-            }
-        });
+                if (e.getCode().equals(KeyCode.ENTER)) {
+                    cameraShotCreationModalView.getEndField().setText(
+                            CountUtilities.parseCountNumber(
+                                    cameraShotCreationModalView.getEndField().getText()));
+                }
+            });
         cameraShotCreationModalView.getEndField().focusedProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    if (!newValue) {
-                        cameraShotCreationModalView.getEndField().setText(
-                                CountUtilities.parseCountNumber(
-                                        cameraShotCreationModalView.getEndField().getText()));
-                    }
-                });
+                if (!newValue) {
+                    cameraShotCreationModalView.getEndField().setText(
+                            CountUtilities.parseCountNumber(
+                                    cameraShotCreationModalView.getEndField().getText()));
+                }
+            });
     }
 
     /**
      * Event handler for the creation of a camera shot.
      * It adds the CameraShot to the CameraTimeline and adds the corresponding
      * camera shots via the TimelineController.
-     * @Param event - the event to handle
+     * @param event - the event to handle
      */
     private void createCameraShot(MouseEvent event) {
         TimelineController timelineController = this.controllerManager.getTimelineControl();
 
         cameraShotCreationModalView.getCamerasInShot().forEach(cameraIndex -> {
-            timelineController.addCameraShot(cameraIndex,
-                    cameraShotCreationModalView.getNameField().getText(),
-                    cameraShotCreationModalView.getDescriptionField().getText(),
-                    Double.parseDouble(cameraShotCreationModalView.getStartField().getText()),
-                    Double.parseDouble(cameraShotCreationModalView.getEndField().getText()));
-        });
+                timelineController.addCameraShot(cameraIndex,
+                        cameraShotCreationModalView.getNameField().getText(),
+                        cameraShotCreationModalView.getDescriptionField().getText(),
+                        Double.parseDouble(cameraShotCreationModalView.getStartField().getText()),
+                        Double.parseDouble(cameraShotCreationModalView.getEndField().getText()));
+            });
     }
 
 
@@ -90,7 +90,8 @@ public class CreationModalViewController {
      * a new DirectorBlock.
      */
     public void showDirectorCreationWindow() {
-        directorShotCreationModalView = new DirectorShotCreationModalView(this.controllerManager.getRootPane(),
+        directorShotCreationModalView = new DirectorShotCreationModalView(
+                this.controllerManager.getRootPane(),
                 this.controllerManager.getScriptingProject().getCameraTimelines().size(),
                 this::createDirectorShot);
 
@@ -111,10 +112,14 @@ public class CreationModalViewController {
         // Placeholder variables for creating director shot, please inline them when used
         String shotName = directorShotCreationModalView.getNameField().getText();
         String shotDescrip = directorShotCreationModalView.getDescriptionField().getText();
-        double startPoint = Double.parseDouble(directorShotCreationModalView.getStartField().getText());
-        double endPoint = Double.parseDouble(directorShotCreationModalView.getEndField().getText());
-        double frontPadding = Double.parseDouble(directorShotCreationModalView.getFrontPaddingField().getText());
-        double endPadding = Double.parseDouble(directorShotCreationModalView.getEndPaddingField().getText());
+        double startPoint = Double.parseDouble(
+                directorShotCreationModalView.getStartField().getText());
+        double endPoint = Double.parseDouble(
+                directorShotCreationModalView.getEndField().getText());
+        double frontPadding = Double.parseDouble(
+                directorShotCreationModalView.getFrontPaddingField().getText());
+        double endPadding = Double.parseDouble(
+                directorShotCreationModalView.getEndPaddingField().getText());
 
         List<Integer> camerasInShot = directorShotCreationModalView.getCamerasInShot();
     }

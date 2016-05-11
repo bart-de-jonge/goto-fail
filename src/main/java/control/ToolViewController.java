@@ -33,12 +33,14 @@ public class ToolViewController {
         // Toolbutton for creating a camerablock
         ToolButton cameraBlockCreationTool = new ToolButton("Add camerashot",
                 this.controllerManager.getRootPane().getRootHeaderArea());
-        cameraBlockCreationTool.getButton().setOnMouseClicked(event -> creationModalViewController.showCameraCreationWindow());
+        cameraBlockCreationTool.getButton().setOnMouseClicked(
+                event -> creationModalViewController.showCameraCreationWindow());
 
         // Toolbutton for creating a directorblock
         ToolButton directorBlockCreationTool = new ToolButton("Add directorshot",
                 this.controllerManager.getRootPane().getRootHeaderArea());
-        directorBlockCreationTool.getButton().setOnMouseClicked(event -> creationModalViewController.showDirectorCreationWindow());
+        directorBlockCreationTool.getButton().setOnMouseClicked(
+                event -> creationModalViewController.showDirectorCreationWindow());
 
         // Toolbutton for deleting shots
         blockDeletionTool = new ToolButton("Delete shot",
