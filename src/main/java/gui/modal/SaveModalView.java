@@ -25,7 +25,6 @@ public class SaveModalView extends ModalView {
     
     private VBox viewPane;
     
-    
     public SaveModalView(RootPane rootPane) {
         this(rootPane, width, height);
     }

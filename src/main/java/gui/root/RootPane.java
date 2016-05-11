@@ -24,7 +24,7 @@ public class RootPane extends Application {
     private int startingResolutionY = 600;
     
     @Getter
-    private static final String CONFIG_FILEPATH = "config.txt";
+    private static final String CONFIG_FILEPATH = "config.ini";
 
     @Getter
     Stage primaryStage;
@@ -39,7 +39,6 @@ public class RootPane extends Application {
     @Getter
     private ControllerManager controllerManager;
     
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         log.info("Starting RootPane.");
