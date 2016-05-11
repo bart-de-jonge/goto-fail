@@ -371,11 +371,11 @@ public abstract class TimetableBlock extends Pane {
         return e -> {
             draggedPane.setVisible(false);
             thisBlock.setVisible(true);
+            snapPane(thisBlock, feedbackPane, e.getSceneY(), draggingType);
+
             feedbackPane.setVisible(false);
             feedbackPane.getChildren().remove(0);
             dragging = false;
-
-            snapPane(thisBlock, feedbackPane, e.getSceneY(), draggingType);
 
             // Update ShotBlock
             double newBeginCount = TimelinesGridPane.getRowIndex(thisBlock)
@@ -454,8 +454,7 @@ public abstract class TimetableBlock extends Pane {
             xCoordinate = mappingPane.localToScene(mappingPane.getBoundsInLocal()).getMinX()
                     + mappingPane.getWidth() / 2;
         } else {
-            Bounds bounds = mappingPane.localToScene(mappingPane.getBoundsInLocal());
-            yCoordinate = bounds.getMinY();
+            yCoordinate = y;
             xCoordinate = mappingPane.getLayoutX() + mappingPane.getWidth() / 2;
         }
 
@@ -480,7 +479,6 @@ public abstract class TimetableBlock extends Pane {
             GridPane.setRowSpan(targetRegion, Math.max(numCounts, 1));
             return true;
         } else {
-            System.out.println("falseasldkjasldkfj");
             return false;
         }
     }
