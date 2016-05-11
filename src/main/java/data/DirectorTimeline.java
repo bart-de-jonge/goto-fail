@@ -2,6 +2,8 @@ package data;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -52,6 +54,7 @@ public class DirectorTimeline extends Timeline {
      * @param endCount the end count of the Shot
      * @param frontPadding the additional time to record before the shot
      * @param endPadding the additional time to record after the shot
+     * @param cameras the shots the final shot could end up in
      * @return If no overlap is found, only the newly added shot will be returned. If any
        colliding shots are found, all colliding shots will be returned. If any colliding
        shots are found, the shot that was added will be the last one in the list.
@@ -59,9 +62,10 @@ public class DirectorTimeline extends Timeline {
      */
     public ArrayList<DirectorShot> addShot(String name, String description,
                                            double startCount, double endCount,
-                                           double frontPadding, double endPadding) {
+                                           double frontPadding, double endPadding,
+                                           List<Integer> cameras) {
         return addShot(new DirectorShot(name, description, startCount, endCount,
-                frontPadding, endPadding));
+                frontPadding, endPadding, cameras));
     }
 
     /**
@@ -103,5 +107,30 @@ public class DirectorTimeline extends Timeline {
      */
     public void clearShots() {
         shots.clear();
+    }
+
+    /**
+     * Removes the specified Shot.
+     * @param shot the Shot to remove
+     */
+    public void removeShot(DirectorShot shot) {
+        shots.remove(shot);
+    }
+
+    /**
+     * Get the list of shots colliding with the given shots.
+     * @param shot - the shot to check with
+     * @return - only the shot when no overlap, list of colliding shots otherwise
+     */
+    public ArrayList<DirectorShot> getOverlappingShots(DirectorShot shot) {
+        ArrayList<DirectorShot> result = new ArrayList<>();
+
+        // check for colliding shots
+        result.addAll(shots.stream()
+                .filter(other -> shot != other)
+                .filter(other -> checkOverlap(shot, other, 0))
+                .collect(Collectors.toList()));
+        result.add(shot);
+        return result;
     }
 }

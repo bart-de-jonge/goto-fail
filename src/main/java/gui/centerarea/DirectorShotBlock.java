@@ -50,9 +50,9 @@ public class DirectorShotBlock extends ShotBlock {
         this.grid = rootCenterArea.getDirectorGridPane();
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
-                this.setBeginCount(TimelinesGridPane.getRowIndex(
+                this.setBeginCount(DirectorGridPane.getRowIndex(
                         this.getTimetableBlock()), false);
-                this.setEndCount(TimelinesGridPane.getRowSpan(
+                this.setEndCount(DirectorGridPane.getRowSpan(
                     this.getTimetableBlock()) + this.getBeginCount(), false);
 
                 if (e instanceof DirectorShotBlockUpdatedEvent) {

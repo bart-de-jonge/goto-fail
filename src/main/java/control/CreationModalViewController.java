@@ -203,23 +203,18 @@ public class CreationModalViewController {
      * @param event shot creation event
      */
     private void createDirectorShot(MouseEvent event) {
-        // TODO: Implement adding a DirectorShot
-
         if (validateDirectorShot()) {
-            // Placeholder variables for creating director shot, please inline them when used
-            String shotName = directorShotCreationModalView.getNameField().getText();
-            String shotDescrip = directorShotCreationModalView.getDescriptionField().getText();
-            double startPoint = Double.parseDouble(
-                    directorShotCreationModalView.getStartField().getText());
-            double endPoint = Double.parseDouble(
-                    directorShotCreationModalView.getEndField().getText());
-            double frontPadding = Double.parseDouble(
-                    directorShotCreationModalView.getFrontPaddingField().getText());
-            double endPadding = Double.parseDouble(
-                    directorShotCreationModalView.getEndPaddingField().getText());
+            DirectorTimelineController directorTimelineController =
+                    this.controllerManager.getDirectorTimelineControl();
 
-            List<Integer> camerasInShot = directorShotCreationModalView.getCamerasInShot();
-
+            directorTimelineController.addDirectorShot(
+                    directorShotCreationModalView.getNameField().getText(),
+                    directorShotCreationModalView.getDescriptionField().getText(),
+                    Double.parseDouble(directorShotCreationModalView.getStartField().getText()),
+                    Double.parseDouble(directorShotCreationModalView.getEndField().getText()),
+                    Double.parseDouble(directorShotCreationModalView.getFrontPaddingField().getText()),
+                    Double.parseDouble(directorShotCreationModalView.getEndPaddingField().getText()),
+                    directorShotCreationModalView.getCamerasInShot());
 
             // keep at end of if statement
             directorShotCreationModalView.getModalStage().close();
