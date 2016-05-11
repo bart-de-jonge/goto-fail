@@ -5,71 +5,118 @@ import data.CameraTimeline;
 import data.CameraType;
 import gui.headerarea.NumberTextField;
 import gui.root.RootPane;
+import gui.styling.StyledButton;
+import gui.styling.StyledTextfield;
 import java.util.ArrayList;
-import javafx.scene.control.Button;
+
+import javafx.geometry.Insets;
+import javafx.geometry.Point3D;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
+/**
+ * Class responsible for displaying a modal view for the creation of a project.
+ * @author Menno
+ */
 @Log4j2
 public class NewProjectModalView extends ModalView {
 
+    /*
+     * Tweakable styling variables.
+     */
+
+    // width and height of screen. 680 and 350 work very, very well.
     private static final int width = 700;
     private static final int height = 700;
-    
-    @Getter
-    private TextField nameField;
-    
-    @Getter
-    private TextField descriptionField;
-    
-    @Getter
-    private NumberTextField secondsPerCountField;
-    
-    @Getter
-    private TextField directorTimelineDescriptionField;
-    
-    @Getter
-    private Button addCameraButton;
-    
-    @Getter
-    private Button creationButton;
-    
-    @Getter
-    private Button addCameraTypeButton;
-    
-    @Getter
-    private VBox viewPane;
-    
-    @Getter
-    private ListView<HBox> cameraList;
-    
-    @Getter
-    private ListView<HBox> timelineList;
-    
-    @Getter
-    private ListView<HBox> cameraTypeList;
-    
+
+    // simple background styles of the three main areas.
+    private String topStyle = "-fx-background-color: rgb(240,240,240);"
+            + "-fx-text-fill: black; -fx-font-size: 20;";
+    private String centerStyle = "-fx-background-color: rgb(230, 230, 230);";
+    private String bottomStyle = "-fx-background-color: rgb(240, 240, 240);";
+
+    // variables for the Create and Cancel buttons
+    private int buttonWidth = 90;
+    private int buttonHeight = 25;
+    private Point3D createButtonColor = new Point3D(200, 200, 200);
+    private Point3D cancelButtonColor = new Point3D(200, 200, 200);
+    private int buttonFontSize = 16;
+    private int buttonSpacing = 20;
+
+    // variables for the title label
+    private int titlelabelOffsetFromLeft = 20;
+
+    // variables for the shadow effects
+    private double softShadowRadius = 15;
+    private double softShadowCutoff = 0.2;
+    private double softShadowOpacity = 0.05;
+    private double hardShadowRadius = 1;
+    private double hardShadowCutoff = 1;
+    private double hardShadowOpacity = 0.15;
+
+    /*
+     * Other variables
+     */
+
+    // No touching these constants. They work well for all general cases,
+    // and there is no reason to change them ever again.
+    private static final int GENERAL_SIZE = 10000;
+    private static final int GENERAL_SPACING = 10;
+    private static final int GENERAL_PADDING = 20;
+    private static final int TEXT_AREA_MIN_WIDTH = 350; // remove?
+    private static final int CAMERA_AREA_MIN_WIDTH = 250; // remove?
+
+    // General panes used
     @Getter
     private RootPane rootPane;
-    
     @Getter
-    private ArrayList<CameraType> cameraTypes;
-    
+    private VBox viewPane;
     @Getter
-    private ArrayList<Camera> cameras;
-    
+    private HBox centerPane;
     @Getter
-    private ArrayList<CameraTimeline> timelines;
-    
+    private ListView<HBox> cameraList;
+    @Getter
+    private ListView<HBox> timelineList;
+    @Getter
+    private ListView<HBox> cameraTypeList;
+
+    // Labels
+    private Label titleLabel;
     @Getter
     private Label errorLabel;
-    
+
+    // Text fields
+    @Getter
+    private StyledTextfield nameField;
+    @Getter
+    private StyledTextfield descriptionField;
+    @Getter
+    private NumberTextField secondsPerCountField;
+    @Getter
+    private StyledTextfield directorTimelineDescriptionField;
+
+    // Buttons
+    @Getter
+    private StyledButton addCameraButton;
+    @Getter
+    private StyledButton creationButton;
+    @Getter
+    private StyledButton addCameraTypeButton;
+
+    // Misc
+    @Getter
+    private ArrayList<CameraType> cameraTypes;
+    @Getter
+    private ArrayList<Camera> cameras;
+    @Getter
+    private ArrayList<CameraTimeline> timelines;
+
     public NewProjectModalView(RootPane rootPane) {
         this(rootPane, width, height);
     }
@@ -95,28 +142,52 @@ public class NewProjectModalView extends ModalView {
      * Initialize the view of this modal.
      */
     private void initializeView() {
-        this.viewPane = new VBox(20);
-        this.viewPane.getChildren().add(new Text("Create a new project"));
-        
+        getModalStage().setMinWidth(width);
+        getModalStage().setMinHeight(height);
+
+        this.viewPane = new VBox();
+
+        initTitleLabel();
+
+        this.centerPane = new HBox(40.0);
+        this.centerPane.setAlignment(Pos.CENTER);
+        this.centerPane.setPadding(new Insets(0, GENERAL_PADDING, 0, 0));
+        this.centerPane.setPrefHeight(GENERAL_SIZE);
+        this.centerPane.setStyle(centerStyle);
+        this.viewPane.getChildren().add(centerPane);
+
         initFields();
         initAddCameraType();
         initAddCamera();
         initAddTimeline();
         initErrorLabel();
         
-        creationButton = new Button("Create new project");
+        creationButton = new StyledButton("Create new project");
         this.viewPane.getChildren().add(creationButton);
         
         super.setModalView(this.viewPane);
         super.displayModal();
     }
-    
+
+    /**
+     * Initialize title label.
+     */
+    private void initTitleLabel() {
+        titleLabel = new Label("Create a new project...");
+        titleLabel.setStyle(topStyle);
+        titleLabel.setAlignment(Pos.CENTER_LEFT);
+        titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
+        titleLabel.setPrefWidth(GENERAL_SIZE);
+        titleLabel.setPrefHeight(GENERAL_SIZE);
+        this.viewPane.getChildren().add(titleLabel);
+    }
+
     /**
      * Initialize the label that shows validation error messages.
      */
     private void initErrorLabel() {
         errorLabel = new Label("");
-        viewPane.getChildren().add(errorLabel);
+        this.centerPane.getChildren().add(errorLabel);
     }
 
     /**
@@ -125,65 +196,72 @@ public class NewProjectModalView extends ModalView {
     private void initAddTimeline() {
         timelineList = new ListView<HBox>();
         timelineList.setMaxHeight(100);
-        this.viewPane.getChildren().add(timelineList);
+        this.centerPane.getChildren().add(timelineList);
     }
     
     /**
      * Initialize the section to add camera types.
      */
     private void initAddCameraType() {
-        addCameraTypeButton = new Button("Add Camera Type");
+        addCameraTypeButton = new StyledButton("Add Camera Type");
         
         cameraTypeList = new ListView<HBox>();
         cameraTypeList.setMaxHeight(100);
         
-        this.viewPane.getChildren().addAll(addCameraTypeButton, cameraTypeList);
+        this.centerPane.getChildren().addAll(addCameraTypeButton, cameraTypeList);
     }
 
     /**
      * Initialize the section to add cameras.
      */
     private void initAddCamera() {
-        addCameraButton = new Button("Add Camera");
+        addCameraButton = new StyledButton("Add Camera");
         
         cameraList = new ListView<HBox>();
         cameraList.setMaxHeight(100);
         
-        this.viewPane.getChildren().addAll(addCameraButton, cameraList);
+        this.centerPane.getChildren().addAll(addCameraButton, cameraList);
     }
 
     /**
      * Initialize fields.
      */
     private void initFields() {
+        VBox content = new VBox(GENERAL_SPACING);
+        content.setAlignment(Pos.CENTER_LEFT);
+        content.setMinWidth(TEXT_AREA_MIN_WIDTH);
+        content.setPrefWidth(GENERAL_SIZE);
+        content.setPrefHeight(GENERAL_SIZE);
+        content.setPadding(new Insets(GENERAL_PADDING));
+
         final Label nameLabel = new Label("Project name: ");
-        nameField = new TextField();
-        HBox nameBox = new HBox();
+        nameField = new StyledTextfield();
+        HBox nameBox = new HBox(GENERAL_SPACING);
         nameBox.getChildren().addAll(nameLabel, nameField);
-        nameBox.setSpacing(10);
-        
+        nameBox.setAlignment(Pos.CENTER_RIGHT);
+
         final Label descriptionLabel = new Label("Project description: ");
-        descriptionField = new TextField();
-        HBox descriptionBox = new HBox();
+        descriptionField = new StyledTextfield();
+        HBox descriptionBox = new HBox(GENERAL_SPACING);
         descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
-        descriptionBox.setSpacing(10);
-        
+        descriptionBox.setAlignment(Pos.CENTER_RIGHT);
+
         final Label secondsPerCountLabel = new Label("Seconds per count: ");
         secondsPerCountField = new NumberTextField();
-        HBox secondsPerCountBox = new HBox();
+        HBox secondsPerCountBox = new HBox(GENERAL_SPACING);
         secondsPerCountBox.getChildren().addAll(secondsPerCountLabel, secondsPerCountField);
-        secondsPerCountBox.setSpacing(10);
-        
+        secondsPerCountBox.setAlignment(Pos.CENTER_RIGHT);
+
         final Label directorTimelineDescriptionLabel = new Label("Director Timeline Description: ");
-        directorTimelineDescriptionField = new TextField();
-        HBox directorTimelineDescriptionBox = new HBox();
+        directorTimelineDescriptionField = new StyledTextfield();
+        HBox directorTimelineDescriptionBox = new HBox(GENERAL_SPACING);
         directorTimelineDescriptionBox.getChildren().addAll(directorTimelineDescriptionLabel,
                                                             directorTimelineDescriptionField);
-        directorTimelineDescriptionBox.setSpacing(10);
-        
-        this.viewPane.getChildren().addAll(nameBox,
-                                           descriptionBox,
-                                           secondsPerCountBox,
-                                           directorTimelineDescriptionBox);
+        directorTimelineDescriptionBox.setAlignment(Pos.CENTER_RIGHT);
+
+        content.getChildren().addAll(nameBox, descriptionBox,
+                secondsPerCountBox, directorTimelineDescriptionBox);
+
+        this.centerPane.getChildren().add(content);
     }
 }
