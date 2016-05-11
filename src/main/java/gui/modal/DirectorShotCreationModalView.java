@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -36,15 +37,22 @@ public class DirectorShotCreationModalView extends ModalView {
 
     private VBox viewPane;
     private List<CheckBox> cameraCheckboxes;
+    @Getter
     private TextField descriptionField;
+    @Getter
     private TextField nameField;
+    @Getter
     private NumberTextField startField;
+    @Getter
     private NumberTextField endField;
     private Button creationButton;
+
+    @Getter
     private NumberTextField frontPaddingField;
+    @Getter
     private NumberTextField endPaddingField;
 
-    private EventHandler<DirectorShotCreationEvent> directorShotCreationEventEventHandler;
+    private EventHandler<MouseEvent> directorShotCreationEventEventHandler;
 
     /**
      * Constructor with default modal size.
@@ -53,7 +61,7 @@ public class DirectorShotCreationModalView extends ModalView {
      * @param creationHandler Event handler for the creation of a shot
      */
     public DirectorShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
-                                 EventHandler<DirectorShotCreationEvent> creationHandler) {
+                                 EventHandler<MouseEvent> creationHandler) {
         this(rootPane, numberOfCamerasInTimeline, creationHandler, width, height);
     }
 
@@ -66,7 +74,7 @@ public class DirectorShotCreationModalView extends ModalView {
      * @param modalHeight Modal display height
      */
     public DirectorShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
-                                 EventHandler<DirectorShotCreationEvent> creationHandler,
+                                 EventHandler<MouseEvent> creationHandler,
                                  int modalWidth, int modalHeight) {
         super(rootPane, modalWidth, modalHeight);
         this.numberOfCameras = numberOfCamerasInTimeline;
@@ -164,7 +172,7 @@ public class DirectorShotCreationModalView extends ModalView {
     private void createShot(MouseEvent event) {
         if (validateShot()) {
             super.hideModal();
-            this.directorShotCreationEventEventHandler.handle(this.buildCreationEvent());
+            this.directorShotCreationEventEventHandler.handle(event);
         }
     }
 
@@ -236,27 +244,10 @@ public class DirectorShotCreationModalView extends ModalView {
     }
 
     /**
-     * Build the shot creation event.
-     * @return the shot creation event
-     */
-    private DirectorShotCreationEvent buildCreationEvent() {
-        String shotName = this.nameField.getText();
-        String shotDescrip = this.descriptionField.getText();
-        List<Integer> camerasInShot = getCamerasInShot();
-        double startPoint = Double.parseDouble(this.startField.getText());
-        double endPoint = Double.parseDouble(this.endField.getText());
-        double frontPadding = Double.parseDouble(this.frontPaddingField.getText());
-        double endPadding = Double.parseDouble(this.endPaddingField.getText());
-
-        return new DirectorShotCreationEvent(shotName, shotDescrip, camerasInShot,
-                startPoint, endPoint, frontPadding, endPadding);
-    }
-
-    /**
      * Builds a list of which cameras are in the shot.
      * @return list of cameras in shot
      */
-    private List<Integer> getCamerasInShot() {
+    public List<Integer> getCamerasInShot() {
         List<Integer> camsInShot = new ArrayList<>();
 
         for (int i = 0; i < cameraCheckboxes.size(); i++) {
@@ -264,7 +255,6 @@ public class DirectorShotCreationModalView extends ModalView {
                 camsInShot.add(i);
             }
         }
-
         return camsInShot;
     }
 }

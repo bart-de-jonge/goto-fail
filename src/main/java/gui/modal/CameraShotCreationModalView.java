@@ -1,7 +1,5 @@
 package gui.modal;
 
-import gui.events.CameraShotCreationEvent;
-import gui.events.DirectorShotCreationEvent;
 import gui.headerarea.DoubleTextField;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
@@ -93,7 +91,10 @@ public class CameraShotCreationModalView extends ModalView {
     private HBox buttonPane;
     private FlowPane checkboxPane;
     private List<StyledCheckbox> cameraCheckboxes;
+
+    @Getter
     private TextField descriptionField;
+    @Getter
     private TextField nameField;
     private Label titleLabel;
 
@@ -111,7 +112,7 @@ public class CameraShotCreationModalView extends ModalView {
     private InnerShadow topOuterShadow;
     private DropShadow bottomOuterShadow;
 
-    private EventHandler<CameraShotCreationEvent> cameraShotCreationEventHandler;
+    private EventHandler<MouseEvent> cameraShotCreationEventHandler;
 
     /**
      * Constructor with default modal size.
@@ -120,7 +121,7 @@ public class CameraShotCreationModalView extends ModalView {
      * @param creationHandler Event handler for the creation of a shot
      */
     public CameraShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
-                                       EventHandler<CameraShotCreationEvent> creationHandler) {
+                                       EventHandler<MouseEvent> creationHandler) {
         this(rootPane, numberOfCamerasInTimeline, creationHandler, width, height);
     }
 
@@ -133,7 +134,7 @@ public class CameraShotCreationModalView extends ModalView {
      * @param modalHeight Modal display height
      */
     public CameraShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
-                                       EventHandler<CameraShotCreationEvent> creationHandler,
+                                       EventHandler<MouseEvent> creationHandler,
                                        int modalWidth, int modalHeight) {
         super(rootPane, modalWidth, modalHeight);
         this.numberOfCameras = numberOfCamerasInTimeline;
@@ -322,12 +323,12 @@ public class CameraShotCreationModalView extends ModalView {
     private void createShot(MouseEvent event) {
         if (validateShot()) {
             super.hideModal();
-            this.cameraShotCreationEventHandler.handle(this.buildCreationEvent());
+            this.cameraShotCreationEventHandler.handle(event);
         }
     }
 
     /**
-     * Validates that the fields are correctly filled, and if not, displays
+     * Validates that the fields are correctly filled, and if not, isplays
      * a corresponding error message.
      * @return whether or not the fields are valid
      */
@@ -369,25 +370,10 @@ public class CameraShotCreationModalView extends ModalView {
     }
 
     /**
-     * Build the shot creation event.
-     * @return the shot creation event
-     */
-    private CameraShotCreationEvent buildCreationEvent() {
-        String shotName = this.nameField.getText();
-        String shotDescrip = this.descriptionField.getText();
-        List<Integer> camerasInShot = getCamerasInShot();
-        double startPoint = Double.parseDouble(this.startField.getText());
-        double endPoint = Double.parseDouble(this.endField.getText());
-
-        return new CameraShotCreationEvent(shotName, shotDescrip, camerasInShot,
-                                             startPoint, endPoint);
-    }
-
-    /**
      * Builds a list of which camera centerarea are in the shot.
      * @return list of cameras in shot
      */
-    private List<Integer> getCamerasInShot() {
+    public List<Integer> getCamerasInShot() {
         List<Integer> camsInShot = new ArrayList<>();
 
         for (int i = 0; i < cameraCheckboxes.size(); i++) {
