@@ -21,8 +21,8 @@ public class DetailViewController {
         this.manager = manager;
         initDescription();
         initName();
-        initBeginCount();
-        initEndCount();
+//        initBeginCount();
+//        initEndCount();
     }
 
     /**
