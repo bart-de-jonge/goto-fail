@@ -1,6 +1,5 @@
 package gui.modal;
 
-import gui.events.DirectorShotCreationEvent;
 import gui.headerarea.NumberTextField;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
@@ -8,21 +7,19 @@ import gui.styling.StyledCheckbox;
 import gui.styling.StyledTextfield;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import lombok.Getter;
 import lombok.Setter;
 
 
@@ -93,19 +90,30 @@ public class DirectorShotCreationModalView extends ModalView {
     private HBox centerPane;
     private FlowPane checkboxPane;
     private HBox buttonPane;
+    @Getter
     private Label titleLabel;
 
     // Text fields
+    @Getter
     private StyledTextfield descriptionField;
+    @Getter
     private StyledTextfield nameField;
+    @Getter
     private NumberTextField startField;
+    @Getter
     private NumberTextField endField;
+
+    @Getter
     private NumberTextField frontPaddingField;
+    @Getter
     private NumberTextField endPaddingField;
 
     // Buttons
+    @Getter
     private StyledButton creationButton;
+    @Getter
     private StyledButton cancelButton;
+    @Getter
     private List<StyledCheckbox> cameraCheckboxes;
 
     // Effects
@@ -113,33 +121,26 @@ public class DirectorShotCreationModalView extends ModalView {
     private InnerShadow topOuterShadow;
     private DropShadow bottomOuterShadow;
 
-    private EventHandler<DirectorShotCreationEvent> directorShotCreationEventEventHandler;
-
     /**
      * Constructor with default modal size.
      * @param rootPane Pane to display modal on top of
      * @param numberOfCamerasInTimeline Amount of cameras in timeline
-     * @param creationHandler Event handler for the creation of a shot
      */
-    public DirectorShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
-                                 EventHandler<DirectorShotCreationEvent> creationHandler) {
-        this(rootPane, numberOfCamerasInTimeline, creationHandler, width, height);
+    public DirectorShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline) {
+        this(rootPane, numberOfCamerasInTimeline, width, height);
     }
 
     /**
      * Constructor.
      * @param rootPane Pane to display modal on top of
      * @param numberOfCamerasInTimeline Amount of cameras in timeline
-     * @param creationHandler Event handler for the creation of a shot
      * @param modalWidth Modal display width
      * @param modalHeight Modal display height
      */
     public DirectorShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
-                                 EventHandler<DirectorShotCreationEvent> creationHandler,
                                  int modalWidth, int modalHeight) {
         super(rootPane, modalWidth, modalHeight);
         this.numberOfCameras = numberOfCamerasInTimeline;
-        this.directorShotCreationEventEventHandler = creationHandler;
         initializeCreationView();
     }
 
@@ -166,7 +167,6 @@ public class DirectorShotCreationModalView extends ModalView {
         initTextfields();
         initCamCheckBoxes();
         initButtons();
-
         initEffects();
 
         super.setModalView(this.rootPane);
@@ -331,11 +331,6 @@ public class DirectorShotCreationModalView extends ModalView {
 
         // Add cancel button
         cancelButton = new StyledButton("Cancel");
-        cancelButton.setOnMouseReleased(
-            e -> {
-                getModalStage().close(); // kill window
-            }
-        );
         cancelButton.setPrefWidth(buttonWidth);
         cancelButton.setPrefHeight(buttonHeight);
         cancelButton.setFontSize(buttonFontSize);
@@ -344,7 +339,6 @@ public class DirectorShotCreationModalView extends ModalView {
 
         // Add creation button
         creationButton = new StyledButton("Create");
-        creationButton.setOnMouseClicked(this::createShot);
         creationButton.setPrefWidth(buttonWidth);
         creationButton.setPrefHeight(buttonHeight);
         creationButton.setFontSize(buttonFontSize);
@@ -355,105 +349,20 @@ public class DirectorShotCreationModalView extends ModalView {
     }
 
     /**
-     * Validate and then pass shot information along.
-     * @param event Creation button event
-     */
-    private void createShot(MouseEvent event) {
-        if (validateShot()) {
-            super.hideModal();
-            this.directorShotCreationEventEventHandler.handle(this.buildCreationEvent());
-        }
-    }
-
-    /**
-     * Validates that the fields are correctly filled, and if not, displays
-     * a corresponding error message.
-     * @return whether or not the fields are valid
-     */
-    private boolean validateShot() {
-        String errorString = "";
-        if (nameField.getText().isEmpty()) {
-            errorString += "Please name your shot.\n";
-        }
-
-        if (descriptionField.getText().isEmpty()) {
-            errorString += "Please add a description.\n";
-        }
-
-        errorString = validateShotCounts(errorString);
-
-        boolean aCameraSelected = false;
-        for (CheckBox cb : this.cameraCheckboxes) {
-            if (cb.isSelected()) {
-                aCameraSelected = true;
-            }
-        }
-
-        if (!aCameraSelected) {
-            errorString += "Please select at least one camera for this shot.";
-        }
-
-        if (errorString.isEmpty()) {
-            return true;
-        } else {
-            displayError(errorString);
-            return false;
-        }
-    }
-
-    /**
-     * Validates the fields with numbers in the CreationModalView.
-     * @param errorString the string to add the error messages to
-     * @return returns the appended errorstring
-     */
-    private String validateShotCounts(String errorString) {
-        double startVal = Double.parseDouble(startField.getText());
-        double endVal = Double.parseDouble(endField.getText());
-        if (startVal >= endVal) {
-            errorString += "Please make sure that the shot ends after it begins.\n";
-        }
-
-        double frontPadding = Double.parseDouble(frontPaddingField.getText());
-        double endPadding = Double.parseDouble(endPaddingField.getText());
-        if (frontPadding < 0 || endPadding < 0) {
-            errorString += "Please make sure that the padding before "
-                    + "and after the shot is positive.\n";
-        }
-        return errorString;
-    }
-
-    /**
      * Displays an error message in the view.
      * @param errorString Error to be displayed.
      */
-    private void displayError(String errorString) {
+    public void displayError(String errorString) {
         Text errText = new Text(errorString);
         errText.setFill(Color.RED);
         this.rootPane.getChildren().add(this.rootPane.getChildren().size() - 1, errText);
     }
 
     /**
-     * Build the shot creation event.
-     * @return the shot creation event
-     */
-    private DirectorShotCreationEvent buildCreationEvent() {
-        String shotName = this.nameField.getText();
-        String shotDescrip = this.descriptionField.getText();
-        List<Integer> camerasInShot = getCamerasInShot();
-        double startPoint = Double.parseDouble(this.startField.getText());
-        double endPoint = Double.parseDouble(this.endField.getText());
-        double frontPadding = Double.parseDouble(this.frontPaddingField.getText());
-        double endPadding = Double.parseDouble(this.endPaddingField.getText());
-
-        return new DirectorShotCreationEvent(shotName, shotDescrip, camerasInShot,
-                startPoint, endPoint, frontPadding, endPadding);
-    }
-
-    /**
      * Builds a list of which cameras are in the shot.
      * @return list of cameras in shot
      */
-    private List<Integer> getCamerasInShot() {
+    public List<Integer> getCamerasInShot() {
         List<Integer> camsInShot = new ArrayList<>();
 
         for (int i = 0; i < cameraCheckboxes.size(); i++) {
@@ -461,7 +370,6 @@ public class DirectorShotCreationModalView extends ModalView {
                 camsInShot.add(i);
             }
         }
-
         return camsInShot;
     }
 }
