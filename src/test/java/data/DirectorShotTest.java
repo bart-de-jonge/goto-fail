@@ -43,5 +43,42 @@ public class DirectorShotTest {
         shot.setName("testname");
         assertEquals("testname", shot.getName());
     }
-
+    
+    @Test
+    public void getFrontShotPaddingTest() {
+        shot.setFrontShotPadding(5.0);
+        assertEquals(5.0, shot.getFrontShotPadding(), 0);
+    }
+    
+    @Test
+    public void setFrontShotPaddingTest() {
+        shot.setFrontShotPadding(5.0);
+        shot.setFrontShotPadding(6.0);
+        assertEquals(6.0, shot.getFrontShotPadding(), 0);
+    }
+    
+    
+    @Test
+    public void getEndShotPaddingTest() {
+        shot.setEndShotPadding(5.0);
+        assertEquals(5.0, shot.getEndShotPadding(), 0);
+    }
+    
+    @Test
+    public void setEndShotPaddingTest() {
+        shot.setEndShotPadding(5.0);
+        shot.setEndShotPadding(6.0);
+        assertEquals(6.0, shot.getEndShotPadding(), 0);
+    }
+    
+    @Test
+    public void constructorWithNoArgumentsTest() {
+        DirectorShot shot = new DirectorShot();
+        assertEquals("", shot.getName());
+    }
+    
+    @Test
+    public void toStringTest() {
+        assertEquals("DirectorShot(frontShotPadding=0.0, endShotPadding=0.0)", shot.toString());
+    }
 }

@@ -44,5 +44,10 @@ public class CameraShotTest {
         cameraShot.setDescription("a");
         assertEquals("a", cameraShot.getDescription());
     }
+    
+    @Test
+    public void toStringTest() {
+        assertEquals("CameraShot()", cameraShot.toString());
+    }
 
 }

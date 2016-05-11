@@ -12,7 +12,6 @@ import lombok.ToString;
  * Abstract class for centerarea.
  */
 @XmlRootElement(name = "timeline")
-@ToString
 public abstract class Timeline {
 
     // Description of this Timeline.

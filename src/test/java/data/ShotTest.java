@@ -21,6 +21,12 @@ public class ShotTest {
         shot2 = new CameraShot("s2", "d", 2, 4);
         shot3 = new CameraShot("s3", "d", 2, 3);
     }
+    
+    @Test
+    public void constructorNoArgumentsTest() {
+        Shot shot = new CameraShot();
+        assertEquals("", shot.getName());
+    }
 
     @Test
     public void getNameTest() {
@@ -89,6 +95,14 @@ public class ShotTest {
     public void noOverlapTest() {
         shot2.setBeginCount(3);
         assertFalse(shot1.areOverlapping(shot2, 0));
+        assertFalse(shot2.areOverlapping(shot1, 0));
+    }
+    
+    @Test
+    public void removedFromCollidesTest() {
+        shot2.setBeginCount(0);
+        assertTrue(shot1.areOverlapping(shot2, 0));
+        shot2.setBeginCount(3);
         assertFalse(shot2.areOverlapping(shot1, 0));
     }
 }
