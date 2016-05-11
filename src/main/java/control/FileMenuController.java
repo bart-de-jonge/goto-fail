@@ -1,6 +1,9 @@
 package control;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import data.Camera;
 import data.CameraShot;
@@ -14,12 +17,13 @@ import gui.modal.AddCameraTypeModalView;
 import gui.modal.AddTimelineModalView;
 import gui.modal.NewProjectModalView;
 import gui.root.RootCenterArea;
+import gui.root.RootPane;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.extern.log4j.Log4j2;
@@ -34,6 +38,7 @@ public class FileMenuController {
     private AddCameraModalView cameraModal;
     private AddCameraTypeModalView cameraTypeModal;
     private AddTimelineModalView timelineModal;
+    
     
     /**
      * Construct a new FileMenuController.
@@ -51,7 +56,7 @@ public class FileMenuController {
      * Save the current project state to file.
      * A file chooser window will be opened to select a file
      */
-    public void save() {
+    public void saveAs() {
         log.info("Saving Project to file");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save");
@@ -60,9 +65,54 @@ public class FileMenuController {
         fileChooser.getExtensionFilters().addAll(scpFilter, allFilter);
         File file = fileChooser.showSaveDialog(controllerManager.getRootPane().getPrimaryStage());
         if (file != null) {
+            controllerManager.getScriptingProject().setFilePath(file.getAbsolutePath());
             controllerManager.getScriptingProject().write(file);
+            this.changeConfigFile(controllerManager.getScriptingProject());
         } else {
             log.info("User did not select a file");
+        }
+    }
+    
+    /**
+     * Save the current project.
+     If the file path of this project is already known, write to that file
+     Otherwise, treat as if save as was clicked
+     */
+    public void save() {
+        if (controllerManager.getScriptingProject().getFilePath() == null) {
+            saveAs();
+        } else {
+            controllerManager.getScriptingProject().write();
+        }
+    }
+    
+    /**
+     * Load a project from the given path.
+     * @param projectPath the path to load from
+     */
+    public void load(String projectPath) {
+        ScriptingProject temp  = ScriptingProject.read(new File(projectPath));
+        changeConfigFile(temp);
+        if (temp == null) {
+            Alert alert = new Alert(AlertType.ERROR); 
+            alert.setTitle("Load Failed");
+            alert.setContentText("The format in the selected file was not recognized");
+            alert.showAndWait();
+        } else {
+            controllerManager.setScriptingProject(temp);
+            controllerManager.getRootPane()
+                             .reInitRootCenterArea(
+                                     new RootCenterArea(
+                                             controllerManager.getRootPane(),
+                                             controllerManager.getScriptingProject()
+                                                              .getCameraTimelines()
+                                                              .size(),
+                                             false));
+            addLoadedBlocks(controllerManager.getScriptingProject());
+            controllerManager.getTimelineControl()
+                             .setNumTimelines(controllerManager.getScriptingProject()
+                                                               .getCameraTimelines()
+                                                               .size());
         }
     }
     
@@ -80,6 +130,7 @@ public class FileMenuController {
         File file = fileChooser.showOpenDialog(controllerManager.getRootPane().getPrimaryStage());
         if (file != null) {
             ScriptingProject temp  = ScriptingProject.read(file);
+            changeConfigFile(temp);
             if (temp == null) {
                 Alert alert = new Alert(AlertType.ERROR); 
                 alert.setTitle("Load Failed");
@@ -103,6 +154,26 @@ public class FileMenuController {
             }
         } else {
             log.info("User did not select a file");
+        }
+    }
+    
+    /**
+     * Overwrite most recent project path in config file.
+     * @param project the project to write the path from
+     */
+    private void changeConfigFile(ScriptingProject project) {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(new FileWriter(RootPane.getCONFIG_FILEPATH()));
+            writer.write(project.getFilePath());
+            writer.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
         }
     }
     
