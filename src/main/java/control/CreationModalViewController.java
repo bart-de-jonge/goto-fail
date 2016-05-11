@@ -43,12 +43,16 @@ public class CreationModalViewController {
             });
 
         // Add listeners for parsing to startfield
-        cameraShotCreationModalView.getStartField().setOnKeyPressed(this::cameraShotStartCountEnterHandler);
-        cameraShotCreationModalView.getStartField().focusedProperty().addListener(this::cameraShotStartCountFocusHandler);
+        cameraShotCreationModalView.getStartField().setOnKeyPressed(
+                this::cameraShotStartCountEnterHandler);
+        cameraShotCreationModalView.getStartField().focusedProperty().addListener(
+                this::cameraShotStartCountFocusHandler);
 
         // Add listeners for parsing to endfield
-        cameraShotCreationModalView.getEndField().setOnKeyPressed(this::cameraShotEndCountEnterHandler);
-        cameraShotCreationModalView.getEndField().focusedProperty().addListener(this::cameraShotEndCountFocusHandler);
+        cameraShotCreationModalView.getEndField().setOnKeyPressed(
+                this::cameraShotEndCountEnterHandler);
+        cameraShotCreationModalView.getEndField().focusedProperty().addListener(
+                this::cameraShotEndCountFocusHandler);
     }
 
     /**
@@ -69,7 +73,8 @@ public class CreationModalViewController {
      * @param oldValue - the old value of the focus
      * @param newValue - the new value of the focus
      */
-    private void cameraShotEndCountFocusHandler(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    private void cameraShotEndCountFocusHandler(ObservableValue<? extends Boolean> observable,
+                                                Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             cameraShotCreationModalView.getEndField().setText(
                     CountUtilities.parseCountNumber(
@@ -95,7 +100,8 @@ public class CreationModalViewController {
      * @param oldValue - the old value of the focus
      * @param newValue - the new value of the focus
      */
-    private void cameraShotStartCountFocusHandler(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    private void cameraShotStartCountFocusHandler(ObservableValue<? extends Boolean> observable,
+                                                  Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             cameraShotCreationModalView.getStartField().setText(
                     CountUtilities.parseCountNumber(

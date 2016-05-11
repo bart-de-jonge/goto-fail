@@ -40,6 +40,7 @@ public class ToolView extends HBox {
     /**
      * Add a new tool to the toolbox.
      * @param toolName - the name of the new tool.
+     * @return - the created and added toolbutton
      */
     private ToolButton addToolButton(String toolName) {
         ToolButton tool = new ToolButton(toolName);

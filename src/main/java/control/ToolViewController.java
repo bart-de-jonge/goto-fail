@@ -35,7 +35,8 @@ public class ToolViewController {
                 event -> creationModalViewController.showCameraCreationWindow());
         toolView.getDirectorBlockCreationTool().getButton().setOnMouseClicked(
                 event -> creationModalViewController.showDirectorCreationWindow());
-        toolView.getBlockDeletionTool().getButton().setOnMouseClicked(event -> deleteActiveCameraShot());
+        toolView.getBlockDeletionTool().getButton().setOnMouseClicked(
+                event -> deleteActiveCameraShot());
 
         // If there is no active ShotBlock, then disable the delete button
         if (this.controllerManager.getActiveShotBlock() == null) {
