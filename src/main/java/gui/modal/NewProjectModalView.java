@@ -14,9 +14,13 @@ import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
@@ -32,8 +36,8 @@ public class NewProjectModalView extends ModalView {
      */
 
     // width and height of screen. 680 and 350 work very, very well.
-    private static final int width = 700;
-    private static final int height = 700;
+    private static final int width = 680;
+    private static final int height = 450;
 
     // simple background styles of the three main areas.
     private String topStyle = "-fx-background-color: rgb(240,240,240);"
@@ -69,8 +73,9 @@ public class NewProjectModalView extends ModalView {
     private static final int GENERAL_SIZE = 10000;
     private static final int GENERAL_SPACING = 10;
     private static final int GENERAL_PADDING = 20;
-    private static final int TEXT_AREA_MIN_WIDTH = 350; // remove?
-    private static final int CAMERA_AREA_MIN_WIDTH = 250; // remove?
+    private static final int TEXT_AREA_MIN_WIDTH = 300;
+    private static final int LISTS_AREA_MIN_WIDTH = 300;
+    private static final int TOP_BOTTOM_AREA_HEIGHT = 60;
 
     // General panes used
     @Getter
@@ -80,6 +85,8 @@ public class NewProjectModalView extends ModalView {
     @Getter
     private HBox centerPane;
     @Getter
+    private HBox buttonPane;
+    @Getter
     private ListView<HBox> cameraList;
     @Getter
     private ListView<HBox> timelineList;
@@ -87,9 +94,8 @@ public class NewProjectModalView extends ModalView {
     private ListView<HBox> cameraTypeList;
 
     // Labels
-    private Label titleLabel;
     @Getter
-    private Label errorLabel;
+    private Label titleLabel;
 
     // Text fields
     @Getter
@@ -103,11 +109,18 @@ public class NewProjectModalView extends ModalView {
 
     // Buttons
     @Getter
-    private StyledButton addCameraButton;
-    @Getter
     private StyledButton creationButton;
     @Getter
+    private StyledButton cancelButton;
+    @Getter
     private StyledButton addCameraTypeButton;
+    @Getter
+    private StyledButton addCameraButton;
+
+    // Effects
+    private InnerShadow topInnerShadow;
+    private InnerShadow topOuterShadow;
+    private DropShadow bottomOuterShadow;
 
     // Misc
     @Getter
@@ -142,6 +155,8 @@ public class NewProjectModalView extends ModalView {
      * Initialize the view of this modal.
      */
     private void initializeView() {
+        getModalStage().setHeight(height);
+        getModalStage().setWidth(width);
         getModalStage().setMinWidth(width);
         getModalStage().setMinHeight(height);
 
@@ -151,22 +166,35 @@ public class NewProjectModalView extends ModalView {
 
         this.centerPane = new HBox(40.0);
         this.centerPane.setAlignment(Pos.CENTER);
-        this.centerPane.setPadding(new Insets(0, GENERAL_PADDING, 0, 0));
+        this.centerPane.setPadding(new Insets(0, 0, 0, 0));
         this.centerPane.setPrefHeight(GENERAL_SIZE);
         this.centerPane.setStyle(centerStyle);
         this.viewPane.getChildren().add(centerPane);
 
         initFields();
-        initAddCameraType();
-        initAddCamera();
-        initAddTimeline();
-        initErrorLabel();
-        
-        creationButton = new StyledButton("Create new project");
-        this.viewPane.getChildren().add(creationButton);
+        initAdds();
+
+        initButtons();
+
+        initEffects();
         
         super.setModalView(this.viewPane);
         super.displayModal();
+    }
+
+    /**
+     * Sets up effects and adds them to the appropriate panes.
+     */
+    private void initEffects() {
+        topInnerShadow = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, hardShadowOpacity),
+                hardShadowRadius, hardShadowCutoff, 0, -2);
+        topOuterShadow = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, softShadowOpacity),
+                softShadowRadius, softShadowCutoff, 0, 1);
+        bottomOuterShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, softShadowOpacity),
+                softShadowRadius, softShadowCutoff, 0, -1);
+        this.titleLabel.setEffect(topInnerShadow);
+        this.centerPane.setEffect(topOuterShadow);
+        this.buttonPane.setEffect(bottomOuterShadow);
     }
 
     /**
@@ -178,49 +206,10 @@ public class NewProjectModalView extends ModalView {
         titleLabel.setAlignment(Pos.CENTER_LEFT);
         titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
         titleLabel.setPrefWidth(GENERAL_SIZE);
-        titleLabel.setPrefHeight(GENERAL_SIZE);
+        titleLabel.setMinHeight(TOP_BOTTOM_AREA_HEIGHT);
+        titleLabel.setPrefHeight(TOP_BOTTOM_AREA_HEIGHT);
+        titleLabel.setMaxHeight(TOP_BOTTOM_AREA_HEIGHT);
         this.viewPane.getChildren().add(titleLabel);
-    }
-
-    /**
-     * Initialize the label that shows validation error messages.
-     */
-    private void initErrorLabel() {
-        errorLabel = new Label("");
-        this.centerPane.getChildren().add(errorLabel);
-    }
-
-    /**
-     * Initialize the section to add timelines.
-     */
-    private void initAddTimeline() {
-        timelineList = new ListView<HBox>();
-        timelineList.setMaxHeight(100);
-        this.centerPane.getChildren().add(timelineList);
-    }
-    
-    /**
-     * Initialize the section to add camera types.
-     */
-    private void initAddCameraType() {
-        addCameraTypeButton = new StyledButton("Add Camera Type");
-        
-        cameraTypeList = new ListView<HBox>();
-        cameraTypeList.setMaxHeight(100);
-        
-        this.centerPane.getChildren().addAll(addCameraTypeButton, cameraTypeList);
-    }
-
-    /**
-     * Initialize the section to add cameras.
-     */
-    private void initAddCamera() {
-        addCameraButton = new StyledButton("Add Camera");
-        
-        cameraList = new ListView<HBox>();
-        cameraList.setMaxHeight(100);
-        
-        this.centerPane.getChildren().addAll(addCameraButton, cameraList);
     }
 
     /**
@@ -256,12 +245,75 @@ public class NewProjectModalView extends ModalView {
         directorTimelineDescriptionField = new StyledTextfield();
         HBox directorTimelineDescriptionBox = new HBox(GENERAL_SPACING);
         directorTimelineDescriptionBox.getChildren().addAll(directorTimelineDescriptionLabel,
-                                                            directorTimelineDescriptionField);
+                directorTimelineDescriptionField);
         directorTimelineDescriptionBox.setAlignment(Pos.CENTER_RIGHT);
 
         content.getChildren().addAll(nameBox, descriptionBox,
                 secondsPerCountBox, directorTimelineDescriptionBox);
+        this.centerPane.getChildren().add(content);
+    }
+
+    /**
+     * Initialize camera type and camera adding.
+     */
+    private void initAdds() {
+        // vertical pane to hold content
+        VBox content = new VBox(GENERAL_SPACING);
+        content.setAlignment(Pos.CENTER_LEFT);
+        content.setMinWidth(LISTS_AREA_MIN_WIDTH);
+        content.setPrefWidth(GENERAL_SIZE);
+        content.setPrefHeight(GENERAL_SIZE);
+        content.setPadding(new Insets(GENERAL_PADDING));
+
+        // add camera type
+        addCameraTypeButton = new StyledButton("Add Camera Type");
+        cameraTypeList = new ListView<HBox>();
+        cameraTypeList.setMinHeight(75);
+        content.getChildren().addAll(addCameraTypeButton, cameraTypeList);
+
+        // add camera
+        addCameraButton = new StyledButton("Add Camera");
+        cameraList = new ListView<HBox>();
+        cameraList.setMinHeight(75);
+        content.getChildren().addAll(addCameraButton, cameraList);
 
         this.centerPane.getChildren().add(content);
     }
+
+    /**
+     * Initializes pane with buttons at bottom.
+     */
+    private void initButtons() {
+        // setup button pane
+        this.buttonPane = new HBox();
+        this.buttonPane.setSpacing(buttonSpacing);
+        this.buttonPane.setAlignment(Pos.CENTER_LEFT);
+        this.buttonPane.setMinHeight(TOP_BOTTOM_AREA_HEIGHT);
+        this.buttonPane.setPrefHeight(TOP_BOTTOM_AREA_HEIGHT);
+        this.buttonPane.setMaxHeight(TOP_BOTTOM_AREA_HEIGHT);
+        this.buttonPane.setStyle(bottomStyle);
+        this.buttonPane.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
+        this.viewPane.getChildren().add(buttonPane);
+
+        // Add cancel button
+        cancelButton = new StyledButton("Cancel");
+        cancelButton.setPrefWidth(buttonWidth);
+        cancelButton.setPrefHeight(buttonHeight);
+        cancelButton.setFontSize(buttonFontSize);
+        cancelButton.setButtonColor(createButtonColor);
+        cancelButton.setAlignment(Pos.CENTER);
+
+        // Add creation button
+        creationButton = new StyledButton("Create");
+        creationButton.setPrefWidth(buttonWidth);
+        creationButton.setPrefHeight(buttonHeight);
+        creationButton.setFontSize(buttonFontSize);
+        creationButton.setButtonColor(cancelButtonColor);
+        creationButton.setAlignment(Pos.CENTER);
+
+        this.buttonPane.getChildren().addAll(creationButton, cancelButton);
+    }
+
+
+
 }

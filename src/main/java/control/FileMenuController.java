@@ -185,9 +185,6 @@ public class FileMenuController {
             // add timeline
             CameraTimeline timeline = new CameraTimeline(name, camera, description, null);
             newProjectModal.getTimelines().add(timeline);
-            HBox box2 = new HBox();
-            box2.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
-            newProjectModal.getTimelineList().getItems().add(box2);
         }
     }
     
@@ -349,33 +346,34 @@ public class FileMenuController {
      */
     private boolean validateProjectData() {
         String errorString = "";
-        String name = newProjectModal.getNameField().getText();
-        String description = newProjectModal.getDescriptionField().getText();
+
         String directorTimelineDescription = newProjectModal.getDirectorTimelineDescriptionField()
                                                             .getText();
-        
-        if (name.isEmpty()) {
-            errorString += "Please enter a project name\n";
-        }
-        
-        if (description.isEmpty()) {
-            errorString += "Please enter a project description\n";
-        }
-        
         if (directorTimelineDescription.isEmpty()) {
-            errorString += "Please enter a director timeline description\n";
+            errorString = "Please enter a director timeline description\n";
         }
-        
+
         String secondsPerCount = newProjectModal.getSecondsPerCountField()
                 .getText();
-        
         if (secondsPerCount.isEmpty()) {
-            errorString += "Please enter the seconds per count\n";
+            errorString = "Please enter the seconds per count\n";
         }
-        
-        newProjectModal.getErrorLabel().setText(errorString);
-        newProjectModal.getErrorLabel().setTextFill(Color.RED);
-        
+
+        String description = newProjectModal.getDescriptionField().getText();
+        if (description.isEmpty()) {
+            errorString = "Please enter a project description\n";
+        }
+
+        String name = newProjectModal.getNameField().getText();
+        if (name.isEmpty()) {
+            errorString = "Please enter a project name\n";
+        }
+
+        if (!errorString.equals((""))) {
+            newProjectModal.getTitleLabel().setText(errorString);
+            newProjectModal.getTitleLabel().setTextFill(Color.RED);
+        }
+
         return errorString.isEmpty();
     }
      
