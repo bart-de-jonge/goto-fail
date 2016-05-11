@@ -37,6 +37,7 @@ public class RootPane extends Application {
         log.info("Starting RootPane.");
         this.primaryStage = primaryStage;
         
+        
         // Create a BorderPane,
         // a layout with 5 areas: top, bottom, left, right and center,
         // and add our views to it.

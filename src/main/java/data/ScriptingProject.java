@@ -138,6 +138,7 @@ public class ScriptingProject {
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             m.marshal(this, file);
+            saved();
             return true;
         } catch (JAXBException e) {
             e.printStackTrace();
