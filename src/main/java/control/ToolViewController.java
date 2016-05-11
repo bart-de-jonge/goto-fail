@@ -2,7 +2,7 @@ package control;
 
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.ShotBlock;
-import gui.headerarea.ToolButton;
+import gui.headerarea.ToolView;
 
 /**
  * Controller that manages the tool menu (e.g. shot creation menu).
@@ -11,8 +11,8 @@ import gui.headerarea.ToolButton;
 public class ToolViewController {
 
     private ControllerManager controllerManager;
-    private ToolButton blockDeletionTool;
     private CreationModalViewController creationModalViewController;
+    private ToolView toolView;
 
     /**
      * Constructor.
@@ -21,6 +21,7 @@ public class ToolViewController {
     public ToolViewController(ControllerManager controllerManager) {
         this.controllerManager = controllerManager;
         this.creationModalViewController = new CreationModalViewController(this.controllerManager);
+        this.toolView = controllerManager.getRootPane().getRootHeaderArea().getToolView();
         initializeTools();
     }
 
@@ -29,26 +30,16 @@ public class ToolViewController {
      * the event handlers.
      */
     private void initializeTools() {
-        // Toolbutton for creating a camerablock
-        ToolButton cameraBlockCreationTool = new ToolButton("Add camerashot",
-                this.controllerManager.getRootPane().getRootHeaderArea());
-        cameraBlockCreationTool.getButton().setOnMouseClicked(
+        // add handlers to toolbuttons
+        toolView.getCameraBlockCreationTool().getButton().setOnMouseClicked(
                 event -> creationModalViewController.showCameraCreationWindow());
-
-        // Toolbutton for creating a directorblock
-        ToolButton directorBlockCreationTool = new ToolButton("Add directorshot",
-                this.controllerManager.getRootPane().getRootHeaderArea());
-        directorBlockCreationTool.getButton().setOnMouseClicked(
+        toolView.getDirectorBlockCreationTool().getButton().setOnMouseClicked(
                 event -> creationModalViewController.showDirectorCreationWindow());
-
-        // Toolbutton for deleting shots
-        blockDeletionTool = new ToolButton("Delete shot",
-                this.controllerManager.getRootPane().getRootHeaderArea());
-        blockDeletionTool.getButton().setOnMouseClicked(event -> deleteActiveCameraShot());
+        toolView.getBlockDeletionTool().getButton().setOnMouseClicked(event -> deleteActiveCameraShot());
 
         // If there is no active ShotBlock, then disable the delete button
         if (this.controllerManager.getActiveShotBlock() == null) {
-            blockDeletionTool.disableButton();
+            toolView.getBlockDeletionTool().disableButton();
         }
     }
 
@@ -71,9 +62,9 @@ public class ToolViewController {
      */
     public void activeBlockChanged() {
         if (this.controllerManager.getActiveShotBlock() != null) {
-            this.blockDeletionTool.enableButton();
+            toolView.getBlockDeletionTool().enableButton();
         } else {
-            this.blockDeletionTool.disableButton();
+            toolView.getBlockDeletionTool().disableButton();
         }
     }
 }
