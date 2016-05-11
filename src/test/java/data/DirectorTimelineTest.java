@@ -22,6 +22,17 @@ public class DirectorTimelineTest {
     public void getDescriptionTest() {
         assertEquals("A test director timeline", timeline.getDescription());
     }
+    
+    @Test
+    public void constructorWithNoArgumentsTest() {
+        DirectorTimeline timeline = new DirectorTimeline();
+        assertEquals("", timeline.getDescription());
+    }
+    
+    @Test
+    public void toStringTest() {
+        assertEquals("DirectorTimeline(shots=[])", timeline.toString());
+    }
 
     @Test
     public void addShotTest() {
