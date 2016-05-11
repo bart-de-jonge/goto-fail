@@ -11,22 +11,6 @@
   -c-block-text: #047FB7;
 }
 
-.button {
-    -fx-background-radius: 4 4 4 4;
-    -fx-background-color: rgb(200,235,35);
-    -fx-text-fill: white;
-    -fx-font-size: 16;
-}
-
-.button:hover {
-    -fx-background-color: rgb(255,235,35);
-}
-
-.button:disabled {
-    -fx-opacity: 1.0;
-    -fx-background-color: rgb(200,235,35);
-}
-
 .scroll-pane > .viewport {
     -fx-background-color: transparent;
 }

@@ -86,8 +86,8 @@ public class CameraShotCreationModalView extends ModalView {
     @Setter
     private String defaultEndCount = "1";
 
-    private VBox viewPane;
-    private HBox contentPane;
+    private VBox rootPane;
+    private HBox centerPane;
     private HBox buttonPane;
     private FlowPane checkboxPane;
     private List<StyledCheckbox> cameraCheckboxes;
@@ -148,19 +148,19 @@ public class CameraShotCreationModalView extends ModalView {
         getModalStage().setMinHeight(height);
 
         // Create a new VBox for vertical layout
-        this.viewPane = new VBox();
+        this.rootPane = new VBox();
 
         // Add label at top
         initTitleLabel();
 
         // add space for textfields and checkboxes
-        this.contentPane = new HBox();
-        this.contentPane.setAlignment(Pos.CENTER);
-        this.contentPane.setPadding(new Insets(0, GENERAL_PADDING, 0, 0));
-        this.contentPane.setPrefHeight(GENERAL_SIZE);
-        this.contentPane.setSpacing(40.0);
-        this.contentPane.setStyle(centerStyle);
-        this.viewPane.getChildren().add(contentPane);
+        this.centerPane = new HBox();
+        this.centerPane.setAlignment(Pos.CENTER);
+        this.centerPane.setPadding(new Insets(0, GENERAL_PADDING, 0, 0));
+        this.centerPane.setPrefHeight(GENERAL_SIZE);
+        this.centerPane.setSpacing(40.0);
+        this.centerPane.setStyle(centerStyle);
+        this.rootPane.getChildren().add(centerPane);
 
         // actually add textfields and checkboxes
         initTextFields();
@@ -172,7 +172,7 @@ public class CameraShotCreationModalView extends ModalView {
         // once we're done, setup shadows etc.
         initEffects();
 
-        super.setModalView(this.viewPane);
+        super.setModalView(this.rootPane);
         super.displayModal();
     }
 
@@ -180,13 +180,13 @@ public class CameraShotCreationModalView extends ModalView {
      * Initialize title label.
      */
     private void initTitleLabel() {
-        titleLabel = new Label("Add a new shot...");
+        titleLabel = new Label("Add a camerashot...");
         titleLabel.setStyle(topStyle);
         titleLabel.setAlignment(Pos.CENTER_LEFT);
         titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
         titleLabel.setPrefWidth(GENERAL_SIZE);
         titleLabel.setPrefHeight(GENERAL_SIZE);
-        this.viewPane.getChildren().add(titleLabel);
+        this.rootPane.getChildren().add(titleLabel);
     }
 
     /**
@@ -200,7 +200,7 @@ public class CameraShotCreationModalView extends ModalView {
         bottomOuterShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, softShadowOpacity),
                 softShadowRadius, softShadowCutoff, 0, -1);
         titleLabel.setEffect(topInnerShadow);
-        contentPane.setEffect(topOuterShadow);
+        centerPane.setEffect(topOuterShadow);
         buttonPane.setEffect(bottomOuterShadow);
     }
 
@@ -215,7 +215,7 @@ public class CameraShotCreationModalView extends ModalView {
         this.buttonPane.setPrefHeight(GENERAL_SIZE);
         this.buttonPane.setStyle(bottomStyle);
         this.buttonPane.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        this.viewPane.getChildren().add(buttonPane);
+        this.rootPane.getChildren().add(buttonPane);
 
         // Add cancel button
         cancelButton = new StyledButton("Cancel");
@@ -282,7 +282,7 @@ public class CameraShotCreationModalView extends ModalView {
 
         // add all to scene
         content.getChildren().addAll(nameBox, descripBox, startBox, endBox);
-        this.contentPane.getChildren().add(content);
+        this.centerPane.getChildren().add(content);
     }
 
     /**
@@ -310,7 +310,7 @@ public class CameraShotCreationModalView extends ModalView {
 
         // add all to scene
         this.checkboxPane.getChildren().addAll(cameraCheckboxes);
-        this.contentPane.getChildren().add(this.checkboxPane);
+        this.centerPane.getChildren().add(this.checkboxPane);
     }
 
     /**
