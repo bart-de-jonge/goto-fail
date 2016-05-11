@@ -1,8 +1,6 @@
 package gui.headerarea;
 
 import gui.styling.StyledTextfield;
-import javafx.scene.control.TextField;
-import java.text.DecimalFormat;
 
 /**
  * Created by Bart.

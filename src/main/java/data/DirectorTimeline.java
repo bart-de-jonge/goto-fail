@@ -83,11 +83,9 @@ public class DirectorTimeline extends Timeline {
         // Add the new Shot the the shots
         for (int i = 0; i < shots.size(); i++) {
             DirectorShot other = shots.get(i);
-            if (!added) {
-                if (shot.compareTo(other) <= 0) {
-                    shots.add(i, shot);
-                    added = true;
-                }
+            if (!added && shot.compareTo(other) <= 0) {
+                shots.add(i, shot);
+                added = true;
             }
             if (checkOverlap(shot, other, 0)) {
                 result.add(other);

@@ -12,7 +12,6 @@ public class ToolViewController {
 
     private ControllerManager controllerManager;
     private ToolButton blockDeletionTool;
-
     private CreationModalViewController creationModalViewController;
 
     /**

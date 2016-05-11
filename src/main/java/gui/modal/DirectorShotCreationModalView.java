@@ -1,6 +1,5 @@
 package gui.modal;
 
-import gui.events.DirectorShotCreationEvent;
 import gui.headerarea.NumberTextField;
 import gui.root.RootPane;
 import javafx.event.EventHandler;
