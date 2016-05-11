@@ -58,6 +58,9 @@ public class ScriptingProject {
     @Getter @Setter
     private String filePath;
     
+    @Getter @Setter
+    private boolean changed;
+    
     /**
      * Default constructor.
      */
@@ -79,6 +82,7 @@ public class ScriptingProject {
         this.cameras = new ArrayList<Camera>();
         this.cameraTimelines = new ArrayList<CameraTimeline>();
         this.directorTimeline = new DirectorTimeline(description, this);
+        this.changed = true;
     }
     
     /**
@@ -92,6 +96,22 @@ public class ScriptingProject {
         this.name = name;
     }
 
+    
+    /**
+     * Project changed -> set changed variable to true.
+     */
+    public void changed() {
+        this.changed = true;
+    }
+    
+    /**
+     * Changes saved -> reset changed variable.
+     */
+    public void saved() {
+        this.changed = false;
+    }
+    
+   
     /**
      * Method to write the current project to a file.
      * @param fileName  - the file to write the project to
