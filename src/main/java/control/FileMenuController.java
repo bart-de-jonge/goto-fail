@@ -55,8 +55,9 @@ public class FileMenuController {
         log.info("Saving Project to file");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save");
-        ExtensionFilter extFilter = new ExtensionFilter("Scripting Project", "*.scp");
-        fileChooser.getExtensionFilters().add(extFilter);
+        ExtensionFilter scpFilter = new ExtensionFilter("Scripting Project", "*.scp");
+        ExtensionFilter allFilter = new ExtensionFilter("All files", "*.*");
+        fileChooser.getExtensionFilters().addAll(scpFilter, allFilter);
         File file = fileChooser.showSaveDialog(controllerManager.getRootPane().getPrimaryStage());
         if (file != null) {
             controllerManager.getScriptingProject().write(file);
@@ -73,8 +74,9 @@ public class FileMenuController {
         log.info("Loading Project from file");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load");
-        ExtensionFilter extFilter = new ExtensionFilter("Scripting Project", "*.scp");
-        fileChooser.getExtensionFilters().add(extFilter);
+        ExtensionFilter scpFilter = new ExtensionFilter("Scripting Project", "*.scp");
+        ExtensionFilter allFilter = new ExtensionFilter("All files", "*.*");
+        fileChooser.getExtensionFilters().addAll(scpFilter, allFilter);
         File file = fileChooser.showOpenDialog(controllerManager.getRootPane().getPrimaryStage());
         if (file != null) {
             ScriptingProject temp  = ScriptingProject.read(file);

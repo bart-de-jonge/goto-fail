@@ -1,11 +1,11 @@
 package gui.headerarea;
 
-import javafx.scene.control.TextField;
+import gui.styling.StyledTextfield;
 
 /**
  * Created by Bart.
  */
-public class NumberTextField extends TextField {
+public class NumberTextField extends StyledTextfield {
     @Override
     public void replaceText(int start, int end, String text) {
         if (validate(text)) {
