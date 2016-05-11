@@ -72,6 +72,11 @@ public class FileMenuController {
         }
     }
     
+    /**
+     * Save the current project.
+     If the file path of this project is already known, write to that file
+     Otherwise, treat as if save as was clicked
+     */
     public void save() {
         if (controllerManager.getScriptingProject().getFilePath() == null) {
             saveAs();
@@ -80,6 +85,10 @@ public class FileMenuController {
         }
     }
     
+    /**
+     * Load a project from the given path.
+     * @param projectPath the path to load from
+     */
     public void load(String projectPath) {
         ScriptingProject temp  = ScriptingProject.read(new File(projectPath));
         changeConfigFile(temp);
@@ -146,6 +155,10 @@ public class FileMenuController {
         }
     }
     
+    /**
+     * Overwrite most recent project path in config file.
+     * @param project the project to write the path from
+     */
     private void changeConfigFile(ScriptingProject project) {
         PrintWriter writer = null;
         try {

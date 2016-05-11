@@ -44,15 +44,11 @@ public class RootPane extends Application {
     public void start(Stage primaryStage) throws Exception {
         log.info("Starting RootPane.");
         this.primaryStage = primaryStage;
-        
-        
-        // Create a BorderPane,
-        // a layout with 5 areas: top, bottom, left, right and center,
+        // Create a BorderPane, a layout with 5 areas: top, bottom, left, right and center,
         // and add our views to it.
         topLevelPane = new BorderPane();
         // Create scene and set the stage. This is where the window is basically
         // created. Also has some useful settings.
-
         Scene scene = new Scene(topLevelPane);
         scene.getStylesheets().add("stylesheets/stylesheet.css");
         primaryStage.setScene(scene);
@@ -73,8 +69,6 @@ public class RootPane extends Application {
         rootCenterArea = new RootCenterArea(this, 0, true);
         topLevelPane.setCenter(rootCenterArea);
         
-       
-
         controllerManager = new ControllerManager(this);
         
         String recentProjectPath = readPathFromConfig();
@@ -84,9 +78,12 @@ public class RootPane extends Application {
 
         primaryStage.centerOnScreen();
         primaryStage.show();
-
     }
     
+    /**
+     * Read the most recent project filepath from the config file, for auto load.
+     * @return the filepath if one is found, null otherwise
+     */
     private String readPathFromConfig() {
         BufferedReader reader = null;
         try {
