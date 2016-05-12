@@ -1,6 +1,5 @@
 package gui.centerarea;
 
-import data.CameraShot;
 import data.DirectorShot;
 import gui.events.DirectorShotBlockUpdatedEvent;
 import gui.events.ShotblockUpdatedEvent;
@@ -9,7 +8,7 @@ import javafx.event.EventHandler;
 import lombok.Getter;
 
 /**
- * Created by Bart.
+ * Created by Martijn.
  */
 public class DirectorShotBlock extends ShotBlock {
 

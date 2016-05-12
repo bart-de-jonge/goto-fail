@@ -23,7 +23,7 @@ public class DirectorGridPane extends ScrollableGridPane {
      * @param block to add to the grid
      */
     public void addDirectorShotBlock(DirectorShotBlock block) {
-        this.add(block.getGrid(), 0,
+        this.add(block.getTimetableBlock(), 0,
             (int) Math.round(block.getBeginCount()), 1,
             (int) Math.round(block.getEndCount() - block.getBeginCount()));
     }
