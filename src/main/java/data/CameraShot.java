@@ -2,15 +2,17 @@ package data;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j2;
-
 import javax.xml.bind.annotation.XmlRootElement;
+
+import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * This class extends the Shot class, this one is specific for the CameraTimeline.
  * Created by martijn.
  */
 @XmlRootElement(name = "cameraShot")
+@ToString
 @Log4j2
 public class CameraShot extends Shot {
 
@@ -25,7 +27,8 @@ public class CameraShot extends Shot {
      * Default constructor.
      */
     public CameraShot() {
-        this("", "", 0, 0);
+        super();
+        CameraShot.incrementCounter();
     }
 
     /**

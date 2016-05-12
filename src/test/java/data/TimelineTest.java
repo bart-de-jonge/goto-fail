@@ -56,4 +56,17 @@ public class TimelineTest {
         timeline.clearShots();
         assertEquals(0, timeline.getShots().size());
     }
+    
+    @Test
+    public void toStringTest() {
+        Timeline timeline = new CameraTimeline(new Camera("", "", new CameraType("", "", 0.0)), "Timeline",
+                new ScriptingProject("test", 1));
+        assertEquals("CameraTimeline(name=null, camera=Camera(name=, description=, cameraType=CameraType(name=, description=, movementMargin=0.0), movementMargin=0.0), shots=[])", timeline.toString());
+    }
+    
+    @Test
+    public void constructorWithoutArgumentsTest() {
+        Timeline timeline = new DirectorTimeline();
+        assertEquals("", timeline.getDescription());
+    }
 }

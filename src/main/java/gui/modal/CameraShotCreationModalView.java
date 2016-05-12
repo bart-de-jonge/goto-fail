@@ -34,7 +34,7 @@ public class CameraShotCreationModalView extends ModalView {
 
     // width and height of screen. 680 and 290 work very, very well.
     private static final int width = 680;
-    private static final int height = 290;
+    private static final int height = 350;
 
     // simple background styles of the three main areas.
     private String topStyle = "-fx-background-color: rgb(240,240,240);"
@@ -75,6 +75,7 @@ public class CameraShotCreationModalView extends ModalView {
     private static final int GENERAL_PADDING = 20;
     private static final int TEXT_AREA_MIN_WIDTH = 350;
     private static final int CAMERA_AREA_MIN_WIDTH = 250;
+    private static final int TOP_BOTTOM_AREA_HEIGHT = 60;
 
     private List<CameraTimeline> cameraTimelines;
 
@@ -139,6 +140,8 @@ public class CameraShotCreationModalView extends ModalView {
      */
     private void initializeCreationView() {
         // force minimum size
+        getModalStage().setHeight(height);
+        getModalStage().setWidth(width);
         getModalStage().setMinWidth(width);
         getModalStage().setMinHeight(height);
 
@@ -180,7 +183,9 @@ public class CameraShotCreationModalView extends ModalView {
         titleLabel.setAlignment(Pos.CENTER_LEFT);
         titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
         titleLabel.setPrefWidth(GENERAL_SIZE);
-        titleLabel.setPrefHeight(GENERAL_SIZE);
+        titleLabel.setMinHeight(TOP_BOTTOM_AREA_HEIGHT);
+        titleLabel.setPrefHeight(TOP_BOTTOM_AREA_HEIGHT);
+        titleLabel.setMaxHeight(TOP_BOTTOM_AREA_HEIGHT);
         this.rootPane.getChildren().add(titleLabel);
     }
 
@@ -207,7 +212,9 @@ public class CameraShotCreationModalView extends ModalView {
         this.buttonPane = new HBox();
         this.buttonPane.setSpacing(buttonSpacing);
         this.buttonPane.setAlignment(Pos.CENTER_LEFT);
-        this.buttonPane.setPrefHeight(GENERAL_SIZE);
+        this.buttonPane.setMinHeight(TOP_BOTTOM_AREA_HEIGHT);
+        this.buttonPane.setPrefHeight(TOP_BOTTOM_AREA_HEIGHT);
+        this.buttonPane.setMaxHeight(TOP_BOTTOM_AREA_HEIGHT);
         this.buttonPane.setStyle(bottomStyle);
         this.buttonPane.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
         this.rootPane.getChildren().add(buttonPane);

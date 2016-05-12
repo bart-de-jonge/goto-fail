@@ -1,5 +1,6 @@
 package gui.modal;
 
+import gui.headerarea.DoubleTextField;
 import gui.headerarea.NumberTextField;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
@@ -33,9 +34,9 @@ public class DirectorShotCreationModalView extends ModalView {
      * Tweakable styling variables.
      */
 
-    // width and height of screen. 680 and 350 work very, very well.
+    // width and height of screen. 680 and 430 work very, very well.
     private static final int width = 680;
-    private static final int height = 350;
+    private static final int height = 430;
 
     // simple background styles of the three main areas.
     private String topStyle = "-fx-background-color: rgb(240,240,240);"
@@ -76,6 +77,7 @@ public class DirectorShotCreationModalView extends ModalView {
     private static final int GENERAL_PADDING = 20;
     private static final int TEXT_AREA_MIN_WIDTH = 350;
     private static final int CAMERA_AREA_MIN_WIDTH = 250;
+    private static final int TOP_BOTTOM_AREA_HEIGHT = 60;
 
     private int numberOfCameras;
 
@@ -98,14 +100,14 @@ public class DirectorShotCreationModalView extends ModalView {
     @Getter
     private StyledTextfield nameField;
     @Getter
-    private NumberTextField startField;
+    private DoubleTextField startField;
     @Getter
-    private NumberTextField endField;
+    private DoubleTextField endField;
 
     @Getter
-    private NumberTextField frontPaddingField;
+    private DoubleTextField frontPaddingField;
     @Getter
-    private NumberTextField endPaddingField;
+    private DoubleTextField endPaddingField;
 
     // Buttons
     @Getter
@@ -147,6 +149,8 @@ public class DirectorShotCreationModalView extends ModalView {
      * Initialize and display the modal view.
      */
     private void initializeCreationView() {
+        getModalStage().setHeight(height);
+        getModalStage().setWidth(width);
         getModalStage().setMinWidth(width);
         getModalStage().setMinHeight(height);
 
@@ -194,7 +198,9 @@ public class DirectorShotCreationModalView extends ModalView {
         titleLabel.setAlignment(Pos.CENTER_LEFT);
         titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
         titleLabel.setPrefWidth(GENERAL_SIZE);
-        titleLabel.setPrefHeight(GENERAL_SIZE);
+        titleLabel.setMinHeight(TOP_BOTTOM_AREA_HEIGHT);
+        titleLabel.setPrefHeight(TOP_BOTTOM_AREA_HEIGHT);
+        titleLabel.setMaxHeight(TOP_BOTTOM_AREA_HEIGHT);
         this.rootPane.getChildren().add(titleLabel);
     }
 
@@ -245,7 +251,7 @@ public class DirectorShotCreationModalView extends ModalView {
     private void initCountTextfields(VBox content) {
         // init start field
         final Label startLabel = new Label("Start:");
-        startField = new NumberTextField();
+        startField = new DoubleTextField();
         startField.setText(this.defaultStartCount);
         HBox startBox = new HBox(GENERAL_SPACING);
         startBox.getChildren().addAll(startLabel, startField);
@@ -253,7 +259,7 @@ public class DirectorShotCreationModalView extends ModalView {
 
         // init end field
         final Label endLabel = new Label("End:");
-        endField = new NumberTextField();
+        endField = new DoubleTextField();
         endField.setText(this.defaultEndCount);
         HBox endBox = new HBox(GENERAL_SPACING);
         endBox.getChildren().addAll(endLabel, endField);
@@ -269,7 +275,7 @@ public class DirectorShotCreationModalView extends ModalView {
     private void initPaddingTextfields(VBox content) {
         // init padding before field
         final Label frontPaddingLabel = new Label("Padding before shot:");
-        frontPaddingField = new NumberTextField();
+        frontPaddingField = new DoubleTextField();
         frontPaddingField.setText("0.0");
         HBox frontPaddingBox = new HBox(GENERAL_SPACING);
         frontPaddingBox.getChildren().addAll(frontPaddingLabel, frontPaddingField);
@@ -277,7 +283,7 @@ public class DirectorShotCreationModalView extends ModalView {
 
         // init padding after field
         final Label endPaddingLabel = new Label("Padding after shot:");
-        endPaddingField = new NumberTextField();
+        endPaddingField = new DoubleTextField();
         endPaddingField.setText("0.0");
         HBox endPaddingBox = new HBox(GENERAL_SPACING);
         endPaddingBox.getChildren().addAll(endPaddingLabel, endPaddingField);
@@ -317,7 +323,9 @@ public class DirectorShotCreationModalView extends ModalView {
         this.buttonPane = new HBox();
         this.buttonPane.setSpacing(buttonSpacing);
         this.buttonPane.setAlignment(Pos.CENTER_LEFT);
-        this.buttonPane.setPrefHeight(GENERAL_SIZE);
+        this.buttonPane.setMinHeight(TOP_BOTTOM_AREA_HEIGHT);
+        this.buttonPane.setPrefHeight(TOP_BOTTOM_AREA_HEIGHT);
+        this.buttonPane.setMaxHeight(TOP_BOTTOM_AREA_HEIGHT);
         this.buttonPane.setStyle(bottomStyle);
         this.buttonPane.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
         this.rootPane.getChildren().add(buttonPane);
