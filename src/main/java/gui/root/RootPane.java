@@ -1,7 +1,5 @@
 package gui.root;
 
-
-
 import control.ControllerManager;
 
 import java.io.BufferedReader;

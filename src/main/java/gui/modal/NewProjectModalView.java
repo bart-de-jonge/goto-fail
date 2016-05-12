@@ -41,13 +41,13 @@ public class NewProjectModalView extends ModalView {
     private static final int height = 450;
 
     // three main colors used throughout window. Experiment a little!
-    private Color mainColor = Color.rgb(255, 172, 70); // main bright color
-    private Color secondaryColor = Color.rgb(255, 140, 0); // darker color
-    private Color tertiaryColor = Color.rgb(255, 235, 190); // lighter color
+    private static final Color mainColor = Color.rgb(255, 172, 70); // main bright color
+    private static final Color secondaryColor = Color.rgb(255, 140, 0); // darker color
+    private static final Color tertiaryColor = Color.rgb(255, 235, 190); // lighter color
 
     // variables for spacing
-    private int topAreaHeight = 70;
-    private int bottomAreaHeight = 60;
+    private static final int topAreaHeight = 70;
+    private static final int bottomAreaHeight = 60;
 
     // simple background styles of the three main areas.
     private String topStyle = "-fx-background-color: " + getStringFromColor(mainColor) + ";"
@@ -60,12 +60,12 @@ public class NewProjectModalView extends ModalView {
     private String bottomStyle = "-fx-background-color: " + getStringFromColor(mainColor) + ";";
 
     // variables for the Create and Cancel buttons
-    private int buttonWidth = 90;
-    private int buttonHeight = 25;
-    private int buttonSpacing = 20;
+    private static final int buttonWidth = 90;
+    private static final int buttonHeight = 25;
+    private static final int buttonSpacing = 20;
 
     // variables for the title label
-    private int titlelabelOffsetFromLeft = 20;
+    private static final int titlelabelOffsetFromLeft = 20;
 
     /*
      * Other variables

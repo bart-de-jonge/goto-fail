@@ -49,7 +49,6 @@ public class ResizeHelper {
      * @param e the event whose data we use.
      */
     private void updateVariables(MouseEvent e) {
-
         mouseEventX = e.getSceneX();
         mouseEventY = e.getSceneY();
         sceneWidth = scene.getWidth();
@@ -142,7 +141,6 @@ public class ResizeHelper {
             if (stage.getHeight() > minHeight || mouseEventY < 0) {
                 stage.setHeight(stage.getY() - e.getScreenY() + stage.getHeight());
                 stage.setY(e.getScreenY());
-
             }
         } else if (stage.getHeight() > minHeight
                 || mouseEventY + startY - stage.getHeight() > 0) {

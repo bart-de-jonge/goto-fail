@@ -22,12 +22,12 @@ public class SaveModalView extends ModalView {
     private static final int height = 200;
 
     // three main colors used throughout window. Experiment a little!
-    private Color mainColor = Color.rgb(255, 172, 70); // main bright color
-    private Color secondaryColor = Color.rgb(255, 140, 0); // darker color
+    private static final Color mainColor = Color.rgb(255, 172, 70); // main bright color
+    private static final Color secondaryColor = Color.rgb(255, 140, 0); // darker color
 
     // variables for spacing
-    private int topAreaHeight = 80;
-    private int bottomAreaHeight = 60;
+    private static final int topAreaHeight = 80;
+    private static final int bottomAreaHeight = 60;
 
     // simple background styles of the three main areas.
     private String topStyle = "-fx-background-color: " + getStringFromColor(mainColor) + ";"
@@ -42,7 +42,7 @@ public class SaveModalView extends ModalView {
     private int buttonSpacing = 20;
 
     // variables for the title label
-    private int titlelabelOffsetFromLeft = 20;
+    private static final int titlelabelOffsetFromLeft = 20;
 
     /*
      * Other variables

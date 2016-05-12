@@ -1,6 +1,8 @@
 package gui.misc;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -28,8 +30,8 @@ public class TransitionHelper {
     @Getter
     private Node node;
     @Getter
-    private ArrayList<EventHandler> addedHandlers;
-    private ArrayList<EventType> addedTypes;
+    private List<EventHandler> addedHandlers;
+    private List<EventType> addedTypes;
 
     /**
      * Constructor of class.
