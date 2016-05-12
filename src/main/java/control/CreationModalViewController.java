@@ -10,6 +10,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ public class CreationModalViewController {
 
     private ControllerManager controllerManager;
 
+    @Getter @Setter
     private CameraShotCreationModalView cameraShotCreationModalView;
     private DirectorShotCreationModalView directorShotCreationModalView;
 
@@ -32,13 +35,13 @@ public class CreationModalViewController {
      * a new CameraBlock.
      */
     public void showCameraCreationWindow() {
-        cameraShotCreationModalView = generateCameraShotCreationModalView();
+        cameraShotCreationModalView = new CameraShotCreationModalView(
+                this.controllerManager.getRootPane(),
+                this.controllerManager.getScriptingProject().getCameraTimelines().size());
 
         // Add mouse handlers
         cameraShotCreationModalView.getCreationButton().setOnMouseReleased(this::createCameraShot);
-        cameraShotCreationModalView.getCancelButton().setOnMouseReleased(e -> {
-                cameraShotCreationModalView.getModalStage().close();
-            });
+        cameraShotCreationModalView.getCancelButton().setOnMouseReleased(this::cameraCreationCancelButtonHandler);
 
         // Add listeners for parsing to startfield
         cameraShotCreationModalView.getStartField().setOnKeyPressed(
@@ -51,12 +54,6 @@ public class CreationModalViewController {
                 this::cameraShotEndCountEnterHandler);
         cameraShotCreationModalView.getEndField().focusedProperty().addListener(
                 this::cameraShotEndCountFocusHandler);
-    }
-
-    public CameraShotCreationModalView generateCameraShotCreationModalView() {
-        return new CameraShotCreationModalView(
-                this.controllerManager.getRootPane(),
-                this.controllerManager.getScriptingProject().getCameraTimelines().size());
     }
 
     /**
@@ -135,6 +132,10 @@ public class CreationModalViewController {
 
             cameraShotCreationModalView.getModalStage().close();
         }
+    }
+
+    private void cameraCreationCancelButtonHandler(MouseEvent event) {
+        cameraShotCreationModalView.getModalStage().close();
     }
 
     /**

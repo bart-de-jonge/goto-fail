@@ -3,16 +3,23 @@ package control;
 import data.CameraTimeline;
 import data.ScriptingProject;
 import gui.modal.CameraShotCreationModalView;
+import gui.modal.ModalView;
+import gui.modal.SaveModalView;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -20,7 +27,8 @@ import static org.mockito.Mockito.*;
 /**
  * Created by Bart on 12/05/2016.
  */
-public class CreationModalViewControllerTest extends ApplicationTest {
+@RunWith(PowerMockRunner.class)
+public class CreationModalViewControllerTest {
 
     private ControllerManager manager;
     private CreationModalViewController creationModalViewController;
@@ -44,21 +52,56 @@ public class CreationModalViewControllerTest extends ApplicationTest {
     }
 
     @Test
-    public void showCameraCreationWindow() {
-        CameraShotCreationModalView modalView = Mockito.mock(CameraShotCreationModalView.class);
-        StyledButton creationButton = Mockito.mock(StyledButton.class);
-        StyledButton cancelButton = Mockito.mock(StyledButton.class);
+    public void showCameraCreationWindow() throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(1);
 
-        when(creationModalViewController.generateCameraShotCreationModalView())
-                .thenReturn(modalView);
-        when(modalView.getCreationButton()).thenReturn(creationButton);
-        when(modalView.getCancelButton()).thenReturn(cancelButton);
+        Platform.runLater(() -> {
+            RootPane rootPane = Mockito.mock(RootPane.class);
+            when(rootPane.getPrimaryStage()).thenReturn(new Stage());
 
-        verify(creationButton, times(1)).setOnMouseReleased(anyObject());
-        verify(cancelButton, times(1)).setOnMouseReleased(anyObject());
+            creationModalViewController.showCameraCreationWindow();
+
+            latch.countDown();
+        });
+
+        latch.await();
+        CameraShotCreationModalView modalView = creationModalViewController.getCameraShotCreationModalView();
+        assertNotNull(modalView.getCreationButton().getOnMouseReleased());
+        assertNotNull(modalView.getCancelButton().getOnMouseReleased());
+        assertNotNull(modalView.getStartField().getOnKeyPressed());
+        assertNotNull(modalView.getEndField().getOnKeyPressed());
     }
 
-    @Override
-    public void start(Stage stage) throws Exception {
+    @Test
+
+
+
+
+
+
+    public static class AsNonApp extends Application {
+        @Override
+        public void start(Stage primaryStage) throws Exception {
+            // noop
+        }
+    }
+
+    @BeforeClass
+    public static void setUpClass() throws InterruptedException {
+        // Initialise Java FX
+
+        System.out.printf("About to launch FX App\n");
+        Thread t = new Thread("JavaFX Init Thread") {
+            public void run() {
+                try {
+                    ApplicationTest.launch(AsNonApp.class, new String[0]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        t.setDaemon(true);
+        t.start();
+        System.out.printf("FX App thread started\n");
     }
 }
