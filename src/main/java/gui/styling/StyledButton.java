@@ -25,12 +25,13 @@ public class StyledButton extends Button {
      */
 
     // effects
-    private double shadowRadius = 15;
-    private double shadowOpacity = 0.2;
+    private double shadowRadius = 10;
+    private double shadowOpacity = 0.1;
+    private double shadowClickOpacity = 0.15;
 
     // transitions
     private int mouseOverDuration = 100;
-    private int mouseClickDuration = 50;
+    private int mouseClickDuration = 75;
 
     // colors
     @Getter @Setter
@@ -74,7 +75,7 @@ public class StyledButton extends Button {
     private void init() {
         // initialize effects that can't be done by css all at once
         this.dropShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, shadowOpacity),
-                shadowRadius, 0.1, 1, 3);
+                shadowRadius, 0.05, 2, 2);
         // chain effects together
         this.setEffect(dropShadow);
 
@@ -94,24 +95,27 @@ public class StyledButton extends Button {
      * Initializes mouse over transitions.
      */
     private void initMouseOverTransitions() {
-        transitionHelper.addMouseOverTransition(this.translateYProperty(),
-                mouseOverDuration, -0.5, Interpolator.LINEAR);
-        transitionHelper.addMouseOverTransition(dropShadow.radiusProperty(),
-                mouseOverDuration, 10, Interpolator.LINEAR);
-        transitionHelper.addMouseOverTransition(dropShadow.offsetXProperty(),
-                mouseOverDuration, 2, Interpolator.LINEAR);
-        transitionHelper.addMouseOverTransition(dropShadow.offsetYProperty(),
-                mouseOverDuration, 2, Interpolator.LINEAR);
+        transitionHelper.addMouseOverTransition(fillColorProperty, mouseOverDuration,
+                fillColor, borderColor, Interpolator.LINEAR);
+        transitionHelper.addMouseOverTransition(borderColorProperty, mouseOverDuration,
+                borderColor, fillColor, Interpolator.LINEAR);
     }
 
     /**
      * Initializes mouse click transitions.
      */
     private void initMouseClickTransitions() {
-        transitionHelper.addMouseClickTransition(fillColorProperty, mouseClickDuration,
-                fillColor, borderColor, Interpolator.LINEAR);
-        transitionHelper.addMouseClickTransition(borderColorProperty, mouseClickDuration,
-                borderColor, fillColor, Interpolator.LINEAR);
+        transitionHelper.addMouseClickTransition(this.translateYProperty(),
+                mouseClickDuration, 0.5, Interpolator.LINEAR);
+        transitionHelper.addMouseClickTransition(dropShadow.radiusProperty(),
+                mouseClickDuration, -5, Interpolator.LINEAR);
+        transitionHelper.addMouseClickTransition(dropShadow.colorProperty(),
+                mouseClickDuration, Color.rgb(0, 0, 0, shadowOpacity),
+                Color.rgb(0, 0, 0, shadowClickOpacity), Interpolator.LINEAR);
+//        transitionHelper.addMouseClickTransition(dropShadow.offsetXProperty(),
+//                mouseOverDuration, 2, Interpolator.LINEAR);
+//        transitionHelper.addMouseClickTransition(dropShadow.offsetYProperty(),
+//                mouseOverDuration, 2, Interpolator.LINEAR);
     }
 
 // TODO: remove after properly testing everything.

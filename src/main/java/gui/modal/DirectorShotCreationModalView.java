@@ -38,10 +38,14 @@ public class DirectorShotCreationModalView extends ModalView {
     private static final int height = 430;
 
     // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: rgb(240,240,240);"
-            + "-fx-text-fill: black; -fx-font-size: 20;";
-    private String centerStyle = "-fx-background-color: rgb(230, 230, 230);";
-    private String bottomStyle = "-fx-background-color: rgb(240, 240, 240);";
+    private String topStyle = "-fx-background-color: rgb(60,190,255);"
+            + "-fx-text-fill: white; -fx-font-size: 20;"
+            + "-fx-border-width: 0 0 1px 0;"
+            + "-fx-border-color: rgb(60, 190, 255);";
+    private String centerStyle = "-fx-background-color: rgb(255, 255, 255);";
+    private String bottomStyle = "-fx-background-color: rgb(255, 255, 255);"
+            + "-fx-border-width: 1px 0 0 0;"
+            + "-fx-border-color: rgb(60, 190, 255);";
 
     // variables for the Create and Cancel buttons
     private int buttonWidth = 90;
@@ -60,10 +64,10 @@ public class DirectorShotCreationModalView extends ModalView {
     // variables for the shadow effects
     private double softShadowRadius = 15;
     private double softShadowCutoff = 0.2;
-    private double softShadowOpacity = 0.05;
+    private double softShadowOpacity = 0;
     private double hardShadowRadius = 1;
     private double hardShadowCutoff = 1;
-    private double hardShadowOpacity = 0.15;
+    private double hardShadowOpacity = 0;
 
     /*
      * Other variables

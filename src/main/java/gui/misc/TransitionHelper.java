@@ -53,9 +53,9 @@ public class TransitionHelper {
         Timeline t2 = new Timeline();
 
         // Create event handlers from x to y, and from y to x.
-        EventHandler<MouseEvent> mouseInHandler = createHandlerTowardsDouble(property, t1, t2, ms,
+        EventHandler mouseInHandler = createHandlerTowardsDouble(property, t1, t2, ms,
                 v, false, interpolator);
-        EventHandler<MouseEvent> mouseOutHandler = createHandlerTowardsDouble(property, t1, t2, ms,
+        EventHandler mouseOutHandler = createHandlerTowardsDouble(property, t1, t2, ms,
                 v, true, interpolator);
 
         // Bind event handlers on mouse enter and exit for this Node.
@@ -76,9 +76,9 @@ public class TransitionHelper {
     public <T> void addMouseClickTransition(Property<T> property, int ms,
                                             T x, T y, Interpolator interpolator) {
         // Create event handlers from x to y, and from y to x.
-        EventHandler<MouseEvent> mouseInHandler = createHandlerBetweenGenerics(property, ms,
+        EventHandler mouseInHandler = createHandlerBetweenGenerics(property, ms,
                 x, y, interpolator);
-        EventHandler<MouseEvent> mouseOutHandler = createHandlerBetweenGenerics(property, ms,
+        EventHandler mouseOutHandler = createHandlerBetweenGenerics(property, ms,
                 y, x, interpolator);
 
         // Bind event handlers on mouse press and release for this Node.
@@ -101,9 +101,9 @@ public class TransitionHelper {
         Timeline t2 = new Timeline();
 
         // Create event handlers from x to y, and from y to x.
-        EventHandler<MouseEvent> mouseInHandler = createHandlerTowardsDouble(property, t1, t2, ms,
+        EventHandler mouseInHandler = createHandlerTowardsDouble(property, t1, t2, ms,
                 v, false, interpolator);
-        EventHandler<MouseEvent> mouseOutHandler = createHandlerTowardsDouble(property, t1, t2, ms,
+        EventHandler mouseOutHandler = createHandlerTowardsDouble(property, t1, t2, ms,
                 v, true, interpolator);
 
         // Bind event handlers on mouse enter and exit for this Node.
@@ -124,9 +124,9 @@ public class TransitionHelper {
     public <T> void addMouseOverTransition(Property<T> property, int ms,
                                            T x, T y, Interpolator interpolator) {
         // Create event handlers from x to y, and from y to x.
-        EventHandler<MouseEvent> mouseInHandler = createHandlerBetweenGenerics(property, ms,
+        EventHandler mouseInHandler = createHandlerBetweenGenerics(property, ms,
                 x, y, interpolator);
-        EventHandler<MouseEvent> mouseOutHandler = createHandlerBetweenGenerics(property, ms,
+        EventHandler mouseOutHandler = createHandlerBetweenGenerics(property, ms,
                 y, x, interpolator);
 
         // Bind event handlers on mouse enter and exit for this Node.
@@ -154,7 +154,7 @@ public class TransitionHelper {
      * @param <T> generic type.
      * @return the new eventhandler.
      */
-    private <T> EventHandler<MouseEvent> createHandlerBetweenGenerics(Property<T> property, int ms,
+    private <T> EventHandler createHandlerBetweenGenerics(Property<T> property, int ms,
                                                               T x, T y, Interpolator interpolator) {
         return  e -> {
             Timeline timeline = new Timeline(
@@ -219,7 +219,7 @@ public class TransitionHelper {
      * @param interpolator type of interpolation used.
      * @return the new eventhandler.
      */
-    private EventHandler<MouseEvent> createHandlerTowardsDouble(DoubleProperty property,
+    private EventHandler createHandlerTowardsDouble(DoubleProperty property,
                                                                  Timeline t1, Timeline t2,
                                                                 int ms, double v, boolean done,
                                                                 Interpolator interpolator) {
