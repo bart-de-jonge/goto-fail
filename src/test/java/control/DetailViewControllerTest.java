@@ -70,10 +70,6 @@ public class DetailViewControllerTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) throws Exception {
-        pane = new Pane();
-        Scene scene = new Scene(pane, 800, 600);
-        stage.setScene(scene);
-        stage.show();
     }
 
     @Test
