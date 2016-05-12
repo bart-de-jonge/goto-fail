@@ -39,30 +39,32 @@ public class NewProjectModalView extends ModalView {
     private static final int width = 680;
     private static final int height = 450;
 
+    // three main colors used throughout window. Experiment a little!
+    private Color mainColor = Color.rgb(255, 172, 70); // main bright color
+    private Color secondaryColor = Color.rgb(255, 140, 0); // darker color
+    private Color tertiaryColor = Color.rgb(255, 235, 190); // lighter color
+
+    // variables for spacing
+    private int topAreaHeight = 70;
+    private int bottomAreaHeight = 60;
+
     // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: rgb(240,240,240);"
-            + "-fx-text-fill: black; -fx-font-size: 20;";
-    private String centerStyle = "-fx-background-color: rgb(230, 230, 230);";
-    private String bottomStyle = "-fx-background-color: rgb(240, 240, 240);";
+    private String topStyle = "-fx-background-color: " + getStringFromColor(mainColor) + ";"
+            + "-fx-text-fill: white; -fx-font-size: 26;"
+            + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
+            + "-fx-border-width: 0 0 10 0;"
+            + "-fx-border-color: " + getStringFromColor(secondaryColor) + ";";
+    private String centerLeftStyle = "-fx-background-color: rgb(245, 245, 245);";
+    private String centerRightStyle = "-fx-background-color: rgb(255, 255, 255);";
+    private String bottomStyle = "-fx-background-color: " + getStringFromColor(mainColor) + ";";
 
     // variables for the Create and Cancel buttons
     private int buttonWidth = 90;
     private int buttonHeight = 25;
-    private Point3D createButtonColor = new Point3D(200, 200, 200);
-    private Point3D cancelButtonColor = new Point3D(200, 200, 200);
-    private int buttonFontSize = 16;
     private int buttonSpacing = 20;
 
     // variables for the title label
     private int titlelabelOffsetFromLeft = 20;
-
-    // variables for the shadow effects
-    private double softShadowRadius = 15;
-    private double softShadowCutoff = 0.2;
-    private double softShadowOpacity = 0.05;
-    private double hardShadowRadius = 1;
-    private double hardShadowCutoff = 1;
-    private double hardShadowOpacity = 0.15;
 
     /*
      * Other variables
@@ -75,7 +77,6 @@ public class NewProjectModalView extends ModalView {
     private static final int GENERAL_PADDING = 20;
     private static final int TEXT_AREA_MIN_WIDTH = 300;
     private static final int LISTS_AREA_MIN_WIDTH = 300;
-    private static final int TOP_BOTTOM_AREA_HEIGHT = 60;
 
     // General panes used
     @Getter
@@ -117,11 +118,6 @@ public class NewProjectModalView extends ModalView {
     @Getter
     private StyledButton addCameraButton;
 
-    // Effects
-    private InnerShadow topInnerShadow;
-    private InnerShadow topOuterShadow;
-    private DropShadow bottomOuterShadow;
-
     // Misc
     @Getter
     private ArrayList<CameraType> cameraTypes;
@@ -155,46 +151,34 @@ public class NewProjectModalView extends ModalView {
      * Initialize the view of this modal.
      */
     private void initializeView() {
+        // force minimum size
         getModalStage().setHeight(height);
         getModalStage().setWidth(width);
         getModalStage().setMinWidth(width);
         getModalStage().setMinHeight(height);
 
+        // Create a new VBox for vertical layout
         this.viewPane = new VBox();
 
+        // Add label at top
         initTitleLabel();
 
+        // add space for textfields and lists
         this.centerPane = new HBox(40.0);
         this.centerPane.setAlignment(Pos.CENTER);
         this.centerPane.setPadding(new Insets(0, 0, 0, 0));
         this.centerPane.setPrefHeight(GENERAL_SIZE);
-        this.centerPane.setStyle(centerStyle);
         this.viewPane.getChildren().add(centerPane);
 
+        // actually add textfields and lists
         initFields();
         initAdds();
 
+        // add buttons at bottom.
         initButtons();
-
-        initEffects();
         
         super.setModalView(this.viewPane);
         super.displayModal();
-    }
-
-    /**
-     * Sets up effects and adds them to the appropriate panes.
-     */
-    private void initEffects() {
-        topInnerShadow = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, hardShadowOpacity),
-                hardShadowRadius, hardShadowCutoff, 0, -2);
-        topOuterShadow = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, softShadowOpacity),
-                softShadowRadius, softShadowCutoff, 0, 1);
-        bottomOuterShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, softShadowOpacity),
-                softShadowRadius, softShadowCutoff, 0, -1);
-        this.titleLabel.setEffect(topInnerShadow);
-        this.centerPane.setEffect(topOuterShadow);
-        this.buttonPane.setEffect(bottomOuterShadow);
     }
 
     /**
@@ -206,9 +190,9 @@ public class NewProjectModalView extends ModalView {
         titleLabel.setAlignment(Pos.CENTER_LEFT);
         titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
         titleLabel.setPrefWidth(GENERAL_SIZE);
-        titleLabel.setMinHeight(TOP_BOTTOM_AREA_HEIGHT);
-        titleLabel.setPrefHeight(TOP_BOTTOM_AREA_HEIGHT);
-        titleLabel.setMaxHeight(TOP_BOTTOM_AREA_HEIGHT);
+        titleLabel.setMinHeight(topAreaHeight);
+        titleLabel.setPrefHeight(topAreaHeight);
+        titleLabel.setMaxHeight(topAreaHeight);
         this.viewPane.getChildren().add(titleLabel);
     }
 
@@ -222,35 +206,73 @@ public class NewProjectModalView extends ModalView {
         content.setPrefWidth(GENERAL_SIZE);
         content.setPrefHeight(GENERAL_SIZE);
         content.setPadding(new Insets(GENERAL_PADDING));
+        content.setStyle(centerLeftStyle);
 
+        initNameDescriptionFields(content);
+        innitTimelineFields(content);
+
+        this.centerPane.getChildren().add(content);
+    }
+
+    /**
+     * Initializes name and description textfields.
+     * @param content pane in which to intiialize.
+     */
+    private void initNameDescriptionFields(VBox content) {
+        // init name field
         final Label nameLabel = new Label("Project name: ");
         nameField = new StyledTextfield();
+        nameField.setBorderColor(mainColor);
+        nameField.setTextColor(mainColor);
+        nameField.setTextActiveColor(secondaryColor);
+        nameField.setFillActiveColor(tertiaryColor);
         HBox nameBox = new HBox(GENERAL_SPACING);
         nameBox.getChildren().addAll(nameLabel, nameField);
         nameBox.setAlignment(Pos.CENTER_RIGHT);
 
+        // init description field
         final Label descriptionLabel = new Label("Project description: ");
         descriptionField = new StyledTextfield();
+        descriptionField.setBorderColor(mainColor);
+        descriptionField.setTextColor(mainColor);
+        descriptionField.setTextActiveColor(secondaryColor);
+        descriptionField.setFillActiveColor(tertiaryColor);
         HBox descriptionBox = new HBox(GENERAL_SPACING);
         descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
         descriptionBox.setAlignment(Pos.CENTER_RIGHT);
 
+        content.getChildren().addAll(nameBox, descriptionBox);
+    }
+
+    /**
+     * Initializes timeline textfields.
+     * @param content pane in which to intiialize.
+     */
+    private void innitTimelineFields(VBox content) {
+        // init seconds per count field
         final Label secondsPerCountLabel = new Label("Seconds per count: ");
         secondsPerCountField = new NumberTextField();
+        secondsPerCountField.setBorderColor(mainColor);
+        secondsPerCountField.setTextColor(mainColor);
+        secondsPerCountField.setTextActiveColor(secondaryColor);
+        secondsPerCountField.setFillActiveColor(tertiaryColor);
         HBox secondsPerCountBox = new HBox(GENERAL_SPACING);
         secondsPerCountBox.getChildren().addAll(secondsPerCountLabel, secondsPerCountField);
         secondsPerCountBox.setAlignment(Pos.CENTER_RIGHT);
 
+        // init timeline description field (this ought to die)
         final Label directorTimelineDescriptionLabel = new Label("Director Timeline Description: ");
         directorTimelineDescriptionField = new StyledTextfield();
+        directorTimelineDescriptionField.setBorderColor(mainColor);
+        directorTimelineDescriptionField.setTextColor(mainColor);
+        directorTimelineDescriptionField.setTextActiveColor(secondaryColor);
+        directorTimelineDescriptionField.setFillActiveColor(tertiaryColor);
         HBox directorTimelineDescriptionBox = new HBox(GENERAL_SPACING);
         directorTimelineDescriptionBox.getChildren().addAll(directorTimelineDescriptionLabel,
                 directorTimelineDescriptionField);
         directorTimelineDescriptionBox.setAlignment(Pos.CENTER_RIGHT);
 
-        content.getChildren().addAll(nameBox, descriptionBox,
-                secondsPerCountBox, directorTimelineDescriptionBox);
-        this.centerPane.getChildren().add(content);
+        content.getChildren().addAll(secondsPerCountBox, directorTimelineDescriptionBox);
     }
 
     /**
@@ -264,15 +286,20 @@ public class NewProjectModalView extends ModalView {
         content.setPrefWidth(GENERAL_SIZE);
         content.setPrefHeight(GENERAL_SIZE);
         content.setPadding(new Insets(GENERAL_PADDING));
+        content.setStyle(centerRightStyle);
 
         // add camera type
         addCameraTypeButton = new StyledButton("Add Camera Type");
+        addCameraTypeButton.setFillColor(Color.WHITE);
+        addCameraTypeButton.setBorderColor(mainColor);
         cameraTypeList = new ListView<HBox>();
         cameraTypeList.setMinHeight(75);
         content.getChildren().addAll(addCameraTypeButton, cameraTypeList);
 
         // add camera
         addCameraButton = new StyledButton("Add Camera");
+        addCameraButton.setFillColor(Color.WHITE);
+        addCameraButton.setBorderColor(mainColor);
         cameraList = new ListView<HBox>();
         cameraList.setMinHeight(75);
         content.getChildren().addAll(addCameraButton, cameraList);
@@ -288,9 +315,9 @@ public class NewProjectModalView extends ModalView {
         this.buttonPane = new HBox();
         this.buttonPane.setSpacing(buttonSpacing);
         this.buttonPane.setAlignment(Pos.CENTER_LEFT);
-        this.buttonPane.setMinHeight(TOP_BOTTOM_AREA_HEIGHT);
-        this.buttonPane.setPrefHeight(TOP_BOTTOM_AREA_HEIGHT);
-        this.buttonPane.setMaxHeight(TOP_BOTTOM_AREA_HEIGHT);
+        this.buttonPane.setMinHeight(bottomAreaHeight);
+        this.buttonPane.setPrefHeight(bottomAreaHeight);
+        this.buttonPane.setMaxHeight(bottomAreaHeight);
         this.buttonPane.setStyle(bottomStyle);
         this.buttonPane.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
         this.viewPane.getChildren().add(buttonPane);
@@ -300,16 +327,30 @@ public class NewProjectModalView extends ModalView {
         cancelButton.setPrefWidth(buttonWidth);
         cancelButton.setPrefHeight(buttonHeight);
         cancelButton.setAlignment(Pos.CENTER);
+        cancelButton.setBorderColor(Color.WHITE);
+        cancelButton.setFillColor(mainColor);
 
         // Add creation button
         creationButton = new StyledButton("Create");
         creationButton.setPrefWidth(buttonWidth);
         creationButton.setPrefHeight(buttonHeight);
         creationButton.setAlignment(Pos.CENTER);
+        creationButton.setBorderColor(Color.WHITE);
+        creationButton.setFillColor(mainColor);
 
         this.buttonPane.getChildren().addAll(creationButton, cancelButton);
     }
 
-
+    /**
+     * Parses color from a Color object to javafx-css-compatible string.
+     * @param color the color to parse.
+     * @return a representative string.
+     */
+    private String getStringFromColor(Color color) {
+        return "rgba(" + ((int) (color.getRed()   * 255)) + ","
+                + ((int) (color.getGreen() * 255)) + ","
+                + ((int) (color.getBlue()  * 255)) + ","
+                + color.getOpacity() + ")";
+    }
 
 }

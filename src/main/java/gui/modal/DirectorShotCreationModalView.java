@@ -52,7 +52,7 @@ public class DirectorShotCreationModalView extends ModalView {
     private String topStyle = "-fx-background-color: " + getStringFromColor(mainColor) + ";"
             + "-fx-text-fill: white; -fx-font-size: 26;"
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
-            + "-fx-border-width: 0 0 0 0;"
+            + "-fx-border-width: 0 0 10 0;"
             + "-fx-border-color: " + getStringFromColor(secondaryColor) + ";";
     private String centerLeftStyle = "-fx-background-color: rgb(245, 245, 245);";
     private String centerRightStyle = "-fx-background-color: rgb(255, 255, 255);";

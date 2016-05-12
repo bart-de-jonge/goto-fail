@@ -158,7 +158,7 @@ public class StyledButton extends Button {
      */
     public void setBorderColor(Color color) {
         this.borderColor = color;
-        this.borderColorProperty.setValue(fillColor);
+        this.borderColorProperty.setValue(borderColor);
         this.transitionHelper.removeTransitions();
         initMouseClickTransitions();
         initMouseOverTransitions();
