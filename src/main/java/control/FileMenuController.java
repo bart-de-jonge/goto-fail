@@ -270,21 +270,22 @@ public class FileMenuController {
         String name = cameraModal.getNameField().getText();
         String description = cameraModal.getDescriptionField().getText();
         int selectedIndex = cameraModal.getCameraTypes().getSelectionModel().getSelectedIndex();
-        
-        if (name.isEmpty()) {
-            errorString += "Please enter a camera name\n";
+
+        if (selectedIndex == -1) {
+            errorString = "Please select a camera type\n";
         }
         
         if (description.isEmpty()) {
-            errorString += "Please enter a camera description\n";
+            errorString = "Please enter a camera description\n";
         }
-        
-        if (selectedIndex == -1) {
-            errorString += "Please select a camera type\n";
+
+        if (name.isEmpty()) {
+            errorString = "Please enter a camera name\n";
         }
+
         
-        cameraModal.getErrorLabel().setText(errorString);
-        cameraModal.getErrorLabel().setTextFill(Color.RED);
+        cameraModal.getTitleLabel().setText(errorString);
+        cameraModal.getTitleLabel().setTextFill(Color.RED);
         
         return errorString.isEmpty();
     }
@@ -326,21 +327,21 @@ public class FileMenuController {
         String name = cameraTypeModal.getNameField().getText();
         String description = cameraTypeModal.getDescriptionField().getText();
         String movementMargin = cameraTypeModal.getMovementMarginField().getText();
-        
-        if (name.isEmpty()) {
-            errorString += "Please enter a name\n";
-        }
-        
-        if (description.isEmpty()) {
-            errorString += "Please enter a description\n";
-        }
-        
+
         if (movementMargin.isEmpty()) {
-            errorString += "Please enter a movement margin\n";
+            errorString = "Please enter a movement margin\n";
         }
-        
-        cameraTypeModal.getErrorLabel().setText(errorString);
-        cameraTypeModal.getErrorLabel().setTextFill(Color.RED);
+
+        if (description.isEmpty()) {
+            errorString = "Please enter a description\n";
+        }
+
+        if (name.isEmpty()) {
+            errorString = "Please enter a name\n";
+        }
+
+        cameraTypeModal.getTitleLabel().setText(errorString);
+        cameraTypeModal.getTitleLabel().setTextFill(Color.RED);
         
         return errorString.isEmpty();
     }

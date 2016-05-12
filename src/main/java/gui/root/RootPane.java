@@ -1,10 +1,11 @@
 package gui.root;
 
+import control.ControllerManager;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import control.ControllerManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -56,7 +57,7 @@ public class RootPane extends Application {
         primaryStage.setMinWidth(minimumResolutionX);
         primaryStage.setHeight(startingResolutionY);
         primaryStage.setWidth(startingResolutionX);
-        
+
         // represents file-view-help bar and button bars at top of gui.
         rootHeaderArea = new RootHeaderArea(this);
         topLevelPane.setTop(rootHeaderArea);
