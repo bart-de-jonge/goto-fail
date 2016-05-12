@@ -13,6 +13,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.testfx.framework.junit.ApplicationTest;
 
+import java.util.ArrayList;
+
 import static org.mockito.Mockito.when;
 
 /**
@@ -81,7 +83,7 @@ public class ToolViewControllerTest extends ApplicationTest {
     @Test
     public void enableGenActiveBlockTest() {
         DirectorShotBlock mockBlock = Mockito.mock(DirectorShotBlock.class);
-        DirectorShot directorShot = new DirectorShot("Dir shot", "description", 0, 1, 0, 0);
+        DirectorShot directorShot = new DirectorShot("Dir shot", "description", 0, 1, 0, 0, new ArrayList<>());
         when(mockBlock.getShot()).thenReturn(directorShot);
         when(controllerManager.getActiveShotBlock()).thenReturn(mockBlock);
         ToolButton genSpy = Mockito.spy(toolView.getShotGenerationTool());
