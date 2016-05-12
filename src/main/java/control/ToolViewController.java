@@ -88,12 +88,19 @@ public class ToolViewController {
         if (this.controllerManager.getActiveShotBlock() != null) {
             toolView.getBlockDeletionTool().enableButton();
             // Only enable the generation of camera shots if it's a director shot w/o camera shots
+            boolean enableGen = false;
             if (this.controllerManager.getActiveShotBlock() instanceof DirectorShotBlock) {
                 DirectorShotBlock directorShotBlock = (DirectorShotBlock)
                         this.controllerManager.getActiveShotBlock();
                 if (directorShotBlock.getShot().getCameraShots().isEmpty()) {
-                    toolView.getShotGenerationTool().enableButton();
+                    enableGen = true;
                 }
+            }
+
+            if (enableGen) {
+                toolView.getShotGenerationTool().enableButton();
+            } else {
+                toolView.getShotGenerationTool().disableButton();
             }
         } else {
             toolView.getBlockDeletionTool().disableButton();

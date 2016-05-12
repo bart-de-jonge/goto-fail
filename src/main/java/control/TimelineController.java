@@ -272,7 +272,7 @@ public class TimelineController {
      * @param timelineIndex Index of timeline that the CameraShot belongs to.
      * @param shot CameraShot to decouple
      */
-    private void decoupleShot(int timelineIndex, CameraShot shot) {
+    void decoupleShot(int timelineIndex, CameraShot shot) {
         log.info("Decoupling shot.", shot);
         DirectorShot directorShot = shot.getDirectorShot();
         directorShot.removeCameraShot(shot, timelineIndex);

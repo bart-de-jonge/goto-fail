@@ -1,8 +1,10 @@
 package control;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import data.DirectorShot;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -78,5 +80,18 @@ public class TimelineControllerTest {
         // Verify movement between centerarea
         assertEquals(1, project.getCameraTimelines().get(0).getShots().size());
         assertEquals(0, project.getCameraTimelines().get(1).getShots().size());
+    }
+
+    @Test
+    public void decoupleTest() {
+        DirectorShot directorShotSpy = Mockito.spy(new DirectorShot("dir shot", "description", 1, 2, 0, 0));
+        CameraShot shotSpy = Mockito.spy(shot);
+        directorShotSpy.addCameraTimelineIndex(0);
+        directorShotSpy.addCameraShot(shotSpy);
+        shotSpy.setDirectorShot(directorShotSpy);
+
+        timelineController.decoupleShot(0, shotSpy);
+        verify(directorShotSpy).removeCameraShot(shotSpy, 0);
+        verify(shotSpy).setDirectorShot(null);
     }
 }
