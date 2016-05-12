@@ -20,6 +20,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.StageStyle;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,26 +39,22 @@ public class CameraShotCreationModalView extends ModalView {
     private static final int height = 350;
 
     // simple background styles of the three main areas.
-//    private String topStyle = "-fx-background-color: rgb(240,240,240);"
-//            + "-fx-text-fill: black; -fx-font-size: 20;";
-//    private String centerStyle = "-fx-background-color: rgb(230, 230, 230);";
-//    private String bottomStyle = "-fx-background-color: rgb(240, 240, 240);";
     private String topStyle = "-fx-background-color: rgb(60,190,255);"
-            + "-fx-text-fill: white; -fx-font-size: 20;"
+            + "-fx-text-fill: white; -fx-font-size: 24;"
+            + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 1px 0;"
             + "-fx-border-color: rgb(60, 190, 255);";
     private String centerStyle = "-fx-background-color: rgb(255, 255, 255);";
-    private String bottomStyle = "-fx-background-color: rgb(255, 255, 255);"
+    private String bottomStyle = "-fx-background-color: rgb(60, 190, 255);"
             + "-fx-border-width: 1px 0 0 0;"
             + "-fx-border-color: rgb(60, 190, 255);";
 
     // variables for the Create and Cancel buttons
     private int buttonWidth = 90;
     private int buttonHeight = 25;
-    private Point3D createButtonColor = new Point3D(200, 200, 200);
-    private Point3D cancelButtonColor = new Point3D(200, 200, 200);
-    private int buttonFontSize = 16;
     private int buttonSpacing = 20;
+    private Color buttonFillColor = Color.rgb(60, 190, 255);
+    private Color buttonBorderColor = Color.WHITE;
 
     // color of the "active" element of a checkbox
     private Point3D checkboxColor = new Point3D(250, 120, 50);
@@ -73,6 +70,10 @@ public class CameraShotCreationModalView extends ModalView {
     private double hardShadowCutoff = 1;
     private double hardShadowOpacity = 0;
 
+    // variables for spacing
+    private int topAreaHeight = 50;
+    private int bottomAreaHeight = 50;
+
     /*
      * Other variables.
      */
@@ -84,7 +85,6 @@ public class CameraShotCreationModalView extends ModalView {
     private static final int GENERAL_PADDING = 20;
     private static final int TEXT_AREA_MIN_WIDTH = 350;
     private static final int CAMERA_AREA_MIN_WIDTH = 250;
-    private static final int TOP_BOTTOM_AREA_HEIGHT = 60;
 
     private int numberOfCameras;
 
@@ -192,9 +192,9 @@ public class CameraShotCreationModalView extends ModalView {
         titleLabel.setAlignment(Pos.CENTER_LEFT);
         titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
         titleLabel.setPrefWidth(GENERAL_SIZE);
-        titleLabel.setMinHeight(TOP_BOTTOM_AREA_HEIGHT);
-        titleLabel.setPrefHeight(TOP_BOTTOM_AREA_HEIGHT);
-        titleLabel.setMaxHeight(TOP_BOTTOM_AREA_HEIGHT);
+        titleLabel.setMinHeight(topAreaHeight);
+        titleLabel.setPrefHeight(topAreaHeight);
+        titleLabel.setMaxHeight(topAreaHeight);
         this.rootPane.getChildren().add(titleLabel);
     }
 
@@ -221,28 +221,28 @@ public class CameraShotCreationModalView extends ModalView {
         this.buttonPane = new HBox();
         this.buttonPane.setSpacing(buttonSpacing);
         this.buttonPane.setAlignment(Pos.CENTER_LEFT);
-        this.buttonPane.setMinHeight(TOP_BOTTOM_AREA_HEIGHT);
-        this.buttonPane.setPrefHeight(TOP_BOTTOM_AREA_HEIGHT);
-        this.buttonPane.setMaxHeight(TOP_BOTTOM_AREA_HEIGHT);
+        this.buttonPane.setMinHeight(bottomAreaHeight);
+        this.buttonPane.setPrefHeight(bottomAreaHeight);
+        this.buttonPane.setMaxHeight(bottomAreaHeight);
         this.buttonPane.setStyle(bottomStyle);
-        this.buttonPane.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
+        this.buttonPane.setPadding(new Insets(0, titlelabelOffsetFromLeft, 0, titlelabelOffsetFromLeft));
         this.rootPane.getChildren().add(buttonPane);
 
         // Add cancel button
         cancelButton = new StyledButton("Cancel");
         cancelButton.setPrefWidth(buttonWidth);
         cancelButton.setPrefHeight(buttonHeight);
-//        cancelButton.setFontSize(buttonFontSize);
-//        cancelButton.setButtonColor(createButtonColor);
         cancelButton.setAlignment(Pos.CENTER);
+        cancelButton.setBorderColor(buttonBorderColor);
+        cancelButton.setFillColor(buttonFillColor);
 
         // Add creation button
         creationButton = new StyledButton("Create");
         creationButton.setPrefWidth(buttonWidth);
         creationButton.setPrefHeight(buttonHeight);
-//        creationButton.setFontSize(buttonFontSize);
-//        creationButton.setButtonColor(cancelButtonColor);
         creationButton.setAlignment(Pos.CENTER);
+        creationButton.setBorderColor(buttonBorderColor);
+        creationButton.setFillColor(buttonFillColor);
 
         this.buttonPane.getChildren().addAll(creationButton, cancelButton);
     }

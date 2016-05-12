@@ -9,10 +9,13 @@ import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.Property;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import lombok.Getter;
+
+import java.util.ArrayList;
 
 /**
  * Class to assist in easy setup of transitions for Nodes on common events
@@ -25,6 +28,9 @@ public class TransitionHelper {
 
     @Getter
     private Node node;
+    @Getter
+    private ArrayList<EventHandler> addedHandlers;
+    private ArrayList<EventType> addedTypes;
 
     /**
      * Constructor of class.
@@ -32,6 +38,8 @@ public class TransitionHelper {
      */
     public TransitionHelper(Node node) {
         this.node = node;
+        this.addedHandlers = new ArrayList<EventHandler>();
+        this.addedTypes = new ArrayList<EventType>();
     }
 
     /**
@@ -58,6 +66,12 @@ public class TransitionHelper {
         EventHandler mouseOutHandler = createHandlerTowardsDouble(property, t1, t2, ms,
                 v, true, interpolator);
 
+        // Store handlers so we can kill them again
+        addedHandlers.add(mouseInHandler);
+        addedHandlers.add(mouseOutHandler);
+        addedTypes.add(MouseEvent.MOUSE_PRESSED.getSuperType());
+        addedTypes.add(MouseEvent.MOUSE_RELEASED.getSuperType());
+
         // Bind event handlers on mouse enter and exit for this Node.
         node.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseInHandler);
         node.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseOutHandler);
@@ -80,6 +94,13 @@ public class TransitionHelper {
                 x, y, interpolator);
         EventHandler mouseOutHandler = createHandlerBetweenGenerics(property, ms,
                 y, x, interpolator);
+
+        addedTypes.add(MouseEvent.MOUSE_PRESSED.getSuperType());
+        addedTypes.add(MouseEvent.MOUSE_RELEASED.getSuperType());
+
+        // Store handlers so we can kill them again
+        addedHandlers.add(mouseInHandler);
+        addedHandlers.add(mouseOutHandler);
 
         // Bind event handlers on mouse press and release for this Node.
         node.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseInHandler);
@@ -106,9 +127,26 @@ public class TransitionHelper {
         EventHandler mouseOutHandler = createHandlerTowardsDouble(property, t1, t2, ms,
                 v, true, interpolator);
 
+        // Store handlers so we can kill them again
+        addedTypes.add(MouseEvent.MOUSE_ENTERED.getSuperType());
+        addedTypes.add(MouseEvent.MOUSE_EXITED.getSuperType());
+        addedHandlers.add(mouseInHandler);
+        addedHandlers.add(mouseOutHandler);
+
         // Bind event handlers on mouse enter and exit for this Node.
         node.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseInHandler);
         node.addEventHandler(MouseEvent.MOUSE_EXITED, mouseOutHandler);
+    }
+
+    /**
+     * Permanently destroys all mouse in/out and press/release transitions stored
+     * in this transitionHelper. Use it to clear transitions on an object, if they
+     * need to be re-made.
+     */
+    public void removeTransitions() {
+        for (int i = 0; i < addedHandlers.size(); i++) {
+            node.removeEventHandler(addedTypes.get(i), addedHandlers.get(i));
+        }
     }
 
     /**
@@ -128,6 +166,13 @@ public class TransitionHelper {
                 x, y, interpolator);
         EventHandler mouseOutHandler = createHandlerBetweenGenerics(property, ms,
                 y, x, interpolator);
+
+        addedTypes.add(MouseEvent.MOUSE_ENTERED.getSuperType());
+        addedTypes.add(MouseEvent.MOUSE_EXITED.getSuperType());
+
+        // Store handlers so we can kill them again
+        addedHandlers.add(mouseInHandler);
+        addedHandlers.add(mouseOutHandler);
 
         // Bind event handlers on mouse enter and exit for this Node.
         node.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseInHandler);

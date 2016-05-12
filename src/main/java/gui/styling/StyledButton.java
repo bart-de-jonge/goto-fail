@@ -34,10 +34,8 @@ public class StyledButton extends Button {
     private int mouseClickDuration = 75;
 
     // colors
-    @Getter @Setter
     // Color of normal borders and text. Becomes fillColor on click.
     private Color borderColor = Color.rgb(60, 190, 255);
-    @Getter @Setter
     // Color of (blank) background. Becomes borderColor on click.
     // Can be set transparent?
     private Color fillColor = Color.rgb(255, 255, 255);
@@ -112,64 +110,7 @@ public class StyledButton extends Button {
         transitionHelper.addMouseClickTransition(dropShadow.colorProperty(),
                 mouseClickDuration, Color.rgb(0, 0, 0, shadowOpacity),
                 Color.rgb(0, 0, 0, shadowClickOpacity), Interpolator.LINEAR);
-//        transitionHelper.addMouseClickTransition(dropShadow.offsetXProperty(),
-//                mouseOverDuration, 2, Interpolator.LINEAR);
-//        transitionHelper.addMouseClickTransition(dropShadow.offsetYProperty(),
-//                mouseOverDuration, 2, Interpolator.LINEAR);
     }
-
-// TODO: remove after properly testing everything.
-// TODO: bind property to font size
-
-//    /**
-//     * Simple function to set color of button, rgb style, 0-255.
-//     * @param color 3d vector of 0-255 values.
-//     */
-//    public void setButtonColor(Point3D color) {
-//        setButtonColor((int) Math.round(color.getX()),
-//                (int) Math.round(color.getY()),
-//                (int) Math.round(color.getZ()));
-//    }
-//
-//    /**
-//     * Simple function to set color of button, rgb style, 0-255.
-//     * @param r red component of color.
-//     * @param g green component of color.
-//     * @param b blue component of color.
-//     */
-//    public void setButtonColor(int r, int g, int b) {
-//        setStyle(getStyle().concat("-fx-background-color: rgb("
-//                + r + "," + g + "," + b + ");"));
-//    }
-
-//    /**
-//     * Simple function to set color of text, rgb style, 0-255.
-//     * @param color 3d vector of 0-255 values.
-//     */
-//    public void setTextColor(Point3D color) {
-//        setTextColor((int) Math.round(color.getX()),
-//                (int) Math.round(color.getY()),
-//                (int) Math.round(color.getZ()));
-//    }
-//
-//    /**
-//     * Simple function to set color of text, rgb style, 0-255.
-//     * @param r red component of color.
-//     * @param g green component of color.
-//     * @param b blue component of color.
-//     */
-//    public void setTextColor(int r, int g, int b) {
-//        setStyle(getStyle().concat("-fx-text-fill: rgb("
-//                + r + "," + g + "," + b + ");"));
-//    }
-//
-//    /**
-//     * Simple function to set size of text, with integer value.
-//     * @param s size to set.
-//     */
-//    public void setFontSize(int s) {
-//        setStyle(getStyle().concat("-fx-font-size: " + s + ";"));
-//    }
 
     /**
      * Helper function for binding a fill color. Creates a string property used
@@ -197,6 +138,30 @@ public class StyledButton extends Button {
                 + ((int) (color.getGreen() * 255)) + ","
                 + ((int) (color.getBlue()  * 255)) + ","
                 + color.getOpacity() + ")";
+    }
+
+    /**
+     * Set the fill color of this button.
+     * @param color the color to set.
+     */
+    public void setFillColor(Color color) {
+        this.fillColor = color;
+        this.fillColorProperty.setValue(fillColor);
+        this.transitionHelper.removeTransitions();
+        initMouseClickTransitions();
+        initMouseOverTransitions();
+    }
+
+    /**
+     * Set the border color of this button.
+     * @param color the color to set.
+     */
+    public void setBorderColor(Color color) {
+        this.borderColor = color;
+        this.borderColorProperty.setValue(fillColor);
+        this.transitionHelper.removeTransitions();
+        initMouseClickTransitions();
+        initMouseOverTransitions();
     }
 
 }

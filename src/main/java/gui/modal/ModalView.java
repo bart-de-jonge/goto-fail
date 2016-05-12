@@ -42,6 +42,7 @@ public abstract class ModalView {
      */
     public void displayModal() {
         if (this.displayScene != null) {
+            this.displayScene.setFill(null);
             this.modalStage.show();
         }
     }
