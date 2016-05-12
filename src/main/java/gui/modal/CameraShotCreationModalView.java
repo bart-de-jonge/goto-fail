@@ -253,11 +253,11 @@ public class CameraShotCreationModalView extends ModalView {
         descriptionField.setTextColor(mainColor);
         descriptionField.setTextActiveColor(secondaryColor);
         descriptionField.setFillActiveColor(tertiaryColor);
-        HBox descripBox = new HBox(GENERAL_SPACING);
-        descripBox.getChildren().addAll(descripLabel, descriptionField);
-        descripBox.setAlignment(Pos.CENTER_RIGHT);
+        HBox descriptionBox = new HBox(GENERAL_SPACING);
+        descriptionBox.getChildren().addAll(descripLabel, descriptionField);
+        descriptionBox.setAlignment(Pos.CENTER_RIGHT);
 
-        content.getChildren().addAll(nameBox, descripBox);
+        content.getChildren().addAll(nameBox, descriptionBox);
     }
 
     /**

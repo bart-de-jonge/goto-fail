@@ -1,6 +1,6 @@
 package gui.misc;
 
-
+import java.util.ArrayList;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -15,7 +15,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import lombok.Getter;
 
-import java.util.ArrayList;
 
 /**
  * Class to assist in easy setup of transitions for Nodes on common events
@@ -45,6 +44,17 @@ public class TransitionHelper {
     /**
      * Transition functions below.
      */
+
+    /**
+     * Permanently destroys all mouse in/out and press/release transitions stored
+     * in this transitionHelper. Use it to clear transitions on an object, if they
+     * need to be re-made.
+     */
+    public void removeTransitions() {
+        for (int i = 0; i < addedHandlers.size(); i++) {
+            node.removeEventHandler(addedTypes.get(i), addedHandlers.get(i));
+        }
+    }
 
     /**
      * Add a transition event, on mouse enter and exit, between a specified double
@@ -95,12 +105,11 @@ public class TransitionHelper {
         EventHandler mouseOutHandler = createHandlerBetweenGenerics(property, ms,
                 y, x, interpolator);
 
-        addedTypes.add(MouseEvent.MOUSE_PRESSED.getSuperType());
-        addedTypes.add(MouseEvent.MOUSE_RELEASED.getSuperType());
-
         // Store handlers so we can kill them again
         addedHandlers.add(mouseInHandler);
         addedHandlers.add(mouseOutHandler);
+        addedTypes.add(MouseEvent.MOUSE_PRESSED.getSuperType());
+        addedTypes.add(MouseEvent.MOUSE_RELEASED.getSuperType());
 
         // Bind event handlers on mouse press and release for this Node.
         node.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseInHandler);
@@ -128,25 +137,14 @@ public class TransitionHelper {
                 v, true, interpolator);
 
         // Store handlers so we can kill them again
-        addedTypes.add(MouseEvent.MOUSE_ENTERED.getSuperType());
-        addedTypes.add(MouseEvent.MOUSE_EXITED.getSuperType());
         addedHandlers.add(mouseInHandler);
         addedHandlers.add(mouseOutHandler);
+        addedTypes.add(MouseEvent.MOUSE_ENTERED.getSuperType());
+        addedTypes.add(MouseEvent.MOUSE_EXITED.getSuperType());
 
         // Bind event handlers on mouse enter and exit for this Node.
         node.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseInHandler);
         node.addEventHandler(MouseEvent.MOUSE_EXITED, mouseOutHandler);
-    }
-
-    /**
-     * Permanently destroys all mouse in/out and press/release transitions stored
-     * in this transitionHelper. Use it to clear transitions on an object, if they
-     * need to be re-made.
-     */
-    public void removeTransitions() {
-        for (int i = 0; i < addedHandlers.size(); i++) {
-            node.removeEventHandler(addedTypes.get(i), addedHandlers.get(i));
-        }
     }
 
     /**
@@ -167,12 +165,11 @@ public class TransitionHelper {
         EventHandler mouseOutHandler = createHandlerBetweenGenerics(property, ms,
                 y, x, interpolator);
 
-        addedTypes.add(MouseEvent.MOUSE_ENTERED.getSuperType());
-        addedTypes.add(MouseEvent.MOUSE_EXITED.getSuperType());
-
         // Store handlers so we can kill them again
         addedHandlers.add(mouseInHandler);
         addedHandlers.add(mouseOutHandler);
+        addedTypes.add(MouseEvent.MOUSE_ENTERED.getSuperType());
+        addedTypes.add(MouseEvent.MOUSE_EXITED.getSuperType());
 
         // Bind event handlers on mouse enter and exit for this Node.
         node.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseInHandler);

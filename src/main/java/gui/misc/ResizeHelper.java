@@ -11,6 +11,7 @@ import lombok.Setter;
 
 /**
  * Allows for the resizing of undecorated JavaFX stages (windows without OS title bar).
+ * CURRENTLY UNUSED AND UNFINISHED.
  * @author Mark
  */
 public class ResizeHelper {
@@ -77,8 +78,7 @@ public class ResizeHelper {
         return e -> {
             updateVariables(e);
 
-            // find out what type of resize we're talking about.
-            // and yes, this is horrible code. Help.
+            // This is horrible code. Help.
             // TODO: Find help.
 
             if (mouseEventX < border && mouseEventY < border) {
@@ -100,7 +100,7 @@ public class ResizeHelper {
             } else {
                 cursor = Cursor.DEFAULT;
             }
-            System.out.println(mouseEventX);
+
             // store the type of mouse movement
             scene.setCursor(cursor);
         };

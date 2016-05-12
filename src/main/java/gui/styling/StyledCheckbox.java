@@ -134,32 +134,14 @@ public class StyledCheckbox extends CheckBox {
      */
     private EventHandler<ActionEvent> createOnAction() {
         return e -> {
-            // Perform this on first use. We HAVE to do this AFTER construction,
-            // because the 'box' and 'mark' subpanes of a checkbox do not exist
-            // until after the scene is shown. Which, coincidentally, happens last.
+
+            // Perform this on first use.
             if (!initialized) {
-                // perform lookup. Cast is necessity.
-                box = (StackPane) self.lookup(".box");
-                mark = (StackPane) self.lookup(".mark");
-
-                // Initialize stuff that can't be done by css all at once.
-                this.dropShadow = new DropShadow(BlurType.GAUSSIAN,
-                        Color.rgb(0, 0, 0, shadowOpacity), shadowRadius, 0.03, 0, 1);
-                mark.setEffect(dropShadow);
-                mark.setTranslateX(markPositionLeft);
-
-                mark.styleProperty().bind(new SimpleStringProperty("-fx-background-color: ")
-                    .concat(markStringProperty).concat(";").concat("-fx-border-color: ")
-                    .concat(getStringFromColor(borderColor)).concat(";"));
-                box.styleProperty().bind(new SimpleStringProperty("-fx-background-color: ")
-                    .concat(fillStringProperty).concat(";").concat("-fx-border-color: ")
-                    .concat(getStringFromColor(borderColor)));
-                //box.setStyle("-fx-border-color: " + getStringFromColor(borderColor) + ";");
-
+                initAction();
                 initialized = true;
             }
 
-            // perform transitions.
+            // Perform transitions.
             if (self.isSelected()) {
                 transitionHelper.runTransitionToValue(mark.translateXProperty(),
                         transitionTime, markPositionRight, interpolator);
@@ -176,6 +158,30 @@ public class StyledCheckbox extends CheckBox {
                         transitionTime, Color.WHITE, interpolator);
             }
         };
+    }
+
+    /**
+     * Performed on first action-use. HAS to be done FAR AFTER construction, because
+     * 'box' and 'mark' don't exist until scene is actually drawn. That tends to
+     * happen last. So yeah....
+     */
+    private void initAction() {
+        // perform lookup. Cast is necessity.
+        box = (StackPane) self.lookup(".box");
+        mark = (StackPane) self.lookup(".mark");
+
+        // Initialize stuff that can't be done by css all at once.
+        this.dropShadow = new DropShadow(BlurType.GAUSSIAN,
+                Color.rgb(0, 0, 0, shadowOpacity), shadowRadius, 0.03, 0, 1);
+        mark.setEffect(dropShadow);
+        mark.setTranslateX(markPositionLeft);
+
+        mark.styleProperty().bind(new SimpleStringProperty("-fx-background-color: ")
+                .concat(markStringProperty).concat(";").concat("-fx-border-color: ")
+                .concat(getStringFromColor(borderColor)).concat(";"));
+        box.styleProperty().bind(new SimpleStringProperty("-fx-background-color: ")
+                .concat(fillStringProperty).concat(";").concat("-fx-border-color: ")
+                .concat(getStringFromColor(borderColor)));
     }
 
     /**

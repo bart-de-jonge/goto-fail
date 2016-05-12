@@ -3,17 +3,15 @@ package gui.root;
 
 
 import control.ControllerManager;
-import gui.misc.ResizeHelper;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import gui.misc.ResizeHelperOld;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
@@ -61,11 +59,6 @@ public class RootPane extends Application {
         primaryStage.setMinWidth(minimumResolutionX);
         primaryStage.setHeight(startingResolutionY);
         primaryStage.setWidth(startingResolutionX);
-        primaryStage.initStyle(StageStyle.UNDECORATED);
-
-        ResizeHelper resizeHelper = new ResizeHelper(primaryStage);
-
-        topLevelPane.setStyle("-fx-border-width: 8; -fx-border-color: red; -fx-bordef-style: sold inside;");
 
         // represents file-view-help bar and button bars at top of gui.
         rootHeaderArea = new RootHeaderArea(this);

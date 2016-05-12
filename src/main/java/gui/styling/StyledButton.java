@@ -122,9 +122,9 @@ public class StyledButton extends Button {
         StringProperty stringProperty = new SimpleStringProperty();
         stringProperty.set(getStringFromColor(colorProperty.get()));
         colorProperty.addListener(
-                e -> {
-                    stringProperty.set(getStringFromColor(colorProperty.get()));
-                });
+            e -> {
+                stringProperty.set(getStringFromColor(colorProperty.get()));
+            });
         return stringProperty;
     }
 

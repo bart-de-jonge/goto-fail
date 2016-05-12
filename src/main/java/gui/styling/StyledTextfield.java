@@ -92,19 +92,24 @@ public class StyledTextfield extends TextField {
         transitionHelper = new TransitionHelper(this);
         transitionHelper.addMouseOverTransition(innerShadow.radiusProperty(),
                 100, shadowTotalRadius, Interpolator.LINEAR);
-        transitionHelper.addMouseOverTransition(innerShadow.colorProperty(), transitionMouseoverTime,
-                Color.rgb(0, 0, 0, 0), Color.rgb(0, 0, 0, shadowOpacity),
-                Interpolator.LINEAR);
+        transitionHelper.addMouseOverTransition(innerShadow.colorProperty(),
+                transitionMouseoverTime,  Color.rgb(0, 0, 0, 0),
+                Color.rgb(0, 0, 0, shadowOpacity), Interpolator.LINEAR);
 
-        focusedProperty().addListener(e -> {
-            if (isFocused()) {
-                transitionHelper.runTransitionToValue(fillColorProperty, transitionFocusTime, fillActiveColor, Interpolator.LINEAR);
-                transitionHelper.runTransitionToValue(textColorProperty, transitionFocusTime, textActiveColor, Interpolator.LINEAR);
-            } else {
-                transitionHelper.runTransitionToValue(fillColorProperty, transitionFocusTime, fillColor, Interpolator.LINEAR);
-                transitionHelper.runTransitionToValue(textColorProperty, transitionFocusTime, borderColor, Interpolator.LINEAR);
-            }
-        });
+        focusedProperty().addListener(
+            e -> {
+                if (isFocused()) {
+                    transitionHelper.runTransitionToValue(fillColorProperty, transitionFocusTime,
+                            fillActiveColor, Interpolator.LINEAR);
+                    transitionHelper.runTransitionToValue(textColorProperty, transitionFocusTime,
+                            textActiveColor, Interpolator.LINEAR);
+                } else {
+                    transitionHelper.runTransitionToValue(fillColorProperty, transitionFocusTime,
+                            fillColor, Interpolator.LINEAR);
+                    transitionHelper.runTransitionToValue(textColorProperty, transitionFocusTime,
+                            borderColor, Interpolator.LINEAR);
+                }
+            });
     }
 
     /**
@@ -117,9 +122,9 @@ public class StyledTextfield extends TextField {
         StringProperty stringProperty = new SimpleStringProperty();
         stringProperty.set(getStringFromColor(colorProperty.get()));
         colorProperty.addListener(
-                e -> {
-                    stringProperty.set(getStringFromColor(colorProperty.get()));
-                });
+            e -> {
+                stringProperty.set(getStringFromColor(colorProperty.get()));
+            });
         return stringProperty;
     }
 

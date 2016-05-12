@@ -326,21 +326,21 @@ public class FileMenuController {
         String name = cameraTypeModal.getNameField().getText();
         String description = cameraTypeModal.getDescriptionField().getText();
         String movementMargin = cameraTypeModal.getMovementMarginField().getText();
-        
-        if (name.isEmpty()) {
-            errorString += "Please enter a name\n";
-        }
-        
-        if (description.isEmpty()) {
-            errorString += "Please enter a description\n";
-        }
-        
+
         if (movementMargin.isEmpty()) {
-            errorString += "Please enter a movement margin\n";
+            errorString = "Please enter a movement margin\n";
         }
-        
-        cameraTypeModal.getErrorLabel().setText(errorString);
-        cameraTypeModal.getErrorLabel().setTextFill(Color.RED);
+
+        if (description.isEmpty()) {
+            errorString = "Please enter a description\n";
+        }
+
+        if (name.isEmpty()) {
+            errorString = "Please enter a name\n";
+        }
+
+        cameraTypeModal.getTitleLabel().setText(errorString);
+        cameraTypeModal.getTitleLabel().setTextFill(Color.RED);
         
         return errorString.isEmpty();
     }
