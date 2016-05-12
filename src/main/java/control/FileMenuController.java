@@ -18,6 +18,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Optional;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
@@ -204,7 +206,7 @@ public class FileMenuController {
                                                      .getRootCenterArea(),
                                     controllerManager.getTimelineControl()
                                                      ::shotChangedHandler);
-        controllerManager.setActiveShotBlock(shotBlock);
+        controllerManager.setActiveShotBlock(Optional.of(shotBlock));
         controllerManager.getTimelineControl().getCameraShotBlocks().add(shotBlock);
     }
     

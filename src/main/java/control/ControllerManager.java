@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.Optional;
+
 /**
  * Class wrapper for model management controllers.
  * @author alex
@@ -33,7 +35,7 @@ public class ControllerManager {
     private FileMenuController fileMenuController;
 
     @Getter
-    private ShotBlock activeShotBlock;
+    private Optional<ShotBlock> activeShotBlock;
     
     private SaveModalView saveModal;
 
@@ -146,7 +148,7 @@ public class ControllerManager {
      *
      * @param block ShotBlock to set as active
      */
-    public void setActiveShotBlock(ShotBlock block) {
+    public void setActiveShotBlock(Optional<ShotBlock> block) {
         this.activeShotBlock = block;
         detailViewController.activeBlockChanged();
         toolViewController.activeBlockChanged();
