@@ -1,5 +1,6 @@
 package gui.modal;
 
+import data.CameraTimeline;
 import gui.headerarea.DoubleTextField;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
@@ -76,7 +77,7 @@ public class CameraShotCreationModalView extends ModalView {
     private static final int CAMERA_AREA_MIN_WIDTH = 250;
     private static final int TOP_BOTTOM_AREA_HEIGHT = 60;
 
-    private int numberOfCameras;
+    private List<CameraTimeline> cameraTimelines;
 
     @Setter
     private String defaultStartCount = "0";
@@ -114,23 +115,23 @@ public class CameraShotCreationModalView extends ModalView {
     /**
      * Constructor with default modal size.
      * @param rootPane Pane to display modal on top of
-     * @param numberOfCamerasInTimeline Amount of cameras in timeline
+     * @param cameraTimelines CameraTimelines to work with
      */
-    public CameraShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline) {
-        this(rootPane, numberOfCamerasInTimeline, width, height);
+    public CameraShotCreationModalView(RootPane rootPane, List<CameraTimeline> cameraTimelines) {
+        this(rootPane, cameraTimelines, width, height);
     }
 
     /**
      * Constructor.
      * @param rootPane Pane to display modal on top of
-     * @param numberOfCamerasInTimeline Amount of cameras in timeline
+     * @param cameraTimelines CameraTimelines to work with
      * @param modalWidth Modal display width
      * @param modalHeight Modal display height
      */
-    public CameraShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
+    public CameraShotCreationModalView(RootPane rootPane, List<CameraTimeline> cameraTimelines,
                                        int modalWidth, int modalHeight) {
         super(rootPane, modalWidth, modalHeight);
-        this.numberOfCameras = numberOfCamerasInTimeline;
+        this.cameraTimelines = cameraTimelines;
         initializeCreationView();
     }
 
@@ -296,9 +297,9 @@ public class CameraShotCreationModalView extends ModalView {
         // add checkboxes
         cameraCheckboxes = new ArrayList<>();
         int j = 0;
-        for (int i = 0; i < numberOfCameras; i++) {
+        for (int i = 0; i < this.cameraTimelines.size(); i++) {
             j = (j > 4) ? 0 : j + 1;
-            String checkBoxString = "Camera " + (i + 1);
+            String checkBoxString = this.cameraTimelines.get(i).getCamera().getName();
             StyledCheckbox checkBox = new StyledCheckbox(checkBoxString);
             checkBox.setMarkColor(checkboxColor);
             cameraCheckboxes.add(checkBox);

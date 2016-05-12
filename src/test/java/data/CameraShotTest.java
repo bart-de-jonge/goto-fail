@@ -32,13 +32,13 @@ public class CameraShotTest {
         cameraShot.setName("testname");
         assertEquals("testname", cameraShot.getName());
     }
-    
+
     @Test
     public void getDescriptionTest() {
         assertEquals("some-description", cameraShot.getDescription());
-        
+
     }
-    
+
     @Test
     public void setDescriptionTest() {
         cameraShot.setDescription("a");
@@ -47,7 +47,26 @@ public class CameraShotTest {
     
     @Test
     public void toStringTest() {
-        assertEquals("CameraShot()", cameraShot.toString());
+        assertEquals("CameraShot(directorShot=null)", cameraShot.toString());
+    }
+
+    @Test
+    public void getUnitializedDirectorShotTest() {
+        assertEquals(null, cameraShot.getDirectorShot());
+    }
+
+    @Test
+    public void getInitializedDirectorShotTest() {
+        DirectorShot directorShot = new DirectorShot("direct shot", "descrip", 0, 1, 0, 0);
+        CameraShot shot = new CameraShot("name", "another-description", 1, 2, directorShot);
+        assertEquals(directorShot, shot.getDirectorShot());
+    }
+
+    @Test
+    public void setDirectorShotTest() {
+        DirectorShot directorShot = new DirectorShot("direct shot", "descrip", 0, 1, 0, 0);
+        cameraShot.setDirectorShot(directorShot);
+        assertEquals(directorShot, cameraShot.getDirectorShot());
     }
 
 }
