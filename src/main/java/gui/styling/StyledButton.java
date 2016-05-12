@@ -26,8 +26,8 @@ public class StyledButton extends Button {
 
     // effects
     private double shadowRadius = 10;
-    private double shadowOpacity = 0.1;
-    private double shadowClickOpacity = 0.15;
+    private double shadowOpacity = 0.15;
+    private double shadowClickOpacity = 0.25;
 
     // transitions
     private int mouseOverDuration = 100;

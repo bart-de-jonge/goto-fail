@@ -27,7 +27,7 @@ public class StyledTextfield extends TextField {
     // effects
     private double shadowRadius = 5;
     private double shadowTotalRadius = 3;
-    private double shadowOpacity = 0.15;
+    private double shadowOpacity = 0.2;
 
     // colors
     @Getter
@@ -49,7 +49,7 @@ public class StyledTextfield extends TextField {
      * Misc variables
      */
 
-    private InnerShadow innerShadow; // adds inner shadow.
+    private InnerShadow innerShadow;
     private TransitionHelper transitionHelper;
     private ObjectProperty<Color> borderColorProperty = new SimpleObjectProperty<>(borderColor);
     private StringProperty borderStringProperty = createColorStringProperty(borderColorProperty);

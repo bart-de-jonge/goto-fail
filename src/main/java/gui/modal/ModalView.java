@@ -64,6 +64,7 @@ public abstract class ModalView {
         this.displayScene.getStylesheets().add("Stylesheets/StyledButton.css");
         this.displayScene.getStylesheets().add("Stylesheets/StyledCheckbox.css");
         this.displayScene.getStylesheets().add("Stylesheets/StyledTextfield.css");
+        this.displayScene.getStylesheets().add("Stylesheets/StyledListview.css");
         this.modalStage.setScene(displayScene);
     }
 }

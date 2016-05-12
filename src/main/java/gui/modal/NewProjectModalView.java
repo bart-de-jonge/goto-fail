@@ -6,6 +6,7 @@ import data.CameraType;
 import gui.headerarea.NumberTextField;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
+import gui.styling.StyledListview;
 import gui.styling.StyledTextfield;
 import java.util.ArrayList;
 
@@ -36,7 +37,7 @@ public class NewProjectModalView extends ModalView {
      */
 
     // width and height of screen. 680 and 350 work very, very well.
-    private static final int width = 680;
+    private static final int width = 820;
     private static final int height = 450;
 
     // three main colors used throughout window. Experiment a little!
@@ -88,11 +89,11 @@ public class NewProjectModalView extends ModalView {
     @Getter
     private HBox buttonPane;
     @Getter
-    private ListView<HBox> cameraList;
+    private StyledListview<HBox> cameraList;
     @Getter
-    private ListView<HBox> timelineList;
+    private StyledListview<HBox> timelineList;
     @Getter
-    private ListView<HBox> cameraTypeList;
+    private StyledListview<HBox> cameraTypeList;
 
     // Labels
     @Getter
@@ -292,7 +293,7 @@ public class NewProjectModalView extends ModalView {
         addCameraTypeButton = new StyledButton("Add Camera Type");
         addCameraTypeButton.setFillColor(Color.WHITE);
         addCameraTypeButton.setBorderColor(mainColor);
-        cameraTypeList = new ListView<HBox>();
+        cameraTypeList = new StyledListview<HBox>();
         cameraTypeList.setMinHeight(75);
         content.getChildren().addAll(addCameraTypeButton, cameraTypeList);
 
@@ -300,7 +301,7 @@ public class NewProjectModalView extends ModalView {
         addCameraButton = new StyledButton("Add Camera");
         addCameraButton.setFillColor(Color.WHITE);
         addCameraButton.setBorderColor(mainColor);
-        cameraList = new ListView<HBox>();
+        cameraList = new StyledListview<HBox>();
         cameraList.setMinHeight(75);
         content.getChildren().addAll(addCameraButton, cameraList);
 
