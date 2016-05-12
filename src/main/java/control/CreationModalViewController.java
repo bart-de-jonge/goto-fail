@@ -32,9 +32,7 @@ public class CreationModalViewController {
      * a new CameraBlock.
      */
     public void showCameraCreationWindow() {
-        cameraShotCreationModalView = new CameraShotCreationModalView(
-                this.controllerManager.getRootPane(),
-                this.controllerManager.getScriptingProject().getCameraTimelines().size());
+        cameraShotCreationModalView = generateCameraShotCreationModalView();
 
         // Add mouse handlers
         cameraShotCreationModalView.getCreationButton().setOnMouseReleased(this::createCameraShot);
@@ -53,6 +51,12 @@ public class CreationModalViewController {
                 this::cameraShotEndCountEnterHandler);
         cameraShotCreationModalView.getEndField().focusedProperty().addListener(
                 this::cameraShotEndCountFocusHandler);
+    }
+
+    public CameraShotCreationModalView generateCameraShotCreationModalView() {
+        return new CameraShotCreationModalView(
+                this.controllerManager.getRootPane(),
+                this.controllerManager.getScriptingProject().getCameraTimelines().size());
     }
 
     /**
