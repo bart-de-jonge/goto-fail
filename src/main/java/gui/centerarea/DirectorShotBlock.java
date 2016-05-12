@@ -1,6 +1,7 @@
 package gui.centerarea;
 
 import data.CameraShot;
+import data.DirectorShot;
 import gui.events.DirectorShotBlockUpdatedEvent;
 import gui.events.ShotblockUpdatedEvent;
 import gui.root.RootCenterArea;
@@ -20,7 +21,7 @@ public class DirectorShotBlock extends ShotBlock {
     @Getter
     private DirectorGridPane grid;
 
-    public DirectorShotBlock(CameraShot shot, RootCenterArea rootCenterArea,
+    public DirectorShotBlock(DirectorShot shot, RootCenterArea rootCenterArea,
                              EventHandler<DirectorShotBlockUpdatedEvent> handler) {
         this(shot.getInstance(), rootCenterArea, shot.getBeginCount(),
                 shot.getEndCount(), shot.getDescription(), shot.getName(), handler, shot);
@@ -32,14 +33,15 @@ public class DirectorShotBlock extends ShotBlock {
      * @param rootCenterArea - the rootCenterArea this shot belongs to
      * @param beginCount - the begin count of this shot
      * @param endCount - the end count of this shot
-     * @param handler - The handler for this camerashotblock
-     * @param description - the description of this camerashotblock
-     * @param name - the name of this camerashotblock
-     * @param shot - The shot in the model belonging to this camerashotblock
+     * @param handler - The handler for this DirectorShotBlock
+     * @param description - the description of this DirectorShotBlock
+     * @param name - the name of this DirectorShotBlock
+     * @param shot - The shot in the model belonging to this DirectorShotBlock
      */
     public DirectorShotBlock(int shotId, RootCenterArea rootCenterArea,
                              double beginCount, double endCount, String description, String name,
-                             EventHandler<DirectorShotBlockUpdatedEvent> handler, CameraShot shot) {
+                             EventHandler<DirectorShotBlockUpdatedEvent> handler,
+                             DirectorShot shot) {
 
         super(rootCenterArea, beginCount, endCount, description,
                 name, shot, CameraTimetableBlock.class);
@@ -70,8 +72,8 @@ public class DirectorShotBlock extends ShotBlock {
     }
 
     @Override
-    public CameraShot getShot() {
-        return (CameraShot) super.getShot();
+    public DirectorShot getShot() {
+        return (DirectorShot) super.getShot();
     }
 
     /**

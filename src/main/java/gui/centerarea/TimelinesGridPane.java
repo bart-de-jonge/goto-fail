@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 public class TimelinesGridPane extends ScrollableGridPane {
 
     private ArrayList<SnappingPane> panes;
+    private int offsetFromLeft;
 
     /**
      * Constructor.
@@ -30,6 +31,7 @@ public class TimelinesGridPane extends ScrollableGridPane {
 
         // add padding to the left for overlapping sidebars
         this.setPadding(new Insets(0,0,0,offsetFromLeft));
+        this.offsetFromLeft = offsetFromLeft;
 
         // add snapping panes
         addPanes();
@@ -84,6 +86,18 @@ public class TimelinesGridPane extends ScrollableGridPane {
      * @return - the SnappingPane, null if none applicable
      */
     public SnappingPane getMyPane(double x, double y) {
+
+        // Correct for points outside grid
+        Bounds sceneBounds = this.localToScene(this.getLayoutBounds());
+        if (sceneBounds.getMinX() + offsetFromLeft > x) {
+            return getMyPane(sceneBounds.getMinX() + offsetFromLeft, y);
+        } else if (sceneBounds.getMaxX() < x) {
+            return getMyPane(sceneBounds.getMaxX(), y);
+        } else if (sceneBounds.getMinY() > y) {
+            return getMyPane(x, sceneBounds.getMinY());
+        } else if (sceneBounds.getMaxY() < y) {
+            return getMyPane(x, sceneBounds.getMaxY());
+        }
         for (SnappingPane pane : panes) {
             Bounds bounds = pane.localToScene(pane.getBoundsInLocal());
             if (bounds.contains(x, y)) {

@@ -7,9 +7,11 @@ import java.util.stream.Collectors;
 
 import data.CameraShot;
 import data.CameraTimeline;
+import data.DirectorShot;
 import data.Shot;
 import gui.centerarea.CameraShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;
+import gui.modal.ShotDecouplingModalView;
 import gui.root.RootPane;
 import lombok.Getter;
 import lombok.Setter;
@@ -63,16 +65,26 @@ public class TimelineController {
      */
     public void addCameraShot(int cameraIndex, String name, String description,
                               double startCount, double endCount) {
-        log.info("Adding CameraShot to Timeline");
 
         CameraShot newShot = new CameraShot(name,description, startCount, endCount);
+        this.addCameraShot(cameraIndex, newShot);
+    }
+
+    /**
+     * Add an existing CameraShot to the corresponding timeline.
+     * @param cameraIndex Index of the camera track
+     * @param newShot CameraShot to add to the timeline
+     */
+    public void addCameraShot(int cameraIndex, CameraShot newShot) {
+        log.info("Adding CameraShot to Timeline");
+
         this.controllerManager.getScriptingProject()
                               .getCameraTimelines()
                               .get(cameraIndex)
                               .addShot(newShot);
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex,
-                rootPane.getRootCenterArea(), startCount, endCount, description,
-                name, this::shotChangedHandler, newShot);
+                rootPane.getRootCenterArea(), newShot.getBeginCount(), newShot.getEndCount(),
+                newShot.getDescription(), newShot.getName(), this::shotChangedHandler, newShot);
 
         controllerManager.setActiveShotBlock(shotBlock);
         this.cameraShotBlocks.add(shotBlock);
@@ -81,8 +93,7 @@ public class TimelineController {
         // Check for collisions
         checkCollisions(cameraIndex, shotBlock);
     }
-    
-    
+
     /**
      * Remove a camera shot from both the display and the timeline.
      * @param cameraShotBlock CameraShotBlock to be removed
@@ -112,15 +123,26 @@ public class TimelineController {
      * @param event Camera shot change event.
      */
     public void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
+        CameraShotBlock changedBlock = event.getCameraShotBlock();
+
+        // If coupled to DirectorShot, confirm separation
+        this.decoupleAndModify(event, changedBlock);
+    }
+
+    /**
+     * Modify a CameraShot based on an update event.
+     * @param event CameraShot's change event
+     * @param changedBlock CameraShot to modify
+     */
+    private void modifyCameraShot(CameraShotBlockUpdatedEvent event,
+                                  CameraShotBlock changedBlock) {
         controllerManager.getScriptingProject().changed();
         log.info("Shot moved to new TimeLine");
-
-        CameraShotBlock changedBlock = event.getCameraShotBlock();
 
         controllerManager.setActiveShotBlock(changedBlock);
 
         CameraTimeline previousTimeline = this.controllerManager.getScriptingProject()
-                                                                .getCameraTimelines()
+                .getCameraTimelines()
                 .get(event.getOldTimelineNumber());
         // Locate shot to be updated using id
         CameraShot shot = changedBlock.getShot();
@@ -130,7 +152,7 @@ public class TimelineController {
         shot.setEndCount(changedBlock.getEndCount());
 
         CameraTimeline newCameraTimeline = this.controllerManager.getScriptingProject()
-                                                                 .getCameraTimelines()
+                .getCameraTimelines()
                 .get(changedBlock.getTimetableNumber());
 
         // Remove shot from previous timeline and add to new one if changed
@@ -141,7 +163,7 @@ public class TimelineController {
 
         // check for collisions
         checkCollisions(changedBlock.getTimetableNumber(),
-                event.getOldTimelineNumber(), changedBlock);
+                        event.getOldTimelineNumber(), changedBlock);
     }
 
     /**
@@ -216,5 +238,44 @@ public class TimelineController {
             }
         }
         shotBlock.getShot().getCollidesWith().removeAll(toRemove);
-    }   
+    }
+
+    /**
+     * If CameraShot belongs to DirectorShot, confirm/cancel separation and then modify shot.
+     * @param event shot changed event.
+     * @param shotBlock CameraShot for which to confirm changes.
+     */
+    private void decoupleAndModify(CameraShotBlockUpdatedEvent event, CameraShotBlock shotBlock) {
+        if (shotBlock.getShot().getDirectorShot() != null) {
+            ShotDecouplingModalView decouplingModalView = new ShotDecouplingModalView(
+                    this.rootPane, shotBlock.getShot());
+
+            decouplingModalView.getCancelButton().setOnMouseReleased(e -> {
+                    log.info("Shot decoupling cancelled.", shotBlock.getShot());
+                    decouplingModalView.hideModal();
+                    shotBlock.restorePreviousPosition();
+                });
+
+            decouplingModalView.getConfirmButton().setOnMouseReleased(e -> {
+                    log.info("Shot decoupling confirmed.", shotBlock.getShot());
+                    decouplingModalView.hideModal();
+                    this.decoupleShot(event.getOldTimelineNumber(), shotBlock.getShot());
+                    this.modifyCameraShot(event, shotBlock);
+                });
+        } else {
+            this.modifyCameraShot(event, shotBlock);
+        }
+    }
+
+    /**
+     * Decouple CameraShot from its DirectorShot & vice versa.
+     * @param timelineIndex Index of timeline that the CameraShot belongs to.
+     * @param shot CameraShot to decouple
+     */
+    void decoupleShot(int timelineIndex, CameraShot shot) {
+        log.info("Decoupling shot.", shot);
+        DirectorShot directorShot = shot.getDirectorShot();
+        directorShot.removeCameraShot(shot, timelineIndex);
+        shot.setDirectorShot(null);
+    }
 }

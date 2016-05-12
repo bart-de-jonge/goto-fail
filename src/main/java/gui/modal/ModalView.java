@@ -7,11 +7,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Class that creates and displays a modal (popup) view.
  * @author alex
  */
+@Log4j2
 public abstract class ModalView {
 
     @Getter
@@ -42,7 +44,7 @@ public abstract class ModalView {
      */
     public void displayModal() {
         if (this.displayScene != null) {
-            this.displayScene.setFill(null);
+            log.info("Displaying modal view.");
             this.modalStage.show();
         }
     }
@@ -51,6 +53,7 @@ public abstract class ModalView {
      * Hides the modal from view.
      */
     public void hideModal() {
+        log.info("Closing modal view.");
         modalStage.close();
     }
 
