@@ -251,11 +251,13 @@ public class TimelineController {
                     this.rootPane, shotBlock.getShot());
 
             decouplingModalView.getCancelButton().setOnMouseReleased(e -> {
+                    log.info("Shot decoupling cancelled.", shotBlock.getShot());
                     decouplingModalView.hideModal();
                     shotBlock.restorePreviousPosition();
                 });
 
             decouplingModalView.getConfirmButton().setOnMouseReleased(e -> {
+                    log.info("Shot decoupling confirmed.", shotBlock.getShot());
                     decouplingModalView.hideModal();
                     this.decoupleShot(event.getOldTimelineNumber(), shotBlock.getShot());
                     this.modifyCameraShot(event, shotBlock);
@@ -271,6 +273,7 @@ public class TimelineController {
      * @param shot CameraShot to decouple
      */
     private void decoupleShot(int timelineIndex, CameraShot shot) {
+        log.info("Decoupling shot.", shot);
         DirectorShot directorShot = shot.getDirectorShot();
         directorShot.removeCameraShot(shot, timelineIndex);
         shot.setDirectorShot(null);
