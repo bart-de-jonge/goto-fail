@@ -39,7 +39,6 @@ public class ControllerManager {
 
     // Placeholder project in lieu of XML loading
     @Getter
-    @Setter
     private ScriptingProject scriptingProject;
 
     /**
@@ -83,14 +82,14 @@ public class ControllerManager {
         toolViewController = new ToolViewController(this);
         fileMenuController = new FileMenuController(this);
     }
-    
+
     /**
      * Set up a handler for when the close button is clicked.
      */
     private void initOnCloseOperation() {
         rootPane.getPrimaryStage().setOnCloseRequest(this::handleOnClose);
     }
-    
+
     /**
      * Handler for the on close event.
      * @param event the WindowEvent for this handler
@@ -103,7 +102,7 @@ public class ControllerManager {
             }
         }
     }
-    
+
     /**
      * Init the modal that will be displayed if there are unsaved changes.
      */
@@ -113,7 +112,7 @@ public class ControllerManager {
         saveModal.getDontSaveButton().setOnMouseClicked(this::handleDontSave);
         saveModal.getCancelButton().setOnMouseClicked(this::handleCancel);
     }
-    
+
     /**
      * Handle a click on the save button.
      * @param event the MouseEvent for this handler.
@@ -123,7 +122,7 @@ public class ControllerManager {
         saveModal.hideModal();
         rootPane.getPrimaryStage().close();
     }
-    
+
     /**
      * Handle a click on the don't save button.
      * @param event the MouseEvent for this handler
@@ -132,7 +131,7 @@ public class ControllerManager {
         rootPane.getPrimaryStage().close();
         saveModal.hideModal();
     }
-    
+
     /**
      * Handle a click on the cancel button.
      * @param event the MouseEvent for this handler
@@ -140,7 +139,7 @@ public class ControllerManager {
     private void handleCancel(MouseEvent event) {
         saveModal.hideModal();
     }
-    
+
     /**
      * Sets the active ShotBlock and notifies necessary controllers.
      *
@@ -150,5 +149,17 @@ public class ControllerManager {
         this.activeShotBlock = block;
         detailViewController.activeBlockChanged();
         toolViewController.activeBlockChanged();
+    }
+
+    public void setScriptingProject(ScriptingProject scriptingProject) {
+        this.scriptingProject = scriptingProject;
+        updateWindowTitle();
+    }
+
+    /**
+     * Changes the name the window currently has.
+     */
+    private void updateWindowTitle() {
+        rootPane.getPrimaryStage().setTitle(getScriptingProject().getName());
     }
 }
