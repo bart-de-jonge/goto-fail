@@ -31,13 +31,26 @@ public class ShotDecouplingModalView extends ModalView {
     private int buttonFontSize = 16;
     private int buttonSpacing = 20;
 
+    private static final int DEFAULT_WIDTH = 400;
+    private static final int DEFAULT_HEIGHT = 300;
+    private static final int GENERAL_SIZE = 10000;
+
+    /**
+     * Constructor with default modal size.
+     * @param rootPane Pane to display modal on top of
+     * @param shot shot to be separated
+     */
+    public ShotDecouplingModalView(RootPane rootPane, CameraShot shot) {
+        this(rootPane, DEFAULT_WIDTH, DEFAULT_HEIGHT, shot);
+    }
+
     /**
      * Constructor.
      *
      * @param rootPane root pane on top of which to display the modal.
      * @param width    width of the modal window.
      * @param height   height of the modal window.
-     * @param shot     shot which is
+     * @param shot     shot to be separated
      */
     public ShotDecouplingModalView(RootPane rootPane,
                                    int width,
@@ -59,6 +72,9 @@ public class ShotDecouplingModalView extends ModalView {
         rootPane.getChildren().add(sureLabel);
 
         HBox buttonPane = new HBox();
+        buttonPane.setSpacing(buttonSpacing);
+        buttonPane.setAlignment(Pos.CENTER_LEFT);
+        buttonPane.setPrefHeight(GENERAL_SIZE);
         rootPane.getChildren().add(buttonPane);
 
         cancelButton = new StyledButton("Cancel");

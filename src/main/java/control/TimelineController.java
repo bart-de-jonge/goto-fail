@@ -7,9 +7,11 @@ import java.util.stream.Collectors;
 
 import data.CameraShot;
 import data.CameraTimeline;
+import data.DirectorShot;
 import data.Shot;
 import gui.centerarea.CameraShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;
+import gui.modal.ShotDecouplingModalView;
 import gui.root.RootPane;
 import lombok.Getter;
 import lombok.Setter;
@@ -124,9 +126,7 @@ public class TimelineController {
         CameraShotBlock changedBlock = event.getCameraShotBlock();
 
         // If coupled to DirectorShot, confirm separation
-        if (this.checkDecoupling(changedBlock)) {
-            modifyCameraShot(event, changedBlock);
-        }
+        this.decoupleAndModify(event, changedBlock);
     }
 
     /**
@@ -241,10 +241,38 @@ public class TimelineController {
     }
 
     /**
-     * If CameraShot belongs to DirectorShot, confirm/cancel separation.
+     * If CameraShot belongs to DirectorShot, confirm/cancel separation and then modify shot.
+     * @param event shot changed event.
      * @param shotBlock CameraShot for which to confirm changes.
      */
-    private boolean checkDecoupling(CameraShotBlock shotBlock) {
-        return false;
+    private void decoupleAndModify(CameraShotBlockUpdatedEvent event, CameraShotBlock shotBlock) {
+        if (shotBlock.getShot().getDirectorShot() != null) {
+            ShotDecouplingModalView decouplingModalView = new ShotDecouplingModalView(
+                    this.rootPane, shotBlock.getShot());
+
+            decouplingModalView.getCancelButton().setOnMouseReleased(e -> {
+                    decouplingModalView.hideModal();
+                    shotBlock.restorePreviousPosition();
+                });
+
+            decouplingModalView.getConfirmButton().setOnMouseReleased(e -> {
+                    decouplingModalView.hideModal();
+                    this.decoupleShot(event.getOldTimelineNumber(), shotBlock.getShot());
+                    this.modifyCameraShot(event, shotBlock);
+                });
+        } else {
+            this.modifyCameraShot(event, shotBlock);
+        }
+    }
+
+    /**
+     * Decouple CameraShot from its DirectorShot & vice versa.
+     * @param timelineIndex Index of timeline that the CameraShot belongs to.
+     * @param shot CameraShot to decouple
+     */
+    private void decoupleShot(int timelineIndex, CameraShot shot) {
+        DirectorShot directorShot = shot.getDirectorShot();
+        directorShot.removeCameraShot(shot, timelineIndex);
+        shot.setDirectorShot(null);
     }
 }
