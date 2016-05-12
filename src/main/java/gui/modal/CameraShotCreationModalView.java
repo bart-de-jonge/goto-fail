@@ -34,14 +34,10 @@ public class CameraShotCreationModalView extends ModalView {
     private static final int width = 680;
     private static final int height = 370;
 
-    // main colors used throughout. Experiment a little!
-    // blue
-//    private Color mainColor = Color.rgb(60, 190, 255);
-//    private Color secondaryColor = Color.rgb(50, 170, 240);
-    // orange
-    private Color mainColor = Color.rgb(255, 172, 70);
-    private Color secondaryColor = Color.rgb(255, 140, 0);
-    private Color tertiaryColor = Color.rgb(255, 225, 170);
+    // three main colors used throughout window. Experiment a little!
+    private Color mainColor = Color.rgb(255, 172, 70); // main bright color
+    private Color secondaryColor = Color.rgb(255, 140, 0); // darker color
+    private Color tertiaryColor = Color.rgb(255, 235, 190); // lighter color
 
     // variables for spacing
     private int topAreaHeight = 70;
@@ -273,6 +269,9 @@ public class CameraShotCreationModalView extends ModalView {
         final Label nameLabel = new Label("Shot Name: ");
         nameField = new StyledTextfield();
         nameField.setBorderColor(mainColor);
+        nameField.setTextColor(mainColor);
+        nameField.setTextActiveColor(secondaryColor);
+        nameField.setFillActiveColor(tertiaryColor);
         HBox nameBox = new HBox(GENERAL_SPACING);
         nameBox.getChildren().addAll(nameLabel, nameField);
         nameBox.setAlignment(Pos.CENTER_RIGHT);
@@ -281,6 +280,9 @@ public class CameraShotCreationModalView extends ModalView {
         final Label descripLabel = new Label("Shot Description: ");
         descriptionField = new StyledTextfield();
         descriptionField.setBorderColor(mainColor);
+        descriptionField.setTextColor(mainColor);
+        descriptionField.setTextActiveColor(secondaryColor);
+        descriptionField.setFillActiveColor(tertiaryColor);
         HBox descripBox = new HBox(GENERAL_SPACING);
         descripBox.getChildren().addAll(descripLabel, descriptionField);
         descripBox.setAlignment(Pos.CENTER_RIGHT);
@@ -297,6 +299,9 @@ public class CameraShotCreationModalView extends ModalView {
         final Label startLabel = new Label("Start:");
         startField = new DoubleTextField(this.defaultStartCount);
         startField.setBorderColor(mainColor);
+        startField.setTextColor(mainColor);
+        startField.setTextActiveColor(secondaryColor);
+        startField.setFillActiveColor(tertiaryColor);
         HBox startBox = new HBox(GENERAL_SPACING);
         startBox.getChildren().addAll(startLabel, startField);
         startBox.setAlignment(Pos.CENTER_RIGHT);
@@ -305,6 +310,9 @@ public class CameraShotCreationModalView extends ModalView {
         final Label endLabel = new Label("End:");
         endField = new DoubleTextField(this.defaultEndCount);
         endField.setBorderColor(mainColor);
+        endField.setTextColor(mainColor);
+        endField.setTextActiveColor(secondaryColor);
+        endField.setFillActiveColor(tertiaryColor);
         HBox endBox = new HBox(GENERAL_SPACING);
         endBox.getChildren().addAll(endLabel, endField);
         endBox.setAlignment(Pos.CENTER_RIGHT);

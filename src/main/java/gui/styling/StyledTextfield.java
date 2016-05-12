@@ -30,12 +30,16 @@ public class StyledTextfield extends TextField {
     private double shadowOpacity = 0.15;
 
     // colors
-    @Getter @Setter
+    @Getter
     private Color borderColor = Color.rgb(60, 190, 255);
-    @Getter @Setter
-    private Color fillColor = Color.rgb(255, 255, 255);
-    @Getter @Setter
+    @Getter
+    private Color fillColor = Color.WHITE;
+    @Getter
     private Color fillActiveColor = Color.rgb(245, 245, 245);
+    @Getter
+    private Color textColor = borderColor;
+    @Getter
+    private Color textActiveColor = Color.WHITE;
 
     // transitions
     private int transitionFocusTime = 50;
@@ -49,8 +53,10 @@ public class StyledTextfield extends TextField {
     private TransitionHelper transitionHelper;
     private ObjectProperty<Color> borderColorProperty = new SimpleObjectProperty<>(borderColor);
     private StringProperty borderStringProperty = createColorStringProperty(borderColorProperty);
-    private ObjectProperty<Color> fillColorProperty = new SimpleObjectProperty<>(Color.WHITE);
+    private ObjectProperty<Color> fillColorProperty = new SimpleObjectProperty<>(fillColor);
     private StringProperty fillStringProperty = createColorStringProperty(fillColorProperty);
+    private ObjectProperty<Color> textColorProperty = new SimpleObjectProperty<>(textColor);
+    private StringProperty textStringProperty = createColorStringProperty(textColorProperty);
 
     /**
      * Constructor class.
@@ -81,7 +87,7 @@ public class StyledTextfield extends TextField {
         this.styleProperty().bind(new SimpleStringProperty("-fx-background-color: ")
                 .concat(fillStringProperty).concat(";").concat("-fx-border-color: ")
                 .concat(borderStringProperty).concat(";").concat("-fx-text-fill: ")
-                .concat(borderStringProperty).concat(";"));
+                .concat(textStringProperty).concat(";"));
 
         transitionHelper = new TransitionHelper(this);
         transitionHelper.addMouseOverTransition(innerShadow.radiusProperty(),
@@ -93,8 +99,10 @@ public class StyledTextfield extends TextField {
         focusedProperty().addListener(e -> {
             if (isFocused()) {
                 transitionHelper.runTransitionToValue(fillColorProperty, transitionFocusTime, fillActiveColor, Interpolator.LINEAR);
+                transitionHelper.runTransitionToValue(textColorProperty, transitionFocusTime, textActiveColor, Interpolator.LINEAR);
             } else {
                 transitionHelper.runTransitionToValue(fillColorProperty, transitionFocusTime, fillColor, Interpolator.LINEAR);
+                transitionHelper.runTransitionToValue(textColorProperty, transitionFocusTime, borderColor, Interpolator.LINEAR);
             }
         });
     }
@@ -134,6 +142,31 @@ public class StyledTextfield extends TextField {
     public void setFillColor(Color color) {
         this.fillColor = color;
         this.fillColorProperty.setValue(fillColor);
+    }
+
+    /**
+     * Set the focused color of this textfield.
+     * @param color the color to set.
+     */
+    public void setFillActiveColor(Color color) {
+        this.fillActiveColor = color;
+    }
+
+    /**
+     * Set the text color of this textfield.
+     * @param color the color to set.
+     */
+    public void setTextColor(Color color) {
+        this.textColor = color;
+        this.textColorProperty.setValue(textColor);
+    }
+
+    /**
+     * Set the focused text color of this textfield.
+     * @param color the color to set.
+     */
+    public void setTextActiveColor(Color color) {
+        this.textActiveColor = color;
     }
 
     /**
