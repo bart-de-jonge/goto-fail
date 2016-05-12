@@ -61,14 +61,6 @@ public class CameraShotCreationModalView extends ModalView {
     // variables for the title label
     private int titlelabelOffsetFromLeft = 20;
 
-    // variables for the shadow effects
-    private double softShadowRadius = 15;
-    private double softShadowCutoff = 0.2;
-    private double softShadowOpacity = 0;
-    private double hardShadowRadius = 1;
-    private double hardShadowCutoff = 1;
-    private double hardShadowOpacity = 0;
-
     /*
      * Other variables.
      */
@@ -111,10 +103,6 @@ public class CameraShotCreationModalView extends ModalView {
     private DoubleTextField startField;
     @Getter
     private DoubleTextField endField;
-
-    private InnerShadow topInnerShadow;
-    private InnerShadow topOuterShadow;
-    private DropShadow bottomOuterShadow;
 
     /**
      * Constructor with default modal size.
@@ -170,9 +158,6 @@ public class CameraShotCreationModalView extends ModalView {
         // add buttons at bottom.
         initButtons();
 
-        // once we're done, setup shadows etc.
-        initEffects();
-
         super.setModalView(this.rootPane);
         super.displayModal();
     }
@@ -190,21 +175,6 @@ public class CameraShotCreationModalView extends ModalView {
         titleLabel.setPrefHeight(topAreaHeight);
         titleLabel.setMaxHeight(topAreaHeight);
         this.rootPane.getChildren().add(titleLabel);
-    }
-
-    /**
-     * Sets up effects and adds them to the appropriate panes.
-     */
-    private void initEffects() {
-        topInnerShadow = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, hardShadowOpacity),
-                hardShadowRadius, hardShadowCutoff, 0, -2);
-        topOuterShadow = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, softShadowOpacity),
-                softShadowRadius, softShadowCutoff, 0, 1);
-        bottomOuterShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, softShadowOpacity),
-                softShadowRadius, softShadowCutoff, 0, -1);
-        titleLabel.setEffect(topInnerShadow);
-        centerPane.setEffect(topOuterShadow);
-        buttonPane.setEffect(bottomOuterShadow);
     }
 
     /**
