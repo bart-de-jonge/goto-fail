@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 /**
  * Controller for the DirectorTimeline.
- * @author martijn
  */
 @Log4j2
 public class DirectorTimelineController {
@@ -48,7 +47,7 @@ public class DirectorTimelineController {
     }
 
     /**
-     * Add a camera shot to the corresponding timeline.
+     * Add a director shot to the corresponding timeline.
      * @param name Name of the shot
      * @param description Shot description
      * @param startCount Start count
@@ -133,6 +132,17 @@ public class DirectorTimelineController {
     private void checkCollisions(DirectorShotBlock directorShotBlock) {
         DirectorTimeline timeline = controllerManager.getScriptingProject()
                 .getDirectorTimeline();
+
+        // Remove overlaps for non-colliding shotblocks
+        ArrayList<DirectorShotBlock> toRemove = new ArrayList<>();
+        this.overlappingShotBlocks.stream()
+                .filter(shotBlock ->
+                        shotBlock.getShot().getCollidesWith().isEmpty()).forEach(shotBlock -> {
+                            shotBlock.setColliding(false);
+                            toRemove.add(shotBlock);
+                        }
+        );
+        this.overlappingShotBlocks.removeAll(toRemove);
 
         // Check for collisions
         ArrayList<DirectorShot> overlappingShots = timeline

@@ -13,6 +13,8 @@ import javafx.scene.layout.StackPane;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.awt.*;
+
 /**
  * Class representing the center (main section) of the gui.
  * In other words, the time line view goes here.
@@ -101,7 +103,7 @@ public class RootCenterArea extends StackPane {
     
             counterAndDirectorPane = new HBox();
             setAlignment(counterAndDirectorPane, Pos.CENTER_LEFT);
-            counterAndDirectorPane.setMaxWidth(counterWidth + timelineWidth);
+            counterAndDirectorPane.setMaxWidth(counterWidth + directorTimelineWidth);
             counterAndDirectorPane.maxHeightProperty()
                     .bind(mainTimelineScrollpane.heightProperty());
             getChildren().add(counterAndDirectorPane);
@@ -172,6 +174,7 @@ public class RootCenterArea extends StackPane {
         directorAnchorPane.getChildren().add(directorGridPane);
         directorScrollpane.setContent(directorAnchorPane);
         directorScrollpane.setFitToWidth(true);
+        directorScrollpane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         directorScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         directorScrollpane.setStyle("-fx-background-color: lightblue"); // debugcolor for now
         directorScrollpane.vvalueProperty().bindBidirectional(
