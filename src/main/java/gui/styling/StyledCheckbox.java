@@ -9,7 +9,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Point3D;
 import javafx.scene.control.CheckBox;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
@@ -27,31 +26,34 @@ public class StyledCheckbox extends CheckBox {
     /*
      * Color tweaking
      */
+    @Getter @Setter
+    // Color of all the visible borders in the checkbox.
     private Color borderColor = Color.rgb(60, 190, 255);
+    @Getter @Setter
+    // Color of the "checked" circle. Should probably be set to
+    // same color as borderColor for coolest looks.
     private Color fillColor = Color.rgb(60, 190, 255);
 
     /*
      * Effect and transition tweaking.
      */
     private double shadowRadius = 5;
-    private double shadowOpacity = 0.2;
+    private double shadowOpacity = 0.25;
     @Getter @Setter
     private int transitionTime = 100;
-    private double markPositionLeft = 3.0;
-    private double markPositionRight = 21.0;
+    private double markPositionLeft = 2.0;
+    private double markPositionRight = 22.0;
     @Getter @Setter
     private Interpolator interpolator = Interpolator.EASE_BOTH;
 
     /*
-     * Effects used on checkbox and subpanes.
+     * Misc styling variables.
      */
     @Getter
     private DropShadow dropShadow; // adds simple drop shadow.
-
     private TransitionHelper transitionHelper;
-
     private ObjectProperty<Color> fillColorProperty = new SimpleObjectProperty<>(Color.WHITE);
-    private StringProperty fillStringProperty = createFillStringProperty(fillColorProperty);
+    private StringProperty fillStringProperty = createColorStringProperty(fillColorProperty);
 
     /*
      * Subpanes and their initialization.
@@ -138,22 +140,15 @@ public class StyledCheckbox extends CheckBox {
                 box = (StackPane) self.lookup(".box");
                 mark = (StackPane) self.lookup(".mark");
 
-                // set start position (in off mode!)
+                // Initialize stuff that can't be done by css all at once.
+                this.dropShadow = new DropShadow(BlurType.GAUSSIAN,
+                        Color.rgb(0, 0, 0, shadowOpacity), shadowRadius, 0.03, 0, 1);
+                mark.setEffect(dropShadow);
                 mark.setTranslateX(markPositionLeft);
 
-                //box.setStyle(getStringFromColor(borderColor));
-                //System.out.println(box.getStyle().toString());
-                //box.setStyle("-fx-border-color: green;");
-
-                // Initialize effects that can't be done by css all at once.
-                this.dropShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, shadowOpacity),
-                        shadowRadius, 0.01, 0, 1);
-                mark.setEffect(dropShadow);
-
                 mark.styleProperty().bind(new SimpleStringProperty("-fx-background-color: ")
-                .concat(fillStringProperty).concat(";").concat("-fx-border-color: ")
-                .concat(getStringFromColor(borderColor)).concat(";"));
-
+                    .concat(fillStringProperty).concat(";").concat("-fx-border-color: ")
+                    .concat(getStringFromColor(borderColor)).concat(";"));
                 box.setStyle("-fx-border-color: " + getStringFromColor(borderColor) + ";");
 
                 initialized = true;
@@ -174,109 +169,88 @@ public class StyledCheckbox extends CheckBox {
         };
     }
 
-    /**
-     * Simple function to set color of active element,
-     * rgb style, 0-255.
-     * @param color 3d vector of 0-255 values.
-     */
-    public void setMarkColor(Point3D color) {
-        setMarkColor((int) Math.round(color.getX()),
-                (int) Math.round(color.getY()),
-                (int) Math.round(color.getZ()));
-    }
+// TODO: remove these after properly testing the property binding.
 
-    /**
-     * set color of active check element of checkbutton.
-     * @param r component of color.
-     * @param g component of color.
-     * @param b component of color.
-     */
-    public void setMarkColor(int r, int g, int b) {
-        // keep for now. May be useful.
+//    /**
+//    * Simple function to set color of active element,
+//    * rgb style, 0-255.
+//            * @param color 3d vector of 0-255 values.
+//    */
+//    public void setMarkColor(Point3D color) {
+//        setMarkColor((int) Math.round(color.getX()),
+//                (int) Math.round(color.getY()),
+//                (int) Math.round(color.getZ()));
+//    }
+
+//    /**
+//     * set color of active check element of checkbutton.
+//     * @param r component of color.
+//     * @param g component of color.
+//     * @param b component of color.
+//     */
+//    public void setMarkColor(int r, int g, int b) {
+//        setMarkColor(Color.rgb(r, g, b));
+//    }
+//
+//    /**
+//     * Set color of active check element of checkbutton.
+//     * @param color the color to set.
+//     */
+//    public void setMarkColor(Color color) {
+//        fillColorProperty.setValue(color);
+//    }
+//
+//    /**
+//     * Simple function to set color of background element,
+//     * rgb style, 0-255.
+//     * @param color 3d vector of 0-255 values.
+//     */
+//    public void setBoxColor(Point3D color) {
+//        setBoxColor((int) Math.round(color.getX()),
+//                (int) Math.round(color.getY()),
+//                (int) Math.round(color.getZ()));
+//    }
+
+//    /**
+//     * set color of background element of checkbutton.
+//     * @param r component of color.
+//     * @param g component of color.
+//     * @param b component of color.
+//     */
+//    public void setBoxColor(int r, int g, int b) {
 //        Platform.runLater(new Runnable() {
 //            @Override
 //            public void run() {
-//                mark.setStyle(mark.getStyle().concat("-fx-background-color: rgb("
-//                    + r + "," + g + "," + b + ");"));
+//                box.setStyle(box.getStyle().concat("-fx-background-color: rgb("
+//                        + r + "," + g + "," + b + ");"));
 //            }
 //        });
-        setMarkColor(Color.rgb(r, g, b));
-    }
+//    }
+//
+//    /**
+//     * Set opacity of drop shadow to a certain value.
+//     * @param value to set.
+//     */
+//    public void setShadowOpacity(double value) {
+//        shadowOpacity = value;
+//        dropShadow.setColor(Color.rgb(0, 0, 0, shadowOpacity));
+//    }
 
     /**
-     * Set color of active check element of checkbutton.
-     * @param color the color to set.
-     */
-    public void setMarkColor(Color color) {
-        fillColorProperty.setValue(color);
-    }
-
-    /**
-     * Simple function to set color of background element,
-     * rgb style, 0-255.
-     * @param color 3d vector of 0-255 values.
-     */
-    public void setBoxColor(Point3D color) {
-        setBoxColor((int) Math.round(color.getX()),
-                (int) Math.round(color.getY()),
-                (int) Math.round(color.getZ()));
-    }
-
-    /**
-     * set color of background element of checkbutton.
-     * @param r component of color.
-     * @param g component of color.
-     * @param b component of color.
-     */
-    public void setBoxColor(int r, int g, int b) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                box.setStyle(box.getStyle().concat("-fx-background-color: rgb("
-                        + r + "," + g + "," + b + ");"));
-            }
-        });
-    }
-
-    /**
-     * Set opacity of drop shadow to a certain value.
-     * @param value to set.
-     */
-    public void setShadowOpacity(double value) {
-        shadowOpacity = value;
-        dropShadow.setColor(Color.rgb(0, 0, 0, shadowOpacity));
-    }
-
-    /**
-     * Helper function for the mark fill color. Creates a string property used
+     * Helper function for binding a fill color. Creates a string property used
      * to modify the style at runtime.
      * @param colorProperty the colorProperty whose color we want to show.
      * @return The StringProperty which we'll use to set the style.
      */
-    private StringProperty createFillStringProperty(ObjectProperty<Color> colorProperty) {
+    private StringProperty createColorStringProperty(ObjectProperty<Color> colorProperty) {
         StringProperty stringProperty = new SimpleStringProperty();
-        //setStringFromColor(stringProperty, colorProperty);
         stringProperty.set(getStringFromColor(colorProperty.get()));
         colorProperty.addListener(
             e -> {
-                //setStringFromColor(stringProperty, colorProperty);
                 stringProperty.set(getStringFromColor(colorProperty.get()));
             });
         return stringProperty;
     }
-
-//    /**
-//     * Parses color from our ColorProperty to our Stringproperty.
-//     * @param string the StringProperty.
-//     * @param color the ColorProperty.
-//     */
-//    private void setStringFromColor(StringProperty string, ObjectProperty<Color> color) {
-////        string.set("rgba(" + ((int) (color.get().getRed()   * 255)) + ","
-////                           + ((int) (color.get().getGreen() * 255)) + ","
-////                           + ((int) (color.get().getBlue()  * 255)) + ","
-////                           + color.get().getOpacity() + ")");
-//        string.set(getStringFromColor(color.get()));
-//    }
 
     /**
      * Parses color from a Color object to javafx-css-compatible string.

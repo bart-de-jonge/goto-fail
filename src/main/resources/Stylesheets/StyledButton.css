@@ -1,12 +1,15 @@
 .button {
-    -fx-background-radius: 8;
-    -fx-background-color: rgb(210,210,210);
-    -fx-text-fill: white;
+    -fx-background-radius: 20;
+
     -fx-font-size: 14;
+
     -fx-padding: 5 15 5 15;
+
+    -fx-border-width: 1px;
+    -fx-border-radius: 20;
+    -fx-border-style: solid outside;
 }
 
 .button:disabled {
-    -fx-opacity: 1.0;
-    -fx-background-color: rgb(200,235,35);
+    -fx-opacity: 0.75;
 }

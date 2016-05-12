@@ -222,16 +222,16 @@ public class CameraShotCreationModalView extends ModalView {
         cancelButton = new StyledButton("Cancel");
         cancelButton.setPrefWidth(buttonWidth);
         cancelButton.setPrefHeight(buttonHeight);
-        cancelButton.setFontSize(buttonFontSize);
-        cancelButton.setButtonColor(createButtonColor);
+//        cancelButton.setFontSize(buttonFontSize);
+//        cancelButton.setButtonColor(createButtonColor);
         cancelButton.setAlignment(Pos.CENTER);
 
         // Add creation button
         creationButton = new StyledButton("Create");
         creationButton.setPrefWidth(buttonWidth);
         creationButton.setPrefHeight(buttonHeight);
-        creationButton.setFontSize(buttonFontSize);
-        creationButton.setButtonColor(cancelButtonColor);
+//        creationButton.setFontSize(buttonFontSize);
+//        creationButton.setButtonColor(cancelButtonColor);
         creationButton.setAlignment(Pos.CENTER);
 
         this.buttonPane.getChildren().addAll(creationButton, cancelButton);
@@ -300,7 +300,6 @@ public class CameraShotCreationModalView extends ModalView {
             j = (j > 4) ? 0 : j + 1;
             String checkBoxString = "Camera " + (i + 1);
             StyledCheckbox checkBox = new StyledCheckbox(checkBoxString);
-            checkBox.setMarkColor(checkboxColor);
             cameraCheckboxes.add(checkBox);
         }
 
