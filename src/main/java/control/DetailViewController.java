@@ -95,7 +95,6 @@ public class DetailViewController {
 
             String newValue = CountUtilities.parseCountNumber(
                     detailView.getEndCountField().getText());
-            detailView.getBeginCountField().setText(newValue);
             double newVal = Double.parseDouble(newValue);
             detailView.getEndCountField().setText(newValue);
 
