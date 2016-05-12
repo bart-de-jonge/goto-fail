@@ -148,6 +148,7 @@ public class FileMenuController {
         } finally {
             if (writer != null) {
                 writer.close();
+                controllerManager.updateWindowTitle();
             }
         }
     }
@@ -378,7 +379,8 @@ public class FileMenuController {
             
             // Set constructed project to be *the* project currently used
             controllerManager.setScriptingProject(project);
-            
+            controllerManager.updateWindowTitle();
+
             // Re-init RootCenterArea with new number of timelines
             RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),
                                                      newProjectModal.getTimelines().size(),

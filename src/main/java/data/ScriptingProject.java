@@ -65,18 +65,20 @@ public class ScriptingProject {
      * Default constructor.
      */
     public ScriptingProject() {
-        this("", 0);
+        this("", "", 0);
     }
 
     /**
      * Constructor.
+     * @param name the name of the project
      * @param description - the description of the project
      * @param secondsPerCount - the number of seconds each count takes
      */
-    public ScriptingProject(String description, double secondsPerCount) {
+    public ScriptingProject(String name, String description, double secondsPerCount) {
         log.debug("Initializing new ScriptingProject(description={}, secondsPerCount={})",
             description, secondsPerCount);
 
+        this.name = name;
         this.description = description;
         this.secondsPerCount = secondsPerCount;
         this.cameras = new ArrayList<Camera>();
@@ -84,18 +86,6 @@ public class ScriptingProject {
         this.directorTimeline = new DirectorTimeline(description, this);
         this.changed = true;
     }
-    
-    /**
-     * Constructor with name variable.
-     * @param name the name of the project
-     * @param description the description of the project
-     * @param secondsPerCount the seconds per count in this project
-     */
-    public ScriptingProject(String name, String description, double secondsPerCount) {
-        this(description, secondsPerCount);
-        this.name = name;
-    }
-
     
     /**
      * Project changed -> set changed variable to true.

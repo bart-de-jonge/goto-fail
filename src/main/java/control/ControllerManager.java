@@ -153,13 +153,12 @@ public class ControllerManager {
 
     public void setScriptingProject(ScriptingProject scriptingProject) {
         this.scriptingProject = scriptingProject;
-        updateWindowTitle();
     }
 
     /**
      * Changes the name the window currently has.
      */
-    private void updateWindowTitle() {
+    public void updateWindowTitle() {
         rootPane.getPrimaryStage().setTitle(getScriptingProject().getName());
     }
 }
