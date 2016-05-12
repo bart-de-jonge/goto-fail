@@ -44,7 +44,7 @@ public class ToolViewController {
                 event -> generateCameraShots());
 
         // If there is no active ShotBlock, then disable the delete button
-        if (this.controllerManager.getActiveShotBlock() == null) {
+        if (!this.controllerManager.getActiveShotBlock().isPresent()) {
             toolView.getBlockDeletionTool().disableButton();
             toolView.getShotGenerationTool().disableButton();
         }
