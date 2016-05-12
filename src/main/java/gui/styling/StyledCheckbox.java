@@ -24,15 +24,15 @@ import lombok.Setter;
 public class StyledCheckbox extends CheckBox {
 
     /*
-     * Color tweaking
+     * Color tweaking. These are generally overwritten from above, though,
+     * so they might not do anything.
      */
-    @Getter @Setter
-    // Color of all the visible borders in the checkbox.
+    @Getter
     private Color borderColor = Color.rgb(60, 190, 255);
-    @Getter @Setter
-    // Color of the "checked" circle. Should probably be set to
-    // same color as borderColor for coolest looks.
-    private Color fillColor = Color.rgb(60, 190, 255);
+    @Getter
+    private Color markColor = Color.rgb(60, 190, 255);
+    @Getter
+    private Color fillColor = Color.rgb(255, 255, 255);
 
     /*
      * Effect and transition tweaking.
@@ -52,6 +52,8 @@ public class StyledCheckbox extends CheckBox {
     @Getter
     private DropShadow dropShadow; // adds simple drop shadow.
     private TransitionHelper transitionHelper;
+    private ObjectProperty<Color> markColorProperty = new SimpleObjectProperty<>(Color.WHITE);
+    private StringProperty markStringProperty = createColorStringProperty(markColorProperty);
     private ObjectProperty<Color> fillColorProperty = new SimpleObjectProperty<>(Color.WHITE);
     private StringProperty fillStringProperty = createColorStringProperty(fillColorProperty);
 
@@ -147,9 +149,12 @@ public class StyledCheckbox extends CheckBox {
                 mark.setTranslateX(markPositionLeft);
 
                 mark.styleProperty().bind(new SimpleStringProperty("-fx-background-color: ")
-                    .concat(fillStringProperty).concat(";").concat("-fx-border-color: ")
+                    .concat(markStringProperty).concat(";").concat("-fx-border-color: ")
                     .concat(getStringFromColor(borderColor)).concat(";"));
-                box.setStyle("-fx-border-color: " + getStringFromColor(borderColor) + ";");
+                box.styleProperty().bind(new SimpleStringProperty("-fx-background-color: ")
+                    .concat(fillStringProperty).concat(";").concat("-fx-border-color: ")
+                    .concat(getStringFromColor(borderColor)));
+                //box.setStyle("-fx-border-color: " + getStringFromColor(borderColor) + ";");
 
                 initialized = true;
             }
@@ -158,83 +163,20 @@ public class StyledCheckbox extends CheckBox {
             if (self.isSelected()) {
                 transitionHelper.runTransitionToValue(mark.translateXProperty(),
                         transitionTime, markPositionRight, interpolator);
+                transitionHelper.runTransitionToValue(markColorProperty,
+                        transitionTime, markColor, interpolator);
                 transitionHelper.runTransitionToValue(fillColorProperty,
                         transitionTime, fillColor, interpolator);
             } else {
                 transitionHelper.runTransitionToValue(mark.translateXProperty(),
                         transitionTime, markPositionLeft, interpolator);
+                transitionHelper.runTransitionToValue(markColorProperty,
+                        transitionTime, Color.WHITE, interpolator);
                 transitionHelper.runTransitionToValue(fillColorProperty,
                         transitionTime, Color.WHITE, interpolator);
             }
         };
     }
-
-// TODO: remove these after properly testing the property binding.
-
-//    /**
-//    * Simple function to set color of active element,
-//    * rgb style, 0-255.
-//            * @param color 3d vector of 0-255 values.
-//    */
-//    public void setMarkColor(Point3D color) {
-//        setMarkColor((int) Math.round(color.getX()),
-//                (int) Math.round(color.getY()),
-//                (int) Math.round(color.getZ()));
-//    }
-
-//    /**
-//     * set color of active check element of checkbutton.
-//     * @param r component of color.
-//     * @param g component of color.
-//     * @param b component of color.
-//     */
-//    public void setMarkColor(int r, int g, int b) {
-//        setMarkColor(Color.rgb(r, g, b));
-//    }
-//
-//    /**
-//     * Set color of active check element of checkbutton.
-//     * @param color the color to set.
-//     */
-//    public void setMarkColor(Color color) {
-//        fillColorProperty.setValue(color);
-//    }
-//
-//    /**
-//     * Simple function to set color of background element,
-//     * rgb style, 0-255.
-//     * @param color 3d vector of 0-255 values.
-//     */
-//    public void setBoxColor(Point3D color) {
-//        setBoxColor((int) Math.round(color.getX()),
-//                (int) Math.round(color.getY()),
-//                (int) Math.round(color.getZ()));
-//    }
-
-//    /**
-//     * set color of background element of checkbutton.
-//     * @param r component of color.
-//     * @param g component of color.
-//     * @param b component of color.
-//     */
-//    public void setBoxColor(int r, int g, int b) {
-//        Platform.runLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                box.setStyle(box.getStyle().concat("-fx-background-color: rgb("
-//                        + r + "," + g + "," + b + ");"));
-//            }
-//        });
-//    }
-//
-//    /**
-//     * Set opacity of drop shadow to a certain value.
-//     * @param value to set.
-//     */
-//    public void setShadowOpacity(double value) {
-//        shadowOpacity = value;
-//        dropShadow.setColor(Color.rgb(0, 0, 0, shadowOpacity));
-//    }
 
     /**
      * Helper function for binding a fill color. Creates a string property used
@@ -264,6 +206,30 @@ public class StyledCheckbox extends CheckBox {
                 + color.getOpacity() + ")";
     }
 
+    /**
+     * Set the mark color of this checkbox.
+     * @param color the color to set.
+     */
+    public void setMarkColor(Color color) {
+        this.markColor = color;
+        this.markColorProperty.setValue(markColor);
+    }
 
+    /**
+     * Set the border color of this checkbox.
+     * @param color the color to set.
+     */
+    public void setBorderColor(Color color) {
+        this.borderColor = color;
+    }
+
+    /**
+     * Set the fill color of this checkbox.
+     * @param color the colro to set.
+     */
+    public void setFillColor(Color color) {
+        this.fillColor = color;
+        this.fillColorProperty.setValue(fillColor);
+    }
 
 }

@@ -99,48 +99,6 @@ public class StyledTextfield extends TextField {
         });
     }
 
-//    /**
-//     * Simple function to set color of textfield, rgb style, 0-255.
-//     * @param color 3d vector of 0-255 values.
-//     */
-//    public void setTextfieldColor(Point3D color) {
-//        setTextfieldColor((int) Math.round(color.getX()),
-//                (int) Math.round(color.getY()),
-//                (int) Math.round(color.getZ()));
-//    }
-//
-//    /**
-//     * Simple function to set color of textfield, rgb style, 0-255.
-//     * @param r red component of color.
-//     * @param g green component of color.
-//     * @param b blue component of color.
-//     */
-//    public void setTextfieldColor(int r, int g, int b) {
-//        setStyle(getStyle().concat("-fx-background-color: rgb("
-//                + r + "," + g + "," + b + ");"));
-//    }
-//
-//    /**
-//     * Simple function to set color of text, rgb style, 0-255.
-//     * @param color 3d vector of 0-255 values.
-//     */
-//    public void setTextColor(Point3D color) {
-//        setTextColor((int) Math.round(color.getX()),
-//                (int) Math.round(color.getY()),
-//                (int) Math.round(color.getZ()));
-//    }
-//
-//    /**
-//     * Simple function to set color of text, rgb style, 0-255.
-//     * @param r red component of color.
-//     * @param g green component of color.
-//     * @param b blue component of color.
-//     */
-//    public void setTextColor(int r, int g, int b) {
-//        setStyle(getStyle().concat("-fx-text-fill: rgb("
-//                + r + "," + g + "," + b + ");"));
-//    }
-
     /**
      * Helper function for binding a fill color. Creates a string property used
      * to modify the style at runtime.
@@ -167,6 +125,24 @@ public class StyledTextfield extends TextField {
                 + ((int) (color.getGreen() * 255)) + ","
                 + ((int) (color.getBlue() * 255)) + ","
                 + color.getOpacity() + ")";
+    }
+
+    /**
+     * Set the fill color of this textfield.
+     * @param color the color to set.
+     */
+    public void setFillColor(Color color) {
+        this.fillColor = color;
+        this.fillColorProperty.setValue(fillColor);
+    }
+
+    /**
+     * Set the border color of this textfield.
+     * @param color the color to set.
+     */
+    public void setBorderColor(Color color) {
+        this.borderColor = color;
+        this.borderColorProperty.setValue(borderColor);
     }
 
 }

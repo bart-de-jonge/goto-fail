@@ -4,15 +4,12 @@ import gui.headerarea.DoubleTextField;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledCheckbox;
+import gui.styling.StyledTextfield;
 import java.util.ArrayList;
 import java.util.List;
-
-import gui.styling.StyledTextfield;
 import javafx.geometry.Insets;
-import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
@@ -20,7 +17,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.StageStyle;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,28 +32,35 @@ public class CameraShotCreationModalView extends ModalView {
 
     // width and height of screen. 680 and 290 work very, very well.
     private static final int width = 680;
-    private static final int height = 350;
+    private static final int height = 370;
+
+    // main colors used throughout. Experiment a little!
+    // blue
+//    private Color mainColor = Color.rgb(60, 190, 255);
+//    private Color secondaryColor = Color.rgb(50, 170, 240);
+    // orange
+    private Color mainColor = Color.rgb(255, 172, 70);
+    private Color secondaryColor = Color.rgb(255, 140, 0);
+    private Color tertiaryColor = Color.rgb(255, 225, 170);
+
+    // variables for spacing
+    private int topAreaHeight = 70;
+    private int bottomAreaHeight = 60;
 
     // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: rgb(60,190,255);"
-            + "-fx-text-fill: white; -fx-font-size: 24;"
+    private String topStyle = "-fx-background-color: " + getStringFromColor(mainColor) + ";"
+            + "-fx-text-fill: white; -fx-font-size: 26;"
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
-            + "-fx-border-width: 0 0 1px 0;"
-            + "-fx-border-color: rgb(60, 190, 255);";
-    private String centerStyle = "-fx-background-color: rgb(255, 255, 255);";
-    private String bottomStyle = "-fx-background-color: rgb(60, 190, 255);"
-            + "-fx-border-width: 1px 0 0 0;"
-            + "-fx-border-color: rgb(60, 190, 255);";
+            + "-fx-border-width: 0 0 10 0;"
+            + "-fx-border-color: " + getStringFromColor(secondaryColor) + ";";
+    private String centerLeftStyle = "-fx-background-color: rgb(245, 245, 245);";
+    private String centerRightStyle = "-fx-background-color: rgb(255, 255, 255);";
+    private String bottomStyle = "-fx-background-color: " + getStringFromColor(mainColor) + ";";
 
     // variables for the Create and Cancel buttons
     private int buttonWidth = 90;
     private int buttonHeight = 25;
     private int buttonSpacing = 20;
-    private Color buttonFillColor = Color.rgb(60, 190, 255);
-    private Color buttonBorderColor = Color.WHITE;
-
-    // color of the "active" element of a checkbox
-    private Point3D checkboxColor = new Point3D(250, 120, 50);
 
     // variables for the title label
     private int titlelabelOffsetFromLeft = 20;
@@ -70,10 +73,6 @@ public class CameraShotCreationModalView extends ModalView {
     private double hardShadowCutoff = 1;
     private double hardShadowOpacity = 0;
 
-    // variables for spacing
-    private int topAreaHeight = 50;
-    private int bottomAreaHeight = 50;
-
     /*
      * Other variables.
      */
@@ -83,7 +82,7 @@ public class CameraShotCreationModalView extends ModalView {
     private static final int GENERAL_SIZE = 10000;
     private static final int GENERAL_SPACING = 10;
     private static final int GENERAL_PADDING = 20;
-    private static final int TEXT_AREA_MIN_WIDTH = 350;
+    private static final int TEXT_AREA_MIN_WIDTH = 320;
     private static final int CAMERA_AREA_MIN_WIDTH = 250;
 
     private int numberOfCameras;
@@ -166,7 +165,6 @@ public class CameraShotCreationModalView extends ModalView {
         this.centerPane.setPadding(new Insets(0, GENERAL_PADDING, 0, 0));
         this.centerPane.setPrefHeight(GENERAL_SIZE);
         this.centerPane.setSpacing(40.0);
-        this.centerPane.setStyle(centerStyle);
         this.rootPane.getChildren().add(centerPane);
 
         // actually add textfields and checkboxes
@@ -225,7 +223,8 @@ public class CameraShotCreationModalView extends ModalView {
         this.buttonPane.setPrefHeight(bottomAreaHeight);
         this.buttonPane.setMaxHeight(bottomAreaHeight);
         this.buttonPane.setStyle(bottomStyle);
-        this.buttonPane.setPadding(new Insets(0, titlelabelOffsetFromLeft, 0, titlelabelOffsetFromLeft));
+        this.buttonPane.setPadding(new Insets(0, titlelabelOffsetFromLeft,
+                0, titlelabelOffsetFromLeft));
         this.rootPane.getChildren().add(buttonPane);
 
         // Add cancel button
@@ -233,16 +232,16 @@ public class CameraShotCreationModalView extends ModalView {
         cancelButton.setPrefWidth(buttonWidth);
         cancelButton.setPrefHeight(buttonHeight);
         cancelButton.setAlignment(Pos.CENTER);
-        cancelButton.setBorderColor(buttonBorderColor);
-        cancelButton.setFillColor(buttonFillColor);
+        cancelButton.setBorderColor(Color.WHITE);
+        cancelButton.setFillColor(mainColor);
 
         // Add creation button
         creationButton = new StyledButton("Create");
         creationButton.setPrefWidth(buttonWidth);
         creationButton.setPrefHeight(buttonHeight);
         creationButton.setAlignment(Pos.CENTER);
-        creationButton.setBorderColor(buttonBorderColor);
-        creationButton.setFillColor(buttonFillColor);
+        creationButton.setBorderColor(Color.WHITE);
+        creationButton.setFillColor(mainColor);
 
         this.buttonPane.getChildren().addAll(creationButton, cancelButton);
     }
@@ -252,15 +251,28 @@ public class CameraShotCreationModalView extends ModalView {
      */
     private void initTextFields() {
         VBox content = new VBox(GENERAL_SPACING);
-        content.setAlignment(Pos.CENTER_LEFT);
+        content.setAlignment(Pos.CENTER);
         content.setMinWidth(TEXT_AREA_MIN_WIDTH);
         content.setPrefWidth(GENERAL_SIZE);
         content.setPrefHeight(GENERAL_SIZE);
         content.setPadding(new Insets(GENERAL_PADDING));
+        content.setStyle(centerLeftStyle);
 
+        initNameDescriptionFields(content);
+        initCountFields(content);
+
+        this.centerPane.getChildren().add(content);
+    }
+
+    /**
+     * Initializes name and description textfields.
+     * @param content pane in which to intiialize.
+     */
+    private void initNameDescriptionFields(VBox content) {
         // init name field
         final Label nameLabel = new Label("Shot Name: ");
         nameField = new StyledTextfield();
+        nameField.setBorderColor(mainColor);
         HBox nameBox = new HBox(GENERAL_SPACING);
         nameBox.getChildren().addAll(nameLabel, nameField);
         nameBox.setAlignment(Pos.CENTER_RIGHT);
@@ -268,13 +280,23 @@ public class CameraShotCreationModalView extends ModalView {
         // init description field
         final Label descripLabel = new Label("Shot Description: ");
         descriptionField = new StyledTextfield();
+        descriptionField.setBorderColor(mainColor);
         HBox descripBox = new HBox(GENERAL_SPACING);
         descripBox.getChildren().addAll(descripLabel, descriptionField);
         descripBox.setAlignment(Pos.CENTER_RIGHT);
 
+        content.getChildren().addAll(nameBox, descripBox);
+    }
+
+    /**
+     * Initializes start and end count textfields.
+     * @param content pane in which to intiialize.
+     */
+    private void initCountFields(VBox content) {
         // init start count field
         final Label startLabel = new Label("Start:");
         startField = new DoubleTextField(this.defaultStartCount);
+        startField.setBorderColor(mainColor);
         HBox startBox = new HBox(GENERAL_SPACING);
         startBox.getChildren().addAll(startLabel, startField);
         startBox.setAlignment(Pos.CENTER_RIGHT);
@@ -282,13 +304,12 @@ public class CameraShotCreationModalView extends ModalView {
         // init end count field
         final Label endLabel = new Label("End:");
         endField = new DoubleTextField(this.defaultEndCount);
+        endField.setBorderColor(mainColor);
         HBox endBox = new HBox(GENERAL_SPACING);
         endBox.getChildren().addAll(endLabel, endField);
         endBox.setAlignment(Pos.CENTER_RIGHT);
 
-        // add all to scene
-        content.getChildren().addAll(nameBox, descripBox, startBox, endBox);
-        this.centerPane.getChildren().add(content);
+        content.getChildren().addAll(startBox, endBox);
     }
 
     /**
@@ -302,6 +323,7 @@ public class CameraShotCreationModalView extends ModalView {
         this.checkboxPane.setMinWidth(CAMERA_AREA_MIN_WIDTH);
         this.checkboxPane.setPrefWidth(GENERAL_SIZE);
         this.checkboxPane.setAlignment(Pos.CENTER);
+        this.checkboxPane.setStyle(centerRightStyle);
 
         // add checkboxes
         cameraCheckboxes = new ArrayList<>();
@@ -310,6 +332,9 @@ public class CameraShotCreationModalView extends ModalView {
             j = (j > 4) ? 0 : j + 1;
             String checkBoxString = "Camera " + (i + 1);
             StyledCheckbox checkBox = new StyledCheckbox(checkBoxString);
+            checkBox.setBorderColor(mainColor);
+            checkBox.setMarkColor(mainColor);
+            checkBox.setFillColor(tertiaryColor);
             cameraCheckboxes.add(checkBox);
         }
 
@@ -324,13 +349,23 @@ public class CameraShotCreationModalView extends ModalView {
      */
     public List<Integer> getCamerasInShot() {
         List<Integer> camsInShot = new ArrayList<>();
-
         for (int i = 0; i < cameraCheckboxes.size(); i++) {
             if (cameraCheckboxes.get(i).isSelected()) {
                 camsInShot.add(i);
             }
         }
-
         return camsInShot;
+    }
+
+    /**
+     * Parses color from a Color object to javafx-css-compatible string.
+     * @param color the color to parse.
+     * @return a representative string.
+     */
+    private String getStringFromColor(Color color) {
+        return "rgba(" + ((int) (color.getRed()   * 255)) + ","
+                + ((int) (color.getGreen() * 255)) + ","
+                + ((int) (color.getBlue()  * 255)) + ","
+                + color.getOpacity() + ")";
     }
 }
