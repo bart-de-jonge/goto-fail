@@ -300,7 +300,6 @@ public class CameraShotCreationModalView extends ModalView {
         for (int i = 0; i < this.cameraTimelines.size(); i++) {
             j = (j > 4) ? 0 : j + 1;
             String checkBoxString = this.cameraTimelines.get(i).getCamera().getName();
-            System.out.println(checkBoxString);
             StyledCheckbox checkBox = new StyledCheckbox(checkBoxString);
             checkBox.setMarkColor(checkboxColor);
             cameraCheckboxes.add(checkBox);
