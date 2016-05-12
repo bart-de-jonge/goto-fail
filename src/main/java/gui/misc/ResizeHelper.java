@@ -40,6 +40,7 @@ public class ResizeHelper {
         stage.getScene().addEventHandler(MouseEvent.MOUSE_MOVED, getOnMouseMovedHandler());
         stage.getScene().addEventHandler(MouseEvent.MOUSE_DRAGGED, getOnMouseDraggedHandler());
         stage.getScene().addEventHandler(MouseEvent.MOUSE_PRESSED, getOnMousePressedHandler());
+        stage.getScene().addEventHandler(MouseEvent.MOUSE_EXITED, getOnMouseExitHandler());
     }
 
     /**
@@ -47,14 +48,29 @@ public class ResizeHelper {
      * @param e the event whose data we use.
      */
     private void updateVariables(MouseEvent e) {
+
         mouseEventX = e.getSceneX();
         mouseEventY = e.getSceneY();
         sceneWidth = scene.getWidth();
         sceneHeight = scene.getHeight();
     }
 
+
+    /**
+     * Event handler for when the mouse exits screen.
+     * This event handler makes sure the cursor is reset to default properly.
+     * @return the event handler.
+     */
+    private EventHandler<MouseEvent> getOnMouseExitHandler() {
+        return e -> {
+            scene.setCursor(Cursor.DEFAULT);
+        };
+    }
+
     /**
      * Event handler for when the mouse is moved.
+     * This event handler detects the kind of "dragging" that can be done
+     * from a position.
      * @return the event handler.
      */
     private EventHandler<MouseEvent> getOnMouseMovedHandler() {
@@ -64,6 +80,7 @@ public class ResizeHelper {
             // find out what type of resize we're talking about.
             // and yes, this is horrible code. Help.
             // TODO: Find help.
+
             if (mouseEventX < border && mouseEventY < border) {
                 cursor = Cursor.NW_RESIZE;
             } else if (mouseEventX < border && mouseEventY > sceneHeight - border) {
@@ -83,7 +100,7 @@ public class ResizeHelper {
             } else {
                 cursor = Cursor.DEFAULT;
             }
-
+            System.out.println(mouseEventX);
             // store the type of mouse movement
             scene.setCursor(cursor);
         };
@@ -91,6 +108,7 @@ public class ResizeHelper {
 
     /**
      * Event handler for when the mouse is dragged.
+     * This event handler deals with the actual dragging and resizing.
      * @return the event handler.
      */
     private EventHandler<MouseEvent> getOnMouseDraggedHandler() {
@@ -124,6 +142,7 @@ public class ResizeHelper {
             if (stage.getHeight() > minHeight || mouseEventY < 0) {
                 stage.setHeight(stage.getY() - e.getScreenY() + stage.getHeight());
                 stage.setY(e.getScreenY());
+
             }
         } else if (stage.getHeight() > minHeight
                 || mouseEventY + startY - stage.getHeight() > 0) {

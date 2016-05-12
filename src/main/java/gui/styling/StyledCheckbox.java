@@ -3,14 +3,16 @@ package gui.styling;
 import gui.misc.TransitionHelper;
 import javafx.animation.Interpolator;
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
 import javafx.scene.control.CheckBox;
 import javafx.scene.effect.BlurType;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import lombok.Getter;
@@ -23,16 +25,20 @@ import lombok.Setter;
 public class StyledCheckbox extends CheckBox {
 
     /*
+     * Color tweaking
+     */
+    private Color borderColor = Color.rgb(60, 190, 255);
+    private Color fillColor = Color.rgb(60, 190, 255);
+
+    /*
      * Effect and transition tweaking.
      */
-    private double shadowRadius = 10;
-    private double shadowOpacity = 0.05;
-    private double bezelThickness = 1;
-    private double bezelOpacity = 0.15;
-    private double bezelInnerThickness = 1;
-    private double bezelInnerOpacity = 0.05;
+    private double shadowRadius = 5;
+    private double shadowOpacity = 0.2;
     @Getter @Setter
     private int transitionTime = 100;
+    private double markPositionLeft = 3.0;
+    private double markPositionRight = 21.0;
     @Getter @Setter
     private Interpolator interpolator = Interpolator.EASE_BOTH;
 
@@ -40,16 +46,12 @@ public class StyledCheckbox extends CheckBox {
      * Effects used on checkbox and subpanes.
      */
     @Getter
-    private ColorAdjust colorAdjust; // can be used for highlighting.
-    @Getter
-    private ColorAdjust markColorAdjust; // can be used for highlighting.
-    @Getter
     private DropShadow dropShadow; // adds simple drop shadow.
-    @Getter
-    private InnerShadow innerShadow; // adds inner bound bezel.
-    @Getter
-    private InnerShadow markInnerShadow; // adds inner bound bezel.
+
     private TransitionHelper transitionHelper;
+
+    private ObjectProperty<Color> fillColorProperty = new SimpleObjectProperty<>(Color.WHITE);
+    private StringProperty fillStringProperty = createFillStringProperty(fillColorProperty);
 
     /*
      * Subpanes and their initialization.
@@ -103,18 +105,6 @@ public class StyledCheckbox extends CheckBox {
         super.setIndeterminate(false);
         transitionHelper = new TransitionHelper(this);
 
-        // initialize effects that can't be done by css all at once
-        this.colorAdjust = new ColorAdjust();
-        this.dropShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, shadowOpacity),
-                shadowRadius, 0.1, 1, 3);
-        this.innerShadow = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, bezelOpacity),
-                1, 1, bezelThickness, bezelThickness);
-
-        // chain effects together
-        dropShadow.setInput(innerShadow);
-        colorAdjust.setInput(dropShadow);
-        this.setEffect(colorAdjust);
-
         // button pressing action
         this.setOnAction(createOnAction());
 
@@ -148,33 +138,38 @@ public class StyledCheckbox extends CheckBox {
                 box = (StackPane) self.lookup(".box");
                 mark = (StackPane) self.lookup(".mark");
 
+                // set start position (in off mode!)
+                mark.setTranslateX(markPositionLeft);
+
+                //box.setStyle(getStringFromColor(borderColor));
+                //System.out.println(box.getStyle().toString());
+                //box.setStyle("-fx-border-color: green;");
+
                 // Initialize effects that can't be done by css all at once.
-                markColorAdjust = new ColorAdjust();
-                markInnerShadow = new InnerShadow(BlurType.GAUSSIAN,
-                        Color.rgb(0, 0, 0, bezelInnerOpacity),
-                        1, 1, -bezelInnerThickness, -bezelInnerThickness);
-                markInnerShadow.setInput(markColorAdjust);
-                mark.setEffect(markInnerShadow);
-                markColorAdjust.setSaturation(-1.0);
-                markColorAdjust.setBrightness(1.0);
+                this.dropShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, shadowOpacity),
+                        shadowRadius, 0.01, 0, 1);
+                mark.setEffect(dropShadow);
+
+                mark.styleProperty().bind(new SimpleStringProperty("-fx-background-color: ")
+                .concat(fillStringProperty).concat(";").concat("-fx-border-color: ")
+                .concat(getStringFromColor(borderColor)).concat(";"));
+
+                box.setStyle("-fx-border-color: " + getStringFromColor(borderColor) + ";");
+
                 initialized = true;
             }
 
             // perform transitions.
             if (self.isSelected()) {
                 transitionHelper.runTransitionToValue(mark.translateXProperty(),
-                        transitionTime, 22.0, interpolator);
-                transitionHelper.runTransitionToValue(markColorAdjust.saturationProperty(),
-                        transitionTime, 0.0, interpolator);
-                transitionHelper.runTransitionToValue(markColorAdjust.brightnessProperty(),
-                        transitionTime, 0.0, interpolator);
+                        transitionTime, markPositionRight, interpolator);
+                transitionHelper.runTransitionToValue(fillColorProperty,
+                        transitionTime, fillColor, interpolator);
             } else {
                 transitionHelper.runTransitionToValue(mark.translateXProperty(),
-                        transitionTime, 5.0, interpolator);
-                transitionHelper.runTransitionToValue(markColorAdjust.saturationProperty(),
-                        transitionTime, -1.0, interpolator);
-                transitionHelper.runTransitionToValue(markColorAdjust.brightnessProperty(),
-                        transitionTime, 1.0, interpolator);
+                        transitionTime, markPositionLeft, interpolator);
+                transitionHelper.runTransitionToValue(fillColorProperty,
+                        transitionTime, Color.WHITE, interpolator);
             }
         };
     }
@@ -197,13 +192,23 @@ public class StyledCheckbox extends CheckBox {
      * @param b component of color.
      */
     public void setMarkColor(int r, int g, int b) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                mark.setStyle(mark.getStyle().concat("-fx-background-color: rgb("
-                    + r + "," + g + "," + b + ");"));
-            }
-        });
+        // keep for now. May be useful.
+//        Platform.runLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                mark.setStyle(mark.getStyle().concat("-fx-background-color: rgb("
+//                    + r + "," + g + "," + b + ");"));
+//            }
+//        });
+        setMarkColor(Color.rgb(r, g, b));
+    }
+
+    /**
+     * Set color of active check element of checkbutton.
+     * @param color the color to set.
+     */
+    public void setMarkColor(Color color) {
+        fillColorProperty.setValue(color);
     }
 
     /**
@@ -241,5 +246,50 @@ public class StyledCheckbox extends CheckBox {
         shadowOpacity = value;
         dropShadow.setColor(Color.rgb(0, 0, 0, shadowOpacity));
     }
+
+    /**
+     * Helper function for the mark fill color. Creates a string property used
+     * to modify the style at runtime.
+     * @param colorProperty the colorProperty whose color we want to show.
+     * @return The StringProperty which we'll use to set the style.
+     */
+    private StringProperty createFillStringProperty(ObjectProperty<Color> colorProperty) {
+        StringProperty stringProperty = new SimpleStringProperty();
+        //setStringFromColor(stringProperty, colorProperty);
+        stringProperty.set(getStringFromColor(colorProperty.get()));
+        colorProperty.addListener(
+            e -> {
+                //setStringFromColor(stringProperty, colorProperty);
+                stringProperty.set(getStringFromColor(colorProperty.get()));
+            });
+        return stringProperty;
+    }
+
+//    /**
+//     * Parses color from our ColorProperty to our Stringproperty.
+//     * @param string the StringProperty.
+//     * @param color the ColorProperty.
+//     */
+//    private void setStringFromColor(StringProperty string, ObjectProperty<Color> color) {
+////        string.set("rgba(" + ((int) (color.get().getRed()   * 255)) + ","
+////                           + ((int) (color.get().getGreen() * 255)) + ","
+////                           + ((int) (color.get().getBlue()  * 255)) + ","
+////                           + color.get().getOpacity() + ")");
+//        string.set(getStringFromColor(color.get()));
+//    }
+
+    /**
+     * Parses color from a Color object to javafx-css-compatible string.
+     * @param color the color to parse.
+     * @return a representative string.
+     */
+    private String getStringFromColor(Color color) {
+        return "rgba(" + ((int) (color.getRed()   * 255)) + ","
+                + ((int) (color.getGreen() * 255)) + ","
+                + ((int) (color.getBlue()  * 255)) + ","
+                + color.getOpacity() + ")";
+    }
+
+
 
 }

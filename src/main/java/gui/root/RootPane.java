@@ -65,7 +65,7 @@ public class RootPane extends Application {
 
         ResizeHelper resizeHelper = new ResizeHelper(primaryStage);
 
-        topLevelPane.setStyle("-fx-border-width: 8; -fx-border-color: red;");
+        topLevelPane.setStyle("-fx-border-width: 8; -fx-border-color: red; -fx-bordef-style: sold inside;");
 
         // represents file-view-help bar and button bars at top of gui.
         rootHeaderArea = new RootHeaderArea(this);

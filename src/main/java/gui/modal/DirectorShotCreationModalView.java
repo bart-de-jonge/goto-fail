@@ -167,7 +167,7 @@ public class DirectorShotCreationModalView extends ModalView {
         initTextfields();
         initCamCheckBoxes();
         initButtons();
-        initEffects();
+        //initEffects();
 
         super.setModalView(this.rootPane);
         super.displayModal();
@@ -306,7 +306,7 @@ public class DirectorShotCreationModalView extends ModalView {
         for (int i = 0; i < numberOfCameras; i++) {
             String checkBoxString = "Camera " + (i + 1);
             StyledCheckbox checkBox = new StyledCheckbox(checkBoxString);
-            checkBox.setMarkColor(checkboxColor);
+            //checkBox.setMarkColor(checkboxColor);
             cameraCheckboxes.add(checkBox);
         }
 
