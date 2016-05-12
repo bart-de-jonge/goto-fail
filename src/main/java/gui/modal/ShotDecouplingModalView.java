@@ -81,7 +81,7 @@ public class ShotDecouplingModalView extends ModalView {
         cancelButton.setPrefWidth(buttonWidth);
         cancelButton.setPrefHeight(buttonHeight);
         cancelButton.setFontSize(buttonFontSize);
-        cancelButton.setButtonColor(createButtonColor);
+        cancelButton.setButtonColor(cancelButtonColor);
         cancelButton.setAlignment(Pos.CENTER);
 
         confirmButton = new StyledButton("Confirm");
