@@ -12,3 +12,4 @@ src/test/java/xml/test_files/test-write.xml
 config.ini
 project_write_test.txt
 *.scp
+coverage-error.log
