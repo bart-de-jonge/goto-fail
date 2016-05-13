@@ -21,7 +21,7 @@ public class ScriptingProjectTest {
 
     @Before
     public void setUpTest() {
-        project = new ScriptingProject("A test scripting project", 2);
+        project = new ScriptingProject("", "A test scripting project", 2);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class ScriptingProjectTest {
         CameraType type = new CameraType("cameratype-1", "A test cameratype", 2.00);
         Camera camera = new Camera("camera-1", "A test camera", type);
         CameraTimeline timeline = new CameraTimeline(camera, "A test cameratimeline",
-                new ScriptingProject("test", 1));
+                new ScriptingProject("", "test", 1));
         project.addCameraTimeline(timeline);
         assertEquals(1, project.getCameraTimelines().size());
         assertEquals(timeline, project.getCameraTimelines().get(0));
@@ -72,7 +72,7 @@ public class ScriptingProjectTest {
     @Test
     public void getAndSetDirectorTimelineTest() {
         DirectorTimeline timeline = new DirectorTimeline("A test director timeline",
-                new ScriptingProject("test", 1));
+                new ScriptingProject("", "test", 1));
         project.setDirectorTimeline(timeline);
         assertEquals(timeline, project.getDirectorTimeline());
     }
@@ -103,7 +103,7 @@ public class ScriptingProjectTest {
         CameraType type = new CameraType("cameratype-1", "A test cameratype", 2.00);
         Camera camera = new Camera("camera-1", "A test camera", type);
         CameraTimeline timeline = new CameraTimeline(camera, "A test cameratimeline",
-                new ScriptingProject("test", 1));
+                new ScriptingProject("", "test", 1));
         ArrayList<CameraTimeline> timelines = new ArrayList<CameraTimeline>();
         timelines.add(timeline);
         project.setCameraTimelines(timelines);
@@ -118,7 +118,7 @@ public class ScriptingProjectTest {
     
     @Test
     public void toStringTest() {
-        assertEquals("ScriptingProject(name=null, description=A test scripting project, cameras=[], directorTimeline=DirectorTimeline(shots=[]), cameraTimelines=[], secondsPerCount=2.0, filePath=null, changed=true)", project.toString());
+        assertEquals("ScriptingProject(name=, description=A test scripting project, cameras=[], directorTimeline=DirectorTimeline(shots=[]), cameraTimelines=[], secondsPerCount=2.0, filePath=null, changed=true)", project.toString());
     }
     
     @Test
@@ -157,7 +157,7 @@ public class ScriptingProjectTest {
     @Test
     public void constructorWithNoArgumentsTest() {
         ScriptingProject project = new ScriptingProject();
-        assertEquals(null, project.getName());
+        assertEquals("", project.getName());
     }
     
     @Test
