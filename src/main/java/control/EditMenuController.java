@@ -61,16 +61,22 @@ public class EditMenuController {
      */
     private void cameraAdded(MouseEvent event) {
         if (validateCameraData()) {
+            // Hide modal
             cameraModal.hideModal();
+            // Get data
             String name = cameraModal.getNameField().getText();
             String description = cameraModal.getDescriptionField().getText();
             int selectedIndex = cameraModal.getCameraTypes().getSelectionModel().getSelectedIndex();
+            // Construct objects from data
             CameraType type = cameraModal.getCameraTypeList().get(selectedIndex);
             Camera camera = new Camera(name, description, type);
+            // Add camera to camera list
             editModal.getCameras().add(camera);
+            // Add camera to list of cameras that is shown
             HBox box = new HBox();
             box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
             editModal.getCameraList().getItems().add(box);
+            // Add camera timeline to list of timelines
             CameraTimeline timeline = new CameraTimeline(name, camera, description, null);
             editModal.getTimelines().add(timeline);
         }
