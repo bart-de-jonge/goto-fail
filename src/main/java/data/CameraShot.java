@@ -61,4 +61,12 @@ public class CameraShot extends Shot {
     public static void incrementCounter() {
         instanceCounter++;
     }
+    
+    @Override
+    public CameraShot clone() {
+        CameraShot result = new CameraShot(
+                getName(), getDescription(), getBeginCount(), getEndCount(), getDirectorShot());
+        result.setColliding(isColliding());
+        return result;
+    }
 }

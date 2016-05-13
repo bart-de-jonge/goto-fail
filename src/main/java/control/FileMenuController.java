@@ -373,6 +373,7 @@ public class FileMenuController {
             // Construct ScriptingProject from entered data
             ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
             project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
+            project.setCameraTypes(newProjectModal.getCameraTypes());
             project.setCameras(newProjectModal.getCameras());
             project.setCameraTimelines(newProjectModal.getTimelines());
             project.getDirectorTimeline().setProject(project);

@@ -34,7 +34,7 @@ public class CameraTimelineTest {
     @Test
     public void constructorWithNoArgumentsTest() {
         CameraTimeline timeline = new CameraTimeline();
-        assertEquals("", timeline.getDescription());
+        assertEquals(null, timeline.getDescription());
     }
     
     @Test
@@ -47,7 +47,7 @@ public class CameraTimelineTest {
     
     @Test
     public void toStringTest() {
-        assertEquals("CameraTimeline(name=null, camera=Camera(name=camera-1, description=A test camera, cameraType=CameraType(name=cameratype-1, description=A test cameratype, movementMargin=2.0), movementMargin=2.0), shots=[])", timeline.toString());
+        assertEquals("CameraTimeline(description=A test cameratimeline, name=null, camera=Camera(name=camera-1, description=A test camera, cameraType=CameraType(name=cameratype-1, description=A test cameratype, movementMargin=2.0), movementMargin=2.0), shots=[])", timeline.toString());
     }
 
     @Test
