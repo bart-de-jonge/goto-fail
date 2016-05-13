@@ -31,6 +31,9 @@ public class ControllerManager {
     
     @Getter
     private FileMenuController fileMenuController;
+    
+    @Getter
+    private EditMenuController editMenuController;
 
     @Getter
     private ShotBlock activeShotBlock;
@@ -81,6 +84,7 @@ public class ControllerManager {
         detailViewController = new DetailViewController(this);
         toolViewController = new ToolViewController(this);
         fileMenuController = new FileMenuController(this);
+        editMenuController = new EditMenuController(this);
     }
 
     /**

@@ -6,6 +6,14 @@ import gui.styling.StyledTextfield;
  * Created by Bart.
  */
 public class NumberTextField extends StyledTextfield {
+    public NumberTextField(String s) {
+        super(s);
+    }
+    
+    public NumberTextField() {
+        super();
+    }
+    
     @Override
     public void replaceText(int start, int end, String text) {
         if (validate(text)) {
