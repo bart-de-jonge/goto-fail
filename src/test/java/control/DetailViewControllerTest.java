@@ -7,6 +7,8 @@ import gui.headerarea.DetailView;
 import gui.headerarea.DoubleTextField;
 import gui.root.RootHeaderArea;
 import gui.root.RootPane;
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -19,7 +21,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.testfx.framework.junit.ApplicationTest;
@@ -42,6 +46,7 @@ public class DetailViewControllerTest extends ApplicationTest {
 
     @Before
     public void initialize() {
+        System.out.println("here");
         manager = Mockito.mock(ControllerManager.class);
         RootPane rootPane = Mockito.mock(RootPane.class);
         RootHeaderArea rootHeaderArea = Mockito.mock(RootHeaderArea.class);
@@ -66,10 +71,6 @@ public class DetailViewControllerTest extends ApplicationTest {
     @Test
     public void constructor() {
         assertNotNull(detailViewController);
-    }
-
-    @Override
-    public void start(Stage stage) throws Exception {
     }
 
     @Test
@@ -207,6 +208,7 @@ public class DetailViewControllerTest extends ApplicationTest {
 
     @Test
     public void nameFieldTextProperty() {
+        System.out.println("here");
         CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
         CameraShot shot = Mockito.mock(CameraShot.class);
         when(manager.getActiveShotBlock()).thenReturn(block);
@@ -265,4 +267,34 @@ public class DetailViewControllerTest extends ApplicationTest {
         verify(shot, times(1)).setDescription("test newvalue");
     }
 
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
+
+//    private static Thread t;
+//
+//    @BeforeClass
+//    public static void setUpClass() throws InterruptedException {
+//        // Initialise Java FX
+//
+//        System.out.printf("About to launch FX App\n");
+//        t = new Thread("JavaFX Init Thread") {
+//            public void run() {
+//                try {
+//                    ApplicationTest.launch(CreationModalViewControllerTest.AsNonApp.class, new String[0]);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        };
+//        t.setDaemon(true);
+//        t.start();
+//        System.out.printf("FX App thread started\n");
+//    }
+//
+//    @AfterClass
+//    public static void breakDownClass() throws InterruptedException {
+//        Platform.exit();
+//    }
 }

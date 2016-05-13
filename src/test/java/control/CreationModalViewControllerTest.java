@@ -2,6 +2,7 @@ package control;
 
 import data.CameraTimeline;
 import data.ScriptingProject;
+import gui.headerarea.DoubleTextField;
 import gui.modal.CameraShotCreationModalView;
 import gui.modal.ModalView;
 import gui.modal.SaveModalView;
@@ -9,13 +10,22 @@ import gui.root.RootPane;
 import gui.styling.StyledButton;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.internal.WhiteboxImpl;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.util.ArrayList;
@@ -27,8 +37,10 @@ import static org.mockito.Mockito.*;
 /**
  * Created by Bart on 12/05/2016.
  */
+@PowerMockIgnore("javax.management.*")
 @RunWith(PowerMockRunner.class)
-public class CreationModalViewControllerTest {
+@PrepareForTest(CreationModalViewController.class)
+public class CreationModalViewControllerTest extends ApplicationTest {
 
     private ControllerManager manager;
     private CreationModalViewController creationModalViewController;
@@ -43,7 +55,7 @@ public class CreationModalViewControllerTest {
         when(manager.getScriptingProject()).thenReturn(scriptingProject);
         when(scriptingProject.getCameraTimelines()).thenReturn(new ArrayList<>());
 
-        creationModalViewController = spy(new CreationModalViewController(manager));
+        creationModalViewController = new CreationModalViewController(manager);
     }
 
     @Test
@@ -53,18 +65,8 @@ public class CreationModalViewControllerTest {
 
     @Test
     public void showCameraCreationWindow() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
+        setupCreationModalView();
 
-        Platform.runLater(() -> {
-            RootPane rootPane = Mockito.mock(RootPane.class);
-            when(rootPane.getPrimaryStage()).thenReturn(new Stage());
-
-            creationModalViewController.showCameraCreationWindow();
-
-            latch.countDown();
-        });
-
-        latch.await();
         CameraShotCreationModalView modalView = creationModalViewController.getCameraShotCreationModalView();
         assertNotNull(modalView.getCreationButton().getOnMouseReleased());
         assertNotNull(modalView.getCancelButton().getOnMouseReleased());
@@ -73,11 +75,100 @@ public class CreationModalViewControllerTest {
     }
 
     @Test
+    public void cameraShotStartCountEnterHandler() throws Exception {
+        KeyEvent keyEvent = new KeyEvent(KeyEvent.ANY, "", "", KeyCode.ENTER,
+                false, false, false, false);
 
+        setupCreationModalView();
 
+        DoubleTextField startField = creationModalViewController.getCameraShotCreationModalView().getStartField();
+        startField.setText("5.70");
+        WhiteboxImpl.invokeMethod(creationModalViewController, "cameraShotStartCountEnterHandler", keyEvent);
+        assertEquals("5.75", startField.getText());
+    }
 
+    @Test
+    public void cameraShotEndCountEnterHandler() throws Exception {
+        KeyEvent keyEvent = new KeyEvent(KeyEvent.ANY, "", "", KeyCode.ENTER,
+                false, false, false, false);
 
+        setupCreationModalView();
 
+        DoubleTextField endField = creationModalViewController.getCameraShotCreationModalView().getEndField();
+        endField.setText("4.2");
+        WhiteboxImpl.invokeMethod(creationModalViewController, "cameraShotEndCountEnterHandler", keyEvent);
+        assertEquals("4.25", endField.getText());
+    }
+
+    @Test
+    public void cameraShotStartCountFocusHandler() throws Exception {
+        setupCreationModalView();
+
+        DoubleTextField startField = creationModalViewController.getCameraShotCreationModalView().getStartField();
+        startField.setText("5.70");
+        WhiteboxImpl.invokeMethod(creationModalViewController, "cameraShotStartCountFocusHandler", new ObservableValue<Boolean>() {
+            @Override
+            public void addListener(InvalidationListener listener) {
+            }
+            @Override
+            public void removeListener(InvalidationListener listener) {
+            }
+            @Override
+            public void addListener(ChangeListener<? super Boolean> listener) {
+            }
+            @Override
+            public void removeListener(ChangeListener<? super Boolean> listener) {
+            }
+            @Override
+            public Boolean getValue() {
+                return null;
+            }
+        }, true, false);
+        assertEquals("5.75", startField.getText());
+    }
+
+    @Test
+    public void cameraShotEndCountFocusHandler() throws Exception {
+        setupCreationModalView();
+
+        DoubleTextField endField = creationModalViewController.getCameraShotCreationModalView().getEndField();
+        endField.setText("5.70");
+        WhiteboxImpl.invokeMethod(creationModalViewController, "cameraShotEndCountFocusHandler", new ObservableValue<Boolean>() {
+            @Override
+            public void addListener(InvalidationListener listener) {
+            }
+            @Override
+            public void removeListener(InvalidationListener listener) {
+            }
+            @Override
+            public void addListener(ChangeListener<? super Boolean> listener) {
+            }
+            @Override
+            public void removeListener(ChangeListener<? super Boolean> listener) {
+            }
+            @Override
+            public Boolean getValue() {
+                return null;
+            }
+        }, true, false);
+        assertEquals("5.75", endField.getText());
+    }
+
+    private void setupCreationModalView() throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(1);
+
+        Platform.runLater(() -> {
+            creationModalViewController.showCameraCreationWindow();
+            latch.countDown();
+        });
+
+        latch.await();
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
 
     public static class AsNonApp extends Application {
         @Override
@@ -86,22 +177,29 @@ public class CreationModalViewControllerTest {
         }
     }
 
-    @BeforeClass
-    public static void setUpClass() throws InterruptedException {
-        // Initialise Java FX
-
-        System.out.printf("About to launch FX App\n");
-        Thread t = new Thread("JavaFX Init Thread") {
-            public void run() {
-                try {
-                    ApplicationTest.launch(AsNonApp.class, new String[0]);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        t.setDaemon(true);
-        t.start();
-        System.out.printf("FX App thread started\n");
+//    private static Thread t;
+//
+//    @BeforeClass
+//    public static void setUpClass() throws InterruptedException {
+//        // Initialise Java FX
+//
+//        System.out.printf("About to launch FX App\n");
+//        t = new Thread("JavaFX Init Thread") {
+//            public void run() {
+//                try {
+//                    ApplicationTest.launch(AsNonApp.class, new String[0]);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        };
+//        t.setDaemon(true);
+//        t.start();
+//        System.out.printf("FX App thread started\n");
+//    }
+//
+    @AfterClass
+    public static void breakDownClass() throws InterruptedException {
+//        Platform.exit();
     }
 }
