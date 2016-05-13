@@ -9,7 +9,6 @@ import gui.headerarea.ToolView;
 
 /**
  * Controller that manages the tool menu (e.g. shot creation menu).
- * @author alex
  */
 public class ToolViewController {
 

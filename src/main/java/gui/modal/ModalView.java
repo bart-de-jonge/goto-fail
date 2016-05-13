@@ -11,7 +11,6 @@ import lombok.extern.log4j.Log4j2;
 
 /**
  * Class that creates and displays a modal (popup) view.
- * @author alex
  */
 @Log4j2
 public abstract class ModalView {

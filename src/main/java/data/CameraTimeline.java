@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 /**
  * Class to store information about a camera timeline.
- * @author Bart.
  */
 @XmlRootElement(name = "cameraTimeline")
 @ToString

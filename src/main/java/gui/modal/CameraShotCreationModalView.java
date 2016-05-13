@@ -24,7 +24,6 @@ import lombok.Setter;
 
 /**
  * Class responsible for displaying a modal view for the creation of shots.
- * @author alex
  */
 public class CameraShotCreationModalView extends ModalView {
 

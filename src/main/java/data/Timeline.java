@@ -8,7 +8,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Created by Bart.
  * Abstract class for centerarea.
  */
 @XmlRootElement(name = "timeline")

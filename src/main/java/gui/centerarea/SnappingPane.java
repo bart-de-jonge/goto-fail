@@ -5,8 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Created by Bart.
- * Snapping Panes are invisible panes that are used for snapping detection
+ * Snapping Panes are invisible panes that are used for snapping detection.
  * Each cell in the grid gets a snapping pane
  */
 public class SnappingPane extends Pane {

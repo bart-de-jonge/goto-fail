@@ -12,7 +12,6 @@ import lombok.extern.log4j.Log4j2;
 
 /**
  * Class wrapper for model management controllers.
- * @author alex
  */
 @Log4j2
 public class ControllerManager {

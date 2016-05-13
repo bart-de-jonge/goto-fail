@@ -3,7 +3,7 @@ package gui.headerarea;
 import gui.styling.StyledTextfield;
 
 /**
- * Created by Bart.
+ * A text field in which you can only type doubles.
  */
 public class DoubleTextField extends StyledTextfield {
 

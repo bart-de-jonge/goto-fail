@@ -5,7 +5,6 @@ import lombok.Getter;
 
 /**
  * Unused for now. This class is supposed to represent an area to the left of the timeline.
- * @author Mark
  */
 public class RootLeftArea extends ScrollPane {
 

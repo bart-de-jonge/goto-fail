@@ -9,7 +9,7 @@ import javafx.event.EventHandler;
 import lombok.Getter;
 
 /**
- * Created by Bart.
+ * Class that represents a shotblock for the director.
  */
 public class DirectorShotBlock extends ShotBlock {
 

@@ -4,7 +4,6 @@ import lombok.Getter;
 
 /**
  * Controller for the DirectorTimeline.
- * @author martijn
  */
 public class DirectorTimelineController {
 

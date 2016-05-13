@@ -8,7 +8,6 @@ import lombok.Getter;
 
 /**
  * Class representing the grid inside a timeline.
- * Created by markv on 5/4/2016.
  */
 public class ScrollableGridPane extends GridPane {
 

@@ -8,7 +8,6 @@ import javafx.scene.layout.RowConstraints;
 
 /**
  * Class that represents the grid pane in the scrollable counter bar.
- * @author Mark
  */
 public class CounterGridPane extends ScrollableGridPane {
 

@@ -11,7 +11,6 @@ import java.util.List;
 
 /**
  * Class that is responsible for displaying the toolbox.
- * @author alex
  */
 public class ToolView extends HBox {
 

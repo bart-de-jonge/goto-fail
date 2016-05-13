@@ -12,7 +12,6 @@ import lombok.Setter;
 /**
  * Allows for the resizing of undecorated JavaFX stages (windows without OS title bar).
  * CURRENTLY UNUSED AND UNFINISHED.
- * @author Mark
  */
 public class ResizeHelper {
 

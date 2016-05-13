@@ -8,7 +8,7 @@ import javafx.event.EventHandler;
 import lombok.Getter;
 
 /**
- * Created by Bart.
+ * Class that represents a camera shot block.
  */
 public class CameraShotBlock extends ShotBlock {
 

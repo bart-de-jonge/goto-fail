@@ -27,7 +27,6 @@ import lombok.Setter;
 
 /**
  * Class responsible for displaying a modal view for the creation of director shots.
- * @author alex
  */
 public class DirectorShotCreationModalView extends ModalView {
 

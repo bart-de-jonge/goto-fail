@@ -28,7 +28,6 @@ import lombok.extern.log4j.Log4j2;
 
 /**
  * Class responsible for displaying a modal view for the creation of a project.
- * @author Menno
  */
 @Log4j2
 public class NewProjectModalView extends ModalView {
