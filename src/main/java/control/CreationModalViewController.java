@@ -24,6 +24,7 @@ public class CreationModalViewController {
 
     @Getter @Setter
     private CameraShotCreationModalView cameraShotCreationModalView;
+    @Getter @Setter
     private DirectorShotCreationModalView directorShotCreationModalView;
 
     public CreationModalViewController(ControllerManager controllerManager) {
@@ -119,6 +120,7 @@ public class CreationModalViewController {
      * @param event - the event to handle
      */
     private void createCameraShot(MouseEvent event) {
+        System.out.println(validateCameraShot());
         if (validateCameraShot()) {
             TimelineController timelineController = this.controllerManager.getTimelineControl();
 
@@ -145,7 +147,7 @@ public class CreationModalViewController {
      * a corresponding error message.
      * @return whether or not the fields are valid
      */
-    private boolean validateCameraShot() {
+    protected boolean validateCameraShot() {
         String errorString = "";
 
         boolean aCameraSelected = false;
@@ -238,7 +240,7 @@ public class CreationModalViewController {
      * a corresponding error message.
      * @return whether or not the fields are valid
      */
-    private boolean validateDirectorShot() {
+    protected boolean validateDirectorShot() {
         String errorString = "";
         if (directorShotCreationModalView.getNameField().getText().isEmpty()) {
             errorString += "Please name your shot.\n";
