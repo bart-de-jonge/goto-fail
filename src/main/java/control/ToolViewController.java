@@ -1,22 +1,20 @@
 package control;
 
-import data.ScriptingProject;
+import data.CameraShot;
+import data.DirectorShot;
 import gui.centerarea.CameraShotBlock;
-import gui.modal.CreationModalView;
-import gui.events.DirectorShotCreationEvent;
+import gui.centerarea.DirectorShotBlock;
 import gui.centerarea.ShotBlock;
-import gui.headerarea.ToolButton;
-import javafx.scene.input.MouseEvent;
+import gui.headerarea.ToolView;
 
 /**
  * Controller that manages the tool menu (e.g. shot creation menu).
- * @author alex
  */
 public class ToolViewController {
 
     private ControllerManager controllerManager;
-    private ToolButton blockCreationTool;
-    private ToolButton blockDeletionTool;
+    private CreationModalViewController creationModalViewController;
+    private ToolView toolView;
 
     /**
      * Constructor.
@@ -24,6 +22,8 @@ public class ToolViewController {
      */
     public ToolViewController(ControllerManager controllerManager) {
         this.controllerManager = controllerManager;
+        this.creationModalViewController = new CreationModalViewController(this.controllerManager);
+        this.toolView = controllerManager.getRootPane().getRootHeaderArea().getToolView();
         initializeTools();
     }
 
@@ -32,55 +32,27 @@ public class ToolViewController {
      * the event handlers.
      */
     private void initializeTools() {
-        blockCreationTool = new ToolButton("Add a block",
-                                           this.controllerManager
-                                                              .getRootPane().getRootHeaderArea(),
-                                           this::showBlockCreationWindow);
-        blockDeletionTool = new ToolButton("Delete shot",
-                                           this.controllerManager.getRootPane().getRootHeaderArea(),
-                                           this::deleteActiveCameraShot);
+        // add handlers to toolbuttons
+        toolView.getCameraBlockCreationTool().getButton().setOnMouseClicked(
+                event -> creationModalViewController.showCameraCreationWindow());
+        toolView.getDirectorBlockCreationTool().getButton().setOnMouseClicked(
+                event -> creationModalViewController.showDirectorCreationWindow());
+        toolView.getBlockDeletionTool().getButton().setOnMouseClicked(
+                event -> deleteActiveCameraShot());
+        toolView.getShotGenerationTool().getButton().setOnMouseClicked(
+                event -> generateCameraShots());
+
         // If there is no active ShotBlock, then disable the delete button
         if (this.controllerManager.getActiveShotBlock() == null) {
-            blockDeletionTool.disableButton();
+            toolView.getBlockDeletionTool().disableButton();
+            toolView.getShotGenerationTool().disableButton();
         }
     }
 
     /**
-     * When triggered, this initializes and displays the modal view for the creation of a new block.
-     * @param event mouse event
-     */
-    private void showBlockCreationWindow(MouseEvent event) {
-        new CreationModalView(this.controllerManager.getRootPane(),
-                              this.controllerManager.getScriptingProject()
-                                      .getCameraTimelines().size(),
-                              this::createDirectorShot);
-    }
-
-    /**
-     * Event handler for the creation of a director shot.
-     * It adds the DirectorShot to the DirectorTimeline and adds the corresponding
-     * camera shots via the TimelineController.
-     * @param event shot creation event
-     */
-    private void createDirectorShot(DirectorShotCreationEvent event) {
-        ScriptingProject script = this.controllerManager.getScriptingProject();
-        // TODO: Remove cast to int once half-counts etc. are supported
-        script.getDirectorTimeline().addShot(event.getShotName(), event.getShotDescription(),
-                                             (int) event.getShotStart(), (int) event.getShotEnd());
-
-        TimelineController tlineControl = this.controllerManager.getTimelineControl();
-        event.getCamerasInShot().forEach(camInd -> {
-                tlineControl.addCameraShot(camInd,
-                                           event.getShotName(), event.getShotDescription(),
-                                           (int) event.getShotStart(), (int) event.getShotEnd());
-            });
-    }
-
-    /**
      * Deletes the active camera block.
-     * @param event mouse event
      */
-    private void deleteActiveCameraShot(MouseEvent event) {
+    private void deleteActiveCameraShot() {
         ShotBlock currentShot = this.controllerManager.getActiveShotBlock();
 
         // TODO: Make this a more general deletion for the active timeline (i.e. director)
@@ -91,14 +63,47 @@ public class ToolViewController {
     }
 
     /**
+     * Create the director shot's corresponding camera shots.
+     */
+    private void generateCameraShots() {
+        if (this.controllerManager.getActiveShotBlock() instanceof DirectorShotBlock) {
+            DirectorShotBlock directorShotBlock = (DirectorShotBlock)
+                    this.controllerManager.getActiveShotBlock();
+            DirectorShot shot = directorShotBlock.getShot();
+            shot.getTimelineIndices().forEach(index -> {
+                    CameraShot subShot = new CameraShot(shot.getName(), shot.getDescription(),
+                                                    shot.getBeginCount(), shot.getEndCount(), shot);
+                    shot.addCameraShot(subShot);
+                    this.controllerManager.getTimelineControl().addCameraShot(index, subShot);
+                });
+        }
+    }
+
+    /**
      * Called when the active shot selection changed.
      * ToolViewController then updates the buttons accordingly.
      */
     public void activeBlockChanged() {
         if (this.controllerManager.getActiveShotBlock() != null) {
-            this.blockDeletionTool.enableButton();
+            toolView.getBlockDeletionTool().enableButton();
+            // Only enable the generation of camera shots if it's a director shot w/o camera shots
+            boolean enableGen = false;
+            if (this.controllerManager.getActiveShotBlock() instanceof DirectorShotBlock) {
+                DirectorShotBlock directorShotBlock = (DirectorShotBlock)
+                        this.controllerManager.getActiveShotBlock();
+                if (directorShotBlock.getShot().getCameraShots().isEmpty()) {
+                    enableGen = true;
+                }
+            }
+
+            if (enableGen) {
+                toolView.getShotGenerationTool().enableButton();
+            } else {
+                toolView.getShotGenerationTool().disableButton();
+            }
         } else {
-            this.blockDeletionTool.disableButton();
+            toolView.getBlockDeletionTool().disableButton();
+            toolView.getShotGenerationTool().disableButton();
         }
     }
 }

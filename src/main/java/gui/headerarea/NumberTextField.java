@@ -1,12 +1,19 @@
 package gui.headerarea;
 
-
-import javafx.scene.control.TextField;
+import gui.styling.StyledTextfield;
 
 /**
- * Created by Bart.
+ * A text field in which you can only type numbers.
  */
-public class NumberTextField extends TextField {
+public class NumberTextField extends StyledTextfield {
+    public NumberTextField(String s) {
+        super(s);
+    }
+    
+    public NumberTextField() {
+        super();
+    }
+    
     @Override
     public void replaceText(int start, int end, String text) {
         if (validate(text)) {

@@ -1,18 +1,13 @@
 package data;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
-import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other;
-
 /**
- * Created by martijn.
  * This class contains information about a Shot.
  */
 @XmlRootElement(name = "shot")
@@ -67,7 +62,7 @@ public abstract class Shot {
      * @param beginCount the start count of the Shot
      * @param endCount the end count of the Shot
      */
-    public Shot(int instance, String name, String description, int beginCount, int endCount) {
+    public Shot(int instance, String name, String description, double beginCount, double endCount) {
         log.debug("Adding Shot(instance={}, name={}, description={}, beginCount={}, endCount={})",
                 instance, name, description, beginCount, endCount);
 

@@ -1,46 +1,42 @@
 package gui.headerarea;
 
-import gui.root.RootHeaderArea;
-import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
+import gui.misc.TweakingHelper;
+import gui.styling.StyledButton;
+import javafx.geometry.Insets;
 import lombok.Getter;
 
 /**
  * Class that is responsible for managing the actions associated with a tool.
- * @author alex
  */
 public class ToolButton {
 
+    // tweaking variables
+    private static final int buttonWidth = 180;
+    private static final int buttonHeight = 26;
+
     private String name;
     @Getter
-    private Button button;
-
-    private EventHandler<MouseEvent> clickHandler;
+    private StyledButton button;
 
     /**
      * Constructor.
      * @param toolName the tool's name
-     * @param headerArea Header area to which to add this tool button
-     * @param clickHandler Event handler for click on the tool button
      */
-    public ToolButton(String toolName, RootHeaderArea headerArea,
-                      EventHandler<MouseEvent> clickHandler) {
+    public ToolButton(String toolName) {
         this.name = toolName;
-        this.clickHandler = clickHandler;
-        initializeButton(headerArea);
+        initializeButton();
     }
 
     /**
      * Instantiates the button and adds it to the tool view.
-     * @param headerArea Area in which the tool view is found.
      */
-    private void initializeButton(RootHeaderArea headerArea) {
-        this.button = new Button(this.name);
-
-        this.button.setOnMouseClicked(clickHandler);
-
-        headerArea.getToolView().addToolButton(this);
+    private void initializeButton() {
+        this.button = new StyledButton(this.name);
+        this.button.setPadding(new Insets(0,2,0,2));
+        this.button.setPrefWidth(buttonWidth);
+        this.button.setMinHeight(buttonHeight);
+        this.button.setBorderColor(TweakingHelper.COLOR_BACKGROUND);
+        this.button.setFillColor(TweakingHelper.COLOR_PRIMARY);
     }
 
     /**

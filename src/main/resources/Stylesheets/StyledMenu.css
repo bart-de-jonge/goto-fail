@@ -1,0 +1,25 @@
+.menu-bar {
+    -fx-background-color: rgb(255, 172, 70);
+    -fx-text-fill: white;
+}
+
+.menu:pressed {
+    -fx-text-fill: red;
+}
+
+.menu-button {
+    -fx-text-fill: red;
+}
+
+.menu-bar {
+    -fx-background-color: rgb(255, 172, 70);
+}
+
+.menu-bar .label {
+    -fx-font-size: 12pt;
+    -fx-text-fill: white;
+}
+
+.menu-item .label {
+    -fx-text-fill: black;
+ }

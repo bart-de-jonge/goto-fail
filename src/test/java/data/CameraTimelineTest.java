@@ -15,7 +15,7 @@ public class CameraTimelineTest {
     public void initialize() {
         CameraType type = new CameraType("cameratype-1", "A test cameratype", 2.00);
         Camera camera = new Camera("camera-1", "A test camera", type);
-        timeline = new CameraTimeline(camera, "A test cameratimeline", new ScriptingProject("test", 1));
+        timeline = new CameraTimeline(camera, "A test cameratimeline", new ScriptingProject("test", "", 1));
     }
 
     @Test
@@ -23,6 +23,31 @@ public class CameraTimelineTest {
         CameraType type = new CameraType("cameratype-1", "A test cameratype", 2.00);
         Camera camera = new Camera("camera-1", "A test camera", type);
         assertEquals(camera, timeline.getCamera());
+    }
+    
+    @Test
+    public void setNameTest() {
+        timeline.setName("Hai");
+        assertEquals("Hai", timeline.getName());
+    }
+    
+    @Test
+    public void constructorWithNoArgumentsTest() {
+        CameraTimeline timeline = new CameraTimeline();
+        assertEquals(null, timeline.getDescription());
+    }
+    
+    @Test
+    public void constructorWithFourArgumentsTest() {
+        CameraType type = new CameraType("cameratype-1", "A test cameratype", 2.00);
+        Camera camera = new Camera("camera-1", "A test camera", type);
+        CameraTimeline timeline = new CameraTimeline("Name", camera, "Description", new ScriptingProject());
+        assertEquals(camera, timeline.getCamera());
+    }
+    
+    @Test
+    public void toStringTest() {
+        assertEquals("CameraTimeline(description=A test cameratimeline, name=null, camera=Camera(name=camera-1, description=A test camera, cameraType=CameraType(name=cameratype-1, description=A test cameratype, movementMargin=2.0), movementMargin=2.0), shots=[])", timeline.toString());
     }
 
     @Test
@@ -74,5 +99,13 @@ public class CameraTimelineTest {
         timeline.addShot("first", "", 1, 3);
         timeline.addShot("last", "", 1, 3);
         assertEquals("last", timeline.getShots().getFirst().getName());
+    }
+    
+    @Test
+    public void removeShotTest() {
+        CameraShot shot = new CameraShot("Name", "Description", 0, 0);
+        timeline.addShot(shot);
+        timeline.removeShot(shot);
+        assertTrue(timeline.getShots().isEmpty());
     }
 }

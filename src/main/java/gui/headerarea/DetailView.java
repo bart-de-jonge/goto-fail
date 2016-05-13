@@ -1,5 +1,9 @@
 package gui.headerarea;
 
+import gui.misc.TweakingHelper;
+import gui.styling.StyledTextfield;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
@@ -10,49 +14,34 @@ import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 /**
- * Created by Bart.
+ * The detail view is the view with details for shots.
  */
-public class DetailView extends VBox {
+public class DetailView extends HBox {
 
-    private GridPane grid;
+    private String style = "-fx-background-color: "
+            + TweakingHelper.STRING_BACKGROUND_HIGH + ";"
+            + "-fx-min-height: 50;";
 
     private static final String defaultEmptyString = "";
     private static final String defaultEmptyNumber = "0";
 
-    private int numberOfColumns = 3;
-    private int numberOfRows = 2;
-
-    private double columnWidth = 200;
-    private double rowHeight = 50;
-
     @Getter
-    private TextField nameField;
-
+    private StyledTextfield nameField;
     @Getter
-    private TextField descriptionField;
-
+    private StyledTextfield descriptionField;
     @Getter
-    private NumberTextField beginCountField;
-
+    private DoubleTextField beginCountField;
     @Getter
-    private NumberTextField endCountField;
+    private DoubleTextField endCountField;
 
     /**
      * Constructor.
      */
     public DetailView() {
-        this.grid = new GridPane();
-        this.getChildren().addAll(grid);
-
-        for (int i = 0; i < numberOfColumns; i++) {
-            grid.getColumnConstraints().add(new ColumnConstraints(columnWidth));
-        }
-        for (int i = 0; i < numberOfRows; i++) {
-            grid.getRowConstraints().add(new RowConstraints(rowHeight));
-        }
-
-        grid.setGridLinesVisible(true);
-
+        this.setStyle(style);
+        this.setAlignment(Pos.CENTER_LEFT);
+        this.setPadding(new Insets(0, 0, 0, TweakingHelper.GENERAL_PADDING));
+        this.setSpacing(TweakingHelper.GENERAL_SPACING * 2);
         initName();
         initDescription();
         initBeginCount();
@@ -76,76 +65,99 @@ public class DetailView extends VBox {
     }
 
     /**
+     * Format double into a nice displayable string.
+     * @param d - the double to format
+     * @return - a formatted string containng the double
+     */
+    private String formatDouble(double d) {
+        if (d == (long) d) {
+            return String.format("%d", (long) d);
+        } else {
+            return String.format("%s", d);
+        }
+    }
+
+    /**
      * Set the begincount of the detailview.
      * @param count - the count to set
      */
-    public void setBeginCount(int count) {
-        beginCountField.setText(String.format("%d", count));
+    public void setBeginCount(double count) {
+        beginCountField.setText(formatDouble(count));
     }
 
     /**
      * Set the endcount of the detailview.
      * @param count - the count to set
      */
-    public void setEndCount(int count) {
-        endCountField.setText(String.format("%d", count));
+    public void setEndCount(double count) {
+        endCountField.setText(formatDouble(count));
     }
 
     /**
      * Init the begincount part of the detailview.
      */
     private  void initBeginCount() {
-        beginCountField = new NumberTextField();
-        beginCountField.setText("123");
-        beginCountField.setPrefWidth(50);
-
-        HBox startCountBox = new HBox();
-
+        beginCountField = new DoubleTextField("123");
+        beginCountField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
+        beginCountField.setTextColor(TweakingHelper.COLOR_PRIMARY);
+        beginCountField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
+        beginCountField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
+        HBox startCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("Start Count:");
         startCountBox.getChildren().addAll(specifierLabel, beginCountField);
-        grid.add(startCountBox, 1, 0);
+        startCountBox.setAlignment(Pos.CENTER);
+        this.getChildren().add(startCountBox);
     }
 
     /**
      * Init the endcount part of the detailview.
      */
     private  void initEndCount() {
-        endCountField = new NumberTextField();
-        endCountField.setText("123");
-        endCountField.setPrefWidth(50);
-
-        HBox endCountBox = new HBox();
-
+        endCountField = new DoubleTextField("123");
+        endCountField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
+        endCountField.setTextColor(TweakingHelper.COLOR_PRIMARY);
+        endCountField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
+        endCountField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
+        endCountField.setAlignment(Pos.CENTER);
+        HBox endCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("End Count:");
         endCountBox.getChildren().addAll(specifierLabel, endCountField);
-        grid.add(endCountBox, 2, 0);
+        endCountBox.setAlignment(Pos.CENTER);
+        this.getChildren().add(endCountBox);
     }
 
     /**
      * Init the name part of the detailview.
      */
     private void initName() {
-        nameField = new TextField("Placeholder");
-        HBox nameBox = new HBox();
-
+        nameField = new StyledTextfield("Placeholder");
+        nameField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
+        nameField.setTextColor(TweakingHelper.COLOR_PRIMARY);
+        nameField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
+        nameField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
+        nameField.setAlignment(Pos.CENTER);
+        HBox nameBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("Name:");
         nameBox.getChildren().addAll(specifierLabel, nameField);
-        grid.add(nameBox, 0, 0);
+        nameBox.setAlignment(Pos.CENTER);
+        this.getChildren().add(nameBox);
     }
 
     /**
      * Init the description part of the detailview.
      */
     private void initDescription() {
-        descriptionField = new TextField("");
-        descriptionField.setPrefWidth(300);
-
-        HBox descriptionBox = new HBox();
-
+        descriptionField = new StyledTextfield("");
+        descriptionField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
+        descriptionField.setTextColor(TweakingHelper.COLOR_PRIMARY);
+        descriptionField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
+        descriptionField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
+        descriptionField.setAlignment(Pos.CENTER);
+        HBox descriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("Description:");
         descriptionBox.getChildren().addAll(specifierLabel, descriptionField);
-        grid.add(descriptionBox, 0, 1);
-        grid.setColumnSpan(descriptionBox, 2);
+        descriptionBox.setAlignment(Pos.CENTER);
+        this.getChildren().add(descriptionBox);
     }
 
     /**

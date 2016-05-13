@@ -1,30 +1,24 @@
 package control;
 
 
-import data.Camera;
-import data.CameraShot;
-import data.CameraTimeline;
-import data.CameraType;
-import data.ScriptingProject;
-import data.Shot;
-import gui.centerarea.CameraShotBlock;
-import gui.events.CameraShotBlockUpdatedEvent;
-import gui.root.RootPane;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
-import lombok.Getter;
-import lombok.extern.log4j.Log4j2;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import data.CameraShot;
+import data.CameraTimeline;
+import data.DirectorShot;
+import data.Shot;
+import gui.centerarea.CameraShotBlock;
+import gui.events.CameraShotBlockUpdatedEvent;
+import gui.modal.ShotDecouplingModalView;
+import gui.root.RootPane;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
+
 /**
  * Class that controls the timeline.
- * @author alex
  */
 @Log4j2
 public class TimelineController {
@@ -34,18 +28,13 @@ public class TimelineController {
     private RootPane rootPane;
 
     // TODO: replace number of centerarea with xml data
-    private int numTimelines = defaultAmountTimelines;
-
-    // Placeholder camera type until GUI allows personalized entry
-    // TODO: Replace Camera Type and Scripting Project when XML functionality is available
-    private final CameraType defType = new CameraType("AW-HE130 HD PTZ", "It's an IP Camera", 0);
+    @Setter
+    private int numTimelines;
 
     @Getter
     private ControllerManager controllerManager;
 
     @Getter
-    private ScriptingProject project;
-
     // List of all camerashotblocks in this timelinecontroller
     private ArrayList<CameraShotBlock> cameraShotBlocks;
 
@@ -61,8 +50,6 @@ public class TimelineController {
 
         this.controllerManager = controllerManager;
         this.rootPane = controllerManager.getRootPane();
-        this.project = controllerManager.getScriptingProject();
-        initializeCameraTimelines();
         this.cameraShotBlocks = new ArrayList<>();
         this.overlappingCameraShotBlocks = new ArrayList<>();
     }
@@ -76,33 +63,36 @@ public class TimelineController {
      * @param endCount End count.
      */
     public void addCameraShot(int cameraIndex, String name, String description,
-                              int startCount, int endCount) {
-        log.info("Adding CameraShot to Timeline");
+                              double startCount, double endCount) {
 
         CameraShot newShot = new CameraShot(name,description, startCount, endCount);
-        this.project.getCameraTimelines().get(cameraIndex).addShot(newShot);
+        this.addCameraShot(cameraIndex, newShot);
+    }
+
+    /**
+     * Add an existing CameraShot to the corresponding timeline.
+     * @param cameraIndex Index of the camera track
+     * @param newShot CameraShot to add to the timeline
+     */
+    public void addCameraShot(int cameraIndex, CameraShot newShot) {
+        log.info("Adding CameraShot to Timeline");
+
+        this.controllerManager.getScriptingProject()
+                              .getCameraTimelines()
+                              .get(cameraIndex)
+                              .addShot(newShot);
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex,
-                rootPane.getRootCenterArea(), startCount, endCount, description,
-                name, this::shotChangedHandler, newShot);
+                rootPane.getRootCenterArea(), newShot.getBeginCount(), newShot.getEndCount(),
+                newShot.getDescription(), newShot.getName(), this::shotChangedHandler, newShot);
+
         controllerManager.setActiveShotBlock(shotBlock);
         this.cameraShotBlocks.add(shotBlock);
+        controllerManager.getScriptingProject().changed();
 
         // Check for collisions
         checkCollisions(cameraIndex, shotBlock);
     }
-    
-    /**
-     * Add a camera shot that is loaded from file.
-     * @param cameraIndex the index of the camera timeline to use
-     * @param shot the shot to add
-     */
-    private void addCameraShotForLoad(int cameraIndex, CameraShot shot) {
-        CameraShotBlock shotBlock = new CameraShotBlock(shot, cameraIndex, 
-                                                       rootPane.getRootCenterArea(),
-                                                       this::shotChangedHandler);
-        controllerManager.setActiveShotBlock(shotBlock);
-        this.cameraShotBlocks.add(shotBlock);
-    }
+
     /**
      * Remove a camera shot from both the display and the timeline.
      * @param cameraShotBlock CameraShotBlock to be removed
@@ -114,9 +104,11 @@ public class TimelineController {
         }
 
         // Remove the shot from the model
-        CameraTimeline cameraTimeline = this.project.getCameraTimelines()
+        CameraTimeline cameraTimeline = this.controllerManager.getScriptingProject()
+                                                              .getCameraTimelines()
                 .get(cameraShotBlock.getTimetableNumber());
         cameraTimeline.removeShot(cameraShotBlock.getShot());
+        controllerManager.getScriptingProject().changed();
 
         // Then remove the shot from the view
         cameraShotBlock.removeFromView();
@@ -130,13 +122,26 @@ public class TimelineController {
      * @param event Camera shot change event.
      */
     public void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
-        log.info("Shot moved to new TimeLine");
-
         CameraShotBlock changedBlock = event.getCameraShotBlock();
+
+        // If coupled to DirectorShot, confirm separation
+        this.decoupleAndModify(event, changedBlock);
+    }
+
+    /**
+     * Modify a CameraShot based on an update event.
+     * @param event CameraShot's change event
+     * @param changedBlock CameraShot to modify
+     */
+    private void modifyCameraShot(CameraShotBlockUpdatedEvent event,
+                                  CameraShotBlock changedBlock) {
+        controllerManager.getScriptingProject().changed();
+        log.info("Shot moved to new TimeLine");
 
         controllerManager.setActiveShotBlock(changedBlock);
 
-        CameraTimeline previousTimeline = this.project.getCameraTimelines()
+        CameraTimeline previousTimeline = this.controllerManager.getScriptingProject()
+                .getCameraTimelines()
                 .get(event.getOldTimelineNumber());
         // Locate shot to be updated using id
         CameraShot shot = changedBlock.getShot();
@@ -145,7 +150,8 @@ public class TimelineController {
         shot.setBeginCount(changedBlock.getBeginCount());
         shot.setEndCount(changedBlock.getEndCount());
 
-        CameraTimeline newCameraTimeline = this.project.getCameraTimelines()
+        CameraTimeline newCameraTimeline = this.controllerManager.getScriptingProject()
+                .getCameraTimelines()
                 .get(changedBlock.getTimetableNumber());
 
         // Remove shot from previous timeline and add to new one if changed
@@ -156,7 +162,7 @@ public class TimelineController {
 
         // check for collisions
         checkCollisions(changedBlock.getTimetableNumber(),
-                event.getOldTimelineNumber(), changedBlock);
+                        event.getOldTimelineNumber(), changedBlock);
     }
 
     /**
@@ -177,7 +183,9 @@ public class TimelineController {
      */
     private void checkCollisions(int timelineNumber, int oldTimelineNumber,
                                  CameraShotBlock cameraShotBlock) {
-        CameraTimeline timeline = project.getCameraTimelines().get(timelineNumber);
+        CameraTimeline timeline = controllerManager.getScriptingProject()
+                                                   .getCameraTimelines()
+                                                   .get(timelineNumber);
         // Remove collisions from shot if added to new timeline
         if (oldTimelineNumber >= 0) {
             removeCollisionFromCameraShotBlock(cameraShotBlock);
@@ -191,7 +199,6 @@ public class TimelineController {
                             });
             this.overlappingCameraShotBlocks.removeAll(toRemove);
         }
-
         // Check for collisions
         ArrayList<CameraShot> overlappingShots = timeline
                 .getOverlappingShots(cameraShotBlock.getShot());
@@ -201,7 +208,6 @@ public class TimelineController {
             Supplier<ArrayList<Integer>> supplier = ArrayList::new;
             ArrayList<Integer> myInts = overlappingShots.stream().map(Shot::getInstance)
                     .collect(Collectors.toCollection(supplier));
-
             // Get CameraShotBlock
             this.cameraShotBlocks.stream().filter(shotBlock ->
                     myInts.contains(shotBlock.getShotId())).forEach(shotBlock -> {
@@ -234,74 +240,41 @@ public class TimelineController {
     }
 
     /**
-     * Create camera centerarea based on GUI. (Anti-pattern)
-     * TODO: Replace this with proper XML based project creation
+     * If CameraShot belongs to DirectorShot, confirm/cancel separation and then modify shot.
+     * @param event shot changed event.
+     * @param shotBlock CameraShot for which to confirm changes.
      */
-    private void initializeCameraTimelines() {
-        log.info("Initializing camera Timelines");
-        for (int i = 0; i < numTimelines; i++) {
-            Camera defCam = new Camera("IP Cam " + i, "", defType);
-            CameraTimeline timelineN = new CameraTimeline(defCam, "", project);
-            project.addCameraTimeline(timelineN);
+    private void decoupleAndModify(CameraShotBlockUpdatedEvent event, CameraShotBlock shotBlock) {
+        if (shotBlock.getShot().getDirectorShot() != null) {
+            ShotDecouplingModalView decouplingModalView = new ShotDecouplingModalView(
+                    this.rootPane, shotBlock.getShot());
+
+            decouplingModalView.getCancelButton().setOnMouseReleased(e -> {
+                    log.info("Shot decoupling cancelled.", shotBlock.getShot());
+                    decouplingModalView.hideModal();
+                    shotBlock.restorePreviousPosition();
+                });
+
+            decouplingModalView.getConfirmButton().setOnMouseReleased(e -> {
+                    log.info("Shot decoupling confirmed.", shotBlock.getShot());
+                    decouplingModalView.hideModal();
+                    this.decoupleShot(event.getOldTimelineNumber(), shotBlock.getShot());
+                    this.modifyCameraShot(event, shotBlock);
+                });
+        } else {
+            this.modifyCameraShot(event, shotBlock);
         }
     }
-    
+
     /**
-     * Save the current project state to file.
-     * A file chooser window will be opened to select a file
+     * Decouple CameraShot from its DirectorShot & vice versa.
+     * @param timelineIndex Index of timeline that the CameraShot belongs to.
+     * @param shot CameraShot to decouple
      */
-    public void save() {
-        log.info("Saving Project to file");
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save");
-        ExtensionFilter extFilter = new ExtensionFilter("txt files", "*.txt");
-        fileChooser.getExtensionFilters().add(extFilter);
-        File file = fileChooser.showSaveDialog(rootPane.getPrimaryStage());
-        if (file != null) {
-            project.write(file);
-        }
-    }
-    
-    /**
-     * Load a project from file.
-     * A file chooser window will be opened to select the file.
-     */
-    public void load() {
-        log.info("Loading Project from file");
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Load");
-        ExtensionFilter extFilter = new ExtensionFilter("txt files", "*.txt");
-        fileChooser.getExtensionFilters().add(extFilter);
-        File file = fileChooser.showOpenDialog(rootPane.getPrimaryStage());
-        if (file != null) {
-            ScriptingProject temp  = ScriptingProject.read(file);
-            if (temp == null) {
-                Alert alert = new Alert(AlertType.ERROR); 
-                alert.setTitle("Load Failed");
-                alert.setContentText("The format in the selected file was not recognized");
-                alert.showAndWait();
-            } else {
-                controllerManager.setScriptingProject(temp);
-                project = controllerManager.getScriptingProject();
-                addLoadedBlocks(project);
-                numTimelines = project.getCameraTimelines().size();
-            }
-        }
-    }
-    
-    /**
-     * Add the blocks that were loaded from file to the UI.
-     * @param project the project that was loaded
-     */
-    private void addLoadedBlocks(ScriptingProject project) {
-        log.info("Adding loaded blocks");
-        for (int i = 0; i < project.getCameraTimelines().size();i++) {
-            CameraTimeline timeline = project.getCameraTimelines().get(i);
-            int amountShots = timeline.getShots().size();
-            for (int j = 0; j < amountShots;j++) {
-                CameraShot shot = timeline.getShots().get(j);
-                addCameraShotForLoad(i, shot);
-            }
-        }
+    void decoupleShot(int timelineIndex, CameraShot shot) {
+        log.info("Decoupling shot.", shot);
+        DirectorShot directorShot = shot.getDirectorShot();
+        directorShot.removeCameraShot(shot, timelineIndex);
+        shot.setDirectorShot(null);
     }
 }

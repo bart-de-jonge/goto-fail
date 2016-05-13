@@ -1,26 +1,29 @@
 package data;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.stream.Collectors;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 /**
  * Class to store information about a camera timeline.
- * @author Bart.
  */
 @XmlRootElement(name = "cameraTimeline")
 @ToString
 public class CameraTimeline extends Timeline {
+    
+    @Getter @Setter
+    private String description;
+    
+    // Name of this timeline
+    @Getter @Setter
+    private String name;
 
     // The camera that is associated with this timeline.
     @Getter @Setter
@@ -36,7 +39,8 @@ public class CameraTimeline extends Timeline {
      * Default constructor.
      */
     public CameraTimeline() {
-        super("", null);
+        super(null);
+        description = null;
         camera = null;
         shots = null;
     }
@@ -49,9 +53,23 @@ public class CameraTimeline extends Timeline {
      * @param project the project that contains this timeline
      */
     public CameraTimeline(Camera camera, String description, ScriptingProject project) {
-        super(description, project);
+        super(project);
+        this.description = description;
         this.camera = camera;
         shots = new LinkedList<>();
+    }
+    
+    /**
+     * Constructor with name variable.
+     * @param name the name of the timeline
+     * @param camera the camera of this timeline
+     * @param description the description of the timeline
+     * @param project the project this timeline is a part of
+     */
+    public CameraTimeline(String name, Camera camera,
+            String description, ScriptingProject project) {
+        this(camera, description, project);
+        this.name = name;
     }
 
     /**
@@ -67,7 +85,7 @@ public class CameraTimeline extends Timeline {
      * @see CameraTimeline#addShot(CameraShot)
      */
     public ArrayList<CameraShot> addShot(String name, String description,
-                                         int startCount, int endCount) {
+                                         double startCount, double endCount) {
         return addShot(new CameraShot(name, description, startCount, endCount));
     }
 
@@ -89,11 +107,9 @@ public class CameraTimeline extends Timeline {
         // Add the new Shot the the shots
         for (int i = 0; i < shots.size(); i++) {
             CameraShot other = shots.get(i);
-            if (!added) {
-                if (shot.compareTo(other) <= 0) {
-                    shots.add(i, shot);
-                    added = true;
-                }
+            if (!added && shot.compareTo(other) <= 0) {
+                shots.add(i, shot);
+                added = true; 
             }
         }
         if (!added) {

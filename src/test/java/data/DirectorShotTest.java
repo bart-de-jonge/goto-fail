@@ -3,6 +3,8 @@ package data;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static org.junit.Assert.*;
 
 /**
@@ -12,7 +14,7 @@ public class DirectorShotTest {
     DirectorShot shot;
     @Before
     public void initializeTest() {
-        shot = new DirectorShot("directorshot-1", "A test director shot", 1, 2);
+        shot = new DirectorShot("directorshot-1", "A test director shot", 1, 2, 0, 0);
     }
 
     @Test
@@ -34,7 +36,7 @@ public class DirectorShotTest {
     @Test
     public void getInstanceTest() {
         int oldInstance = shot.getInstance();
-        DirectorShot newShot = new DirectorShot("name", "description", 1, 2);
+        DirectorShot newShot = new DirectorShot("name", "description", 1, 2, 0, 0);
         assertEquals(oldInstance + 1, newShot.getInstance());
     }
 
@@ -44,4 +46,74 @@ public class DirectorShotTest {
         assertEquals("testname", shot.getName());
     }
 
+    @Test
+    public void getTimelineIndicesTest() {
+        assertEquals(Collections.<Integer>emptySet(), shot.getTimelineIndices());
+    }
+
+    @Test
+    public void getCameraShotsTest() {
+        assertEquals(Collections.<CameraShot>emptySet(), shot.getCameraShots());
+    }
+
+    @Test
+    public void addCameraTimelineIndexTest() {
+        shot.addCameraTimelineIndex(0);
+        assertEquals(true, shot.getTimelineIndices().contains(0));
+    }
+
+    @Test
+    public void addCameraShotTest() {
+        CameraShot cameraShot = new CameraShot("Cam shot", "description", 0, 1);
+        shot.addCameraShot(cameraShot);
+        assertEquals(true, shot.getCameraShots().contains(cameraShot));
+    }
+
+    @Test
+    public void removeCameraShotTest() {
+        CameraShot cameraShot = new CameraShot("Cam shot", "description", 0, 1);
+        shot.addCameraTimelineIndex(0);
+        shot.addCameraShot(cameraShot);
+        shot.removeCameraShot(cameraShot, 0);
+        assertEquals(false, shot.getCameraShots().contains(cameraShot));
+        assertEquals(false, shot.getTimelineIndices().contains(0));
+    }
+
+    @Test
+    public void getFrontShotPaddingTest() {
+        shot.setFrontShotPadding(5.0);
+        assertEquals(5.0, shot.getFrontShotPadding(), 0);
+    }
+    
+    @Test
+    public void setFrontShotPaddingTest() {
+        shot.setFrontShotPadding(5.0);
+        shot.setFrontShotPadding(6.0);
+        assertEquals(6.0, shot.getFrontShotPadding(), 0);
+    }
+    
+    
+    @Test
+    public void getEndShotPaddingTest() {
+        shot.setEndShotPadding(5.0);
+        assertEquals(5.0, shot.getEndShotPadding(), 0);
+    }
+    
+    @Test
+    public void setEndShotPaddingTest() {
+        shot.setEndShotPadding(5.0);
+        shot.setEndShotPadding(6.0);
+        assertEquals(6.0, shot.getEndShotPadding(), 0);
+    }
+    
+    @Test
+    public void constructorWithNoArgumentsTest() {
+        DirectorShot shot = new DirectorShot();
+        assertEquals("", shot.getName());
+    }
+    
+    @Test
+    public void toStringTest() {
+        assertEquals("DirectorShot(timelineIndices=[], cameraShots=[], frontShotPadding=0.0, endShotPadding=0.0)", shot.toString());
+    }
 }

@@ -1,18 +1,18 @@
 package gui.centerarea;
 
 import java.util.ArrayList;
+
+import control.CountUtilities;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
-
 
 /**
  * Class that represents the grid pane in the scrollable camera centerarea.
  */
 public class TimelinesGridPane extends ScrollableGridPane {
 
-
     private ArrayList<SnappingPane> panes;
-    private int gridLineSkips = 4;
+    private int offsetFromLeft;
 
     /**
      * Constructor.
@@ -31,6 +31,7 @@ public class TimelinesGridPane extends ScrollableGridPane {
 
         // add padding to the left for overlapping sidebars
         this.setPadding(new Insets(0,0,0,offsetFromLeft));
+        this.offsetFromLeft = offsetFromLeft;
 
         // add snapping panes
         addPanes();
@@ -42,8 +43,9 @@ public class TimelinesGridPane extends ScrollableGridPane {
      */
     public void addCameraShotBlock(CameraShotBlock block) {
         this.add(block.getTimetableBlock(), block.getTimetableNumber(),
-                (int) Math.round(block.getBeginCount()), 1,
-                (int) Math.round(block.getEndCount() - block.getBeginCount()));
+                (int) Math.round(block.getBeginCount() * CountUtilities.NUMBER_OF_CELLS_PER_COUNT),
+                1, (int) Math.round((block.getEndCount()
+                        - block.getBeginCount()) * CountUtilities.NUMBER_OF_CELLS_PER_COUNT));
     }
 
     /**
@@ -66,7 +68,7 @@ public class TimelinesGridPane extends ScrollableGridPane {
                 SnappingPane pane = new SnappingPane(j, i);
                 this.add(pane, i, j);
                 panes.add(pane);
-                if (c > gridLineSkips) {
+                if (c > CountUtilities.NUMBER_OF_CELLS_PER_COUNT) {
                     pane.getStyleClass().add("timeline_Background_Lines");
                     c = 2;
                 } else {
@@ -84,6 +86,18 @@ public class TimelinesGridPane extends ScrollableGridPane {
      * @return - the SnappingPane, null if none applicable
      */
     public SnappingPane getMyPane(double x, double y) {
+
+        // Correct for points outside grid
+        Bounds sceneBounds = this.localToScene(this.getLayoutBounds());
+        if (sceneBounds.getMinX() + offsetFromLeft > x) {
+            return getMyPane(sceneBounds.getMinX() + offsetFromLeft, y);
+        } else if (sceneBounds.getMaxX() < x) {
+            return getMyPane(sceneBounds.getMaxX(), y);
+        } else if (sceneBounds.getMinY() > y) {
+            return getMyPane(x, sceneBounds.getMinY());
+        } else if (sceneBounds.getMaxY() < y) {
+            return getMyPane(x, sceneBounds.getMaxY());
+        }
         for (SnappingPane pane : panes) {
             Bounds bounds = pane.localToScene(pane.getBoundsInLocal());
             if (bounds.contains(x, y)) {

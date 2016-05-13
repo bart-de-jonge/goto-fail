@@ -1,0 +1,11 @@
+.text-field {
+    -fx-background-radius: 20;
+
+    -fx-border-radius: 20;
+
+    -fx-alignment: center-left;
+    -fx-font-size: 13;
+}
+
+.text-field:focused {
+}

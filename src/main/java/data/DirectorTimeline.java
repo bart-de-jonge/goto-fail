@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
  * Class to store information about a directors timeline.
- * @author Bart.
  */
 @XmlRootElement(name = "directorTimeline")
 @ToString
@@ -24,11 +24,15 @@ public class DirectorTimeline extends Timeline {
     @XmlElement(name = "shot")
     private LinkedList<DirectorShot> shots;
     
+    @Getter @Setter
+    private String description;
+    
     /**
      * Default constructor.
      */
     public DirectorTimeline() {
-        super("", null);
+        super();
+        description = "";
         shots = null;
     }
 
@@ -39,7 +43,8 @@ public class DirectorTimeline extends Timeline {
      * @param project the project that contains this timeline
      */
     public DirectorTimeline(String description, ScriptingProject project) {
-        super(description, project);
+        super(project);
+        this.description = description;
         shots = new LinkedList<>();
     }
 
@@ -50,14 +55,18 @@ public class DirectorTimeline extends Timeline {
      * @param description the description of the Shot
      * @param startCount the start count of the Shot
      * @param endCount the end count of the Shot
+     * @param frontPadding the additional time to record before the shot
+     * @param endPadding the additional time to record after the shot
      * @return If no overlap is found, only the newly added shot will be returned. If any
        colliding shots are found, all colliding shots will be returned. If any colliding
        shots are found, the shot that was added will be the last one in the list.
      * @see DirectorTimeline#addShot(DirectorShot)
      */
     public ArrayList<DirectorShot> addShot(String name, String description,
-                                           int startCount, int endCount) {
-        return addShot(new DirectorShot(name, description, startCount, endCount));
+                                           double startCount, double endCount,
+                                           double frontPadding, double endPadding) {
+        return addShot(new DirectorShot(name, description, startCount, endCount,
+                frontPadding, endPadding));
     }
 
     /**
@@ -79,11 +88,9 @@ public class DirectorTimeline extends Timeline {
         // Add the new Shot the the shots
         for (int i = 0; i < shots.size(); i++) {
             DirectorShot other = shots.get(i);
-            if (!added) {
-                if (shot.compareTo(other) <= 0) {
-                    shots.add(i, shot);
-                    added = true;
-                }
+            if (!added && shot.compareTo(other) <= 0) {
+                shots.add(i, shot);
+                added = true;
             }
             if (checkOverlap(shot, other, 0)) {
                 result.add(other);

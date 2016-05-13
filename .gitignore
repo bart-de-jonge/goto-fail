@@ -8,3 +8,10 @@ logs/*
 .project
 .settings/
 .checkstyle
+src/test/java/xml/test_files/test-write.xml
+config.ini
+project_write_test.txt
+*.scp
+coverage-error.log
+src/main/webserver/node_modules/
+src/main/webserver/.idea/

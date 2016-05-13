@@ -1,18 +1,18 @@
 package control;
 
-import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
 import gui.headerarea.DetailView;
-import gui.centerarea.ShotBlock;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.input.KeyCode;
 
 /**
- * Created by Bart.
+ * Controller for the DetailView.
  */
 public class DetailViewController {
 
     private DetailView detailView;
     private ControllerManager manager;
-    private ScriptingProject project;
 
     /**
      * Constructor.
@@ -21,7 +21,6 @@ public class DetailViewController {
     public DetailViewController(ControllerManager manager) {
         this.detailView = manager.getRootPane().getRootHeaderArea().getDetailView();
         this.manager = manager;
-        this.project = manager.getScriptingProject();
         initDescription();
         initName();
         initBeginCount();
@@ -34,17 +33,47 @@ public class DetailViewController {
     private void initBeginCount() {
         detailView.setBeginCount(0);
 
-        detailView.getBeginCountField().textProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                if (manager.getActiveShotBlock() != null) {
-                    int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
-                    manager.getActiveShotBlock().setBeginCount(newVal);
-                    if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                        ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
-                                .setBeginCount(newVal);
-                    }
+        detailView.getBeginCountField().focusedProperty()
+                .addListener(this::beginCountFocusListener);
+
+        detailView.getBeginCountField().setOnKeyPressed(event -> {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    this.beginCountUpdateHelper();
                 }
             });
+    }
+
+    /**
+     * Changelistener for when focus on begincountfield changes.
+     * @param observable - the observable
+     * @param oldValue - the old value of focus
+     * @param newValue - the new value of focus
+     */
+    void beginCountFocusListener(ObservableValue<? extends Boolean> observable,
+                                 Boolean oldValue, Boolean newValue) {
+        // exiting focus
+        if (!newValue) {
+            this.beginCountUpdateHelper();
+        }
+    }
+
+    /**
+     * Helper for when the begincount field is edited.
+     * Parses entry to quarters and updates all the values
+     */
+    void beginCountUpdateHelper() {
+        if (manager.getActiveShotBlock() != null) {
+            String newValue = CountUtilities.parseCountNumber(
+                    detailView.getBeginCountField().getText());
+            detailView.getBeginCountField().setText(newValue);
+            double newVal = Double.parseDouble(newValue);
+
+            manager.getActiveShotBlock().setBeginCount(newVal);
+            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
+                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
+                        .setBeginCount(newVal);
+            }
+        }
     }
 
     /**
@@ -53,18 +82,48 @@ public class DetailViewController {
     private void initEndCount() {
         detailView.setEndCount(0);
 
-        detailView.getEndCountField().textProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                if (manager.getActiveShotBlock() != null) {
-                    int newVal = !newValue.isEmpty() ? Integer.parseInt(newValue) : 0;
-                    ShotBlock block = manager.getActiveShotBlock();
-                    block.setEndCount(newVal);
-                    if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                        ((CameraShotBlock) manager.getActiveShotBlock())
-                                .getShot().setEndCount(newVal);
-                    }
+        detailView.getEndCountField().focusedProperty()
+                .addListener(this::endCountFocusListener);
+
+        detailView.getEndCountField().setOnKeyPressed(event -> {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    endCountUpdateHelper();
                 }
             });
+    }
+
+    /**
+     * Changelistener for when focus on endcountfield changes.
+     * @param observable - the observable
+     * @param oldValue - the old value of focus
+     * @param newValue - the new value of focus
+     */
+    void endCountFocusListener(ObservableValue<? extends Boolean> observable,
+                                 Boolean oldValue, Boolean newValue) {
+        // exiting focus
+        if (!newValue) {
+            this.endCountUpdateHelper();
+        }
+    }
+
+    /**
+     * Helper for when the endcount field is edited.
+     * Parses entry to quarters and updates all the values
+     */
+    private void endCountUpdateHelper() {
+        if (manager.getActiveShotBlock() != null) {
+
+            String newValue = CountUtilities.parseCountNumber(
+                    detailView.getEndCountField().getText());
+            double newVal = Double.parseDouble(newValue);
+            detailView.getEndCountField().setText(newValue);
+
+            manager.getActiveShotBlock().setEndCount(newVal);
+            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
+                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
+                        .setEndCount(newVal);
+            }
+        }
     }
 
     /**
@@ -73,16 +132,25 @@ public class DetailViewController {
     private void initDescription() {
         detailView.setDescription("");
 
-        detailView.getDescriptionField().textProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                if (manager.getActiveShotBlock() != null) {
-                    manager.getActiveShotBlock().setDescription(newValue);
-                    if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                        ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
-                                .setDescription(newValue);
-                    }
-                }
-            });
+        detailView.getDescriptionField().textProperty()
+                .addListener(this::descriptionTextChangedListener);
+    }
+
+    /**
+     * Changelistener for when the text in descriptionfield changes.
+     * @param observable - the observable
+     * @param oldValue - the old value of the field
+     * @param newValue - the new value of the field
+     */
+    void descriptionTextChangedListener(ObservableValue<? extends String> observable,
+                               String oldValue, String newValue) {
+        if (manager.getActiveShotBlock() != null) {
+            manager.getActiveShotBlock().setDescription(newValue);
+            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
+                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
+                        .setDescription(newValue);
+            }
+        }
     }
 
     /**
@@ -91,16 +159,25 @@ public class DetailViewController {
     private void initName() {
         detailView.setName("");
 
-        detailView.getNameField().textProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                if (manager.getActiveShotBlock() != null) {
-                    manager.getActiveShotBlock().setName(newValue);
-                    if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                        ((CameraShotBlock) manager.getActiveShotBlock())
-                                .getShot().setName(newValue);
-                    }
-                }
-            });
+        detailView.getNameField().textProperty()
+                .addListener(this::nameTextChangedListener);
+    }
+
+    /**
+     * Changelistener for when the text in namefield changes.
+     * @param observable - the observable
+     * @param oldValue - the old value of the field
+     * @param newValue - the new value of the field
+     */
+    void nameTextChangedListener(ObservableValue<? extends String> observable,
+                                        String oldValue, String newValue) {
+        if (manager.getActiveShotBlock() != null) {
+            manager.getActiveShotBlock().setName(newValue);
+            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
+                ((CameraShotBlock) manager.getActiveShotBlock())
+                        .getShot().setName(newValue);
+            }
+        }
     }
 
     /**
@@ -110,10 +187,8 @@ public class DetailViewController {
         if (manager.getActiveShotBlock() != null) {
             detailView.setDescription(manager.getActiveShotBlock().getDescription());
             detailView.setName(manager.getActiveShotBlock().getName());
-
-            // TODO: Make doubles possible in detailview
-            detailView.setBeginCount((int) manager.getActiveShotBlock().getBeginCount());
-            detailView.setEndCount((int) manager.getActiveShotBlock().getEndCount());
+            detailView.setBeginCount(manager.getActiveShotBlock().getBeginCount());
+            detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
         } else {
             detailView.resetDetails();
         }

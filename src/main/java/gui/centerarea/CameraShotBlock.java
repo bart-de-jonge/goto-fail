@@ -8,7 +8,7 @@ import javafx.event.EventHandler;
 import lombok.Getter;
 
 /**
- * Created by Bart.
+ * Class that represents a camera shot block.
  */
 public class CameraShotBlock extends ShotBlock {
 
@@ -20,6 +20,9 @@ public class CameraShotBlock extends ShotBlock {
     @Getter
     private int shotId;
 
+    private double previousBeginCount;
+    private double previousEndCount;
+
     // The grid this camershotblock belongs to
     @Getter
     private TimelinesGridPane grid;
@@ -29,7 +32,6 @@ public class CameraShotBlock extends ShotBlock {
         this(shot.getInstance(), timetableNumber, rootCenterArea, shot.getBeginCount(),
                 shot.getEndCount(), shot.getDescription(), shot.getName(), handler, shot);
     }
-
 
     /**
      * Constructor.
@@ -46,18 +48,20 @@ public class CameraShotBlock extends ShotBlock {
     public CameraShotBlock(int shotId, int timetableNumber, RootCenterArea rootCenterArea,
                            double beginCount, double endCount, String description, String name,
                            EventHandler<CameraShotBlockUpdatedEvent> handler, CameraShot shot) {
-        super(rootCenterArea, beginCount, endCount, description, name, shot);
+
+        super(rootCenterArea, beginCount, endCount, description,
+                name, shot, CameraTimetableBlock.class);
+
         this.shotId = shotId;
         this.timetableNumber = timetableNumber;
         this.grid = rootCenterArea.getMainTimeLineGridPane();
 
+        this.previousBeginCount = -1;
+        this.previousEndCount = -1;
+
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
-                this.setBeginCount(TimelinesGridPane.getRowIndex(
-                        this.getTimetableBlock()), false);
-                this.setEndCount(TimelinesGridPane.getRowSpan(
-                        this.getTimetableBlock()) + this.getBeginCount(), false);
                 this.timetableNumber = TimelinesGridPane.getColumnIndex(
-                        this.getTimetableBlock());
+                    this.getTimetableBlock());
 
                 if (e instanceof CameraShotBlockUpdatedEvent) {
                     handler.handle((CameraShotBlockUpdatedEvent) e);
@@ -99,10 +103,31 @@ public class CameraShotBlock extends ShotBlock {
         return (CameraShot) super.getShot();
     }
 
+    @Override
+    public void setBeginCount(double count, boolean recompute) {
+        this.previousBeginCount = this.getBeginCount();
+        super.setBeginCount(count, recompute);
+    }
+
+    @Override
+    public void setEndCount(double count, boolean recompute) {
+        this.previousEndCount = this.getEndCount();
+        super.setEndCount(count, recompute);
+    }
+
     /**
      * Remove this CameraShotBlock's view from the view that it's in.
      */
     public void removeFromView() {
         this.grid.removeCameraShotBlock(this);
+    }
+
+    /**
+     * Restore this CameraShotBlock to its previous position.
+     */
+    public void restorePreviousPosition() {
+        this.setBeginCount(this.previousBeginCount);
+        this.setEndCount(this.previousEndCount);
+        this.recompute();
     }
 }

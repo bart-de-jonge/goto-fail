@@ -2,6 +2,8 @@ package data;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -17,14 +19,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
-import xml.XmlReader;
-import xml.XmlWriter;
-
-
-
 
 /**
- * Created by Bart.
  * Class to store top-level properties of a scripting project.
  */
 @XmlRootElement(name = "scriptingProject")
@@ -32,6 +28,13 @@ import xml.XmlWriter;
 @ToString
 @Log4j2
 public class ScriptingProject {
+    
+    @Getter @Setter
+    private ArrayList<CameraType> cameraTypes;
+    
+    // Name of this project
+    @Getter @Setter
+    private String name;
 
     // Description of this project
     @Getter @Setter
@@ -57,29 +60,54 @@ public class ScriptingProject {
     @Getter @Setter
     private double secondsPerCount;
     
+    @Getter @Setter
+    private String filePath;
+    
+    @Getter @Setter
+    private boolean changed;
+    
     /**
      * Default constructor.
      */
     public ScriptingProject() {
-        this("", 0);
+        this("", "", 0);
     }
 
     /**
      * Constructor.
+     * @param name the name of the project
      * @param description - the description of the project
      * @param secondsPerCount - the number of seconds each count takes
      */
-    public ScriptingProject(String description, double secondsPerCount) {
+    public ScriptingProject(String name, String description, double secondsPerCount) {
         log.debug("Initializing new ScriptingProject(description={}, secondsPerCount={})",
             description, secondsPerCount);
 
+        this.name = name;
         this.description = description;
         this.secondsPerCount = secondsPerCount;
         this.cameras = new ArrayList<Camera>();
         this.cameraTimelines = new ArrayList<CameraTimeline>();
         this.directorTimeline = new DirectorTimeline(description, this);
+        this.cameraTypes = new ArrayList<CameraType>();
+        this.changed = true;
     }
-
+    
+    /**
+     * Project changed -> set changed variable to true.
+     */
+    public void changed() {
+        this.changed = true;
+    }
+    
+    /**
+     * Changes saved -> reset changed variable.
+     */
+    public void saved() {
+        this.changed = false;
+    }
+    
+   
     /**
      * Method to write the current project to a file.
      * @param fileName  - the file to write the project to
@@ -88,6 +116,10 @@ public class ScriptingProject {
     public boolean write(String fileName) {
         File file = new File(fileName);
         return write(file);
+    }
+    
+    public boolean write() {
+        return write(new File(filePath));
     }
     
     /**
@@ -102,6 +134,7 @@ public class ScriptingProject {
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             m.marshal(this, file);
+            saved();
             return true;
         } catch (JAXBException e) {
             e.printStackTrace();
@@ -133,6 +166,8 @@ public class ScriptingProject {
             ScriptingProject result =  (ScriptingProject) um.unmarshal(file);
             result.getDirectorTimeline().setProject(result);
             result.getCameraTimelines().forEach(e -> e.setProject(result));
+            result.setFilePath(file.getAbsolutePath());
+            result.saved();
             return result;
         } catch (JAXBException e) {
             e.printStackTrace();
@@ -147,6 +182,19 @@ public class ScriptingProject {
      */
     public double secondsToCounts(double seconds) {
         return seconds / secondsPerCount;
+    }
+    
+    /**
+     * Get a distinct list of camera types.
+     * @return a list of camera types.
+     */
+    public Set<CameraType> getDistinctCameraTypes() {
+        Set<CameraType> result = new HashSet<CameraType>();
+        for (Camera c: cameras) {
+            result.add(c.getCameraType());
+        }
+        
+        return result;
     }
 
     /**

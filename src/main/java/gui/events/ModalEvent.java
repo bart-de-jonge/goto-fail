@@ -6,7 +6,6 @@ import lombok.Getter;
 
 /**
  * Class that describes a modal action.
- * @author alex
  */
 public abstract class ModalEvent extends Event {
 

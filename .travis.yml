@@ -12,10 +12,14 @@ notifications:
   slack: gotofail:rNibSSSvoPtDAS7wws1KtdXd
   email: false
 before_install:
-  - "[ \"$BUILD_PR_BRANCH\" = \"true\" ] && git checkout -b dummyBranch && git checkout master && git merge dummyBranch; true"
+  - "[ \"$BUILD_PR_BRANCH\" = \"true\" ] && git checkout -b dummyBranch && git checkout develop && git merge dummyBranch; true"
 env:
   - BUILD_PR_BRANCH=true
 
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
 script:
   - mvn test
   - mvn site

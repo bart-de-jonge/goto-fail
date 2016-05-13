@@ -16,7 +16,7 @@ public class TimelineTest {
     @Before
     public void initialize() {
         timeline = new CameraTimeline(new Camera("", "", new CameraType("", "", 0.0)), "Timeline",
-                new ScriptingProject("test", 1));
+                new ScriptingProject("test", "", 1));
         timeline.addShot("", "", 1, 3);
         timeline.addShot("", "", 2, 4);
     }
@@ -28,7 +28,7 @@ public class TimelineTest {
 
     @Test
     public void setProjectTest() {
-        ScriptingProject project = new ScriptingProject("test", 9.0);
+        ScriptingProject project = new ScriptingProject("", "test", 9.0);
         timeline.setProject(project);
         assertEquals(project, timeline.getProject());
     }
@@ -55,5 +55,18 @@ public class TimelineTest {
         assert (!timeline.getShots().isEmpty());
         timeline.clearShots();
         assertEquals(0, timeline.getShots().size());
+    }
+    
+    @Test
+    public void toStringTest() {
+        Timeline timeline = new CameraTimeline(new Camera("", "", new CameraType("", "", 0.0)), "Timeline",
+                new ScriptingProject("", "test", 1));
+        assertEquals("CameraTimeline(description=Timeline, name=null, camera=Camera(name=, description=, cameraType=CameraType(name=, description=, movementMargin=0.0), movementMargin=0.0), shots=[])", timeline.toString());
+    }
+    
+    @Test
+    public void constructorWithoutArgumentsTest() {
+        Timeline timeline = new DirectorTimeline();
+        assertEquals(null, timeline.getProject());
     }
 }

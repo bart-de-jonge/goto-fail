@@ -6,7 +6,7 @@ import javafx.event.EventType;
 import lombok.Getter;
 
 /**
- * Created by Bart.
+ * Event for when a shot block is updated.
  */
 public abstract class ShotblockUpdatedEvent extends Event {
 

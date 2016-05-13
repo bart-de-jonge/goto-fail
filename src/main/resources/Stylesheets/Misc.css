@@ -1,0 +1,80 @@
+/* for the love of all that is holy, do not enable this ever again.
+.root {
+	-fx-background: #ff01d2;
+}
+*/
+
+.root {
+  -c-block-background: #B1E2FA;
+  -c-block-borders: #DDF2FC;
+  -c-block-highlight: #005482;
+  -c-block-text: #047FB7;
+  -fx-background-color: white;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+   -fx-background-color: transparent;
+}
+
+.block_Background_Normal {
+    -fx-background-color: -c-block-borders;
+    -fx-background-insets: 1 1 1 1;
+    -fx-border-style: solid inside;
+    -fx-border-color: -c-block-background;
+    -fx-border-width: 0.5 0 0.5 0;
+}
+
+.block_Foreground_Normal {
+    -fx-padding: 4 0 4 0;
+    -fx-border-style: solid inside;
+    -fx-border-insets: 4 0 4 0;
+    -fx-border-width: 2 0 0 0;
+    -fx-border-color: -c-block-highlight;
+    -fx-background-color: -c-block-background;
+    -fx-background-insets: 4 2 4 2;
+}
+
+.block_Background_Dragged {
+    -fx-background-color: -c-block-borders;
+    -fx-background-insets: 1 1 1 1;
+    -fx-background-radius: 3;
+}
+
+.block_Foreground_Dragged {
+    -fx-blend-mode: multiply;
+    -fx-opacity: 0.9;
+    -fx-padding: 4 0 4 0;
+    -fx-border-style: solid inside;
+    -fx-border-insets: 4 0 4 0;
+    -fx-border-width: 2 0 0 0;
+    -fx-border-color: -c-block-highlight;
+    -fx-background-color: -c-block-background;
+    -fx-background-insets: 4 2 4 2;
+}
+
+.block_Text_Title {
+    -fx-text-fill: -c-block-highlight;
+    -fx-font-size: 13;
+    -fx-padding: 0 0 0 5;
+}
+
+.block_Text_Normal {
+    -fx-text-fill: -c-block-text;
+    -fx-font-size: 12;
+    -fx-padding: 0 5 5 5;
+}
+
+.timeline_Background_Lines {
+    -fx-border-color: gray;
+    -fx-border-width: 0.1px 1px 0px 1px;
+}
+
+.timeline_Background_Empty {
+    -fx-border-color: gray;
+    -fx-border-width: 0px 1px 0px 1px;
+}
+

@@ -9,7 +9,6 @@ import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
 /**
- * Created by Bart.
  * Class to store information about cameras.
  */
 @XmlRootElement(name = "camera")
@@ -31,6 +30,7 @@ public class Camera {
     private CameraType cameraType;
 
     // The movementMargin, the time it takes for the Camera to move to a new position
+    // Defined in seconds
     @Setter
     private double movementMargin;
     
