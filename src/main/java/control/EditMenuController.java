@@ -1,6 +1,9 @@
 package control;
 
+import java.util.LinkedList;
+
 import data.Camera;
+import data.CameraShot;
 import data.CameraTimeline;
 import data.CameraType;
 import data.DirectorTimeline;
@@ -171,11 +174,26 @@ public class EditMenuController {
                 timeline.setProject(project);
             }
             
+            
             controllerManager.setScriptingProject(project);
             controllerManager.updateWindowTitle();
             
             RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(), editModal.getTimelines().size(), false);
             controllerManager.getRootPane().reInitRootCenterArea(area);
+            
+            for (int i=0;i<project.getCameraTimelines().size();i++) {
+                CameraTimeline newLine = project.getCameraTimelines().get(i);
+                CameraTimeline oldLine = editModal.getProject().getCameraTimelines().get(i);
+                LinkedList<CameraShot> shots = new LinkedList<CameraShot>();
+                for (CameraShot shot: oldLine.getShots()) {
+                    shots.add(shot);
+                }
+                for (CameraShot shot: shots) {
+                    newLine.addShot(shot);
+                    controllerManager.getTimelineControl().addCameraShot(i, shot);
+                }
+            }
+            
         }
     }
     
