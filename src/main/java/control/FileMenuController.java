@@ -96,7 +96,6 @@ public class FileMenuController {
             log.error("previously opened file could not be found.");
         }
         if (temp == null) {
-            System.out.println("dedede");
             controllerManager.getRootPane().getPrimaryStage().close();
             controllerManager.getRootPane().initStartupScreen(true);
         } else {

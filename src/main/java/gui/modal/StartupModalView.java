@@ -16,7 +16,7 @@ public class StartupModalView extends ModalView {
      * Tweakable styling variables.
      */
 
-    // width and height of screen. 680 and 350 work very, very well.
+    // width and height of screen. 550 and 200 work very, very well.
     private static final int width = 550;
     private static final int height = 200;
 
