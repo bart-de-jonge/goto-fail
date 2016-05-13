@@ -19,7 +19,7 @@ public class ToolView extends HBox {
     private String style = "-fx-background-color: "
             + TweakingHelper.STRING_PRIMARY + ";"
             + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: "
+            + "-fx-border-color:"
             + TweakingHelper.STRING_SECONDARY + ";";
 
     @Getter
@@ -36,8 +36,7 @@ public class ToolView extends HBox {
      */
     public ToolView() {
         this.setSpacing(15);
-        this.setPadding(new Insets(5, 10, 5, 10));
-
+        this.setPadding(new Insets(5, 10, 10, 10));
         this.setStyle(style);
 
         buttonList = new ArrayList<>();

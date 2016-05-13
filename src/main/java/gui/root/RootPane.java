@@ -97,6 +97,7 @@ public class RootPane extends Application {
         scene.getStylesheets().add("Stylesheets/StyledCheckbox.css");
         scene.getStylesheets().add("Stylesheets/StyledTextfield.css");
         scene.getStylesheets().add("Stylesheets/StyledListview.css");
+        scene.getStylesheets().add("Stylesheets/StyledMenu.css");
     }
 
     /**

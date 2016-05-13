@@ -2,6 +2,7 @@ package gui.headerarea;
 
 import gui.misc.TweakingHelper;
 import gui.styling.StyledButton;
+import javafx.geometry.Insets;
 import lombok.Getter;
 
 /**
@@ -10,8 +11,8 @@ import lombok.Getter;
 public class ToolButton {
 
     // tweaking variables
-    private static final int buttonWidth = 220;
-    private static final int buttonHeight = 0;
+    private static final int buttonWidth = 180;
+    private static final int buttonHeight = 26;
 
     private String name;
     @Getter
@@ -31,8 +32,9 @@ public class ToolButton {
      */
     private void initializeButton() {
         this.button = new StyledButton(this.name);
+        this.button.setPadding(new Insets(0,2,0,2));
         this.button.setPrefWidth(buttonWidth);
-        this.button.setPrefHeight(buttonHeight);
+        this.button.setMinHeight(buttonHeight);
         this.button.setBorderColor(TweakingHelper.COLOR_BACKGROUND);
         this.button.setFillColor(TweakingHelper.COLOR_PRIMARY);
     }

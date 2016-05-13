@@ -2,12 +2,16 @@ package gui.root;
 
 import gui.headerarea.DetailView;
 import gui.headerarea.ToolView;
+import gui.misc.TweakingHelper;
 import javafx.scene.control.MenuItem;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import lombok.Getter;
 
 /**
@@ -25,12 +29,17 @@ public class RootHeaderArea extends VBox {
     @Getter
     private ToolView toolView;
 
+    private DropShadow dropShadow;
+
     /**
      * RootHeaderArea Constructor.
      * @param rootPane the root pane this pane itself is located in.
      */
     public RootHeaderArea(RootPane rootPane) {
         this.rootPane = rootPane;
+
+        dropShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0,0,0,0.2), 20, 0.1, 0, 5);
+        this.setEffect(dropShadow);
 
         getChildren().add(initMenus());
         getChildren().add(initHeaderBar());

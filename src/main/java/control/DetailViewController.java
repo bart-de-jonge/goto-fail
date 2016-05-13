@@ -164,7 +164,7 @@ public class DetailViewController {
     }
 
     /**
-     * Changelistener for when tge text in namefield changes.
+     * Changelistener for when the text in namefield changes.
      * @param observable - the observable
      * @param oldValue - the old value of the field
      * @param newValue - the new value of the field
@@ -187,7 +187,6 @@ public class DetailViewController {
         if (manager.getActiveShotBlock() != null) {
             detailView.setDescription(manager.getActiveShotBlock().getDescription());
             detailView.setName(manager.getActiveShotBlock().getName());
-
             detailView.setBeginCount(manager.getActiveShotBlock().getBeginCount());
             detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
         } else {
