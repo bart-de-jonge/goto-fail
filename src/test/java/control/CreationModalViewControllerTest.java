@@ -1,13 +1,9 @@
 package control;
 
-import data.CameraTimeline;
 import data.ScriptingProject;
 import gui.headerarea.DoubleTextField;
 import gui.modal.CameraShotCreationModalView;
-import gui.modal.ModalView;
-import gui.modal.SaveModalView;
 import gui.root.RootPane;
-import gui.styling.StyledButton;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
@@ -16,9 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -72,6 +66,8 @@ public class CreationModalViewControllerTest extends ApplicationTest {
         assertNotNull(modalView.getCancelButton().getOnMouseReleased());
         assertNotNull(modalView.getStartField().getOnKeyPressed());
         assertNotNull(modalView.getEndField().getOnKeyPressed());
+
+        tearDownCreationModalView();
     }
 
     @Test
@@ -85,6 +81,8 @@ public class CreationModalViewControllerTest extends ApplicationTest {
         startField.setText("5.70");
         WhiteboxImpl.invokeMethod(creationModalViewController, "cameraShotStartCountEnterHandler", keyEvent);
         assertEquals("5.75", startField.getText());
+
+        tearDownCreationModalView();
     }
 
     @Test
@@ -98,6 +96,8 @@ public class CreationModalViewControllerTest extends ApplicationTest {
         endField.setText("4.2");
         WhiteboxImpl.invokeMethod(creationModalViewController, "cameraShotEndCountEnterHandler", keyEvent);
         assertEquals("4.25", endField.getText());
+
+        tearDownCreationModalView();
     }
 
     @Test
@@ -125,6 +125,8 @@ public class CreationModalViewControllerTest extends ApplicationTest {
             }
         }, true, false);
         assertEquals("5.75", startField.getText());
+
+        tearDownCreationModalView();
     }
 
     @Test
@@ -152,6 +154,8 @@ public class CreationModalViewControllerTest extends ApplicationTest {
             }
         }, true, false);
         assertEquals("5.75", endField.getText());
+
+        tearDownCreationModalView();
     }
 
     private void setupCreationModalView() throws InterruptedException {
@@ -159,6 +163,17 @@ public class CreationModalViewControllerTest extends ApplicationTest {
 
         Platform.runLater(() -> {
             creationModalViewController.showCameraCreationWindow();
+            latch.countDown();
+        });
+
+        latch.await();
+    }
+
+    private void tearDownCreationModalView() throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(1);
+
+        Platform.runLater(() -> {
+            creationModalViewController.getCameraShotCreationModalView().getModalStage().close();
             latch.countDown();
         });
 

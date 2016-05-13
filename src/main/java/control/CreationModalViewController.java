@@ -40,8 +40,10 @@ public class CreationModalViewController {
                 this.controllerManager.getScriptingProject().getCameraTimelines());
 
         // Add mouse handlers
-        cameraShotCreationModalView.getCreationButton().setOnMouseReleased(this::createCameraShot);
-        cameraShotCreationModalView.getCancelButton().setOnMouseReleased(this::cameraCreationCancelButtonHandler);
+        cameraShotCreationModalView.getCreationButton().setOnMouseReleased(
+                this::createCameraShot);
+        cameraShotCreationModalView.getCancelButton().setOnMouseReleased(
+                this::cameraCreationCancelButtonHandler);
 
         // Add listeners for parsing to startfield
         cameraShotCreationModalView.getStartField().setOnKeyPressed(
