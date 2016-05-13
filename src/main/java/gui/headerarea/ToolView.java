@@ -38,7 +38,6 @@ public class ToolView extends HBox {
     public ToolView() {
         this.setSpacing(15);
         this.setPadding(new Insets(5, 10, 10, 10));
-
         this.setStyle(style);
 
         buttonList = new ArrayList<>();
