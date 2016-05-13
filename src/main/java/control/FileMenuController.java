@@ -92,10 +92,11 @@ public class FileMenuController {
     public void load(File file) {
         ScriptingProject temp  = ScriptingProject.read(file);
         if (temp == null) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Load Failed");
-            alert.setContentText("The format in the selected file was not recognized");
-            alert.showAndWait();
+//            Alert alert = new Alert(AlertType.ERROR);
+//            alert.setTitle("Load Failed");
+//            alert.setContentText("The format in the selected file was not recognized");
+//            alert.showAndWait();
+            controllerManager.getRootPane().initStartupScreen(true);
         } else {
             controllerManager.setScriptingProject(temp);
             controllerManager.getRootPane()
