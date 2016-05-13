@@ -1,10 +1,12 @@
 package gui.root;
 
+import control.ControllerManager;
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import control.ControllerManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -51,12 +53,12 @@ public class RootPane extends Application {
         Scene scene = new Scene(topLevelPane);
         scene.getStylesheets().add("Stylesheets/stylesheet.css");
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Hoi ben een titel lol.");
+        primaryStage.setTitle("New Project");
         primaryStage.setMinHeight(minimumResolutionY);
         primaryStage.setMinWidth(minimumResolutionX);
         primaryStage.setHeight(startingResolutionY);
         primaryStage.setWidth(startingResolutionX);
-        
+
         // represents file-view-help bar and button bars at top of gui.
         rootHeaderArea = new RootHeaderArea(this);
         topLevelPane.setTop(rootHeaderArea);
@@ -72,7 +74,8 @@ public class RootPane extends Application {
         
         String recentProjectPath = readPathFromConfig();
         if (recentProjectPath != null) {
-            controllerManager.getFileMenuController().load(recentProjectPath);
+            controllerManager.getFileMenuController().load(new File(recentProjectPath));
+            primaryStage.setTitle(controllerManager.getScriptingProject().getName());
         }
 
         primaryStage.centerOnScreen();
@@ -106,5 +109,4 @@ public class RootPane extends Application {
         topLevelPane.setCenter(area);
         rootCenterArea = area;
     }
-
 }

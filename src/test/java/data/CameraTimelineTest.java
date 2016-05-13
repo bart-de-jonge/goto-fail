@@ -15,7 +15,7 @@ public class CameraTimelineTest {
     public void initialize() {
         CameraType type = new CameraType("cameratype-1", "A test cameratype", 2.00);
         Camera camera = new Camera("camera-1", "A test camera", type);
-        timeline = new CameraTimeline(camera, "A test cameratimeline", new ScriptingProject("test", 1));
+        timeline = new CameraTimeline(camera, "A test cameratimeline", new ScriptingProject("test", "", 1));
     }
 
     @Test

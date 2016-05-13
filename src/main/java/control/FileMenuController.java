@@ -87,32 +87,30 @@ public class FileMenuController {
     
     /**
      * Load a project from the given path.
-     * @param projectPath the path to load from
+     * @param file the file to load from
      */
-    public void load(String projectPath) {
-        ScriptingProject temp  = ScriptingProject.read(new File(projectPath));
-        changeConfigFile(temp);
+    public void load(File file) {
+        ScriptingProject temp  = ScriptingProject.read(file);
         if (temp == null) {
-            Alert alert = new Alert(AlertType.ERROR); 
+            Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Load Failed");
             alert.setContentText("The format in the selected file was not recognized");
             alert.showAndWait();
         } else {
             controllerManager.setScriptingProject(temp);
             controllerManager.getRootPane()
-                             .reInitRootCenterArea(
-                                     new RootCenterArea(
-                                             controllerManager.getRootPane(),
-                                             controllerManager.getScriptingProject()
-                                                              .getCameraTimelines()
-                                                              .size(),
-                                             false));
+                    .reInitRootCenterArea(new RootCenterArea(
+                            controllerManager.getRootPane(),
+                            controllerManager.getScriptingProject()
+                                    .getCameraTimelines()
+                                    .size(), false));
             addLoadedBlocks(controllerManager.getScriptingProject());
             controllerManager.getTimelineControl()
-                             .setNumTimelines(controllerManager.getScriptingProject()
-                                                               .getCameraTimelines()
-                                                               .size());
+                    .setNumTimelines(controllerManager.getScriptingProject()
+                            .getCameraTimelines()
+                            .size());
         }
+        changeConfigFile(temp);
     }
     
     /**
@@ -128,29 +126,7 @@ public class FileMenuController {
         fileChooser.getExtensionFilters().addAll(scpFilter, allFilter);
         File file = fileChooser.showOpenDialog(controllerManager.getRootPane().getPrimaryStage());
         if (file != null) {
-            ScriptingProject temp  = ScriptingProject.read(file);
-            changeConfigFile(temp);
-            if (temp == null) {
-                Alert alert = new Alert(AlertType.ERROR); 
-                alert.setTitle("Load Failed");
-                alert.setContentText("The format in the selected file was not recognized");
-                alert.showAndWait();
-            } else {
-                controllerManager.setScriptingProject(temp);
-                controllerManager.getRootPane()
-                                 .reInitRootCenterArea(
-                                         new RootCenterArea(
-                                                 controllerManager.getRootPane(),
-                                                 controllerManager.getScriptingProject()
-                                                                  .getCameraTimelines()
-                                                                  .size(),
-                                                 false));
-                addLoadedBlocks(controllerManager.getScriptingProject());
-                controllerManager.getTimelineControl()
-                                 .setNumTimelines(controllerManager.getScriptingProject()
-                                                                   .getCameraTimelines()
-                                                                   .size());
-            }
+            load(file);
         } else {
             log.info("User did not select a file");
         }
@@ -172,6 +148,7 @@ public class FileMenuController {
         } finally {
             if (writer != null) {
                 writer.close();
+                controllerManager.updateWindowTitle();
             }
         }
     }
@@ -270,21 +247,22 @@ public class FileMenuController {
         String name = cameraModal.getNameField().getText();
         String description = cameraModal.getDescriptionField().getText();
         int selectedIndex = cameraModal.getCameraTypes().getSelectionModel().getSelectedIndex();
-        
-        if (name.isEmpty()) {
-            errorString += "Please enter a camera name\n";
+
+        if (selectedIndex == -1) {
+            errorString = "Please select a camera type\n";
         }
         
         if (description.isEmpty()) {
-            errorString += "Please enter a camera description\n";
+            errorString = "Please enter a camera description\n";
         }
-        
-        if (selectedIndex == -1) {
-            errorString += "Please select a camera type\n";
+
+        if (name.isEmpty()) {
+            errorString = "Please enter a camera name\n";
         }
+
         
-        cameraModal.getErrorLabel().setText(errorString);
-        cameraModal.getErrorLabel().setTextFill(Color.RED);
+        cameraModal.getTitleLabel().setText(errorString);
+        cameraModal.getTitleLabel().setTextFill(Color.RED);
         
         return errorString.isEmpty();
     }
@@ -326,21 +304,21 @@ public class FileMenuController {
         String name = cameraTypeModal.getNameField().getText();
         String description = cameraTypeModal.getDescriptionField().getText();
         String movementMargin = cameraTypeModal.getMovementMarginField().getText();
-        
-        if (name.isEmpty()) {
-            errorString += "Please enter a name\n";
-        }
-        
-        if (description.isEmpty()) {
-            errorString += "Please enter a description\n";
-        }
-        
+
         if (movementMargin.isEmpty()) {
-            errorString += "Please enter a movement margin\n";
+            errorString = "Please enter a movement margin\n";
         }
-        
-        cameraTypeModal.getErrorLabel().setText(errorString);
-        cameraTypeModal.getErrorLabel().setTextFill(Color.RED);
+
+        if (description.isEmpty()) {
+            errorString = "Please enter a description\n";
+        }
+
+        if (name.isEmpty()) {
+            errorString = "Please enter a name\n";
+        }
+
+        cameraTypeModal.getTitleLabel().setText(errorString);
+        cameraTypeModal.getTitleLabel().setTextFill(Color.RED);
         
         return errorString.isEmpty();
     }
@@ -399,12 +377,10 @@ public class FileMenuController {
                 timeline.setProject(project);
             }
             
-            // Set title of program to be the title of the current project
-            controllerManager.getRootPane().getPrimaryStage().setTitle(name);
-
             // Set constructed project to be *the* project currently used
             controllerManager.setScriptingProject(project);
-            
+            controllerManager.updateWindowTitle();
+
             // Re-init RootCenterArea with new number of timelines
             RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),
                                                      newProjectModal.getTimelines().size(),

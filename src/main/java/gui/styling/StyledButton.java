@@ -2,12 +2,14 @@ package gui.styling;
 
 import gui.misc.TransitionHelper;
 import javafx.animation.Interpolator;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Point3D;
 import javafx.scene.control.Button;
 import javafx.scene.effect.BlurType;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,27 +20,36 @@ import lombok.Setter;
  */
 public class StyledButton extends Button {
 
-    @Getter @Setter
-    private ColorAdjust colorAdjust; // can be used for highlighting.
+    /*
+     * Tweakable variables
+     */
 
-    @Getter @Setter
+    // effects
+    private double shadowRadius = 10;
+    private double shadowOpacity = 0.15;
+    private double shadowClickOpacity = 0.25;
+
+    // transitions
+    private int mouseOverDuration = 100;
+    private int mouseClickDuration = 75;
+
+    // colors
+    // Color of normal borders and text. Becomes fillColor on click.
+    private Color borderColor = Color.rgb(60, 190, 255);
+    // Color of (blank) background. Becomes borderColor on click.
+    // Can be set transparent?
+    private Color fillColor = Color.rgb(255, 255, 255);
+
+    /*
+     * Misc variables
+     */
+
     private DropShadow dropShadow; // adds simple drop shadow.
-
-    @Getter @Setter
-    private InnerShadow innerShadow; // adds inner bound bezel.
-
     private TransitionHelper transitionHelper; // provides transition-effects.
-
-    // effect tweaking
-    private double shadowRadius = 15;
-    private double shadowOpacity = 0.1;
-    private double bezelOpacity = 0.1;
-    private double highlightAmount = 0.1;
-    private double darkenAmount = 0.15;
-
-    // transition tweaking
-    private int mouseOverDuration = 50;
-    private int mouseClickDuration = 50;
+    private ObjectProperty<Color> borderColorProperty = new SimpleObjectProperty<>(borderColor);
+    private StringProperty borderStringProperty = createColorStringProperty(borderColorProperty);
+    private ObjectProperty<Color> fillColorProperty = new SimpleObjectProperty<>(Color.WHITE);
+    private StringProperty fillStringProperty = createColorStringProperty(fillColorProperty);
 
     /**
      * Constructor class.
@@ -61,16 +72,16 @@ public class StyledButton extends Button {
      */
     private void init() {
         // initialize effects that can't be done by css all at once
-        this.colorAdjust = new ColorAdjust();
         this.dropShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, shadowOpacity),
-                shadowRadius, 0.1, 1, 3);
-        this.innerShadow = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, bezelOpacity),
-                1, 1, -1, -1);
-
+                shadowRadius, 0.05, 2, 2);
         // chain effects together
-        dropShadow.setInput(innerShadow);
-        colorAdjust.setInput(dropShadow);
-        this.setEffect(colorAdjust);
+        this.setEffect(dropShadow);
+
+        // bind style properties. This gives us so much more control than before!
+        this.styleProperty().bind(new SimpleStringProperty("-fx-background-color: ")
+                .concat(fillStringProperty).concat(";").concat("-fx-border-color: ")
+                .concat(borderStringProperty).concat(";").concat("-fx-text-fill: ")
+                .concat(borderStringProperty).concat(";"));
 
         // add transitions
         this.transitionHelper = new TransitionHelper(this);
@@ -82,16 +93,10 @@ public class StyledButton extends Button {
      * Initializes mouse over transitions.
      */
     private void initMouseOverTransitions() {
-        transitionHelper.addMouseOverTransition(this.translateYProperty(),
-                mouseOverDuration, -1, Interpolator.LINEAR);
-        transitionHelper.addMouseOverTransition(dropShadow.radiusProperty(),
-                mouseOverDuration, 20, Interpolator.LINEAR);
-        transitionHelper.addMouseOverTransition(dropShadow.offsetXProperty(),
-                mouseOverDuration, 3, Interpolator.LINEAR);
-        transitionHelper.addMouseOverTransition(dropShadow.offsetYProperty(),
-                mouseOverDuration, 3, Interpolator.LINEAR);
-        transitionHelper.addMouseOverTransition(colorAdjust.brightnessProperty(),
-                mouseOverDuration, highlightAmount, Interpolator.LINEAR);
+        transitionHelper.addMouseOverTransition(fillColorProperty, mouseOverDuration,
+                fillColor, borderColor, Interpolator.LINEAR);
+        transitionHelper.addMouseOverTransition(borderColorProperty, mouseOverDuration,
+                borderColor, fillColor, Interpolator.LINEAR);
     }
 
     /**
@@ -99,65 +104,64 @@ public class StyledButton extends Button {
      */
     private void initMouseClickTransitions() {
         transitionHelper.addMouseClickTransition(this.translateYProperty(),
-                mouseClickDuration, 2, Interpolator.LINEAR);
+                mouseClickDuration, 0.5, Interpolator.LINEAR);
         transitionHelper.addMouseClickTransition(dropShadow.radiusProperty(),
-                mouseClickDuration, -25, Interpolator.LINEAR);
-        transitionHelper.addMouseClickTransition(dropShadow.offsetXProperty(),
                 mouseClickDuration, -5, Interpolator.LINEAR);
-        transitionHelper.addMouseClickTransition(dropShadow.offsetYProperty(),
-                mouseClickDuration, -5, Interpolator.LINEAR);
-        transitionHelper.addMouseClickTransition(colorAdjust.brightnessProperty(),
-                mouseClickDuration, -darkenAmount, Interpolator.LINEAR);
+        transitionHelper.addMouseClickTransition(dropShadow.colorProperty(),
+                mouseClickDuration, Color.rgb(0, 0, 0, shadowOpacity),
+                Color.rgb(0, 0, 0, shadowClickOpacity), Interpolator.LINEAR);
     }
 
     /**
-     * Simple function to set color of button, rgb style, 0-255.
-     * @param color 3d vector of 0-255 values.
+     * Helper function for binding a fill color. Creates a string property used
+     * to modify the style at runtime.
+     * @param colorProperty the colorProperty whose color we want to show.
+     * @return The StringProperty which we'll use to set the style.
      */
-    public void setButtonColor(Point3D color) {
-        setButtonColor((int) Math.round(color.getX()),
-                (int) Math.round(color.getY()),
-                (int) Math.round(color.getZ()));
+    private StringProperty createColorStringProperty(ObjectProperty<Color> colorProperty) {
+        StringProperty stringProperty = new SimpleStringProperty();
+        stringProperty.set(getStringFromColor(colorProperty.get()));
+        colorProperty.addListener(
+            e -> {
+                stringProperty.set(getStringFromColor(colorProperty.get()));
+            });
+        return stringProperty;
     }
 
     /**
-     * Simple function to set color of button, rgb style, 0-255.
-     * @param r red component of color.
-     * @param g green component of color.
-     * @param b blue component of color.
+     * Parses color from a Color object to javafx-css-compatible string.
+     * @param color the color to parse.
+     * @return a representative string.
      */
-    public void setButtonColor(int r, int g, int b) {
-        setStyle(getStyle().concat("-fx-background-color: rgb("
-                + r + "," + g + "," + b + ");"));
+    private String getStringFromColor(Color color) {
+        return "rgba(" + ((int) (color.getRed()   * 255)) + ","
+                + ((int) (color.getGreen() * 255)) + ","
+                + ((int) (color.getBlue()  * 255)) + ","
+                + color.getOpacity() + ")";
     }
 
     /**
-     * Simple function to set color of text, rgb style, 0-255.
-     * @param color 3d vector of 0-255 values.
+     * Set the fill color of this button.
+     * @param color the color to set.
      */
-    public void setTextColor(Point3D color) {
-        setTextColor((int) Math.round(color.getX()),
-                (int) Math.round(color.getY()),
-                (int) Math.round(color.getZ()));
+    public void setFillColor(Color color) {
+        this.fillColor = color;
+        this.fillColorProperty.setValue(fillColor);
+        this.transitionHelper.removeTransitions();
+        initMouseClickTransitions();
+        initMouseOverTransitions();
     }
 
     /**
-     * Simple function to set color of text, rgb style, 0-255.
-     * @param r red component of color.
-     * @param g green component of color.
-     * @param b blue component of color.
+     * Set the border color of this button.
+     * @param color the color to set.
      */
-    public void setTextColor(int r, int g, int b) {
-        setStyle(getStyle().concat("-fx-text-fill: rgb("
-                + r + "," + g + "," + b + ");"));
-    }
-
-    /**
-     * Simple function to set size of text, with integer value.
-     * @param s size to set.
-     */
-    public void setFontSize(int s) {
-        setStyle(getStyle().concat("-fx-font-size: " + s + ";"));
+    public void setBorderColor(Color color) {
+        this.borderColor = color;
+        this.borderColorProperty.setValue(borderColor);
+        this.transitionHelper.removeTransitions();
+        initMouseClickTransitions();
+        initMouseOverTransitions();
     }
 
 }

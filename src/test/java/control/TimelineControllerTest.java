@@ -39,7 +39,7 @@ public class TimelineControllerTest {
         ScriptingProject defaultProject = new ScriptingProject();
         defaultProject.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), "kek", null));
         defaultProject.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), "kek", null));
-        
+
         timelineController = new TimelineController(controllerManager);
         timelineController.getControllerManager().setScriptingProject(defaultProject);
 

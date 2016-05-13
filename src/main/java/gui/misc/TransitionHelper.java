@@ -1,5 +1,7 @@
 package gui.misc;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
@@ -9,10 +11,12 @@ import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.Property;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import lombok.Getter;
+
 
 /**
  * Class to assist in easy setup of transitions for Nodes on common events
@@ -25,6 +29,9 @@ public class TransitionHelper {
 
     @Getter
     private Node node;
+    @Getter
+    private List<EventHandler> addedHandlers;
+    private List<EventType> addedTypes;
 
     /**
      * Constructor of class.
@@ -32,11 +39,24 @@ public class TransitionHelper {
      */
     public TransitionHelper(Node node) {
         this.node = node;
+        this.addedHandlers = new ArrayList<EventHandler>();
+        this.addedTypes = new ArrayList<EventType>();
     }
 
     /**
      * Transition functions below.
      */
+
+    /**
+     * Permanently destroys all mouse in/out and press/release transitions stored
+     * in this transitionHelper. Use it to clear transitions on an object, if they
+     * need to be re-made.
+     */
+    public void removeTransitions() {
+        for (int i = 0; i < addedHandlers.size(); i++) {
+            node.removeEventHandler(addedTypes.get(i), addedHandlers.get(i));
+        }
+    }
 
     /**
      * Add a transition event, on mouse enter and exit, between a specified double
@@ -53,10 +73,16 @@ public class TransitionHelper {
         Timeline t2 = new Timeline();
 
         // Create event handlers from x to y, and from y to x.
-        EventHandler<MouseEvent> mouseInHandler = createHandlerTowardsDouble(property, t1, t2, ms,
+        EventHandler mouseInHandler = createHandlerTowardsDouble(property, t1, t2, ms,
                 v, false, interpolator);
-        EventHandler<MouseEvent> mouseOutHandler = createHandlerTowardsDouble(property, t1, t2, ms,
+        EventHandler mouseOutHandler = createHandlerTowardsDouble(property, t1, t2, ms,
                 v, true, interpolator);
+
+        // Store handlers so we can kill them again
+        addedHandlers.add(mouseInHandler);
+        addedHandlers.add(mouseOutHandler);
+        addedTypes.add(MouseEvent.MOUSE_PRESSED.getSuperType());
+        addedTypes.add(MouseEvent.MOUSE_RELEASED.getSuperType());
 
         // Bind event handlers on mouse enter and exit for this Node.
         node.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseInHandler);
@@ -76,10 +102,16 @@ public class TransitionHelper {
     public <T> void addMouseClickTransition(Property<T> property, int ms,
                                             T x, T y, Interpolator interpolator) {
         // Create event handlers from x to y, and from y to x.
-        EventHandler<MouseEvent> mouseInHandler = createHandlerBetweenGenerics(property, ms,
+        EventHandler mouseInHandler = createHandlerBetweenGenerics(property, ms,
                 x, y, interpolator);
-        EventHandler<MouseEvent> mouseOutHandler = createHandlerBetweenGenerics(property, ms,
+        EventHandler mouseOutHandler = createHandlerBetweenGenerics(property, ms,
                 y, x, interpolator);
+
+        // Store handlers so we can kill them again
+        addedHandlers.add(mouseInHandler);
+        addedHandlers.add(mouseOutHandler);
+        addedTypes.add(MouseEvent.MOUSE_PRESSED.getSuperType());
+        addedTypes.add(MouseEvent.MOUSE_RELEASED.getSuperType());
 
         // Bind event handlers on mouse press and release for this Node.
         node.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseInHandler);
@@ -101,10 +133,16 @@ public class TransitionHelper {
         Timeline t2 = new Timeline();
 
         // Create event handlers from x to y, and from y to x.
-        EventHandler<MouseEvent> mouseInHandler = createHandlerTowardsDouble(property, t1, t2, ms,
+        EventHandler mouseInHandler = createHandlerTowardsDouble(property, t1, t2, ms,
                 v, false, interpolator);
-        EventHandler<MouseEvent> mouseOutHandler = createHandlerTowardsDouble(property, t1, t2, ms,
+        EventHandler mouseOutHandler = createHandlerTowardsDouble(property, t1, t2, ms,
                 v, true, interpolator);
+
+        // Store handlers so we can kill them again
+        addedHandlers.add(mouseInHandler);
+        addedHandlers.add(mouseOutHandler);
+        addedTypes.add(MouseEvent.MOUSE_ENTERED.getSuperType());
+        addedTypes.add(MouseEvent.MOUSE_EXITED.getSuperType());
 
         // Bind event handlers on mouse enter and exit for this Node.
         node.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseInHandler);
@@ -124,10 +162,16 @@ public class TransitionHelper {
     public <T> void addMouseOverTransition(Property<T> property, int ms,
                                            T x, T y, Interpolator interpolator) {
         // Create event handlers from x to y, and from y to x.
-        EventHandler<MouseEvent> mouseInHandler = createHandlerBetweenGenerics(property, ms,
+        EventHandler mouseInHandler = createHandlerBetweenGenerics(property, ms,
                 x, y, interpolator);
-        EventHandler<MouseEvent> mouseOutHandler = createHandlerBetweenGenerics(property, ms,
+        EventHandler mouseOutHandler = createHandlerBetweenGenerics(property, ms,
                 y, x, interpolator);
+
+        // Store handlers so we can kill them again
+        addedHandlers.add(mouseInHandler);
+        addedHandlers.add(mouseOutHandler);
+        addedTypes.add(MouseEvent.MOUSE_ENTERED.getSuperType());
+        addedTypes.add(MouseEvent.MOUSE_EXITED.getSuperType());
 
         // Bind event handlers on mouse enter and exit for this Node.
         node.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseInHandler);
@@ -154,7 +198,7 @@ public class TransitionHelper {
      * @param <T> generic type.
      * @return the new eventhandler.
      */
-    private <T> EventHandler<MouseEvent> createHandlerBetweenGenerics(Property<T> property, int ms,
+    private <T> EventHandler createHandlerBetweenGenerics(Property<T> property, int ms,
                                                               T x, T y, Interpolator interpolator) {
         return  e -> {
             Timeline timeline = new Timeline(
@@ -219,7 +263,7 @@ public class TransitionHelper {
      * @param interpolator type of interpolation used.
      * @return the new eventhandler.
      */
-    private EventHandler<MouseEvent> createHandlerTowardsDouble(DoubleProperty property,
+    private EventHandler createHandlerTowardsDouble(DoubleProperty property,
                                                                  Timeline t1, Timeline t2,
                                                                 int ms, double v, boolean done,
                                                                 Interpolator interpolator) {
