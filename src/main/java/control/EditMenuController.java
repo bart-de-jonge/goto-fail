@@ -165,6 +165,7 @@ public class EditMenuController {
             project.setCameras(editModal.getCameras());
             project.setCameraTimelines(editModal.getTimelines());
             project.getDirectorTimeline().setProject(project);
+            project.setFilePath(editModal.getProject().getFilePath());
             for (CameraTimeline timeline : project.getCameraTimelines()) {
                 timeline.setProject(project);
             }
