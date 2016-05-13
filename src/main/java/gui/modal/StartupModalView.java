@@ -53,10 +53,11 @@ public class StartupModalView extends ModalView {
     private static final int GENERAL_SPACING = 10;
     private static final int GENERAL_PADDING = 20;
 
-    private String loadTitle;
-    private static final String loadFailedTitle = "An error occurred when loading the last project!\n"
+    private static final String loadFailedTitle =
+            "An error occurred when loading the last project!\n"
             + "Please create a new project, or load an existing one.";
-    private static final String noLoadTitle = "Welcome!\n"
+    private static final String noLoadTitle =
+            "Welcome!\n"
             + "Please create a new project, or load an existing one.";
 
     private Label informationLabel;
