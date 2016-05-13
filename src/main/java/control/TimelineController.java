@@ -2,6 +2,7 @@ package control;
 
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -10,6 +11,7 @@ import data.CameraTimeline;
 import data.DirectorShot;
 import data.Shot;
 import gui.centerarea.CameraShotBlock;
+import gui.centerarea.ShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;
 import gui.modal.ShotDecouplingModalView;
 import gui.root.RootPane;
@@ -86,7 +88,7 @@ public class TimelineController {
                 rootPane.getRootCenterArea(), newShot.getBeginCount(), newShot.getEndCount(),
                 newShot.getDescription(), newShot.getName(), this::shotChangedHandler, newShot);
 
-        controllerManager.setActiveShotBlock(shotBlock);
+        controllerManager.setActiveShotBlock(Optional.of(shotBlock));
         this.cameraShotBlocks.add(shotBlock);
         controllerManager.getScriptingProject().changed();
 
@@ -100,8 +102,9 @@ public class TimelineController {
      */
     public void removeCameraShot(CameraShotBlock cameraShotBlock) {
         // If we are removing the active shot, then this must be updated accordingly
-        if (this.controllerManager.getActiveShotBlock().equals(cameraShotBlock)) {
-            this.controllerManager.setActiveShotBlock(null);
+        Optional<ShotBlock> activeShot = this.controllerManager.getActiveShotBlock();
+        if (activeShot.isPresent() && activeShot.get().equals(cameraShotBlock)) {
+            this.controllerManager.setActiveShotBlock(Optional.empty());
         }
 
         // Remove the shot from the model
@@ -139,7 +142,7 @@ public class TimelineController {
         controllerManager.getScriptingProject().changed();
         log.info("Shot moved to new TimeLine");
 
-        controllerManager.setActiveShotBlock(changedBlock);
+        controllerManager.setActiveShotBlock(Optional.of(changedBlock));
 
         CameraTimeline previousTimeline = this.controllerManager.getScriptingProject()
                 .getCameraTimelines()

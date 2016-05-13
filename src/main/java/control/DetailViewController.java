@@ -1,6 +1,7 @@
 package control;
 
 import gui.centerarea.CameraShotBlock;
+import gui.centerarea.ShotBlock;
 import gui.headerarea.DetailView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -62,15 +63,16 @@ public class DetailViewController {
      * Parses entry to quarters and updates all the values
      */
     void beginCountUpdateHelper() {
-        if (manager.getActiveShotBlock() != null) {
+        if (manager.getActiveShotBlock().isPresent()) {
+            ShotBlock activeBlock = manager.getActiveShotBlock().get();
             String newValue = CountUtilities.parseCountNumber(
                     detailView.getBeginCountField().getText());
             detailView.getBeginCountField().setText(newValue);
             double newVal = Double.parseDouble(newValue);
 
-            manager.getActiveShotBlock().setBeginCount(newVal);
-            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
+            activeBlock.setBeginCount(newVal);
+            if (activeBlock instanceof CameraShotBlock) {
+                ((CameraShotBlock) activeBlock).getShot()
                         .setBeginCount(newVal);
             }
         }
@@ -111,16 +113,16 @@ public class DetailViewController {
      * Parses entry to quarters and updates all the values
      */
     private void endCountUpdateHelper() {
-        if (manager.getActiveShotBlock() != null) {
-
+        if (manager.getActiveShotBlock().isPresent()) {
+            ShotBlock activeBlock = manager.getActiveShotBlock().get();
             String newValue = CountUtilities.parseCountNumber(
                     detailView.getEndCountField().getText());
             double newVal = Double.parseDouble(newValue);
             detailView.getEndCountField().setText(newValue);
 
-            manager.getActiveShotBlock().setEndCount(newVal);
-            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
+            activeBlock.setEndCount(newVal);
+            if (activeBlock instanceof CameraShotBlock) {
+                ((CameraShotBlock) activeBlock).getShot()
                         .setEndCount(newVal);
             }
         }
@@ -144,10 +146,11 @@ public class DetailViewController {
      */
     void descriptionTextChangedListener(ObservableValue<? extends String> observable,
                                String oldValue, String newValue) {
-        if (manager.getActiveShotBlock() != null) {
-            manager.getActiveShotBlock().setDescription(newValue);
-            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
+        if (manager.getActiveShotBlock().isPresent()) {
+            ShotBlock activeBlock = manager.getActiveShotBlock().get();
+            activeBlock.setDescription(newValue);
+            if (activeBlock instanceof CameraShotBlock) {
+                ((CameraShotBlock) activeBlock).getShot()
                         .setDescription(newValue);
             }
         }
@@ -171,10 +174,11 @@ public class DetailViewController {
      */
     void nameTextChangedListener(ObservableValue<? extends String> observable,
                                         String oldValue, String newValue) {
-        if (manager.getActiveShotBlock() != null) {
-            manager.getActiveShotBlock().setName(newValue);
-            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveShotBlock())
+        if (manager.getActiveShotBlock().isPresent()) {
+            ShotBlock activeBlock = manager.getActiveShotBlock().get();
+            activeBlock.setName(newValue);
+            if (activeBlock instanceof CameraShotBlock) {
+                ((CameraShotBlock) activeBlock)
                         .getShot().setName(newValue);
             }
         }
@@ -184,12 +188,13 @@ public class DetailViewController {
      * Method to signal that the active block is changed so we can update it.
      */
     public void activeBlockChanged() {
-        if (manager.getActiveShotBlock() != null) {
-            detailView.setDescription(manager.getActiveShotBlock().getDescription());
-            detailView.setName(manager.getActiveShotBlock().getName());
+        if (manager.getActiveShotBlock().isPresent()) {
+            ShotBlock activeBlock = manager.getActiveShotBlock().get();
+            detailView.setDescription(activeBlock.getDescription());
+            detailView.setName(activeBlock.getName());
 
-            detailView.setBeginCount(manager.getActiveShotBlock().getBeginCount());
-            detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
+            detailView.setBeginCount(activeBlock.getBeginCount());
+            detailView.setEndCount(activeBlock.getEndCount());
         } else {
             detailView.resetDetails();
         }

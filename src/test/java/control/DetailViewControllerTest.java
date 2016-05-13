@@ -24,6 +24,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.testfx.framework.junit.ApplicationTest;
 
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -96,7 +98,7 @@ public class DetailViewControllerTest extends ApplicationTest {
     public void beginCountUpdateHelper() {
         CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
         CameraShot shot = Mockito.mock(CameraShot.class);
-        when(manager.getActiveShotBlock()).thenReturn(block);
+        when(manager.getActiveShotBlock()).thenReturn(Optional.of(block));
         when(block.getShot()).thenReturn(shot);
 
         KeyEvent keyEvent = new KeyEvent(KeyEvent.ANY, "", "", KeyCode.ENTER,
@@ -111,7 +113,7 @@ public class DetailViewControllerTest extends ApplicationTest {
     public void endCountUpdateHelper() {
         CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
         CameraShot shot = Mockito.mock(CameraShot.class);
-        when(manager.getActiveShotBlock()).thenReturn(block);
+        when(manager.getActiveShotBlock()).thenReturn(Optional.of(block));
         when(block.getShot()).thenReturn(shot);
 
         KeyEvent keyEvent = new KeyEvent(KeyEvent.ANY, "", "", KeyCode.ENTER,
@@ -129,7 +131,7 @@ public class DetailViewControllerTest extends ApplicationTest {
         when(block.getName()).thenReturn("test name");
         when(block.getBeginCount()).thenReturn(2.0);
         when(block.getEndCount()).thenReturn(4.0);
-        when(manager.getActiveShotBlock()).thenReturn(block);
+        when(manager.getActiveShotBlock()).thenReturn(Optional.of(block));
 
         detailViewController.activeBlockChanged();
 
@@ -141,6 +143,7 @@ public class DetailViewControllerTest extends ApplicationTest {
 
     @Test
     public void activeBlockChangedActiveBlockNull() {
+        when(manager.getActiveShotBlock()).thenReturn(Optional.empty());
         detailViewController.activeBlockChanged();
         verify(detailView, times(1)).resetDetails();
     }
@@ -149,7 +152,7 @@ public class DetailViewControllerTest extends ApplicationTest {
     public void beginCountFocusedProperty() {
         CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
         CameraShot shot = Mockito.mock(CameraShot.class);
-        when(manager.getActiveShotBlock()).thenReturn(block);
+        when(manager.getActiveShotBlock()).thenReturn(Optional.of(block));
         when(block.getShot()).thenReturn(shot);
 
         detailViewController.beginCountFocusListener(new ObservableValue<Boolean>() {
@@ -179,7 +182,7 @@ public class DetailViewControllerTest extends ApplicationTest {
     public void endCountFocusedProperty() {
         CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
         CameraShot shot = Mockito.mock(CameraShot.class);
-        when(manager.getActiveShotBlock()).thenReturn(block);
+        when(manager.getActiveShotBlock()).thenReturn(Optional.of(block));
         when(block.getShot()).thenReturn(shot);
 
         detailViewController.endCountFocusListener(new ObservableValue<Boolean>() {
@@ -209,7 +212,7 @@ public class DetailViewControllerTest extends ApplicationTest {
     public void nameFieldTextProperty() {
         CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
         CameraShot shot = Mockito.mock(CameraShot.class);
-        when(manager.getActiveShotBlock()).thenReturn(block);
+        when(manager.getActiveShotBlock()).thenReturn(Optional.of(block));
         when(block.getShot()).thenReturn(shot);
 
         detailViewController.nameTextChangedListener(new ObservableValue<String>() {
@@ -239,7 +242,7 @@ public class DetailViewControllerTest extends ApplicationTest {
     public void descriptionFieldTextProperty() {
         CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
         CameraShot shot = Mockito.mock(CameraShot.class);
-        when(manager.getActiveShotBlock()).thenReturn(block);
+        when(manager.getActiveShotBlock()).thenReturn(Optional.of(block));
         when(block.getShot()).thenReturn(shot);
 
         detailViewController.descriptionTextChangedListener(new ObservableValue<String>() {

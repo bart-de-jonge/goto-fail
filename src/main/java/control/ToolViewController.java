@@ -44,7 +44,7 @@ public class ToolViewController {
                 event -> generateCameraShots());
 
         // If there is no active ShotBlock, then disable the delete button
-        if (this.controllerManager.getActiveShotBlock() == null) {
+        if (!this.controllerManager.getActiveShotBlock().isPresent()) {
             toolView.getBlockDeletionTool().disableButton();
             toolView.getShotGenerationTool().disableButton();
         }
@@ -54,12 +54,13 @@ public class ToolViewController {
      * Deletes the active camera block.
      */
     private void deleteActiveCameraShot() {
-        ShotBlock currentShot = this.controllerManager.getActiveShotBlock();
-
-        // TODO: Make this a more general deletion for the active timeline (i.e. director)
-        if (currentShot instanceof CameraShotBlock) {
-            CameraShotBlock cameraShotBlock = (CameraShotBlock) currentShot;
-            this.controllerManager.getTimelineControl().removeCameraShot(cameraShotBlock);
+        if (this.controllerManager.getActiveShotBlock().isPresent()) {
+            ShotBlock currentShot = this.controllerManager.getActiveShotBlock().get();
+            // TODO: Make this a more general deletion for the active timeline (i.e. director)
+            if (currentShot instanceof CameraShotBlock) {
+                CameraShotBlock cameraShotBlock = (CameraShotBlock) currentShot;
+                this.controllerManager.getTimelineControl().removeCameraShot(cameraShotBlock);
+            }
         }
     }
 
@@ -67,9 +68,9 @@ public class ToolViewController {
      * Create the director shot's corresponding camera shots.
      */
     private void generateCameraShots() {
-        if (this.controllerManager.getActiveShotBlock() instanceof DirectorShotBlock) {
+        if (this.controllerManager.getActiveShotBlock().get() instanceof DirectorShotBlock) {
             DirectorShotBlock directorShotBlock = (DirectorShotBlock)
-                    this.controllerManager.getActiveShotBlock();
+                    this.controllerManager.getActiveShotBlock().get();
             DirectorShot shot = directorShotBlock.getShot();
             shot.getTimelineIndices().forEach(index -> {
                     CameraShot subShot = new CameraShot(shot.getName(), shot.getDescription(),
@@ -85,13 +86,13 @@ public class ToolViewController {
      * ToolViewController then updates the buttons accordingly.
      */
     public void activeBlockChanged() {
-        if (this.controllerManager.getActiveShotBlock() != null) {
+        if (this.controllerManager.getActiveShotBlock().isPresent()) {
             toolView.getBlockDeletionTool().enableButton();
             // Only enable the generation of camera shots if it's a director shot w/o camera shots
             boolean enableGen = false;
-            if (this.controllerManager.getActiveShotBlock() instanceof DirectorShotBlock) {
+            if (this.controllerManager.getActiveShotBlock().get() instanceof DirectorShotBlock) {
                 DirectorShotBlock directorShotBlock = (DirectorShotBlock)
-                        this.controllerManager.getActiveShotBlock();
+                        this.controllerManager.getActiveShotBlock().get();
                 if (directorShotBlock.getShot().getCameraShots().isEmpty()) {
                     enableGen = true;
                 }

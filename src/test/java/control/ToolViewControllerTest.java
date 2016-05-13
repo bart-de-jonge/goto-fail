@@ -13,6 +13,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.testfx.framework.junit.ApplicationTest;
 
+import java.util.Optional;
+
 import static org.mockito.Mockito.when;
 
 /**
@@ -35,6 +37,7 @@ public class ToolViewControllerTest extends ApplicationTest {
         toolView = Mockito.spy(new ToolView());
 
         when(controllerManager.getRootPane()).thenReturn(rootPane);
+        when(controllerManager.getActiveShotBlock()).thenReturn(Optional.empty());
         when(rootPane.getRootHeaderArea()).thenReturn(rootHeaderArea);
         when(rootHeaderArea.getToolView()).thenReturn(toolView);
 
@@ -61,7 +64,7 @@ public class ToolViewControllerTest extends ApplicationTest {
     @Test
     public void activeBlockDeletionTest() {
         CameraShotBlock mockBlock = Mockito.mock(CameraShotBlock.class);
-        when(controllerManager.getActiveShotBlock()).thenReturn(mockBlock);
+        when(controllerManager.getActiveShotBlock()).thenReturn(Optional.of(mockBlock));
         ToolButton deletionSpy = Mockito.spy(toolView.getBlockDeletionTool());
         when(toolView.getBlockDeletionTool()).thenReturn(deletionSpy);
         toolViewController.activeBlockChanged();
@@ -71,7 +74,7 @@ public class ToolViewControllerTest extends ApplicationTest {
     @Test
     public void noEnableGenActiveBlockTest() {
         CameraShotBlock mockBlock = Mockito.mock(CameraShotBlock.class);
-        when(controllerManager.getActiveShotBlock()).thenReturn(mockBlock);
+        when(controllerManager.getActiveShotBlock()).thenReturn(Optional.of(mockBlock));
         ToolButton genSpy = Mockito.spy(toolView.getShotGenerationTool());
         when(toolView.getShotGenerationTool()).thenReturn(genSpy);
         toolViewController.activeBlockChanged();
@@ -83,7 +86,7 @@ public class ToolViewControllerTest extends ApplicationTest {
         DirectorShotBlock mockBlock = Mockito.mock(DirectorShotBlock.class);
         DirectorShot directorShot = new DirectorShot("Dir shot", "description", 0, 1, 0, 0);
         when(mockBlock.getShot()).thenReturn(directorShot);
-        when(controllerManager.getActiveShotBlock()).thenReturn(mockBlock);
+        when(controllerManager.getActiveShotBlock()).thenReturn(Optional.of(mockBlock));
         ToolButton genSpy = Mockito.spy(toolView.getShotGenerationTool());
         when(toolView.getShotGenerationTool()).thenReturn(genSpy);
         toolViewController.activeBlockChanged();
