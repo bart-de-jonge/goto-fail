@@ -9,11 +9,11 @@ public class EditMenuController {
     private EditProjectModalView editModal;
     
     public EditMenuController(ControllerManager manager) {
-        this.controllerManager = controllerManager;
+        this.controllerManager = manager;
     }
     
     public void editProject() {
-        
+        new EditProjectModalView(controllerManager.getRootPane());
     }
 
 }

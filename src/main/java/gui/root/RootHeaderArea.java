@@ -69,6 +69,7 @@ public class RootHeaderArea extends VBox {
         editProjectItem.setOnAction(e -> {
             rootPane.getControllerManager().getEditMenuController().editProject();
         });
+        editMenu.getItems().add(editProjectItem);
         
         Menu viewMenu = new Menu("View");
         Menu helpMenu = new Menu("Help");
