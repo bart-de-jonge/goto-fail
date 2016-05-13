@@ -1,5 +1,6 @@
 package gui.headerarea;
 
+import gui.styling.StyledTextfield;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
@@ -26,10 +27,10 @@ public class DetailView extends VBox {
     private double rowHeight = 50;
 
     @Getter
-    private TextField nameField;
+    private StyledTextfield nameField;
 
     @Getter
-    private TextField descriptionField;
+    private StyledTextfield descriptionField;
 
     @Getter
     private DoubleTextField beginCountField;
@@ -138,7 +139,7 @@ public class DetailView extends VBox {
      * Init the name part of the detailview.
      */
     private void initName() {
-        nameField = new TextField("Placeholder");
+        nameField = new StyledTextfield("Placeholder");
         HBox nameBox = new HBox();
 
         Label specifierLabel = new Label("Name:");
@@ -150,7 +151,7 @@ public class DetailView extends VBox {
      * Init the description part of the detailview.
      */
     private void initDescription() {
-        descriptionField = new TextField("");
+        descriptionField = new StyledTextfield("");
         descriptionField.setPrefWidth(300);
 
         HBox descriptionBox = new HBox();

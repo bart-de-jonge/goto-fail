@@ -11,5 +11,5 @@
 }
 
 .button:disabled {
-    -fx-opacity: 0.75;
+    -fx-opacity: 0.5;
 }

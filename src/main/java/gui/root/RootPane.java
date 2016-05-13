@@ -55,7 +55,7 @@ public class RootPane extends Application {
         // Create scene and set the stage. This is where the window is basically
         // created. Also has some useful settings.
         Scene scene = new Scene(topLevelPane);
-        scene.getStylesheets().add("Stylesheets/stylesheet.css");
+        initStylesheets(scene);
         primaryStage.setScene(scene);
         primaryStage.setTitle("New Project");
         primaryStage.setMinHeight(minimumResolutionY);
@@ -86,7 +86,19 @@ public class RootPane extends Application {
             initStartupScreen(false);
         }
     }
-    
+
+    /**
+     * Load all main stylesheets for this scene.
+     * @param scene scene to load.
+     */
+    private void initStylesheets(Scene scene) {
+        scene.getStylesheets().add("Stylesheets/Misc.css");
+        scene.getStylesheets().add("Stylesheets/StyledButton.css");
+        scene.getStylesheets().add("Stylesheets/StyledCheckbox.css");
+        scene.getStylesheets().add("Stylesheets/StyledTextfield.css");
+        scene.getStylesheets().add("Stylesheets/StyledListview.css");
+    }
+
     /**
      * Read the most recent project filepath from the config file, for auto load.
      * @return the filepath if one is found, null otherwise

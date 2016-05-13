@@ -1,6 +1,7 @@
 package gui.modal;
 
 import data.CameraType;
+import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledListview;
@@ -27,24 +28,24 @@ public class AddCameraModalView extends ModalView {
     private static final int width = 600;
     private static final int height = 350;
 
-    // three main colors used throughout window. Experiment a little!
-    private static final Color mainColor = Color.rgb(255, 172, 70); // main bright color
-    private static final Color secondaryColor = Color.rgb(255, 140, 0); // darker color
-    private static final Color tertiaryColor = Color.rgb(255, 235, 190); // lighter color
-
     // variables for spacing
     private static final int topAreaHeight = 50;
     private static final int bottomAreaHeight = 60;
 
     // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: " + getStringFromColor(mainColor) + ";"
+    private String topStyle = "-fx-background-color: "
+            + TweakingHelper.STRING_PRIMARY + ";"
             + "-fx-text-fill: white; -fx-font-size: 22;"
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: " + getStringFromColor(secondaryColor) + ";";
-    private String centerLeftStyle = "-fx-background-color: rgb(245, 245, 245);";
-    private String centerRightStyle = "-fx-background-color: rgb(255, 255, 255);";
-    private String bottomStyle = "-fx-background-color: " + getStringFromColor(mainColor) + ";";
+            + "-fx-border-color: "
+            + TweakingHelper.STRING_SECONDARY + ";";
+    private String centerLeftStyle = "-fx-background-color: "
+            + TweakingHelper.STRING_BACKGROUND_HIGH + ";";
+    private String centerRightStyle = "-fx-background-color: "
+            + TweakingHelper.STRING_BACKGROUND + ";";
+    private String bottomStyle = "-fx-background-color: "
+            + TweakingHelper.STRING_PRIMARY + ";";
 
     // variables for the Create and Cancel buttons
     private static final int buttonWidth = 90;
@@ -60,9 +61,6 @@ public class AddCameraModalView extends ModalView {
 
     // No touching these constants. They work well for all general cases,
     // and there is no reason to change them ever again.
-    private static final int GENERAL_SIZE = 10000;
-    private static final int GENERAL_SPACING = 10;
-    private static final int GENERAL_PADDING = 20;
     private static final int TEXT_AREA_MIN_WIDTH = 280;
     private static final int LISTS_AREA_MIN_WIDTH = 250;
 
@@ -125,8 +123,8 @@ public class AddCameraModalView extends ModalView {
         // add space for textfields and listviews
         this.centerPane = new HBox();
         this.centerPane.setAlignment(Pos.CENTER);
-        this.centerPane.setPadding(new Insets(0, GENERAL_PADDING, 0, 0));
-        this.centerPane.setPrefHeight(GENERAL_SIZE);
+        this.centerPane.setPadding(new Insets(0, TweakingHelper.GENERAL_PADDING, 0, 0));
+        this.centerPane.setPrefHeight(TweakingHelper.GENERAL_SIZE);
         this.centerPane.setSpacing(40.0);
         this.viewPane.getChildren().add(centerPane);
 
@@ -148,7 +146,7 @@ public class AddCameraModalView extends ModalView {
         titleLabel.setStyle(topStyle);
         titleLabel.setAlignment(Pos.CENTER_LEFT);
         titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(GENERAL_SIZE);
+        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
         titleLabel.setMinHeight(topAreaHeight);
         titleLabel.setPrefHeight(topAreaHeight);
         titleLabel.setMaxHeight(topAreaHeight);
@@ -159,31 +157,31 @@ public class AddCameraModalView extends ModalView {
      * Initialize the fields.
      */
     private void initFields() {
-        VBox content = new VBox(GENERAL_SPACING);
+        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
         content.setAlignment(Pos.CENTER);
         content.setMinWidth(TEXT_AREA_MIN_WIDTH);
-        content.setPrefWidth(GENERAL_SIZE);
-        content.setPrefHeight(GENERAL_SIZE);
-        content.setPadding(new Insets(GENERAL_PADDING));
+        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
+        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
+        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
         content.setStyle(centerLeftStyle);
 
         final Label nameLabel = new Label("Name:  ");
         nameField = new StyledTextfield();
-        nameField.setBorderColor(mainColor);
-        nameField.setTextColor(mainColor);
-        nameField.setTextActiveColor(secondaryColor);
-        nameField.setFillActiveColor(tertiaryColor);
-        HBox nameBox = new HBox(GENERAL_SPACING);
+        nameField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
+        nameField.setTextColor(TweakingHelper.COLOR_PRIMARY);
+        nameField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
+        nameField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
+        HBox nameBox = new HBox(TweakingHelper.GENERAL_SPACING);
         nameBox.getChildren().addAll(nameLabel, nameField);
         nameBox.setAlignment(Pos.CENTER_RIGHT);
         
         final Label descriptionLabel = new Label("Description: ");
         descriptionField = new StyledTextfield();
-        descriptionField.setBorderColor(mainColor);
-        descriptionField.setTextColor(mainColor);
-        descriptionField.setTextActiveColor(secondaryColor);
-        descriptionField.setFillActiveColor(tertiaryColor);
-        HBox descriptionBox = new HBox(GENERAL_SPACING);
+        descriptionField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
+        descriptionField.setTextColor(TweakingHelper.COLOR_PRIMARY);
+        descriptionField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
+        descriptionField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
+        HBox descriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
         descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
         descriptionBox.setAlignment(Pos.CENTER_RIGHT);
         
@@ -196,12 +194,12 @@ public class AddCameraModalView extends ModalView {
      */
     private void initTypeList() {
         // vertical pane to hold content
-        VBox content = new VBox(GENERAL_SPACING);
+        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
         content.setAlignment(Pos.CENTER_LEFT);
         content.setMinWidth(LISTS_AREA_MIN_WIDTH);
-        content.setPrefWidth(GENERAL_SIZE);
-        content.setPrefHeight(GENERAL_SIZE);
-        content.setPadding(new Insets(GENERAL_PADDING));
+        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
+        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
+        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
         content.setStyle(centerRightStyle);
 
         final Label cameraTypeLabel = new Label("Camera Type: ");
@@ -237,7 +235,7 @@ public class AddCameraModalView extends ModalView {
         addCameraButton.setPrefHeight(buttonHeight);
         addCameraButton.setAlignment(Pos.CENTER);
         addCameraButton.setBorderColor(Color.WHITE);
-        addCameraButton.setFillColor(mainColor);
+        addCameraButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
 
         // Add cancel button
         cancelButton = new StyledButton("Cancel");
@@ -245,21 +243,9 @@ public class AddCameraModalView extends ModalView {
         cancelButton.setPrefHeight(buttonHeight);
         cancelButton.setAlignment(Pos.CENTER);
         cancelButton.setBorderColor(Color.WHITE);
-        cancelButton.setFillColor(mainColor);
+        cancelButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
 
         content.getChildren().addAll(addCameraButton, cancelButton);
-    }
-
-    /**
-     * Parses color from a Color object to javafx-css-compatible string.
-     * @param color the color to parse.
-     * @return a representative string.
-     */
-    private String getStringFromColor(Color color) {
-        return "rgba(" + ((int) (color.getRed()   * 255)) + ","
-                + ((int) (color.getGreen() * 255)) + ","
-                + ((int) (color.getBlue()  * 255)) + ","
-                + color.getOpacity() + ")";
     }
 
 }

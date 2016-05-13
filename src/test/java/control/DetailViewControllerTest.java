@@ -7,6 +7,7 @@ import gui.headerarea.DetailView;
 import gui.headerarea.DoubleTextField;
 import gui.root.RootHeaderArea;
 import gui.root.RootPane;
+import gui.styling.StyledTextfield;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
@@ -59,8 +60,8 @@ public class DetailViewControllerTest extends ApplicationTest {
         beginCountField = new DoubleTextField("0");
         endCountField = new DoubleTextField("0");
 
-        when(detailView.getDescriptionField()).thenReturn(new TextField());
-        when(detailView.getNameField()).thenReturn(new TextField());
+        when(detailView.getDescriptionField()).thenReturn(new StyledTextfield());
+        when(detailView.getNameField()).thenReturn(new StyledTextfield());
         when(detailView.getBeginCountField()).thenReturn(beginCountField);
         when(detailView.getEndCountField()).thenReturn(endCountField);
 
