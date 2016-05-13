@@ -1,4 +1,5 @@
 package gui.headerarea;
+import gui.misc.TweakingHelper;
 import gui.styling.StyledButton;
 import lombok.Getter;
 
@@ -32,6 +33,8 @@ public class ToolButton {
         this.button = new StyledButton(this.name);
         this.button.setPrefWidth(buttonWidth);
         this.button.setPrefHeight(buttonHeight);
+        this.button.setBorderColor(TweakingHelper.COLOR_BACKGROUND);
+        this.button.setFillColor(TweakingHelper.COLOR_PRIMARY);
     }
 
     /**

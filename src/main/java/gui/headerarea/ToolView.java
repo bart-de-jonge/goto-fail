@@ -1,5 +1,6 @@
 package gui.headerarea;
 
+import gui.misc.TweakingHelper;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -14,12 +15,13 @@ import java.util.List;
  */
 public class ToolView extends HBox {
 
-    // three main colors used throughout application. Experiment a little!
-    private static final Color mainColor = Color.rgb(255, 172, 70); // main bright color
-    private static final Color secondaryColor = Color.rgb(255, 140, 0); // darker color
-    private static final Color tertiaryColor = Color.rgb(255, 235, 190); // lighter color
-
     private List<ToolButton> buttonList;
+
+    private String style = "-fx-background-color: "
+            + TweakingHelper.STRING_PRIMARY + ";"
+            + "-fx-border-width: 0 0 10 0;"
+            + "-fx-border-color: "
+            + TweakingHelper.STRING_SECONDARY + ";";
 
     @Getter
     private ToolButton directorBlockCreationTool;
@@ -37,7 +39,7 @@ public class ToolView extends HBox {
         this.setSpacing(15);
         this.setPadding(new Insets(5, 10, 5, 10));
 
-        this.setStyle("-fx-background-color: red;");
+        this.setStyle(style);
 
         buttonList = new ArrayList<>();
 

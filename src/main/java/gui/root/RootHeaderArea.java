@@ -31,13 +31,10 @@ public class RootHeaderArea extends VBox {
      */
     public RootHeaderArea(RootPane rootPane) {
         this.rootPane = rootPane;
-        // border style to mark it, for debugging for now.
-        setStyle("-fx-border-style: solid inside;"
-                + "-fx-border-width: 1;");
 
         getChildren().add(initMenus());
-
         getChildren().add(initHeaderBar());
+        
         this.setPrefHeight(50);
     }
 
