@@ -13,3 +13,4 @@ config.ini
 project_write_test.txt
 *.scp
 coverage-error.log
+src/main/webserver/node_modules/
