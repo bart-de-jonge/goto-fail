@@ -24,7 +24,7 @@ public class RootCenterArea extends StackPane {
     @Getter @Setter
     private int numberOfTimelines = 8;
     @Getter @Setter
-    private int numberOfCounts = 100;
+    private int numberOfCounts = 400;
     @Getter
     private int countHeight = 10; // 10 works well, if you've changed this.
     @Getter
