@@ -12,8 +12,8 @@ public final class TweakingHelper {
     public static Color COLOR_PRIMARY = Color.rgb(255, 172, 70); // main bright color
     public static Color COLOR_SECONDARY = Color.rgb(255, 140, 0); // darker color
     public static Color COLOR_TERTIARY = Color.rgb(255, 235, 190); // lighter color
-    public static Color COLOR_BACKGROUND = Color.WHITE; // main background color
-    public static Color COLOR_BACKGROUND_HIGH = Color.rgb(245, 245, 245); // heightened background color
+    public static Color COLOR_BACKGROUND = Color.WHITE; // main bg color
+    public static Color COLOR_BACKGROUND_HIGH = Color.rgb(245, 245, 245); // heightened bg color
 
     // string versions of main colors
     public static String STRING_PRIMARY = getStringFromColor(COLOR_PRIMARY);

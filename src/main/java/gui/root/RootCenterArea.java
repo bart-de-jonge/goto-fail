@@ -91,8 +91,6 @@ public class RootCenterArea extends StackPane {
             loadButton = new Button("Load project");
             buttonBox.getChildren().addAll(newButton, loadButton);
             this.getChildren().addAll(buttonBox);
-            
-            
         } else {
             this.rootPane = rootPane;
             this.numberOfTimelines = numberOfTimelines;

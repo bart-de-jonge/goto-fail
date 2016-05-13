@@ -179,7 +179,6 @@ public class ResizeHelper {
      */
     private EventHandler<MouseEvent> getOnMousePressedHandler() {
         return e -> {
-            System.out.println(cursor);
             updateVariables(e);
             startX = stage.getWidth() - mouseEventX;
             startY = stage.getHeight() - mouseEventY;
