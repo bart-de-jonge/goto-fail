@@ -61,29 +61,29 @@ public class RootHeaderArea extends VBox {
      * @return MenuBar containing menus.
      */
     private MenuBar initMenus() {
-        Menu fileMenu = initFileMenu();
        
         Menu editMenu = new Menu("Edit");
         
         MenuItem editProjectItem = new MenuItem("Project");
         editProjectItem.setOnAction(e -> {
-            rootPane.getControllerManager().getEditMenuController().editProject();
-        });
+                rootPane.getControllerManager().getEditMenuController().editProject();
+            });
         editMenu.getItems().add(editProjectItem);
         
-        Menu viewMenu = new Menu("View");
         Menu helpMenu = new Menu("Help");
         
         MenuItem helpWebsiteItem = new MenuItem("Website");
         helpMenu.setOnAction(e -> {
-            try {
-                java.awt.Desktop.getDesktop().browse(java.net.URI.create("http://gotofail.net"));
-            } catch (Exception e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-        });
+                try {
+                    java.awt.Desktop.getDesktop().browse(java.net.URI.create("http://gotofail.net"));
+                } catch (Exception e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+            });
         helpMenu.getItems().add(helpWebsiteItem);
+        Menu fileMenu = initFileMenu();
+        Menu viewMenu = new Menu("View");
 
         MenuBar topMenuBar = new MenuBar();
         topMenuBar.setUseSystemMenuBar(true);

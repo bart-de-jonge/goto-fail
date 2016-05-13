@@ -185,6 +185,10 @@ public class ScriptingProject {
         return seconds / secondsPerCount;
     }
     
+    /**
+     * Get a distinct list of camera types.
+     * @return a list of camera types.
+     */
     public Set<CameraType> getDistinctCameraTypes() {
         Set<CameraType> result = new HashSet<CameraType>();
         for (Camera c: cameras) {

@@ -25,10 +25,17 @@ public class EditMenuController {
     private AddCameraTypeModalView typeModal;
     private AddCameraModalView cameraModal;
     
+    /**
+     * Construct a new EditMenuController.
+     * @param manager the ControllerManager that controls this EditMenuController
+     */
     public EditMenuController(ControllerManager manager) {
         this.controllerManager = manager;
     }
     
+    /**
+     * Start the edit project modal.
+     */
     public void editProject() {
         editModal = new EditProjectModalView(controllerManager.getRootPane());
         editModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
@@ -39,11 +46,19 @@ public class EditMenuController {
         editModal.getSaveButton().setOnMouseClicked(this::save);
     }
     
+    /**
+     * Handler for adding a camera.
+     * @param event the MouseEvent for this handler
+     */
     private void addCamera(MouseEvent event) {
         cameraModal = new AddCameraModalView(controllerManager.getRootPane(), editModal.getTypes());
         cameraModal.getAddCameraButton().setOnMouseClicked(this::cameraAdded);
     }
     
+    /**
+     * Handler for when a camera is added.
+     * @param event the MouseEvent for this handler
+     */
     private void cameraAdded(MouseEvent event) {
         if (validateCameraData()) {
             cameraModal.hideModal();
@@ -61,6 +76,10 @@ public class EditMenuController {
         }
     }
     
+    /**
+     * Validate the entered camera data.
+     * @return true if the data is legit, false otherwise
+     */
     private boolean validateCameraData() {
         String errorString = "";
         String name = cameraModal.getNameField().getText();
@@ -85,6 +104,10 @@ public class EditMenuController {
         return errorString.isEmpty();
     }
     
+    /**
+     * Handler for deleting a camera.
+     * @param event the MouseEvent for this handler
+     */
     private void deleteCamera(MouseEvent event) {
         // TODO: Show prompt if there are shots on the timeline.
         int selectedIndex = editModal.getCameraList().getSelectionModel().getSelectedIndex();
@@ -102,12 +125,17 @@ public class EditMenuController {
         typeModal.getAddCameraTypeButton().setOnMouseClicked(this::typeAdded);
     }
     
+    /**
+     * Handler for adding a camera type.
+     * @param event the MouseEvent for this handler
+     */
     private void typeAdded(MouseEvent event) {
         if (validateCameraTypeData()) {
             typeModal.hideModal();
             String name = typeModal.getNameField().getText();
             String description = typeModal.getDescriptionField().getText();
-            double movementMargin = Double.parseDouble(typeModal.getMovementMarginField().getText());
+            double movementMargin = Double.parseDouble(
+                    typeModal.getMovementMarginField().getText());
             CameraType type = new CameraType(name, description, movementMargin);
             editModal.getTypes().add(type);
             HBox box = new HBox();
@@ -116,6 +144,10 @@ public class EditMenuController {
         }
     }
     
+    /**
+     * Validate the data for adding a camera type.
+     * @return true if the data is legit, false otherwise
+     */
     private boolean validateCameraTypeData() {
         String errorString = "";
         String name = typeModal.getNameField().getText();
@@ -140,6 +172,10 @@ public class EditMenuController {
         return errorString.isEmpty();
     }
     
+    /**
+     * Handler for deleting a camera type.
+     * @param event the MouseEvent for this handler
+     */
     private void deleteCameraType(MouseEvent event) {
         int selectedIndex = editModal.getCameraTypeList().getSelectionModel().getSelectedIndex();
         if (selectedIndex != -1) {
@@ -150,10 +186,18 @@ public class EditMenuController {
         }
     }
     
+    /**
+     * Handler for when the cancel button is pressed.
+     * @param event the MouseEvent for this handler
+     */
     private void cancel(MouseEvent event) {
         editModal.hideModal();
     }
     
+    /**
+     * Handler for when the save button is clicked.
+     * @param event the MouseEvent for this handler
+     */
     private void save(MouseEvent event) {
         if (validateProjectData()) {
             editModal.hideModal();
@@ -161,7 +205,8 @@ public class EditMenuController {
             String name = editModal.getNameField().getText();
             String description = editModal.getDescriptionField().getText();
             String directorTimelineDescription = editModal.getDirectorDescriptionField().getText();
-            double secondsPerCount = Double.parseDouble(editModal.getSecondsPerCountField().getText());
+            double secondsPerCount = Double.parseDouble(
+                    editModal.getSecondsPerCountField().getText());
             
             ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
             project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
@@ -173,15 +218,13 @@ public class EditMenuController {
             for (CameraTimeline timeline : project.getCameraTimelines()) {
                 timeline.setProject(project);
             }
-            
-            
             controllerManager.setScriptingProject(project);
             controllerManager.updateWindowTitle();
-            
-            RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(), editModal.getTimelines().size(), false);
+            RootCenterArea area = new RootCenterArea(
+                    controllerManager.getRootPane(), editModal.getTimelines().size(), false);
             controllerManager.getRootPane().reInitRootCenterArea(area);
             
-            for (int i=0;i<project.getCameraTimelines().size();i++) {
+            for (int i = 0;i < project.getCameraTimelines().size();i++) {
                 CameraTimeline newLine = project.getCameraTimelines().get(i);
                 CameraTimeline oldLine = editModal.getProject().getCameraTimelines().get(i);
                 LinkedList<CameraShot> shots = new LinkedList<CameraShot>();
@@ -192,11 +235,14 @@ public class EditMenuController {
                     newLine.addShot(shot);
                     controllerManager.getTimelineControl().addCameraShot(i, shot);
                 }
-            }
-            
+            }  
         }
     }
     
+    /**
+     * Validate the data entered for the project.
+     * @return true if the data is legit, false otherwise
+     */
     private boolean validateProjectData() {
         String errorString = "";
         String directorTimelineDescription = editModal.getDirectorDescriptionField().getText();
