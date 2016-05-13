@@ -2,6 +2,7 @@ package gui.headerarea;
 
 import gui.misc.TweakingHelper;
 import gui.styling.StyledTextfield;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -17,20 +18,12 @@ import lombok.Getter;
  */
 public class DetailView extends HBox {
 
-    //private GridPane grid;
-
     private String style = "-fx-background-color: "
-            + TweakingHelper.STRING_TERTIARY + ";"
+            + TweakingHelper.STRING_BACKGROUND_HIGH + ";"
             + "-fx-min-height: 50;";
 
     private static final String defaultEmptyString = "";
     private static final String defaultEmptyNumber = "0";
-
-    private int numberOfColumns = 4;
-    private int numberOfRows = 1;
-
-    private double columnWidth = 200;
-    private double rowHeight = 50;
 
     @Getter
     private StyledTextfield nameField;
@@ -45,18 +38,10 @@ public class DetailView extends HBox {
      * Constructor.
      */
     public DetailView() {
-//        this.grid = new GridPane();
-//        this.getChildren().addAll(grid);
-//
-//        for (int i = 0; i < numberOfColumns - 1; i++) {
-//            grid.getColumnConstraints().add(new ColumnConstraints(columnWidth));
-//        }
-//        for (int i = 0; i < numberOfRows; i++) {
-//            grid.getRowConstraints().add(new RowConstraints(rowHeight));
-//        }
-//
-//        grid.setGridLinesVisible(true);
         this.setStyle(style);
+        this.setAlignment(Pos.CENTER_LEFT);
+        this.setPadding(new Insets(0, 0, 0, TweakingHelper.GENERAL_PADDING));
+        this.setSpacing(TweakingHelper.GENERAL_SPACING * 2);
         initName();
         initDescription();
         initBeginCount();
@@ -117,13 +102,11 @@ public class DetailView extends HBox {
         beginCountField.setTextColor(TweakingHelper.COLOR_PRIMARY);
         beginCountField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
         beginCountField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
-        beginCountField.setAlignment(Pos.CENTER);
-        //beginCountField.setPrefWidth(50);
-        HBox startCountBox = new HBox();
+        HBox startCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("Start Count:");
         startCountBox.getChildren().addAll(specifierLabel, beginCountField);
+        startCountBox.setAlignment(Pos.CENTER);
         this.getChildren().add(startCountBox);
-        //grid.add(startCountBox, 1, 0);
     }
 
     /**
@@ -136,12 +119,11 @@ public class DetailView extends HBox {
         endCountField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
         endCountField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         endCountField.setAlignment(Pos.CENTER);
-        //endCountField.setPrefWidth(50);
-        HBox endCountBox = new HBox();
+        HBox endCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("End Count:");
         endCountBox.getChildren().addAll(specifierLabel, endCountField);
+        endCountBox.setAlignment(Pos.CENTER);
         this.getChildren().add(endCountBox);
-        //grid.add(endCountBox, 2, 0);
     }
 
     /**
@@ -154,11 +136,11 @@ public class DetailView extends HBox {
         nameField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
         nameField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         nameField.setAlignment(Pos.CENTER);
-        HBox nameBox = new HBox();
+        HBox nameBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("Name:");
         nameBox.getChildren().addAll(specifierLabel, nameField);
+        nameBox.setAlignment(Pos.CENTER);
         this.getChildren().add(nameBox);
-        //grid.add(nameBox, 0, 0);
     }
 
     /**
@@ -171,13 +153,11 @@ public class DetailView extends HBox {
         descriptionField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
         descriptionField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         descriptionField.setAlignment(Pos.CENTER);
-        //descriptionField.setPrefWidth(300);
-        HBox descriptionBox = new HBox();
+        HBox descriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("Description:");
         descriptionBox.getChildren().addAll(specifierLabel, descriptionField);
+        descriptionBox.setAlignment(Pos.CENTER);
         this.getChildren().add(descriptionBox);
-        //grid.add(descriptionBox, 3, 0);
-        //grid.setColumnSpan(descriptionBox, 2);
     }
 
     /**
