@@ -46,7 +46,6 @@ public class DetailViewControllerTest extends ApplicationTest {
 
     @Before
     public void initialize() {
-        System.out.println("here");
         manager = Mockito.mock(ControllerManager.class);
         RootPane rootPane = Mockito.mock(RootPane.class);
         RootHeaderArea rootHeaderArea = Mockito.mock(RootHeaderArea.class);
@@ -216,7 +215,6 @@ public class DetailViewControllerTest extends ApplicationTest {
 
     @Test
     public void nameFieldTextProperty() {
-        System.out.println("here");
         CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
         CameraShot shot = Mockito.mock(CameraShot.class);
         when(manager.getActiveShotBlock()).thenReturn(block);

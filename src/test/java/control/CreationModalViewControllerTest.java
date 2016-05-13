@@ -32,8 +32,6 @@ import static org.mockito.Mockito.*;
  * Created by Bart on 12/05/2016.
  */
 @PowerMockIgnore("javax.management.*")
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(CreationModalViewController.class)
 public class CreationModalViewControllerTest extends ApplicationTest {
 
     private ControllerManager manager;
@@ -81,7 +79,6 @@ public class CreationModalViewControllerTest extends ApplicationTest {
         startField.setText("5.70");
         WhiteboxImpl.invokeMethod(creationModalViewController, "cameraShotStartCountEnterHandler", keyEvent);
         assertEquals("5.75", startField.getText());
-
         tearDownCreationModalView();
     }
 
