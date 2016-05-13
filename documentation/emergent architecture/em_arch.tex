@@ -37,10 +37,10 @@ This document provides an overview of the software system that will be built dur
 Chief among the priorities within this project are the design goals:
 
 \subsubsection{Availability}
-The system will be built using an Agile process, and will utilize continuous integration to ensure that the software will always work. As such, the goal is to have a working product at the end of each development sprint, ready for use \& testing by the client. This "always ready" design discourages software anti-patterns and contributes to the overall health of the project. In addition, it allows the client to give feedback after every iteration, enabling changes to be made without increasing technical debt.
+The system will be built using an Agile process, and will utilize continuous integration to ensure that the software will always work. As such, the goal is to have a working product at the end of each development sprint, ready for use \& testing by the client. This "always ready" design encourages the completion of features within sprints, giving clear milestones, and contributes to the overall health of the project. In addition, it allows the client to give feedback after every iteration, enabling changes to be made without increasing technical debt.
 
 \subsubsection{Modularity}
-In a digital audiovisual workflow there are many different users involved, each of whom have varying software needs. In order to meet all of them, the software system has to be flexible. This flexibility is best reflected in a modular architecture, as modularity encourages code and component reuse, which in turn increases the team's efficiency (and is also a software development best practice). Instead of designing and building three or four standalone systems, this principle allows the creation a blended system which in turn streamlines the workflow. In addition, changes can be made without fear of complex interdependencies.
+In a digital audiovisual workflow there are many different users involved, each of whom have varying software needs. In order to meet all of them, the software system has to be flexible. This flexibility is best reflected in a modular architecture, as modularity encourages code and component reuse, which in turn increases the team's efficiency (and is also a software development best practice). Instead of designing and building three or four standalone systems, this principle allows the creation a blended system which in turn streamlines the workflow (i.e. one uniform data format/protocol throughout the workflow, be it in the form of XML or otherwise). In addition, changes can be made without fear of complex interdependencies.
 
 \clearpage % Helps figure formatting
 
@@ -61,6 +61,7 @@ The architecture of the scripting software is divided up according to the Model 
     \item The view: The view consists of a GUI which displays the current state of the script in a timeline format, and the buttons required to add or make changes to shots and otherwise manipulate the entire script
     \item The controllers: The controller reacts to changes in the view (e.g. resizing a shot), which then trigger logic that keep the model up to date (e.g. Making sure that the shot length is updated). These adjustments are not just one way. Based on actions in the view, other portions of the view may also change, allowing complex and powerful actions to be simplified. The controller is also responsible for initializing the part of the software that it "owns". This means that it is able to load persistent data into the model, and then subsequently create the corresponding view.
 \end{itemize}
+The controllers have been split into two subgroups: those which create the gui, and those which are more concerned with the proper manipulation of the model. This allows a clearer separation and fine tuning of which responsiblities belong where in the project structure.
 
 \subsection{Hardware/Software Mapping}
 % Laptop to IP cameras
@@ -71,7 +72,7 @@ The architecture of the scripting software is divided up according to the Model 
 	\label{fig:mapping}
 \end{figure}
 
-The hardware and software will be the same for both the director and the camera operator. The functionality of the software will differ through the use of different modes. There is one mode for the scripting, and one for camera choreography and coordination of the commands which will be sent to the IP cameras. When a recording is taking place the software will send commands from the computer to the proper cameras.
+The hardware and software will be the same for both the director and the camera operator. The functionality of the software will differ through the use of different modes. There is one mode for the scripting, and one for camera choreography and coordination of the commands which will be sent to the IP cameras. When a recording is taking place the software will send commands from the computer to the proper cameras. The current plan is to use a server (possibly using the command design pattern) to push these commands to the IP cameras, which will allow the remote camera operators to take over whenever they deem it necessary to make changes and/or corrections.
 
 \subsection{Persistent Data Management}
 Data persistence in the system is accomplished through the use of XML files. Each script is loaded in and saved as an XML file, recording information about the timeline which can then be used by the controller to restore the program state. It also facilitates the transfer of a project between computers if necessary (e.g. from the director's computer to the camera operator's computer).
