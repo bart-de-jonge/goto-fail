@@ -176,30 +176,4 @@ public class CreationModalViewControllerTest extends ApplicationTest {
             // noop
         }
     }
-
-//    private static Thread t;
-//
-//    @BeforeClass
-//    public static void setUpClass() throws InterruptedException {
-//        // Initialise Java FX
-//
-//        System.out.printf("About to launch FX App\n");
-//        t = new Thread("JavaFX Init Thread") {
-//            public void run() {
-//                try {
-//                    ApplicationTest.launch(AsNonApp.class, new String[0]);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        };
-//        t.setDaemon(true);
-//        t.start();
-//        System.out.printf("FX App thread started\n");
-//    }
-//
-    @AfterClass
-    public static void breakDownClass() throws InterruptedException {
-//        Platform.exit();
-    }
 }

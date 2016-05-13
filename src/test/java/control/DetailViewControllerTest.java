@@ -157,16 +157,20 @@ public class DetailViewControllerTest extends ApplicationTest {
             @Override
             public void addListener(ChangeListener<? super Boolean> listener) {
             }
+
             @Override
             public void removeListener(ChangeListener<? super Boolean> listener) {
             }
+
             @Override
             public Boolean getValue() {
                 return null;
             }
+
             @Override
             public void addListener(InvalidationListener listener) {
             }
+
             @Override
             public void removeListener(InvalidationListener listener) {
             }
@@ -187,16 +191,20 @@ public class DetailViewControllerTest extends ApplicationTest {
             @Override
             public void addListener(ChangeListener<? super Boolean> listener) {
             }
+
             @Override
             public void removeListener(ChangeListener<? super Boolean> listener) {
             }
+
             @Override
             public Boolean getValue() {
                 return null;
             }
+
             @Override
             public void addListener(InvalidationListener listener) {
             }
+
             @Override
             public void removeListener(InvalidationListener listener) {
             }
@@ -218,16 +226,20 @@ public class DetailViewControllerTest extends ApplicationTest {
             @Override
             public void addListener(ChangeListener<? super String> listener) {
             }
+
             @Override
             public void removeListener(ChangeListener<? super String> listener) {
             }
+
             @Override
             public String getValue() {
                 return null;
             }
+
             @Override
             public void addListener(InvalidationListener listener) {
             }
+
             @Override
             public void removeListener(InvalidationListener listener) {
             }
@@ -248,16 +260,20 @@ public class DetailViewControllerTest extends ApplicationTest {
             @Override
             public void addListener(ChangeListener<? super String> listener) {
             }
+
             @Override
             public void removeListener(ChangeListener<? super String> listener) {
             }
+
             @Override
             public String getValue() {
                 return null;
             }
+
             @Override
             public void addListener(InvalidationListener listener) {
             }
+
             @Override
             public void removeListener(InvalidationListener listener) {
             }
@@ -271,30 +287,4 @@ public class DetailViewControllerTest extends ApplicationTest {
     public void start(Stage stage) throws Exception {
 
     }
-
-//    private static Thread t;
-//
-//    @BeforeClass
-//    public static void setUpClass() throws InterruptedException {
-//        // Initialise Java FX
-//
-//        System.out.printf("About to launch FX App\n");
-//        t = new Thread("JavaFX Init Thread") {
-//            public void run() {
-//                try {
-//                    ApplicationTest.launch(CreationModalViewControllerTest.AsNonApp.class, new String[0]);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        };
-//        t.setDaemon(true);
-//        t.start();
-//        System.out.printf("FX App thread started\n");
-//    }
-//
-//    @AfterClass
-//    public static void breakDownClass() throws InterruptedException {
-//        Platform.exit();
-//    }
 }
