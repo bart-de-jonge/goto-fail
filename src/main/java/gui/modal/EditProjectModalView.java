@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import data.Camera;
+import data.CameraTimeline;
 import data.CameraType;
 import data.ScriptingProject;
 import gui.headerarea.NumberTextField;
@@ -51,6 +52,14 @@ public class EditProjectModalView extends ModalView {
     private ListView<HBox> cameraList;
     @Getter
     private ListView<HBox> cameraTypeList;
+    @Getter
+    private ArrayList<CameraType> types;
+    @Getter
+    private ArrayList<Camera> cameras;
+    @Getter
+    private ArrayList<CameraTimeline> timelines;
+    @Getter
+    private Label errorLabel;
     
     
     
@@ -62,11 +71,17 @@ public class EditProjectModalView extends ModalView {
         super(rootPane, width, height);
         this.rootPane = rootPane;
         this.project = rootPane.getControllerManager().getScriptingProject();
+        this.cameras = project.getCameras();
+        this.types = project.getCameraTypes();
+        this.timelines = project.getCameraTimelines();
         initializeView();
     }
     
     private void initializeView() {
         viewPane = new VBox(20);
+        errorLabel = new Label("");
+        viewPane.getChildren().add(errorLabel);
+        
         initFields();
         initCameraTypeSection();
         initCameraSection();
@@ -106,7 +121,7 @@ public class EditProjectModalView extends ModalView {
     
     private void initCameraSection() {
         addCameraButton = new Button("Add Camera");
-        deleteCameraButton = new Button("Delete Camera Type");
+        deleteCameraButton = new Button("Delete Camera");
         cameraList = initCameraList();
         viewPane.getChildren().addAll(addCameraButton, deleteCameraButton, cameraList);
     }

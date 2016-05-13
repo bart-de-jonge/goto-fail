@@ -30,6 +30,9 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class ScriptingProject {
     
+    @Getter @Setter
+    private ArrayList<CameraType> cameraTypes;
+    
     // Name of this project
     @Getter @Setter
     private String name;
@@ -87,6 +90,7 @@ public class ScriptingProject {
         this.cameras = new ArrayList<Camera>();
         this.cameraTimelines = new ArrayList<CameraTimeline>();
         this.directorTimeline = new DirectorTimeline(description, this);
+        this.cameraTypes = new ArrayList<CameraType>();
         this.changed = true;
     }
     
