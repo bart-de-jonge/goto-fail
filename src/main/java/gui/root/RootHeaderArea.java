@@ -61,6 +61,29 @@ public class RootHeaderArea extends VBox {
      * @return MenuBar containing menus.
      */
     private MenuBar initMenus() {
+        Menu fileMenu = initFileMenu();
+       
+        Menu editMenu = new Menu("Edit");
+        
+        MenuItem editProjectItem = new MenuItem("Project");
+        editProjectItem.setOnAction(e -> {
+            rootPane.getControllerManager().getEditMenuController().editProject();
+        });
+        
+        Menu viewMenu = new Menu("View");
+        Menu helpMenu = new Menu("Help");
+
+        MenuBar topMenuBar = new MenuBar();
+        topMenuBar.setUseSystemMenuBar(true);
+        topMenuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
+        return topMenuBar;
+    }
+    
+    /**
+     * Initialize the file menu.
+     * @return the initialized file Menu
+     */
+    private Menu initFileMenu() {
         MenuItem newItem = new MenuItem("New");
         newItem.setOnAction(e -> {
                 rootPane.getControllerManager().getFileMenuController().newProject();
@@ -91,14 +114,7 @@ public class RootHeaderArea extends VBox {
             });
         Menu fileMenu = new Menu("File");
         fileMenu.getItems().addAll(newItem, saveItem, saveAsItem, loadItem, quit);
-        Menu editMenu = new Menu("Edit");
-        Menu viewMenu = new Menu("View");
-        Menu helpMenu = new Menu("Help");
-
-        MenuBar topMenuBar = new MenuBar();
-        topMenuBar.setUseSystemMenuBar(true);
-        topMenuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
-        return topMenuBar;
+        return fileMenu;
     }
 
     /**
