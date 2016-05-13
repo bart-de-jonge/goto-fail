@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
 /**
- * Created by martijn.
  * This class contains information about a Shot.
  */
 @XmlRootElement(name = "shot")

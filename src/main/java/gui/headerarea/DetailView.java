@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 /**
- * Created by Bart.
+ * The detail view is the view with details for shots.
  */
 public class DetailView extends VBox {
 

@@ -16,7 +16,7 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * Created by Bart on 11/05/2016.
+ * Controller for the CreationModalView.
  */
 public class CreationModalViewController {
 

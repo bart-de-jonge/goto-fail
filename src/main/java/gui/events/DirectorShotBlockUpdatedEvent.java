@@ -6,7 +6,7 @@ import javafx.event.Event;
 import javafx.event.EventType;
 
 /**
- * Created by Bart.
+ * Event for when a director shot block is updated.
  */
 public class DirectorShotBlockUpdatedEvent extends ShotblockUpdatedEvent {
 

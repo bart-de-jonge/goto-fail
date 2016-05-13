@@ -7,7 +7,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.input.KeyCode;
 
 /**
- * Created by Bart.
+ * Controller for the DetailView.
  */
 public class DetailViewController {
 

@@ -13,7 +13,6 @@ import lombok.ToString;
 
 /**
  * Class to store information about a directors timeline.
- * @author Bart.
  */
 @XmlRootElement(name = "directorTimeline")
 @ToString

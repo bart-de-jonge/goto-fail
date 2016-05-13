@@ -9,7 +9,6 @@ import lombok.extern.log4j.Log4j2;
 
 /**
  * This class extends the Shot class, this one is specific for the CameraTimeline.
- * Created by martijn.
  */
 @XmlRootElement(name = "cameraShot")
 @ToString

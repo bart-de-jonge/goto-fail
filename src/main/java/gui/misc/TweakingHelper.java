@@ -4,7 +4,6 @@ import javafx.scene.paint.Color;
 
 /**
  * Statics to help with gui tweakability.
- * @author Mark
  */
 public final class TweakingHelper {
 

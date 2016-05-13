@@ -23,7 +23,6 @@ import lombok.Getter;
  * such as mouse-over, buttonclick, etc.
  * Also, if anyone has a better way to do the generic types, tell me,
  * because I haven't exactly used that a lot so far.
- * @author Mark
  */
 public class TransitionHelper {
 

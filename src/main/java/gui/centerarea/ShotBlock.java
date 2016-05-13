@@ -11,8 +11,6 @@ import lombok.extern.log4j.Log4j2;
 import java.lang.reflect.Constructor;
 
 /**
- * @author Bart.
- *
  *      Abstract superclass for different kind of shots in the gui.
  *      This class is the edge between the View and the Controller.
  *      The controller only talks with this class and all the gui stuff

@@ -2,7 +2,6 @@ package gui.centerarea;
 
 /**
  * Class that represents the grid pane in the scrollable director timeline.
- * @author Mark
  */
 public class DirectorGridPane extends ScrollableGridPane {
 

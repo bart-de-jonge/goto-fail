@@ -21,7 +21,6 @@ import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
 /**
- * Created by Bart.
  * Class to store top-level properties of a scripting project.
  */
 @XmlRootElement(name = "scriptingProject")
