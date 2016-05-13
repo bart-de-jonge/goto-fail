@@ -3,7 +3,7 @@ package gui.misc;
 import javafx.scene.paint.Color;
 
 /**
- * statics to help with gui tweakability.
+ * Statics to help with gui tweakability.
  * @author Mark
  */
 public final class TweakingHelper {
@@ -12,13 +12,15 @@ public final class TweakingHelper {
     public static Color COLOR_PRIMARY = Color.rgb(255, 172, 70); // main bright color
     public static Color COLOR_SECONDARY = Color.rgb(255, 140, 0); // darker color
     public static Color COLOR_TERTIARY = Color.rgb(255, 235, 190); // lighter color
-    public static Color COLOR_BACKGROUND = Color.WHITE;
+    public static Color COLOR_BACKGROUND = Color.WHITE; // main background color
+    public static Color COLOR_BACKGROUND_HIGH = Color.rgb(245, 245, 245); // heightened background color
 
-    // string versions of main coors
+    // string versions of main colors
     public static String STRING_PRIMARY = getStringFromColor(COLOR_PRIMARY);
     public static String STRING_SECONDARY = getStringFromColor(COLOR_SECONDARY);
     public static String STRING_TERTIARY = getStringFromColor(COLOR_TERTIARY);
     public static String STRING_BACKGROUND = getStringFromColor(COLOR_BACKGROUND);
+    public static String STRING_BACKGROUND_HIGH = getStringFromColor(COLOR_BACKGROUND_HIGH);
 
     // general layout variables used throughout application.
     public static final int GENERAL_SIZE = 10000;
@@ -71,6 +73,15 @@ public final class TweakingHelper {
     public static void setBackroundColor(Color color) {
         COLOR_BACKGROUND = color;
         STRING_BACKGROUND = getStringFromColor(color);
+    }
+
+    /**
+     * Set heightened background application color to new value.
+     * @param color to set.
+     */
+    public static void setBackroundHighColor(Color color) {
+        COLOR_BACKGROUND_HIGH = color;
+        STRING_BACKGROUND_HIGH = getStringFromColor(color);
     }
 
 }
