@@ -120,7 +120,6 @@ public class CreationModalViewController {
      * @param event - the event to handle
      */
     private void createCameraShot(MouseEvent event) {
-        System.out.println(validateCameraShot());
         if (validateCameraShot()) {
             TimelineController timelineController = this.controllerManager.getTimelineControl();
 

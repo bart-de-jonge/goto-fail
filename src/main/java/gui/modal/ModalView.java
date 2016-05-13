@@ -36,7 +36,7 @@ public abstract class ModalView {
         this.height = height;
         this.modalStage = new Stage();
         this.modalStage.initModality(Modality.APPLICATION_MODAL);
-//        this.modalStage.initOwner(rootPane.getPrimaryStage());
+        this.modalStage.initOwner(rootPane.getPrimaryStage());
     }
 
     /**
