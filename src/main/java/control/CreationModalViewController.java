@@ -37,7 +37,7 @@ public class CreationModalViewController {
     public void showCameraCreationWindow() {
         cameraShotCreationModalView = new CameraShotCreationModalView(
                 this.controllerManager.getRootPane(),
-                this.controllerManager.getScriptingProject().getCameraTimelines().size());
+                this.controllerManager.getScriptingProject().getCameraTimelines());
 
         // Add mouse handlers
         cameraShotCreationModalView.getCreationButton().setOnMouseReleased(this::createCameraShot);
