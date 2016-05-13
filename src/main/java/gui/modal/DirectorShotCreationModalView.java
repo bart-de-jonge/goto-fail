@@ -2,6 +2,7 @@ package gui.modal;
 
 import gui.headerarea.DoubleTextField;
 import gui.headerarea.NumberTextField;
+import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledCheckbox;
@@ -73,9 +74,6 @@ public class DirectorShotCreationModalView extends ModalView {
 
     // No touching these constants. They work well for all general cases,
     // and there is no reason to change them ever again.
-    private static final int GENERAL_SIZE = 10000;
-    private static final int GENERAL_SPACING = 10;
-    private static final int GENERAL_PADDING = 20;
     private static final int TEXT_AREA_MIN_WIDTH = 350;
     private static final int CAMERA_AREA_MIN_WIDTH = 250;
 
@@ -159,8 +157,8 @@ public class DirectorShotCreationModalView extends ModalView {
         // add space for textfields and checkboxes
         this.centerPane = new HBox(40.0);
         this.centerPane.setAlignment(Pos.CENTER);
-        this.centerPane.setPadding(new Insets(0, GENERAL_PADDING, 0, 0));
-        this.centerPane.setPrefHeight(GENERAL_SIZE);
+        this.centerPane.setPadding(new Insets(0, TweakingHelper.GENERAL_PADDING, 0, 0));
+        this.centerPane.setPrefHeight(TweakingHelper.GENERAL_SIZE);
         this.rootPane.getChildren().add(centerPane);
 
         // actually add textfields and checkboxes
@@ -182,7 +180,7 @@ public class DirectorShotCreationModalView extends ModalView {
         titleLabel.setStyle(topStyle);
         titleLabel.setAlignment(Pos.CENTER_LEFT);
         titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(GENERAL_SIZE);
+        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
         titleLabel.setMinHeight(topAreaHeight);
         titleLabel.setPrefHeight(topAreaHeight);
         titleLabel.setMaxHeight(topAreaHeight);
@@ -193,12 +191,12 @@ public class DirectorShotCreationModalView extends ModalView {
      * Initialize all six of the text fields.
      */
     private void initTextfields() {
-        VBox content = new VBox(GENERAL_SPACING);
+        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
         content.setAlignment(Pos.CENTER_LEFT);
         content.setMinWidth(TEXT_AREA_MIN_WIDTH);
-        content.setPrefWidth(GENERAL_SIZE);
-        content.setPrefHeight(GENERAL_SIZE);
-        content.setPadding(new Insets(GENERAL_PADDING));
+        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
+        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
+        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
         content.setStyle(centerLeftStyle);
 
         initInfoTextfields(content);
@@ -220,7 +218,7 @@ public class DirectorShotCreationModalView extends ModalView {
         nameField.setTextColor(mainColor);
         nameField.setTextActiveColor(secondaryColor);
         nameField.setFillActiveColor(tertiaryColor);
-        HBox nameBox = new HBox(GENERAL_SPACING);
+        HBox nameBox = new HBox(TweakingHelper.GENERAL_SPACING);
         nameBox.getChildren().addAll(nameLabel, nameField);
         nameBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -231,7 +229,7 @@ public class DirectorShotCreationModalView extends ModalView {
         descriptionField.setTextColor(mainColor);
         descriptionField.setTextActiveColor(secondaryColor);
         descriptionField.setFillActiveColor(tertiaryColor);
-        HBox descriptionBox = new HBox(GENERAL_SPACING);
+        HBox descriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
         descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
         descriptionBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -251,7 +249,7 @@ public class DirectorShotCreationModalView extends ModalView {
         startField.setTextColor(mainColor);
         startField.setTextActiveColor(secondaryColor);
         startField.setFillActiveColor(tertiaryColor);
-        HBox startBox = new HBox(GENERAL_SPACING);
+        HBox startBox = new HBox(TweakingHelper.GENERAL_SPACING);
         startBox.getChildren().addAll(startLabel, startField);
         startBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -263,7 +261,7 @@ public class DirectorShotCreationModalView extends ModalView {
         endField.setTextColor(mainColor);
         endField.setTextActiveColor(secondaryColor);
         endField.setFillActiveColor(tertiaryColor);
-        HBox endBox = new HBox(GENERAL_SPACING);
+        HBox endBox = new HBox(TweakingHelper.GENERAL_SPACING);
         endBox.getChildren().addAll(endLabel, endField);
         endBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -283,7 +281,7 @@ public class DirectorShotCreationModalView extends ModalView {
         frontPaddingField.setTextColor(mainColor);
         frontPaddingField.setTextActiveColor(secondaryColor);
         frontPaddingField.setFillActiveColor(tertiaryColor);
-        HBox frontPaddingBox = new HBox(GENERAL_SPACING);
+        HBox frontPaddingBox = new HBox(TweakingHelper.GENERAL_SPACING);
         frontPaddingBox.getChildren().addAll(frontPaddingLabel, frontPaddingField);
         frontPaddingBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -295,7 +293,7 @@ public class DirectorShotCreationModalView extends ModalView {
         endPaddingField.setTextColor(mainColor);
         endPaddingField.setTextActiveColor(secondaryColor);
         endPaddingField.setFillActiveColor(tertiaryColor);
-        HBox endPaddingBox = new HBox(GENERAL_SPACING);
+        HBox endPaddingBox = new HBox(TweakingHelper.GENERAL_SPACING);
         endPaddingBox.getChildren().addAll(endPaddingLabel, endPaddingField);
         endPaddingBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -307,10 +305,10 @@ public class DirectorShotCreationModalView extends ModalView {
      */
     private void initCamCheckBoxes() {
         this.checkboxPane = new FlowPane();
-        this.checkboxPane.setHgap(GENERAL_PADDING);
-        this.checkboxPane.setVgap(GENERAL_PADDING);
+        this.checkboxPane.setHgap(TweakingHelper.GENERAL_PADDING);
+        this.checkboxPane.setVgap(TweakingHelper.GENERAL_PADDING);
         this.checkboxPane.setMinWidth(CAMERA_AREA_MIN_WIDTH);
-        this.checkboxPane.setPrefWidth(GENERAL_SIZE);
+        this.checkboxPane.setPrefWidth(TweakingHelper.GENERAL_SIZE);
         this.checkboxPane.setAlignment(Pos.CENTER);
         this.checkboxPane.setStyle(centerRightStyle);
 

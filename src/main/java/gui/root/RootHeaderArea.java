@@ -17,7 +17,7 @@ import lombok.Getter;
 public class RootHeaderArea extends VBox {
 
     private RootPane rootPane;
-    private HBox headerBar;
+    private VBox headerBar;
 
     @Getter
     private DetailView detailView;
@@ -45,13 +45,13 @@ public class RootHeaderArea extends VBox {
      * Init the header bar of the RootHeaderArea.
      * @return - the hbox displaying the headerbar
      */
-    private HBox initHeaderBar() {
-        headerBar = new HBox();
+    private VBox initHeaderBar() {
+        headerBar = new VBox();
+
+        headerBar.getChildren().add(initButtons());
 
         detailView = new DetailView();
-
         headerBar.getChildren().add(detailView);
-        headerBar.getChildren().add(initButtons());
 
         return headerBar;
     }

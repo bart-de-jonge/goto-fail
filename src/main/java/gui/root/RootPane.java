@@ -51,7 +51,11 @@ public class RootPane extends Application {
         // Create scene and set the stage. This is where the window is basically
         // created. Also has some useful settings.
         Scene scene = new Scene(topLevelPane);
-        scene.getStylesheets().add("Stylesheets/stylesheet.css");
+        scene.getStylesheets().add("Stylesheets/Misc.css");
+        scene.getStylesheets().add("Stylesheets/StyledButton.css");
+        scene.getStylesheets().add("Stylesheets/StyledCheckbox.css");
+        scene.getStylesheets().add("Stylesheets/StyledTextfield.css");
+        scene.getStylesheets().add("Stylesheets/StyledListview.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("New Project");
         primaryStage.setMinHeight(minimumResolutionY);

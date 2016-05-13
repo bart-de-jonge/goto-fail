@@ -4,6 +4,7 @@ import data.Camera;
 import data.CameraTimeline;
 import data.CameraType;
 import gui.headerarea.NumberTextField;
+import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledListview;
@@ -73,9 +74,6 @@ public class NewProjectModalView extends ModalView {
 
     // No touching these constants. They work well for all general cases,
     // and there is no reason to change them ever again.
-    private static final int GENERAL_SIZE = 10000;
-    private static final int GENERAL_SPACING = 10;
-    private static final int GENERAL_PADDING = 20;
     private static final int TEXT_AREA_MIN_WIDTH = 300;
     private static final int LISTS_AREA_MIN_WIDTH = 300;
 
@@ -168,7 +166,7 @@ public class NewProjectModalView extends ModalView {
         this.centerPane = new HBox(40.0);
         this.centerPane.setAlignment(Pos.CENTER);
         this.centerPane.setPadding(new Insets(0, 0, 0, 0));
-        this.centerPane.setPrefHeight(GENERAL_SIZE);
+        this.centerPane.setPrefHeight(TweakingHelper.GENERAL_SIZE);
         this.viewPane.getChildren().add(centerPane);
 
         // actually add textfields and lists
@@ -190,7 +188,7 @@ public class NewProjectModalView extends ModalView {
         titleLabel.setStyle(topStyle);
         titleLabel.setAlignment(Pos.CENTER_LEFT);
         titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(GENERAL_SIZE);
+        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
         titleLabel.setMinHeight(topAreaHeight);
         titleLabel.setPrefHeight(topAreaHeight);
         titleLabel.setMaxHeight(topAreaHeight);
@@ -201,12 +199,12 @@ public class NewProjectModalView extends ModalView {
      * Initialize fields.
      */
     private void initFields() {
-        VBox content = new VBox(GENERAL_SPACING);
+        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
         content.setAlignment(Pos.CENTER_LEFT);
         content.setMinWidth(TEXT_AREA_MIN_WIDTH);
-        content.setPrefWidth(GENERAL_SIZE);
-        content.setPrefHeight(GENERAL_SIZE);
-        content.setPadding(new Insets(GENERAL_PADDING));
+        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
+        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
+        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
         content.setStyle(centerLeftStyle);
 
         initNameDescriptionFields(content);
@@ -227,7 +225,7 @@ public class NewProjectModalView extends ModalView {
         nameField.setTextColor(mainColor);
         nameField.setTextActiveColor(secondaryColor);
         nameField.setFillActiveColor(tertiaryColor);
-        HBox nameBox = new HBox(GENERAL_SPACING);
+        HBox nameBox = new HBox(TweakingHelper.GENERAL_SPACING);
         nameBox.getChildren().addAll(nameLabel, nameField);
         nameBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -238,7 +236,7 @@ public class NewProjectModalView extends ModalView {
         descriptionField.setTextColor(mainColor);
         descriptionField.setTextActiveColor(secondaryColor);
         descriptionField.setFillActiveColor(tertiaryColor);
-        HBox descriptionBox = new HBox(GENERAL_SPACING);
+        HBox descriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
         descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
         descriptionBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -257,7 +255,7 @@ public class NewProjectModalView extends ModalView {
         secondsPerCountField.setTextColor(mainColor);
         secondsPerCountField.setTextActiveColor(secondaryColor);
         secondsPerCountField.setFillActiveColor(tertiaryColor);
-        HBox secondsPerCountBox = new HBox(GENERAL_SPACING);
+        HBox secondsPerCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
         secondsPerCountBox.getChildren().addAll(secondsPerCountLabel, secondsPerCountField);
         secondsPerCountBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -268,7 +266,7 @@ public class NewProjectModalView extends ModalView {
         directorTimelineDescriptionField.setTextColor(mainColor);
         directorTimelineDescriptionField.setTextActiveColor(secondaryColor);
         directorTimelineDescriptionField.setFillActiveColor(tertiaryColor);
-        HBox directorTimelineDescriptionBox = new HBox(GENERAL_SPACING);
+        HBox directorTimelineDescriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
         directorTimelineDescriptionBox.getChildren().addAll(directorTimelineDescriptionLabel,
                 directorTimelineDescriptionField);
         directorTimelineDescriptionBox.setAlignment(Pos.CENTER_RIGHT);
@@ -281,12 +279,12 @@ public class NewProjectModalView extends ModalView {
      */
     private void initAdds() {
         // vertical pane to hold content
-        VBox content = new VBox(GENERAL_SPACING);
+        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
         content.setAlignment(Pos.CENTER_LEFT);
         content.setMinWidth(LISTS_AREA_MIN_WIDTH);
-        content.setPrefWidth(GENERAL_SIZE);
-        content.setPrefHeight(GENERAL_SIZE);
-        content.setPadding(new Insets(GENERAL_PADDING));
+        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
+        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
+        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
         content.setStyle(centerRightStyle);
 
         // add camera type

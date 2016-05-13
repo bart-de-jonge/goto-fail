@@ -1,6 +1,7 @@
 package gui.modal;
 
 import gui.headerarea.DoubleTextField;
+import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledTextfield;
@@ -54,12 +55,6 @@ public class AddCameraTypeModalView extends ModalView {
     /*
      * Other variables.
      */
-
-    // No touching these constants. They work well for all general cases,
-    // and there is no reason to change them ever again.
-    private static final int GENERAL_SIZE = 10000;
-    private static final int GENERAL_SPACING = 10;
-    private static final int GENERAL_PADDING = 20;
 
     @Getter
     private StyledTextfield nameField;
@@ -127,7 +122,7 @@ public class AddCameraTypeModalView extends ModalView {
         titleLabel.setStyle(topStyle);
         titleLabel.setAlignment(Pos.CENTER_LEFT);
         titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(GENERAL_SIZE);
+        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
         titleLabel.setMinHeight(topAreaHeight);
         titleLabel.setPrefHeight(topAreaHeight);
         titleLabel.setMaxHeight(topAreaHeight);
@@ -138,11 +133,11 @@ public class AddCameraTypeModalView extends ModalView {
      * Initialize the fields.
      */
     private void initFields() {
-        VBox content = new VBox(GENERAL_SPACING);
+        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
         content.setAlignment(Pos.CENTER);
-        content.setPrefWidth(GENERAL_SIZE);
-        content.setPrefHeight(GENERAL_SIZE);
-        content.setPadding(new Insets(GENERAL_PADDING));
+        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
+        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
+        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
         content.setStyle(centerStyle);
 
         final Label nameLabel = new Label("Name:  ");
@@ -151,7 +146,7 @@ public class AddCameraTypeModalView extends ModalView {
         nameField.setTextColor(mainColor);
         nameField.setTextActiveColor(secondaryColor);
         nameField.setFillActiveColor(tertiaryColor);
-        HBox nameBox = new HBox(GENERAL_SPACING);
+        HBox nameBox = new HBox(TweakingHelper.GENERAL_SPACING);
         nameBox.getChildren().addAll(nameLabel, nameField);
         nameBox.setAlignment(Pos.CENTER_RIGHT);
         
@@ -161,7 +156,7 @@ public class AddCameraTypeModalView extends ModalView {
         descriptionField.setTextColor(mainColor);
         descriptionField.setTextActiveColor(secondaryColor);
         descriptionField.setFillActiveColor(tertiaryColor);
-        HBox descriptionBox = new HBox(GENERAL_SPACING);
+        HBox descriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
         descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
         descriptionBox.setAlignment(Pos.CENTER_RIGHT);
         
@@ -171,7 +166,7 @@ public class AddCameraTypeModalView extends ModalView {
         movementMarginField.setTextColor(mainColor);
         movementMarginField.setTextActiveColor(secondaryColor);
         movementMarginField.setFillActiveColor(tertiaryColor);
-        HBox movementMarginBox = new HBox(GENERAL_SPACING);
+        HBox movementMarginBox = new HBox(TweakingHelper.GENERAL_SPACING);
         movementMarginBox.getChildren().addAll(marginLabel, movementMarginField);
         movementMarginBox.setAlignment(Pos.CENTER_RIGHT);
         content.getChildren().addAll(nameBox, descriptionBox, movementMarginBox);

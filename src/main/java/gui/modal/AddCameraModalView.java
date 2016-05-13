@@ -1,6 +1,7 @@
 package gui.modal;
 
 import data.CameraType;
+import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledListview;
@@ -60,9 +61,6 @@ public class AddCameraModalView extends ModalView {
 
     // No touching these constants. They work well for all general cases,
     // and there is no reason to change them ever again.
-    private static final int GENERAL_SIZE = 10000;
-    private static final int GENERAL_SPACING = 10;
-    private static final int GENERAL_PADDING = 20;
     private static final int TEXT_AREA_MIN_WIDTH = 280;
     private static final int LISTS_AREA_MIN_WIDTH = 250;
 
@@ -125,8 +123,8 @@ public class AddCameraModalView extends ModalView {
         // add space for textfields and listviews
         this.centerPane = new HBox();
         this.centerPane.setAlignment(Pos.CENTER);
-        this.centerPane.setPadding(new Insets(0, GENERAL_PADDING, 0, 0));
-        this.centerPane.setPrefHeight(GENERAL_SIZE);
+        this.centerPane.setPadding(new Insets(0, TweakingHelper.GENERAL_PADDING, 0, 0));
+        this.centerPane.setPrefHeight(TweakingHelper.GENERAL_SIZE);
         this.centerPane.setSpacing(40.0);
         this.viewPane.getChildren().add(centerPane);
 
@@ -148,7 +146,7 @@ public class AddCameraModalView extends ModalView {
         titleLabel.setStyle(topStyle);
         titleLabel.setAlignment(Pos.CENTER_LEFT);
         titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(GENERAL_SIZE);
+        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
         titleLabel.setMinHeight(topAreaHeight);
         titleLabel.setPrefHeight(topAreaHeight);
         titleLabel.setMaxHeight(topAreaHeight);
@@ -159,12 +157,12 @@ public class AddCameraModalView extends ModalView {
      * Initialize the fields.
      */
     private void initFields() {
-        VBox content = new VBox(GENERAL_SPACING);
+        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
         content.setAlignment(Pos.CENTER);
         content.setMinWidth(TEXT_AREA_MIN_WIDTH);
-        content.setPrefWidth(GENERAL_SIZE);
-        content.setPrefHeight(GENERAL_SIZE);
-        content.setPadding(new Insets(GENERAL_PADDING));
+        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
+        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
+        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
         content.setStyle(centerLeftStyle);
 
         final Label nameLabel = new Label("Name:  ");
@@ -173,7 +171,7 @@ public class AddCameraModalView extends ModalView {
         nameField.setTextColor(mainColor);
         nameField.setTextActiveColor(secondaryColor);
         nameField.setFillActiveColor(tertiaryColor);
-        HBox nameBox = new HBox(GENERAL_SPACING);
+        HBox nameBox = new HBox(TweakingHelper.GENERAL_SPACING);
         nameBox.getChildren().addAll(nameLabel, nameField);
         nameBox.setAlignment(Pos.CENTER_RIGHT);
         
@@ -183,7 +181,7 @@ public class AddCameraModalView extends ModalView {
         descriptionField.setTextColor(mainColor);
         descriptionField.setTextActiveColor(secondaryColor);
         descriptionField.setFillActiveColor(tertiaryColor);
-        HBox descriptionBox = new HBox(GENERAL_SPACING);
+        HBox descriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
         descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
         descriptionBox.setAlignment(Pos.CENTER_RIGHT);
         
@@ -196,12 +194,12 @@ public class AddCameraModalView extends ModalView {
      */
     private void initTypeList() {
         // vertical pane to hold content
-        VBox content = new VBox(GENERAL_SPACING);
+        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
         content.setAlignment(Pos.CENTER_LEFT);
         content.setMinWidth(LISTS_AREA_MIN_WIDTH);
-        content.setPrefWidth(GENERAL_SIZE);
-        content.setPrefHeight(GENERAL_SIZE);
-        content.setPadding(new Insets(GENERAL_PADDING));
+        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
+        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
+        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
         content.setStyle(centerRightStyle);
 
         final Label cameraTypeLabel = new Label("Camera Type: ");
