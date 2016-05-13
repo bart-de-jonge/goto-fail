@@ -18,8 +18,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -38,17 +36,18 @@ public class FileMenuController {
     private AddCameraTypeModalView cameraTypeModal;
     private AddTimelineModalView timelineModal;
     
-    
     /**
      * Construct a new FileMenuController.
      * @param manager the controllermanager that manages this controller
      */
     public FileMenuController(ControllerManager manager) {
         this.controllerManager = manager;
-        controllerManager.getRootPane().getRootCenterArea().getNewButton()
+        controllerManager.getRootPane().getStartupModalView().getNewButton()
                          .setOnMouseClicked(this::newProject);
-        controllerManager.getRootPane().getRootCenterArea().getLoadButton()
+        controllerManager.getRootPane().getStartupModalView().getLoadButton()
                          .setOnMouseClicked(this::loadProject);
+        controllerManager.getRootPane().getStartupModalView().getExitButton()
+                         .setOnMouseClicked(this::exit);
     }
     
     /**
@@ -90,14 +89,18 @@ public class FileMenuController {
      * @param file the file to load from
      */
     public void load(File file) {
-        ScriptingProject temp  = ScriptingProject.read(file);
+        ScriptingProject temp = null;
+        try {
+            temp = ScriptingProject.read(file);
+        } catch (Exception e) {
+            log.error("previously opened file could not be found.");
+        }
         if (temp == null) {
-//            Alert alert = new Alert(AlertType.ERROR);
-//            alert.setTitle("Load Failed");
-//            alert.setContentText("The format in the selected file was not recognized");
-//            alert.showAndWait();
+            System.out.println("dedede");
+            controllerManager.getRootPane().getPrimaryStage().close();
             controllerManager.getRootPane().initStartupScreen(true);
         } else {
+            controllerManager.getRootPane().closeStartupScreen();
             controllerManager.setScriptingProject(temp);
             controllerManager.getRootPane()
                     .reInitRootCenterArea(new RootCenterArea(
@@ -429,6 +432,11 @@ public class FileMenuController {
      
     public void loadProject(MouseEvent event) {
         load();
+    }
+
+
+    private void exit(MouseEvent event) {
+        controllerManager.getRootPane().closeStartupScreen();
     }
 
 }

@@ -71,22 +71,19 @@ public class StartupModalView extends ModalView {
     /**
      * Constructor of class.
      * @param rootPane the rootpane from which this is defined.
-     * @param loadFailed whether to display a load failure or not.
      */
-    public StartupModalView(RootPane rootPane, boolean loadFailed) {
-        this(rootPane, loadFailed, width, height);
+    public StartupModalView(RootPane rootPane) {
+        this(rootPane, width, height);
     }
 
     /**
      * Constructor of class.
      * @param rootPane the rootpane from which this is defined.
-     * @param loadFailed whether to display a load failure or not.
      * @param width min. width of screen.
      * @param height min. height of screen.
      */
-    public StartupModalView(RootPane rootPane, boolean loadFailed, int width, int height) {
+    public StartupModalView(RootPane rootPane, int width, int height) {
         super(rootPane, width, height);
-        loadTitle = (loadFailed) ? loadFailedTitle : noLoadTitle;
         initializeView();
     }
     
@@ -117,7 +114,7 @@ public class StartupModalView extends ModalView {
      * Initialize title label.
      */
     private void initInformationLabel() {
-        informationLabel = new Label(loadTitle);
+        informationLabel = new Label(noLoadTitle);
         informationLabel.setStyle(topStyle);
         informationLabel.setAlignment(Pos.CENTER);
         informationLabel.setPadding(new Insets(0, titlelabelOffsetFromLeft,
@@ -161,6 +158,10 @@ public class StartupModalView extends ModalView {
         exitButton.setBorderColor(mainColor);
 
         content.getChildren().addAll(newButton, loadButton, exitButton);
+    }
+
+    public void setLoadFailed() {
+        informationLabel.setText(loadFailedTitle);
     }
 
     /**

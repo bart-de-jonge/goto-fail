@@ -62,21 +62,21 @@ public class RootPane extends Application {
         primaryStage.setMinWidth(minimumResolutionX);
         primaryStage.setHeight(startingResolutionY);
         primaryStage.setWidth(startingResolutionX);
+        primaryStage.centerOnScreen();
 
         // represents file-view-help bar and button bars at top of gui.
         rootHeaderArea = new RootHeaderArea(this);
         topLevelPane.setTop(rootHeaderArea);
-
         // represents simple bar at bottom of gui.
         rootFooterArea = new RootFooterArea();
         topLevelPane.setBottom(rootFooterArea);
-
+        // represents center of ui
         rootCenterArea = new RootCenterArea(this, 0, true);
         topLevelPane.setCenter(rootCenterArea);
+        // startup modal view.
+        startupModalView = new StartupModalView(this);
         
         controllerManager = new ControllerManager(this);
-
-        primaryStage.centerOnScreen();
 
         String recentProjectPath = readPathFromConfig();
         if (recentProjectPath != null) {
@@ -85,7 +85,6 @@ public class RootPane extends Application {
         } else {
             initStartupScreen(false);
         }
-
     }
     
     /**
@@ -126,7 +125,16 @@ public class RootPane extends Application {
      * @param loadFailed whether to display a load failure message or not.
      */
     public void initStartupScreen(boolean loadFailed) {
-        startupModalView = new StartupModalView(this, loadFailed);
+        if (loadFailed) {
+            startupModalView.setLoadFailed();
+        }
         startupModalView.displayModal();
+    }
+
+    /**
+     * Removes startup screen.
+     */
+    public void closeStartupScreen() {
+        startupModalView.hideModal();
     }
 }
