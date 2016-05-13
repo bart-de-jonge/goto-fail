@@ -73,6 +73,17 @@ public class RootHeaderArea extends VBox {
         
         Menu viewMenu = new Menu("View");
         Menu helpMenu = new Menu("Help");
+        
+        MenuItem helpWebsiteItem = new MenuItem("Website");
+        helpMenu.setOnAction(e -> {
+            try {
+                java.awt.Desktop.getDesktop().browse(java.net.URI.create("http://gotofail.net"));
+            } catch (Exception e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        });
+        helpMenu.getItems().add(helpWebsiteItem);
 
         MenuBar topMenuBar = new MenuBar();
         topMenuBar.setUseSystemMenuBar(true);

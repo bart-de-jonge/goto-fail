@@ -83,6 +83,7 @@ public class EditMenuController {
     }
     
     private void deleteCamera(MouseEvent event) {
+        // TODO: Show prompt if there are shots on the timeline.
         int selectedIndex = editModal.getCameraList().getSelectionModel().getSelectedIndex();
         if (selectedIndex != -1) {
             editModal.getCameras().remove(selectedIndex);
