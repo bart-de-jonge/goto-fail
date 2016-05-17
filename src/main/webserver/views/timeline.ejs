@@ -10,7 +10,7 @@
     <div class="page-wrap">
         <header>
             <div class="content">
-                <p>Placeholder header</p>
+                <h1>Goto fail; web-based timeline</h1>
             </div>
         </header>
 
@@ -25,6 +25,7 @@
                         </tr>
                         <%
                             var curBlockNumber = 0;
+                            var prevBlock = null;
                             var curBlock = timelineBlocks[curBlockNumber];
                             for(i = minCount; i <= maxCount; i++) {
                                 var nextBlock = timelineBlocks %>
@@ -38,11 +39,12 @@
                                         </td>
                                         <% curBlockNumber++;
                                         if (curBlockNumber < timelineBlocks.length) {
+                                            prevBlock = curBlock;
                                             curBlock = timelineBlocks[curBlockNumber];
                                         } else {
                                             curBlockNumber = -1;
                                         }
-                                    } else { %>
+                                    } else if (prevBlock === null || curBlock.beginCount > i && prevBlock.endCount < i) { %>
                                         <td></td>
                                     <% } %>
                                 </tr>
@@ -55,7 +57,7 @@
 
     <footer>
         <div class="content">
-            <p>Placeholder footer</p>
+            <p>Goto fail; All rights reserved</p>
         </div>
     </footer>
 </body>
