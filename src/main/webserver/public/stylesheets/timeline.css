@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+.page-wrap {
+    min-height: 100%;
+    /* footer height */
+    margin-bottom: -70px;
+}
+
+.page-wrap:after {
+    content: "";
+    display: block;
+}
+
+footer, .page-wrap:after {
+    height: 70px;
+}
+
+header {
+    height: 70px;
+    background-color: green;
+}
+
+header > .content > p {
+    margin: 0;
+    padding-top: 20px;
+}
+
+footer {
+    background-color: blue;
+}
