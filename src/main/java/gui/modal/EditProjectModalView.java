@@ -1,8 +1,5 @@
 package gui.modal;
 
-import java.util.ArrayList;
-import java.util.Set;
-
 import data.Camera;
 import data.CameraTimeline;
 import data.CameraType;
@@ -13,6 +10,8 @@ import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledListview;
 import gui.styling.StyledTextfield;
+import java.util.ArrayList;
+import java.util.Set;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -291,42 +290,31 @@ public class EditProjectModalView extends ModalView {
         content.setStyle(centerRightStyle);
 
         // add camera type
-        HBox cameraTypeContent = new HBox(TweakingHelper.GENERAL_SPACING);
         addCameraTypeButton = new StyledButton("Add Camera Type");
         addCameraTypeButton.setFillColor(Color.WHITE);
         addCameraTypeButton.setBorderColor(TweakingHelper.COLOR_PRIMARY);
         deleteCameraTypeButton = new StyledButton("Delete Camera Type");
         deleteCameraTypeButton.setFillColor(Color.WHITE);
         deleteCameraTypeButton.setBorderColor(TweakingHelper.COLOR_PRIMARY);
+        HBox cameraTypeContent = new HBox(TweakingHelper.GENERAL_SPACING);
         cameraTypeContent.getChildren().addAll(addCameraTypeButton,
                 deleteCameraTypeButton);
-        cameraTypeList = new StyledListview<HBox>();
-        cameraTypeList.setMinHeight(75);
+        cameraTypeList = initCameraTypeList();
         content.getChildren().addAll(cameraTypeContent, cameraTypeList);
 
         // add camera
-        HBox cameraContent = new HBox(TweakingHelper.GENERAL_SPACING);
         addCameraButton = new StyledButton("Add Camera");
         addCameraButton.setFillColor(Color.WHITE);
         addCameraButton.setBorderColor(TweakingHelper.COLOR_PRIMARY);
         deleteCameraButton = new StyledButton("Delete Camera");
         deleteCameraButton.setFillColor(Color.WHITE);
         deleteCameraButton.setBorderColor(TweakingHelper.COLOR_PRIMARY);
+        HBox cameraContent = new HBox(TweakingHelper.GENERAL_SPACING);
         cameraContent.getChildren().addAll(addCameraButton, deleteCameraButton);
-        cameraList = initCameraTypeList();
+        cameraList = initCameraList();
         content.getChildren().addAll(cameraContent, cameraList);
 
         this.centerPane.getChildren().add(content);
-    }
-    
-    /**
-     * Initialize the section for adding/deleting camera types.
-     */
-    private void initCameraTypeSection() {
-        addCameraTypeButton = new StyledButton("Add Camera Type");
-        deleteCameraTypeButton = new StyledButton("Delete Camera Type");
-        cameraTypeList = initCameraTypeList();
-        viewPane.getChildren().addAll(addCameraTypeButton, deleteCameraTypeButton, cameraTypeList);
     }
     
     /**
@@ -347,21 +335,12 @@ public class EditProjectModalView extends ModalView {
     }
     
     /**
-     * Initialize the section for adding/deleting cameras.
-     */
-    private void initCameraSection() {
-        addCameraButton = new StyledButton("Add Camera");
-        deleteCameraButton = new StyledButton("Delete Camera");
-        cameraList = initCameraList();
-        viewPane.getChildren().addAll(addCameraButton, deleteCameraButton, cameraList);
-    }
-    
-    /**
      * Initialize the camera list.
      * @return the camera list.
      */
     private ListView<HBox> initCameraList() {
-        ListView<HBox> result = new ListView<HBox>();
+        StyledListview<HBox> result = new StyledListview<HBox>();
+        result.setMinHeight(75);
         ArrayList<Camera> cameras = project.getCameras();
         for (Camera c: cameras) {
             HBox box = new HBox();
