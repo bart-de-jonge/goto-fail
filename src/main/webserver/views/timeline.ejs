@@ -2,7 +2,8 @@
 <html>
 <head>
     <link rel="stylesheet" href="/stylesheets/timeline.css">
-
+    <script src="/javascripts/jquery-offline.js"></script>
+    <script src="/javascripts/timeline.js"></script>
 </head>
 
 <body>
@@ -16,6 +17,20 @@
         <main>
             <div class="content">
                 <p>Placeholder main</p>
+                <table class="timeline">
+                    <tbody>
+                        <tr>
+                            <th>Count number</th>
+                            <th>Timeline blocks</th>
+                        </tr>
+                        <% for(i = minCount; i <= maxCount; i++) { %>
+                            <tr>
+                                <td><%= i%></td>
+                                <td></td>
+                            </tr>
+                        <% }; %>
+                    </tbody>
+                </table>
             </div>
         </main>
     </div>

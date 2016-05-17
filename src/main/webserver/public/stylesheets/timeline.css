@@ -8,6 +8,10 @@ html, body {
     width: 100%;
 }
 
+header, main, footer {
+    padding: 20px;
+}
+
 .page-wrap {
     min-height: 100%;
     /* footer height */
@@ -35,4 +39,26 @@ header > .content > p {
 
 footer {
     background-color: blue;
+}
+
+.timeline, .timeline th, .timeline td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.timeline th:first-child, .timeline td:first-child {
+    text-align: center;
+    width: 50%;
+}
+
+.timeline th:nth-child(2), .timeline td:nth-child(2) {
+    width: 50%;
+}
+
+.timeline {
+    width: 1000px;
+}
+
+.timeline > tbody, .timeline > tbody > tr {
+    width: 100%;
 }
