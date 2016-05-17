@@ -12,8 +12,9 @@ router.get('/', function(req, res, next) {
     // Todo: replace with real things,
     // note: the array must be ordered or be sorted here
     var timelineBlocks = [];
-    timelineBlocks.push(new TimelineBlock(2, 4));
+    timelineBlocks.push(new TimelineBlock(1, 5));
     timelineBlocks.push(new TimelineBlock(7, 12));
+    timelineBlocks.push(new TimelineBlock(15, 22));
 
 
     // Calculate minimum and maximum counts

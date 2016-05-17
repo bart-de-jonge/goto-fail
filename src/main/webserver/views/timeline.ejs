@@ -23,11 +23,29 @@
                             <th>Count number</th>
                             <th>Timeline blocks</th>
                         </tr>
-                        <% for(i = minCount; i <= maxCount; i++) { %>
-                            <tr>
-                                <td><%= i%></td>
-                                <td></td>
-                            </tr>
+                        <%
+                            var curBlockNumber = 0;
+                            var curBlock = timelineBlocks[curBlockNumber];
+                            for(i = minCount; i <= maxCount; i++) {
+                                var nextBlock = timelineBlocks %>
+                                <tr>
+                                    <td><%= i %></td>
+                                    <% if (curBlockNumber != -1 && curBlock.beginCount === i) { %>
+                                        <td rowspan="<%= curBlock.endCount - curBlock.beginCount + 1 %>">
+                                            <div class="timeline-block">
+                                                <span><%= curBlock.beginCount %> - <%= curBlock.endCount %></span>
+                                            </div>
+                                        </td>
+                                        <% curBlockNumber++;
+                                        if (curBlockNumber < timelineBlocks.length) {
+                                            curBlock = timelineBlocks[curBlockNumber];
+                                        } else {
+                                            curBlockNumber = -1;
+                                        }
+                                    } else { %>
+                                        <td></td>
+                                    <% } %>
+                                </tr>
                         <% }; %>
                     </tbody>
                 </table>
