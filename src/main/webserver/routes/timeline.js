@@ -6,7 +6,7 @@ var router = express.Router();
 var TimelineBlock = require('./../objects/timelineBlock');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res) {
 
     // Dummy array here
     // Todo: replace with real things,
