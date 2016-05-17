@@ -5,6 +5,7 @@
         "no-use-before-define": ["error", {
             "functions": false
         }],
-        "no-shadow": 0
+        "no-shadow": 0,
+        "quotes": ["error", "double"],
     }
 }
