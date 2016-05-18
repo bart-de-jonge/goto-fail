@@ -95,4 +95,20 @@ public class DirectorShot extends Shot {
         this.timelineIndices.remove(index);
         this.cameraShots.remove(shot);
     }
+
+    @Override
+    public void setBeginCount(double beginCount) {
+        super.setBeginCount(beginCount);
+        // Update this shot's corresponding camera shots
+        double newCameraStart = this.getBeginCount() - this.frontShotPadding;
+        this.cameraShots.forEach(cameraShot -> cameraShot.setBeginCount(newCameraStart));
+    }
+
+    @Override
+    public void setEndCount(double endCount) {
+        super.setEndCount(endCount);
+        // Update this shot's corresponding camera shots
+        double newCameraEnd = this.getEndCount() + this.endShotPadding;
+        this.cameraShots.forEach(cameraShot -> cameraShot.setEndCount(newCameraEnd));
+    }
 }
