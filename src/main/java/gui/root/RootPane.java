@@ -85,7 +85,6 @@ public class RootPane extends Application {
         } else {
             initStartupScreen(false);
         }
-
     }
 
     /**

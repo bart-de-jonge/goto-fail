@@ -132,7 +132,8 @@ public class RootCenterArea extends VBox {
      */
     private void initTopPane() {
         this.topPane.setStyle("-fx-border-width: 0 0 1px 0; -fx-border-color: rgba(0,0,0,0.25);");
-        this.topPane.getChildren().add(new Rectangle(counterWidth + directorTimelineWidth, topBarHeight, Color.WHITE));
+        this.topPane.getChildren().add(new Rectangle(counterWidth + directorTimelineWidth,
+                topBarHeight, Color.WHITE));
         for (int i = 0; i < numberOfTimelines; i++) {
             String name = getRootPane().getControllerManager()
                     .getScriptingProject().getCameraTimelines().get(i).getName();
