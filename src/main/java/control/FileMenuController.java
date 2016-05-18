@@ -112,8 +112,8 @@ public class FileMenuController {
                     .setNumTimelines(controllerManager.getScriptingProject()
                             .getCameraTimelines()
                             .size());
+            changeConfigFile(temp);
         }
-        changeConfigFile(temp);
     }
     
     /**
@@ -142,7 +142,7 @@ public class FileMenuController {
     private void changeConfigFile(ScriptingProject project) {
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(new FileWriter(RootPane.getCONFIG_FILEPATH()));
+            writer = new PrintWriter(new File(RootPane.getCONFIG_FILEPATH()), "UTF-8");
             writer.write(project.getFilePath());
             writer.close();
         } catch (IOException e) {
