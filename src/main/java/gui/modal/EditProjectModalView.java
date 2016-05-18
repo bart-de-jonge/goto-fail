@@ -121,12 +121,32 @@ public class EditProjectModalView extends ModalView {
      * Initialize the fields.
      */
     private void initFields() {
+        Label nameLabel = new Label("Name: ");
+        HBox nameBox = new HBox();
         nameField = new TextField();
+        nameBox.setSpacing(10);
+        nameBox.getChildren().addAll(nameLabel, nameField);
+        
+        Label descriptionLabel = new Label("Description: ");
+        HBox descriptionBox = new HBox();
         descriptionField = new TextField();
+        descriptionBox.setSpacing(10);
+        descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
+        
+        Label secondsPerCountLabel = new Label("Seconds per count: ");
+        HBox secondsPerCountBox = new HBox();
         secondsPerCountField = new NumberTextField();
+        secondsPerCountBox.setSpacing(10);
+        secondsPerCountBox.getChildren().addAll(secondsPerCountLabel, secondsPerCountField);
+        
+        Label directorTimelineDescriptionLabel = new Label("Director Timeline description: ");
+        HBox directorTimelineDescriptionBox = new HBox();
         directorTimelineDescriptionField = new TextField();
-        viewPane.getChildren().addAll(nameField, descriptionField, 
-                secondsPerCountField, directorTimelineDescriptionField);
+        directorTimelineDescriptionBox.setSpacing(10);
+        directorTimelineDescriptionBox.getChildren().addAll(directorTimelineDescriptionLabel, directorTimelineDescriptionField);
+        
+        viewPane.getChildren().addAll(nameBox, descriptionBox, 
+                secondsPerCountBox, directorTimelineDescriptionBox);
     }
     
     /**
