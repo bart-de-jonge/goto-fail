@@ -236,5 +236,4 @@ public class ShotCreationModalView extends ModalView {
         }
         return camsInShot;
     }
-
 }

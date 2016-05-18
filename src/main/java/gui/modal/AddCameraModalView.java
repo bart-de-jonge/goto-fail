@@ -1,12 +1,12 @@
 package gui.modal;
 
+import java.util.ArrayList;
+
 import data.CameraType;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledListview;
-import gui.styling.StyledTextfield;
-import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -33,8 +33,7 @@ public class AddCameraModalView extends CameraModificationModalView {
 
     // simple background styles of the three main areas.
 
-    private String centerLeftStyle = BACKGROUND_STYLE_STRING
-            + TweakingHelper.STRING_BACKGROUND_HIGH + ";";
+   
     private String centerRightStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.STRING_BACKGROUND + ";";
 
