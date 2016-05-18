@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "babel-node server.js",
-    "start:develop": "nodemon server.js --exec babel-node"
+    "start:develop": "nodemon server.js --exec babel-node",
+    "test": "NODE_ENV=test mocha test/**/*.js"
   },
   "dependencies": {
     "babel-cli": "^6.8.0",
@@ -20,9 +21,13 @@
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",
+    "babel-register": "^6.9.0",
+    "chai": "^3.5.0",
     "eslint": "^2.10.2",
     "eslint-config-airbnb-base": "^3.0.1",
     "eslint-plugin-import": "^1.8.0",
-    "nodemon": "^1.9.2"
+    "mocha": "^2.4.5",
+    "nodemon": "^1.9.2",
+    "supertest": "^1.2.0"
   }
 }
