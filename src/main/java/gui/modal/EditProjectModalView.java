@@ -2,7 +2,6 @@ package gui.modal;
 
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import data.Camera;
 import data.CameraTimeline;

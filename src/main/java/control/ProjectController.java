@@ -4,7 +4,6 @@ package control;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +17,7 @@ import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
 import gui.modal.AddCameraModalView;
 import gui.modal.AddCameraTypeModalView;
+import gui.modal.DeleteCameraTypeWarningModalView;
 import gui.modal.EditProjectModalView;
 import gui.root.RootCenterArea;
 import gui.root.RootPane;
@@ -37,6 +37,7 @@ public class ProjectController {
     private EditProjectModalView editProjectModal;
     private AddCameraModalView cameraModal;
     private AddCameraTypeModalView cameraTypeModal;
+    private DeleteCameraTypeWarningModalView typeWarningModal;
     
     /**
      * Construct a new FileMenuController.
@@ -257,12 +258,36 @@ public class ProjectController {
         if (selectedIndex != -1) {
             List<Camera> camerasUsingType = getCamerasThatUse(
                     editProjectModal.getCameraTypes().get(selectedIndex));
-            editProjectModal.getCameraTypes().remove(selectedIndex);
-            editProjectModal.getCameraTypeList().getItems().remove(selectedIndex);
+            if (camerasUsingType.size() == 0) {
+                editProjectModal.getCameraTypes().remove(selectedIndex);
+                editProjectModal.getCameraTypeList().getItems().remove(selectedIndex);
+            } else {
+                typeWarningModal = new DeleteCameraTypeWarningModalView(
+                        controllerManager.getRootPane(), camerasUsingType);
+                typeWarningModal.getConfirmButton().setOnMouseClicked(
+                        e -> confirmTypeDelete(e, camerasUsingType, selectedIndex));
+                typeWarningModal.getCancelButton().setOnMouseClicked(this::cancelTypeDelete);
+            }
         } else {
             editProjectModal.getTitleLabel().setText("Please select a camera type first");
             editProjectModal.getTitleLabel().setTextFill(Color.RED);
         }
+    }
+    
+    private void confirmTypeDelete(MouseEvent event, List<Camera> toBeDeleted, int selectedIndex) {
+        typeWarningModal.hideModal();
+        editProjectModal.getCameraTypes().remove(selectedIndex);
+        editProjectModal.getCameraTypeList().getItems().remove(selectedIndex);
+        toBeDeleted.forEach(e -> {
+            int index = editProjectModal.getCameras().indexOf(e);
+            editProjectModal.getCameras().remove(index);
+            editProjectModal.getTimelines().remove(index);
+            editProjectModal.getCameraList().getItems().remove(index);
+        });
+    }
+    
+    private void cancelTypeDelete(MouseEvent event) {
+        typeWarningModal.hideModal();
     }
     
     private List<Camera> getCamerasThatUse(CameraType type) {
