@@ -206,7 +206,6 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.5</version>
                 <configuration>
-					<skip>true</skip>
                     <targetJdk>1.8</targetJdk>
                     <skipEmptyReport>false</skipEmptyReport>
                     <rulesets>
