@@ -111,12 +111,7 @@ public class CameraModificationModalView extends ModalView {
      * Init the cancel button.
      */
     protected void initCancelButton() {
-        cancelButton = new StyledButton("Cancel");
-        cancelButton.setPrefWidth(buttonWidth);
-        cancelButton.setPrefHeight(buttonHeight);
-        cancelButton.setAlignment(Pos.CENTER);
-        cancelButton.setBorderColor(Color.WHITE);
-        cancelButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
+        cancelButton = createButton("Cancel", false);
     }
     
     /**

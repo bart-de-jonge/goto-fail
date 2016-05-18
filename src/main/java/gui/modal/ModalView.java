@@ -1,8 +1,11 @@
 package gui.modal;
 
+import gui.misc.TweakingHelper;
 import gui.root.RootPane;
+import gui.styling.StyledButton;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -23,6 +26,8 @@ public abstract class ModalView {
     private final int width;
     @Getter
     private final int height;
+    private final int buttonWidth = 90;
+    private final int buttonHeight = 25;
 
     /**
      * Constructor.
@@ -68,5 +73,20 @@ public abstract class ModalView {
         this.displayScene.getStylesheets().add("Stylesheets/StyledTextfield.css");
         this.displayScene.getStylesheets().add("Stylesheets/StyledListview.css");
         this.modalStage.setScene(displayScene);
+    }
+
+    /**
+     * Creates a button, with proper Modal View styling applied.
+     * @param title title of the button.
+     * @param reversed whether colors should be reversed.
+     * @return the button.
+     */
+    protected StyledButton createButton(String title, boolean reversed) {
+        StyledButton button = new StyledButton(title);
+        button.setFillColor(reversed ? Color.WHITE : TweakingHelper.COLOR_PRIMARY);
+        button.setBorderColor(reversed ? TweakingHelper.COLOR_PRIMARY : Color.WHITE);
+        button.setPrefWidth(buttonWidth);
+        button.setPrefHeight(buttonHeight);
+        return button;
     }
 }

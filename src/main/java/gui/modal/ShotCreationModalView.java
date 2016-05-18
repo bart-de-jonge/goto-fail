@@ -1,21 +1,19 @@
 package gui.modal;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gui.headerarea.DoubleTextField;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledCheckbox;
 import gui.styling.StyledTextfield;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -49,8 +47,6 @@ public class ShotCreationModalView extends ModalView {
     
     private static final int CAMERA_AREA_MIN_WIDTH = 250;
     private static final int TEXT_AREA_MIN_WIDTH = 350;
-
-
 
     // variables for the title label
     protected static final int titlelabelOffsetFromLeft = 20;
@@ -165,20 +161,10 @@ public class ShotCreationModalView extends ModalView {
         this.rootPane.getChildren().add(buttonPane);
 
         // Add cancel button
-        cancelButton = new StyledButton("Cancel");
-        cancelButton.setPrefWidth(buttonWidth);
-        cancelButton.setPrefHeight(buttonHeight);
-        cancelButton.setAlignment(Pos.CENTER);
-        cancelButton.setBorderColor(Color.WHITE);
-        cancelButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
+        cancelButton = createButton("Cancel", false);
 
         // Add creation button
-        creationButton = new StyledButton("Create");
-        creationButton.setPrefWidth(buttonWidth);
-        creationButton.setPrefHeight(buttonHeight);
-        creationButton.setAlignment(Pos.CENTER);
-        creationButton.setBorderColor(Color.WHITE);
-        creationButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
+        creationButton = createButton("Create", false);
 
         this.buttonPane.getChildren().addAll(creationButton, cancelButton);
     }

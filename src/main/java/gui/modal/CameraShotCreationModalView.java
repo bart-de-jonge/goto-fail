@@ -25,17 +25,11 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
     private static final int width = 680;
     private static final int height = 370;
 
-
-
     /*
      * Other variables.
      */
 
-    
     private List<CameraTimeline> cameraTimelines;
-    
-    
-   
 
     /**
      * Constructor with default modal size.
@@ -95,10 +89,6 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
         super.displayModal();
     }
 
-    
-
-   
-
     /**
      * Initialize all textfields, add them to a left-central VBox.
      */
@@ -111,9 +101,6 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
         this.centerPane.getChildren().add(content);
     }
 
-    
-
-    
     /**
      * Initialize the checkboxes with labels for each camera, in a flowpane.
      */
