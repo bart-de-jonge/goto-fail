@@ -393,6 +393,7 @@ public abstract class TimetableBlock extends Pane {
             } else {
                 double newBeginCount = DirectorGridPane.getRowIndex(thisBlock)
                         / (double) CountUtilities.NUMBER_OF_CELLS_PER_COUNT;
+                System.out.println(newBeginCount);
                 parentBlock.setBeginCount(newBeginCount, false);
                 parentBlock.setEndCount(newBeginCount + DirectorGridPane.getRowSpan(thisBlock)
                         / (double) CountUtilities.NUMBER_OF_CELLS_PER_COUNT, false);
