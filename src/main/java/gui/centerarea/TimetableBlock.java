@@ -86,9 +86,6 @@ public abstract class TimetableBlock extends Pane {
     @Getter
     private ColorAdjust darken;
 
-    // for glass effect
-    @Getter
-    private BlurHelper behindPanelBlur;
     @Getter
     private double dragXOffset;
     @Getter
@@ -177,14 +174,6 @@ public abstract class TimetableBlock extends Pane {
         draggedContentPane.maxWidthProperty().bind(draggedPane.widthProperty());
         draggedContentPane.minHeightProperty().bind(draggedPane.heightProperty());
         draggedContentPane.maxHeightProperty().bind(draggedPane.heightProperty());
-
-        // blurring shown behind dragged pane
-        behindPanelBlur = new BlurHelper(draggedPane);
-        behindPanelBlur.getImageView().setBlendMode(BlendMode.MULTIPLY);
-        behindPanelBlur.getImageView().setOpacity(0.9);
-        behindPanelBlur.setRadius(blurRadius);
-        behindPanelBlur.setOffset(new Point2D(8, 8));
-        addWithClipRegion(behindPanelBlur.getImageView(), draggedPane);
 
         // add some labels etc
         titleDraggedLabel = initTitleLabel(draggedContentPane);
@@ -334,8 +323,6 @@ public abstract class TimetableBlock extends Pane {
             } else if (draggingType == DraggingTypes.Resize_Bottom) {
                 startingY = blockY;
             }
-
-            behindPanelBlur.processBlurUsingBounds();
         };
     }
 
@@ -358,7 +345,6 @@ public abstract class TimetableBlock extends Pane {
                 thisBlock.setVisible(false);
             }
             onMouseDraggedHelper(e, horizontalAllowed);
-            behindPanelBlur.processBlurUsingBounds();
             e.consume();
         };
     }
