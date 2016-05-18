@@ -1,5 +1,5 @@
 import express from "express";
-import TimelineBlock from "./../objects/timelineBlock";
+import TimelineBlock from "./../objects/TimelineBlock";
 const router = new express.Router();
 
 /* GET home page. */
