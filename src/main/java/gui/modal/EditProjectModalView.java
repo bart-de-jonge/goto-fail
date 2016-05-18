@@ -1,20 +1,21 @@
 package gui.modal;
 
+
+import java.util.ArrayList;
+import java.util.Set;
+
 import data.Camera;
 import data.CameraTimeline;
 import data.CameraType;
 import data.ScriptingProject;
-import gui.headerarea.NumberTextField;
+import gui.headerarea.DoubleTextField;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledListview;
 import gui.styling.StyledTextfield;
-import java.util.ArrayList;
-import java.util.Set;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
@@ -98,7 +99,7 @@ public class EditProjectModalView extends ModalView {
     @Getter
     private StyledTextfield descriptionField;
     @Getter
-    private NumberTextField secondsPerCountField;
+    private DoubleTextField secondsPerCountField;
     
 
     // buttons
@@ -291,7 +292,7 @@ public class EditProjectModalView extends ModalView {
     private void initTimelineFields(VBox content) {
         // init seconds per count field
         final Label secondsPerCountLabel = new Label("Seconds per count: ");
-        secondsPerCountField = new NumberTextField();
+        secondsPerCountField = new DoubleTextField();
         secondsPerCountField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
         secondsPerCountField.setTextColor(TweakingHelper.COLOR_PRIMARY);
         secondsPerCountField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
