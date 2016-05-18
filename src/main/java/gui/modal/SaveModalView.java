@@ -33,8 +33,6 @@ public class SaveModalView extends ModalView {
             + "-fx-border-color: " + TweakingHelper.STRING_SECONDARY + ";";
 
     // variables for the buttons
-    private int buttonWidth = 120;
-    private int buttonHeight = 25;
     private int buttonSpacing = 20;
 
     // variables for the title label
@@ -123,23 +121,9 @@ public class SaveModalView extends ModalView {
                 0, titlelabelOffsetFromLeft));
         this.viewPane.getChildren().add(content);
 
-        saveButton = new StyledButton("Save");
-        saveButton.setPrefWidth(buttonWidth);
-        saveButton.setPrefHeight(buttonHeight);
-        saveButton.setFillColor(Color.WHITE);
-        saveButton.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-
-        dontSaveButton = new StyledButton("Don't save");
-        dontSaveButton.setPrefWidth(buttonWidth);
-        dontSaveButton.setPrefHeight(buttonHeight);
-        dontSaveButton.setFillColor(Color.WHITE);
-        dontSaveButton.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-
-        cancelButton = new StyledButton("Cancel");
-        cancelButton.setPrefWidth(buttonWidth);
-        cancelButton.setPrefHeight(buttonHeight);
-        cancelButton.setFillColor(Color.WHITE);
-        cancelButton.setBorderColor(TweakingHelper.COLOR_PRIMARY);
+        saveButton = createButton("Save", true);
+        dontSaveButton = createButton("Don't save", true);
+        cancelButton = createButton("Cancel", true);
 
         content.getChildren().addAll(saveButton, dontSaveButton, cancelButton);
     }

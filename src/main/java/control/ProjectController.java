@@ -290,7 +290,7 @@ public class ProjectController {
      */
     public void newProject() {
         editProjectModal = new EditProjectModalView(controllerManager.getRootPane(), false);
-        editProjectModal.getCreationButton().setOnMouseClicked(this::save);
+        editProjectModal.getSaveButton().setOnMouseClicked(this::save);
         editProjectModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
         editProjectModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);
     }

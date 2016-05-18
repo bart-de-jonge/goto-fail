@@ -30,28 +30,17 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
     private static final int width = 680;
     private static final int height = 460;
 
-
-
     /*
      * Other variables
      */
 
-    // No touching these constants. They work well for all general cases,
-    // and there is no reason to change them ever again.
-
     private int numberOfCameras;
 
-    
-
     // General panes used
-    
-
     @Getter
     private DoubleTextField frontPaddingField;
     @Getter
     private DoubleTextField endPaddingField;
-
-    
 
     /**
      * Constructor with default modal size.
@@ -92,8 +81,6 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
 
         // Add label at top
         initTitleLabel("Add a director shot...");
-        
-       
 
         // add space for textfields and checkboxes
         this.centerPane = new HBox(40.0);

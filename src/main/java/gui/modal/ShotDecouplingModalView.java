@@ -38,8 +38,6 @@ public class ShotDecouplingModalView extends ModalView {
             + "-fx-border-color: " + TweakingHelper.STRING_SECONDARY + ";";
 
     // variables for the buttons
-    private int buttonWidth = 120;
-    private int buttonHeight = 25;
     private int buttonSpacing = 20;
 
     // variables for the title label
@@ -135,17 +133,8 @@ public class ShotDecouplingModalView extends ModalView {
                 0, titlelabelOffsetFromLeft));
         this.viewPane.getChildren().add(content);
 
-        cancelButton = new StyledButton("Cancel");
-        cancelButton.setPrefWidth(buttonWidth);
-        cancelButton.setPrefHeight(buttonHeight);
-        cancelButton.setFillColor(Color.WHITE);
-        cancelButton.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-
-        confirmButton = new StyledButton("Confirm");
-        confirmButton.setPrefWidth(buttonWidth);
-        confirmButton.setPrefHeight(buttonHeight);
-        confirmButton.setFillColor(Color.WHITE);
-        confirmButton.setBorderColor(TweakingHelper.COLOR_PRIMARY);
+        cancelButton = createButton("Cancel", true);
+        confirmButton = createButton("Confirm", true);
 
         content.getChildren().addAll(confirmButton, cancelButton);
     }
