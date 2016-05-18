@@ -98,19 +98,29 @@ public class EditProjectModalView extends ModalView {
         initCameraTypeSection();
         initCameraSection();
         initFinalButtons();
+       // fillInformation();
         
         super.setModalView(this.viewPane);
         super.displayModal();
+    }
+    
+    private void fillInformation() {
+        nameField.setText(project.getName());
+        descriptionField.setText(project.getDescription());
+        secondsPerCountField.setText(Double.toString(project.getSecondsPerCount()));
+        directorTimelineDescriptionField.setText(project.getDirectorTimeline().getDescription());
+        cameraTypeList = initCameraTypeList();
+        cameraList = initCameraList();
     }
     
     /**
      * Initialize the fields.
      */
     private void initFields() {
-        nameField = new TextField(project.getName());
-        descriptionField = new TextField(project.getDescription());
-        secondsPerCountField = new NumberTextField(Double.toString(project.getSecondsPerCount()));
-        directorTimelineDescriptionField = new TextField(project.getDirectorTimeline().getDescription());
+        nameField = new TextField();
+        descriptionField = new TextField();
+        secondsPerCountField = new NumberTextField();
+        directorTimelineDescriptionField = new TextField();
         viewPane.getChildren().addAll(nameField, descriptionField, 
                 secondsPerCountField, directorTimelineDescriptionField);
     }
@@ -121,7 +131,7 @@ public class EditProjectModalView extends ModalView {
     private void initCameraTypeSection() {
         addCameraTypeButton = new Button("Add Camera Type");
         deleteCameraTypeButton = new Button("Delete Camera Type");
-        cameraTypeList = initCameraTypeList();
+        cameraTypeList = new ListView<HBox>();
         viewPane.getChildren().addAll(addCameraTypeButton, deleteCameraTypeButton, cameraTypeList);
     }
     
@@ -147,7 +157,7 @@ public class EditProjectModalView extends ModalView {
     private void initCameraSection() {
         addCameraButton = new Button("Add Camera");
         deleteCameraButton = new Button("Delete Camera");
-        cameraList = initCameraList();
+        cameraList = new ListView<HBox>();
         viewPane.getChildren().addAll(addCameraButton, deleteCameraButton, cameraList);
     }
     
