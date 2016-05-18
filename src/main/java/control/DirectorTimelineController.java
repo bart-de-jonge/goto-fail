@@ -87,8 +87,6 @@ public class DirectorTimelineController {
      * @param event Camera shot change event.
      */
     public void shotChangedHandler(DirectorShotBlockUpdatedEvent event) {
-
-        System.out.println(event.getDirectorShotBlock().getBeginCount());
         controllerManager.getScriptingProject().changed();
         log.info("Shot moved");
 

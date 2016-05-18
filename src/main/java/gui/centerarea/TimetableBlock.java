@@ -360,6 +360,8 @@ public abstract class TimetableBlock extends Pane {
                 dragging = true;
                 draggedPane.setVisible(true);
                 draggedPane.setPrefHeight(getHeight());
+                draggedPane.setMinHeight(getHeight());
+                draggedPane.setMaxHeight(getHeight());
                 draggedPane.setPrefWidth(getWidth());
                 thisBlock.setVisible(false);
             }
@@ -393,7 +395,6 @@ public abstract class TimetableBlock extends Pane {
             } else {
                 double newBeginCount = DirectorGridPane.getRowIndex(thisBlock)
                         / (double) CountUtilities.NUMBER_OF_CELLS_PER_COUNT;
-                System.out.println(newBeginCount);
                 parentBlock.setBeginCount(newBeginCount, false);
                 parentBlock.setEndCount(newBeginCount + DirectorGridPane.getRowSpan(thisBlock)
                         / (double) CountUtilities.NUMBER_OF_CELLS_PER_COUNT, false);
@@ -524,7 +525,6 @@ public abstract class TimetableBlock extends Pane {
         Bounds parentBounds = parentPane.localToScene(parentPane.getBoundsInLocal());
 
         draggedPane.setLayoutX(x - parentBounds.getMinX() - dragXOffset);
-        draggedPane.setLayoutY(y - parentBounds.getMinY() - dragYOffset);
     }
 
     /**
@@ -552,6 +552,10 @@ public abstract class TimetableBlock extends Pane {
         } else if (thisBlock.draggingType == DraggingTypes.Resize_Bottom) {
             newLayoutY = anchorPane.sceneToLocal(0, startingY).getY();
             newPrefHeight = bounds.getY() - newLayoutY;
+        } else if (thisBlock.draggingType == DraggingTypes.Move && !horizontal) {
+            Bounds parentBounds = anchorPane.localToScene(anchorPane.getBoundsInLocal());
+            newLayoutY = y - parentBounds.getMinY() - dragYOffset;
+            newPrefHeight = getHeight();
         }
 
         if (newPrefHeight < gridPane.getVerticalElementSize()) {
@@ -564,6 +568,8 @@ public abstract class TimetableBlock extends Pane {
 
         draggedPane.setLayoutY(newLayoutY);
         draggedPane.setPrefHeight(newPrefHeight);
+        draggedPane.setMinHeight(newPrefHeight);
+        draggedPane.setMaxHeight(newPrefHeight);
     }
 
     /**
