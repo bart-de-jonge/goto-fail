@@ -20,18 +20,15 @@ public class TimelinesGridPane extends ScrollableGridPane {
      * @param numberOfVerticalGrids - number of vertical grid lanes.
      * @param horizontalElementMinimumSize -  minimal size of horizontal grid lanes.
      * @param verticalElementSize -  size of vertical grid lanes.
-     * @param offsetFromLeft - how much offset from the left due to coverage by directortimeline.
      */
     public TimelinesGridPane(int numberOfHorizontalGrids, int numberOfVerticalGrids,
-                             int horizontalElementMinimumSize, int verticalElementSize,
-                             int offsetFromLeft) {
+                             int horizontalElementMinimumSize, int verticalElementSize) {
 
         super(numberOfHorizontalGrids, numberOfVerticalGrids,
                 horizontalElementMinimumSize, verticalElementSize);
 
         // add padding to the left for overlapping sidebars
-        this.setPadding(new Insets(0,0,0,offsetFromLeft));
-        this.offsetFromLeft = offsetFromLeft;
+        this.setPadding(new Insets(0,0,0,0));
 
         // add snapping panes
         addPanes();
@@ -89,8 +86,8 @@ public class TimelinesGridPane extends ScrollableGridPane {
 
         // Correct for points outside grid
         Bounds sceneBounds = this.localToScene(this.getLayoutBounds());
-        if (sceneBounds.getMinX() + offsetFromLeft > x) {
-            return getMyPane(sceneBounds.getMinX() + offsetFromLeft, y);
+        if (sceneBounds.getMinX() > x) {
+            return getMyPane(sceneBounds.getMinX(), y);
         } else if (sceneBounds.getMaxX() < x) {
             return getMyPane(sceneBounds.getMaxX(), y);
         } else if (sceneBounds.getMinY() > y) {

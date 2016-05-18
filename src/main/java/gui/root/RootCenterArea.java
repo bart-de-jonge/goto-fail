@@ -3,6 +3,7 @@ package gui.root;
 import gui.centerarea.CounterGridPane;
 import gui.centerarea.DirectorGridPane;
 import gui.centerarea.TimelinesGridPane;
+import gui.misc.TweakingHelper;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
@@ -10,6 +11,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,7 +19,7 @@ import lombok.Setter;
  * Class representing the center (main section) of the gui.
  * In other words, the time line view goes here.
  */
-public class RootCenterArea extends StackPane {
+public class RootCenterArea extends VBox {
     
     private static final int DEFAULT_TIMELINES = 0;
 
@@ -28,16 +30,22 @@ public class RootCenterArea extends StackPane {
     @Getter
     private int countHeight = 10; // 10 works well, if you've changed this.
     @Getter
-    private int counterWidth = 10;
+    private int counterWidth = 40;
     @Getter
-    private int directorTimelineWidth = 200;
+    private int directorTimelineWidth = 100;
     @Getter
     private int timelineWidth = 100; // 100 works well, if you've changed this.
     @Getter
     private RootPane rootPane;
+    @Getter
+    private HBox timelinesPane;
+    @Getter
+    private Button newButton;
+    @Getter
+    private Button loadButton;
 
     /**
-     * Trio of panes necessary for the main timeline.
+     * Trio of panes necessary for the main timeline, counter timeline, director timeline.
      */
     @Getter
     private ScrollPane mainTimelineScrollpane;
@@ -45,14 +53,6 @@ public class RootCenterArea extends StackPane {
     private AnchorPane mainTimeLineAnchorPane;
     @Getter
     private TimelinesGridPane mainTimeLineGridPane;
-
-    /**
-     * Combination between an HBox and double trio of panes, necessary
-     * for the more detailed counter display, and the director timeline.
-     */
-
-    @Getter
-    private HBox counterAndDirectorPane;
 
     @Getter
     private ScrollPane counterScrollpane;
@@ -68,12 +68,6 @@ public class RootCenterArea extends StackPane {
     @Getter
     private DirectorGridPane directorGridPane;
     
-    @Getter
-    private Button newButton;
-    
-    @Getter
-    private Button loadButton;
-    
     /**
      * Construct a new RootCenterArea.
      * @param rootPane the rootPane that this RootCenterArea is a part of.
@@ -83,6 +77,12 @@ public class RootCenterArea extends StackPane {
      */
     public RootCenterArea(RootPane rootPane, int numberOfTimelines, boolean empty) {
         if (empty) {
+            /*
+             * Technically speaking, these buttons will never ever be shown again.
+             * We shouldn't remove them, however, as they are a nice catch
+             * if the StartupModalView ever refuses to load.
+             * Which still happens from time to time.
+             */
             this.rootPane = rootPane;
             this.numberOfTimelines = numberOfTimelines;
             HBox buttonBox = new HBox();
@@ -94,19 +94,18 @@ public class RootCenterArea extends StackPane {
         } else {
             this.rootPane = rootPane;
             this.numberOfTimelines = numberOfTimelines;
-    
-            initMainTimeLinePane();
-    
-            counterAndDirectorPane = new HBox();
-            setAlignment(counterAndDirectorPane, Pos.CENTER_LEFT);
-            counterAndDirectorPane.setMaxWidth(counterWidth + timelineWidth);
-            counterAndDirectorPane.maxHeightProperty()
-                    .bind(mainTimelineScrollpane.heightProperty());
-            getChildren().add(counterAndDirectorPane);
-    
+
+            this.timelinesPane = new HBox();
+            this.getChildren().add(timelinesPane);
+
             initCounterPane();
             initDirectorPane();
-            initScrollbar();
+            initMainTimeLinePane();
+
+            counterScrollpane.vvalueProperty().bindBidirectional(
+                    mainTimelineScrollpane.vvalueProperty());
+            directorScrollpane.vvalueProperty().bindBidirectional(
+                    mainTimelineScrollpane.vvalueProperty());
         }
     }
 
@@ -122,19 +121,18 @@ public class RootCenterArea extends StackPane {
      * Initializes the central timeline in this stackpane.
      */
     private void initMainTimeLinePane() {
-        // main timeline panes
         mainTimelineScrollpane = new ScrollPane();
         mainTimeLineAnchorPane = new AnchorPane();
         mainTimeLineGridPane = new TimelinesGridPane(numberOfTimelines, numberOfCounts,
-                timelineWidth,  countHeight, counterWidth + directorTimelineWidth);
+                timelineWidth,  countHeight);
         mainTimeLineAnchorPane.setLeftAnchor(mainTimeLineGridPane, 0.0);
         mainTimeLineAnchorPane.setRightAnchor(mainTimeLineGridPane, 0.0);
         mainTimeLineAnchorPane.setTopAnchor(mainTimeLineGridPane, 0.0);
         mainTimeLineAnchorPane.getChildren().add(mainTimeLineGridPane);
         mainTimelineScrollpane.setFitToWidth(true);
+        mainTimelineScrollpane.setPrefWidth(TweakingHelper.GENERAL_SIZE);
         mainTimelineScrollpane.setContent(mainTimeLineAnchorPane);
-        mainTimelineScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        getChildren().add(mainTimelineScrollpane);
+        timelinesPane.getChildren().add(mainTimelineScrollpane);
     }
 
     /**
@@ -149,12 +147,11 @@ public class RootCenterArea extends StackPane {
         counterAnchorPane.setTopAnchor(counterGridPane, 0.0);
         counterAnchorPane.getChildren().add(counterGridPane);
         counterScrollpane.setContent(counterAnchorPane);
+        counterScrollpane.setMinWidth(counterWidth);
         counterScrollpane.setFitToWidth(true);
         counterScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         counterScrollpane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        counterScrollpane.vvalueProperty().bindBidirectional(
-                mainTimelineScrollpane.vvalueProperty());
-        counterAndDirectorPane.getChildren().add(counterScrollpane);
+        timelinesPane.getChildren().add(counterScrollpane);
     }
 
     /**
@@ -169,26 +166,12 @@ public class RootCenterArea extends StackPane {
         directorAnchorPane.setTopAnchor(directorGridPane, 0.0);
         directorAnchorPane.getChildren().add(directorGridPane);
         directorScrollpane.setContent(directorAnchorPane);
+        directorScrollpane.setMinWidth(directorTimelineWidth);
         directorScrollpane.setFitToWidth(true);
         directorScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        directorScrollpane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         directorScrollpane.setStyle("-fx-background-color: lightblue"); // debugcolor for now
-        directorScrollpane.vvalueProperty().bindBidirectional(
-                mainTimelineScrollpane.vvalueProperty());
-        counterAndDirectorPane.getChildren().add(directorScrollpane);
-    }
-
-    /**
-     * Initializes the scrollbar for the main timeline.
-     */
-    private void initScrollbar() {
-        ScrollBar scrollbar = new ScrollBar();
-        scrollbar.setMin(0);
-        scrollbar.setMax(1);
-        scrollbar.maxWidthProperty().bind(widthProperty()
-                .subtract(counterWidth + directorTimelineWidth));
-        mainTimelineScrollpane.hvalueProperty().bind(scrollbar.valueProperty());
-        getChildren().add(scrollbar);
-        setAlignment(scrollbar, Pos.BOTTOM_RIGHT);
+        timelinesPane.getChildren().add(directorScrollpane);
     }
 
 
