@@ -31,20 +31,22 @@ public class AddCameraModalView extends ModalView {
     // variables for spacing
     private static final int topAreaHeight = 50;
     private static final int bottomAreaHeight = 60;
+    
+    private final String BACKGROUND_STYLE_STRING = "-fx-background-color: ";
 
     // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: "
+    private String topStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.STRING_PRIMARY + ";"
             + "-fx-text-fill: white; -fx-font-size: 22;"
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 10 0;"
             + "-fx-border-color: "
             + TweakingHelper.STRING_SECONDARY + ";";
-    private String centerLeftStyle = "-fx-background-color: "
+    private String centerLeftStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.STRING_BACKGROUND_HIGH + ";";
-    private String centerRightStyle = "-fx-background-color: "
+    private String centerRightStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.STRING_BACKGROUND + ";";
-    private String bottomStyle = "-fx-background-color: "
+    private String bottomStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.STRING_PRIMARY + ";";
 
     // variables for the Create and Cancel buttons

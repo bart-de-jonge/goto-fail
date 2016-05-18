@@ -2,9 +2,7 @@ package control;
 
 import gui.modal.CameraShotCreationModalView;
 import gui.modal.DirectorShotCreationModalView;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -13,7 +11,6 @@ import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
 
 /**
  * Controller for the CreationModalView.

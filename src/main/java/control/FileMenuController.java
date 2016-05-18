@@ -15,7 +15,6 @@ import gui.modal.NewProjectModalView;
 import gui.root.RootCenterArea;
 import gui.root.RootPane;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javafx.scene.control.Label;
@@ -322,34 +321,6 @@ public class FileMenuController {
 
         cameraTypeModal.getTitleLabel().setText(errorString);
         cameraTypeModal.getTitleLabel().setTextFill(Color.RED);
-        
-        return errorString.isEmpty();
-    }
-    
-    /**
-     * Validate the data entered by the user in the modal to add a timeline.
-     * @return true is the data is legit, false otherwise
-     */
-    private boolean validateTimelineData() {
-        String errorString = "";
-        String name = timelineModal.getNameField().getText();
-        String description = timelineModal.getDescriptionField().getText();
-        int selectedIndex = timelineModal.getCameraList().getSelectionModel().getSelectedIndex();
-        
-        if (name.isEmpty()) {
-            errorString += "Please enter a timeline name\n";
-        }
-        
-        if (description.isEmpty()) {
-            errorString += "Please enter a timeline description\n";
-        }
-        
-        if (selectedIndex == -1) {
-            errorString += "Please select a camera\n";
-        }
-        
-        timelineModal.getErrorLabel().setText(errorString);
-        timelineModal.getErrorLabel().setTextFill(Color.RED);
         
         return errorString.isEmpty();
     }

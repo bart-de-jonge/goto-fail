@@ -3,7 +3,6 @@ package gui.modal;
 import data.CameraShot;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
-import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;

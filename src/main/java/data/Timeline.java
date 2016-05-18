@@ -3,9 +3,7 @@ package data;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * Abstract class for centerarea.

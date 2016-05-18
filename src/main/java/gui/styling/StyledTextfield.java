@@ -12,7 +12,6 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.paint.Color;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Represents a stylized textfield.

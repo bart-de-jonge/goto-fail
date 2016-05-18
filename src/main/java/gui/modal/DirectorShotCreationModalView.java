@@ -1,21 +1,17 @@
 package gui.modal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gui.headerarea.DoubleTextField;
-import gui.headerarea.NumberTextField;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledCheckbox;
 import gui.styling.StyledTextfield;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.geometry.Insets;
-import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -41,20 +37,22 @@ public class DirectorShotCreationModalView extends ModalView {
     // variables for spacing
     private int topAreaHeight = 70;
     private int bottomAreaHeight = 60;
+    
+    private final String BACKGROUND_STYLE_STRING = "-fx-background-color :";
 
     // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: "
+    private String topStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.STRING_PRIMARY + ";"
             + "-fx-text-fill: white; -fx-font-size: 26;"
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 10 0;"
             + "-fx-border-color: "
             + TweakingHelper.STRING_SECONDARY + ";";
-    private String centerLeftStyle = "-fx-background-color: "
+    private String centerLeftStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.STRING_BACKGROUND_HIGH + ";";
-    private String centerRightStyle = "-fx-background-color: "
+    private String centerRightStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.STRING_BACKGROUND + ";";
-    private String bottomStyle = "-fx-background-color: "
+    private String bottomStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.STRING_PRIMARY + ";";
 
     // variables for the Create and Cancel buttons
