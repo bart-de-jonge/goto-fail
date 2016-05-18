@@ -316,14 +316,6 @@ public class NewProjectModalView extends ModalView {
         this.buttonPane.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
         this.viewPane.getChildren().add(buttonPane);
 
-        // Add cancel button
-        cancelButton = new StyledButton("Cancel");
-        cancelButton.setPrefWidth(buttonWidth);
-        cancelButton.setPrefHeight(buttonHeight);
-        cancelButton.setAlignment(Pos.CENTER);
-        cancelButton.setBorderColor(Color.WHITE);
-        cancelButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
-
         // Add creation button
         creationButton = new StyledButton("Create");
         creationButton.setPrefWidth(buttonWidth);
@@ -331,6 +323,14 @@ public class NewProjectModalView extends ModalView {
         creationButton.setAlignment(Pos.CENTER);
         creationButton.setBorderColor(Color.WHITE);
         creationButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
+        
+     // Add cancel button
+        cancelButton = new StyledButton("Cancel");
+        cancelButton.setPrefWidth(buttonWidth);
+        cancelButton.setPrefHeight(buttonHeight);
+        cancelButton.setAlignment(Pos.CENTER);
+        cancelButton.setBorderColor(Color.WHITE);
+        cancelButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
 
         this.buttonPane.getChildren().addAll(creationButton, cancelButton);
     }
