@@ -18,6 +18,8 @@ import lombok.Getter;
  * @author Mark
  */
 public class StyledTextfield extends TextField {
+    
+    private StyledElementHelper helper;
 
     /*
      * Tweakable variables
@@ -51,11 +53,11 @@ public class StyledTextfield extends TextField {
     private InnerShadow innerShadow;
     private TransitionHelper transitionHelper;
     private ObjectProperty<Color> borderColorProperty = new SimpleObjectProperty<>(borderColor);
-    private StringProperty borderStringProperty = createColorStringProperty(borderColorProperty);
+    private StringProperty borderStringProperty = helper.createColorStringProperty(borderColorProperty);
     private ObjectProperty<Color> fillColorProperty = new SimpleObjectProperty<>(fillColor);
-    private StringProperty fillStringProperty = createColorStringProperty(fillColorProperty);
+    private StringProperty fillStringProperty = helper.createColorStringProperty(fillColorProperty);
     private ObjectProperty<Color> textColorProperty = new SimpleObjectProperty<>(textColor);
-    private StringProperty textStringProperty = createColorStringProperty(textColorProperty);
+    private StringProperty textStringProperty = helper.createColorStringProperty(textColorProperty);
 
     /**
      * Constructor class.
@@ -77,6 +79,7 @@ public class StyledTextfield extends TextField {
      * Initialization helper function.
      */
     private void init() {
+        helper = new StyledElementHelper();
         // initialize effects that can't be done by css all at once
         this.innerShadow = new InnerShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0),
                 shadowRadius, 0.2, 1, 1);
@@ -111,34 +114,7 @@ public class StyledTextfield extends TextField {
             });
     }
 
-    /**
-     * Helper function for binding a fill color. Creates a string property used
-     * to modify the style at runtime.
-     * @param colorProperty the colorProperty whose color we want to show.
-     * @return The StringProperty which we'll use to set the style.
-     */
-    private StringProperty createColorStringProperty(ObjectProperty<Color> colorProperty) {
-        StringProperty stringProperty = new SimpleStringProperty();
-        stringProperty.set(getStringFromColor(colorProperty.get()));
-        colorProperty.addListener(
-            e -> {
-                stringProperty.set(getStringFromColor(colorProperty.get()));
-            });
-        return stringProperty;
-    }
-
-    /**
-     * Parses color from a Color object to javafx-css-compatible string.
-     * @param color the color to parse.
-     * @return a representative string.
-     */
-    private String getStringFromColor(Color color) {
-        return "rgba(" + ((int) (color.getRed() * 255)) + ","
-                + ((int) (color.getGreen() * 255)) + ","
-                + ((int) (color.getBlue() * 255)) + ","
-                + color.getOpacity() + ")";
-    }
-
+    
     /**
      * Set the fill color of this textfield.
      * @param color the color to set.
