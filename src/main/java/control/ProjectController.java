@@ -4,7 +4,10 @@ package control;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import data.Camera;
 import data.CameraShot;
@@ -252,12 +255,20 @@ public class ProjectController {
         int selectedIndex = editProjectModal.getCameraTypeList()
                                             .getSelectionModel().getSelectedIndex();
         if (selectedIndex != -1) {
+            List<Camera> camerasUsingType = getCamerasThatUse(
+                    editProjectModal.getCameraTypes().get(selectedIndex));
             editProjectModal.getCameraTypes().remove(selectedIndex);
             editProjectModal.getCameraTypeList().getItems().remove(selectedIndex);
         } else {
             editProjectModal.getTitleLabel().setText("Please select a camera type first");
             editProjectModal.getTitleLabel().setTextFill(Color.RED);
         }
+    }
+    
+    private List<Camera> getCamerasThatUse(CameraType type) {
+        return editProjectModal.getCameras().stream()
+                                   .filter(e -> e.getCameraType().equals(type))
+                                   .collect(Collectors.toList());
     }
     
     /**
