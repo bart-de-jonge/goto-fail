@@ -7,7 +7,6 @@ import gui.root.RootPane;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -32,10 +31,7 @@ public class ControllerManager {
     private DetailViewController detailViewController;
 
     @Getter
-    private FileMenuController fileMenuController;
-    
-    @Getter
-    private EditMenuController editMenuController;
+    private ProjectController projectController;
 
     @Getter
     private ShotBlock activeShotBlock;
@@ -85,8 +81,7 @@ public class ControllerManager {
         directorTimelineControl = new DirectorTimelineController(this);
         detailViewController = new DetailViewController(this);
         toolViewController = new ToolViewController(this);
-        fileMenuController = new FileMenuController(this);
-        editMenuController = new EditMenuController(this);
+        projectController = new ProjectController(this);
     }
 
     /**
@@ -101,11 +96,9 @@ public class ControllerManager {
      * @param event the WindowEvent for this handler
      */
     private void handleOnClose(WindowEvent event) {
-        if (scriptingProject != null) {
-            if (scriptingProject.isChanged()) {
-                event.consume();
-                initSaveModal();
-            }
+        if (scriptingProject != null && scriptingProject.isChanged()) {
+            event.consume();
+            initSaveModal();
         }
     }
 
@@ -124,7 +117,7 @@ public class ControllerManager {
      * @param event the MouseEvent for this handler.
      */
     private void handleSave(MouseEvent event) {
-        fileMenuController.save();
+        projectController.save();
         saveModal.hideModal();
         rootPane.getPrimaryStage().close();
     }

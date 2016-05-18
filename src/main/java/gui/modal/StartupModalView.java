@@ -92,14 +92,16 @@ public class StartupModalView extends ModalView {
      * Initialize the view of this modal.
      */
     private void initializeView() {
+       
+
+        // Create a new VBox for vertical layout
+        this.viewPane = new VBox();
+        
         // force minimum size
         getModalStage().setHeight(height);
         getModalStage().setWidth(width);
         getModalStage().setMinWidth(width);
         getModalStage().setMinHeight(height);
-
-        // Create a new VBox for vertical layout
-        this.viewPane = new VBox();
 
         // Add label at top
         initInformationLabel();

@@ -1,14 +1,11 @@
 package gui.root;
 
-import control.ControllerManager;
-
-import gui.modal.StartupModalView;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
+import control.ControllerManager;
+import gui.modal.StartupModalView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -80,7 +77,7 @@ public class RootPane extends Application {
 
         String recentProjectPath = readPathFromConfig();
         if (recentProjectPath != null) {
-            controllerManager.getFileMenuController().load(new File(recentProjectPath));
+            controllerManager.getProjectController().load(new File(recentProjectPath));
             primaryStage.setTitle(controllerManager.getScriptingProject().getName());
         } else {
             initStartupScreen(false);
@@ -105,20 +102,16 @@ public class RootPane extends Application {
      * @return the filepath if one is found, null otherwise
      */
     private String readPathFromConfig() {
-        BufferedReader reader = null;
+        Scanner reader = null;
         try {
-            reader = new BufferedReader(new FileReader(CONFIG_FILEPATH));
-            return reader.readLine();
+            reader = new Scanner(new File(CONFIG_FILEPATH), "UTF-8");
+            return reader.nextLine();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         } finally {
             if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                reader.close();
             }
         }
     }

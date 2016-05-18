@@ -3,7 +3,6 @@ package gui.modal;
 import data.CameraShot;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
-import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -26,9 +25,6 @@ public class ShotDecouplingModalView extends ModalView {
     // variables for the Confirm and Cancel buttons
     private int buttonWidth = 90;
     private int buttonHeight = 25;
-    private Point3D createButtonColor = new Point3D(200, 200, 200);
-    private Point3D cancelButtonColor = new Point3D(200, 200, 200);
-    private int buttonFontSize = 16;
     private int buttonSpacing = 20;
 
     private static final int DEFAULT_WIDTH = 400;
