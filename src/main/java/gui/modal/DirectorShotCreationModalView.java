@@ -24,7 +24,7 @@ import lombok.Setter;
 /**
  * Class responsible for displaying a modal view for the creation of director shots.
  */
-public class DirectorShotCreationModalView extends ModalView {
+public class DirectorShotCreationModalView extends ShotCreationModalView {
 
     /*
      * Tweakable styling variables.
@@ -34,34 +34,7 @@ public class DirectorShotCreationModalView extends ModalView {
     private static final int width = 680;
     private static final int height = 460;
 
-    // variables for spacing
-    private int topAreaHeight = 70;
-    private int bottomAreaHeight = 60;
     
-    private static final String BACKGROUND_STYLE_STRING = "-fx-background-color :";
-
-    // simple background styles of the three main areas.
-    private String topStyle = BACKGROUND_STYLE_STRING
-            + TweakingHelper.STRING_PRIMARY + ";"
-            + "-fx-text-fill: white; -fx-font-size: 26;"
-            + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
-            + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: "
-            + TweakingHelper.STRING_SECONDARY + ";";
-    private String centerLeftStyle = BACKGROUND_STYLE_STRING
-            + TweakingHelper.STRING_BACKGROUND_HIGH + ";";
-    private String centerRightStyle = BACKGROUND_STYLE_STRING
-            + TweakingHelper.STRING_BACKGROUND + ";";
-    private String bottomStyle = BACKGROUND_STYLE_STRING
-            + TweakingHelper.STRING_PRIMARY + ";";
-
-    // variables for the Create and Cancel buttons
-    private int buttonWidth = 90;
-    private int buttonHeight = 25;
-    private int buttonSpacing = 20;
-
-    // variables for the title label
-    private int titlelabelOffsetFromLeft = 20;
 
     /*
      * Other variables
@@ -69,46 +42,20 @@ public class DirectorShotCreationModalView extends ModalView {
 
     // No touching these constants. They work well for all general cases,
     // and there is no reason to change them ever again.
-    private static final int TEXT_AREA_MIN_WIDTH = 350;
-    private static final int CAMERA_AREA_MIN_WIDTH = 250;
 
     private int numberOfCameras;
 
-    @Setter
-    private String defaultStartCount = "0";
-    @Setter
-    private String defaultEndCount = "1";
+    
 
     // General panes used
-    private VBox rootPane;
-    private HBox centerPane;
-    private FlowPane checkboxPane;
-    private HBox buttonPane;
-    @Getter
-    private Label titleLabel;
-
-    // Text fields
-    @Getter
-    private StyledTextfield descriptionField;
-    @Getter
-    private StyledTextfield nameField;
-    @Getter
-    private DoubleTextField startField;
-    @Getter
-    private DoubleTextField endField;
+    
 
     @Getter
     private DoubleTextField frontPaddingField;
     @Getter
     private DoubleTextField endPaddingField;
 
-    // Buttons
-    @Getter
-    private StyledButton creationButton;
-    @Getter
-    private StyledButton cancelButton;
-    @Getter
-    private List<StyledCheckbox> cameraCheckboxes;
+    
 
     /**
      * Constructor with default modal size.
@@ -137,6 +84,7 @@ public class DirectorShotCreationModalView extends ModalView {
      * Initialize and display the modal view.
      */
     private void initializeCreationView() {
+        
         // force minimum size
         getModalStage().setHeight(height);
         getModalStage().setWidth(width);
@@ -147,7 +95,9 @@ public class DirectorShotCreationModalView extends ModalView {
         this.rootPane = new VBox();
 
         // Add label at top
-        initTitleLabel();
+        initTitleLabel("Add a director shot...");
+        
+       
 
         // add space for textfields and checkboxes
         this.centerPane = new HBox(40.0);
@@ -167,101 +117,23 @@ public class DirectorShotCreationModalView extends ModalView {
         super.displayModal();
     }
 
-    /**
-     * Initialize title label.
-     */
-    private void initTitleLabel() {
-        titleLabel = new Label("Add a directorshot...");
-        titleLabel.setStyle(topStyle);
-        titleLabel.setAlignment(Pos.CENTER_LEFT);
-        titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        titleLabel.setMinHeight(topAreaHeight);
-        titleLabel.setPrefHeight(topAreaHeight);
-        titleLabel.setMaxHeight(topAreaHeight);
-        this.rootPane.getChildren().add(titleLabel);
-    }
+    
 
     /**
      * Initialize all six of the text fields.
      */
     private void initTextfields() {
-        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
-        content.setAlignment(Pos.CENTER_LEFT);
-        content.setMinWidth(TEXT_AREA_MIN_WIDTH);
-        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
-        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
-        content.setStyle(centerLeftStyle);
+        VBox content = getTextfieldBox();
 
-        initInfoTextfields(content);
+        initNameDescriptionFields(content);
         initCountTextfields(content);
         initPaddingTextfields(content);
 
         this.centerPane.getChildren().add(content);
     }
 
-    /**
-     * Initialize the name and description text fields.
-     * @param content the pane in which they are located.
-     */
-    private void initInfoTextfields(VBox content) {
-        // init name field
-        final Label nameLabel = new Label("Shot Name: ");
-        nameField = new StyledTextfield();
-        nameField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        nameField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        nameField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        nameField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
-        HBox nameBox = new HBox(TweakingHelper.GENERAL_SPACING);
-        nameBox.getChildren().addAll(nameLabel, nameField);
-        nameBox.setAlignment(Pos.CENTER_RIGHT);
-
-        // init description field
-        final Label descriptionLabel = new Label("Shot Description: ");
-        descriptionField = new StyledTextfield();
-        descriptionField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        descriptionField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        descriptionField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        descriptionField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
-        HBox descriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
-        descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
-        descriptionBox.setAlignment(Pos.CENTER_RIGHT);
-
-        content.getChildren().addAll(nameBox, descriptionBox);
-    }
-
-    /**
-     * Initialize the start and end count text fields.
-     * @param content the pane in which they are located.
-     */
-    private void initCountTextfields(VBox content) {
-        // init start field
-        final Label startLabel = new Label("Start:");
-        startField = new DoubleTextField();
-        startField.setText(this.defaultStartCount);
-        startField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        startField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        startField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        startField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
-        HBox startBox = new HBox(TweakingHelper.GENERAL_SPACING);
-        startBox.getChildren().addAll(startLabel, startField);
-        startBox.setAlignment(Pos.CENTER_RIGHT);
-
-        // init end field
-        final Label endLabel = new Label("End:");
-        endField = new DoubleTextField();
-        endField.setText(this.defaultEndCount);
-        endField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        endField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        endField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        endField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
-        HBox endBox = new HBox(TweakingHelper.GENERAL_SPACING);
-        endBox.getChildren().addAll(endLabel, endField);
-        endBox.setAlignment(Pos.CENTER_RIGHT);
-
-        content.getChildren().addAll(startBox, endBox);
-    }
+    
+    
 
     /**
      * Initialize the before and after padding text fields.
@@ -299,13 +171,7 @@ public class DirectorShotCreationModalView extends ModalView {
      * Initialize the checkboxes with labels for each camera.
      */
     private void initCamCheckBoxes() {
-        this.checkboxPane = new FlowPane();
-        this.checkboxPane.setHgap(TweakingHelper.GENERAL_PADDING);
-        this.checkboxPane.setVgap(TweakingHelper.GENERAL_PADDING);
-        this.checkboxPane.setMinWidth(CAMERA_AREA_MIN_WIDTH);
-        this.checkboxPane.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        this.checkboxPane.setAlignment(Pos.CENTER);
-        this.checkboxPane.setStyle(centerRightStyle);
+        styleCamCheckBoxes();
 
         cameraCheckboxes = new ArrayList<>();
         for (int i = 0; i < numberOfCameras; i++) {
@@ -321,39 +187,7 @@ public class DirectorShotCreationModalView extends ModalView {
         this.centerPane.getChildren().add(this.checkboxPane);
     }
 
-    /**
-     * Initializes pane with buttons at bottom.
-     */
-    private void initButtons() {
-        // setup button pane
-        this.buttonPane = new HBox();
-        this.buttonPane.setSpacing(buttonSpacing);
-        this.buttonPane.setAlignment(Pos.CENTER_LEFT);
-        this.buttonPane.setMinHeight(bottomAreaHeight);
-        this.buttonPane.setPrefHeight(bottomAreaHeight);
-        this.buttonPane.setMaxHeight(bottomAreaHeight);
-        this.buttonPane.setStyle(bottomStyle);
-        this.buttonPane.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        this.rootPane.getChildren().add(buttonPane);
-
-        // Add cancel button
-        cancelButton = new StyledButton("Cancel");
-        cancelButton.setPrefWidth(buttonWidth);
-        cancelButton.setPrefHeight(buttonHeight);
-        cancelButton.setAlignment(Pos.CENTER);
-        cancelButton.setBorderColor(Color.WHITE);
-        cancelButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
-
-        // Add creation button
-        creationButton = new StyledButton("Create");
-        creationButton.setPrefWidth(buttonWidth);
-        creationButton.setPrefHeight(buttonHeight);
-        creationButton.setAlignment(Pos.CENTER);
-        creationButton.setBorderColor(Color.WHITE);
-        creationButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
-
-        this.buttonPane.getChildren().addAll(creationButton, cancelButton);
-    }
+    
 
     /**
      * Displays an error message in the view.
