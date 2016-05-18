@@ -98,8 +98,8 @@ public class ControllerManager {
      */
     private void handleOnClose(WindowEvent event) {
         if (scriptingProject != null && scriptingProject.isChanged()) {
-                event.consume();
-                initSaveModal();
+            event.consume();
+            initSaveModal();
         }
     }
 

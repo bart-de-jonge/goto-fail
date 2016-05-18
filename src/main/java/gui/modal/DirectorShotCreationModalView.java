@@ -38,7 +38,7 @@ public class DirectorShotCreationModalView extends ModalView {
     private int topAreaHeight = 70;
     private int bottomAreaHeight = 60;
     
-    private final String BACKGROUND_STYLE_STRING = "-fx-background-color :";
+    private static final String BACKGROUND_STYLE_STRING = "-fx-background-color :";
 
     // simple background styles of the three main areas.
     private String topStyle = BACKGROUND_STYLE_STRING

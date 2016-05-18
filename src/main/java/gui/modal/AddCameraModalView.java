@@ -32,7 +32,7 @@ public class AddCameraModalView extends ModalView {
     private static final int topAreaHeight = 50;
     private static final int bottomAreaHeight = 60;
     
-    private final String BACKGROUND_STYLE_STRING = "-fx-background-color: ";
+    private static final String BACKGROUND_STYLE_STRING = "-fx-background-color: ";
 
     // simple background styles of the three main areas.
     private String topStyle = BACKGROUND_STYLE_STRING
