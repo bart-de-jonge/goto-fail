@@ -1,13 +1,12 @@
 package gui.headerarea;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gui.misc.TweakingHelper;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class that is responsible for displaying the toolbox.

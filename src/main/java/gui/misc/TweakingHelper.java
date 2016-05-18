@@ -8,18 +8,19 @@ import javafx.scene.paint.Color;
 public final class TweakingHelper {
 
     // four main colors used throughout application. Experiment a little!
-    public static Color COLOR_PRIMARY = Color.rgb(255, 172, 70); // main bright color
-    public static Color COLOR_SECONDARY = Color.rgb(255, 140, 0); // darker color
-    public static Color COLOR_TERTIARY = Color.rgb(255, 235, 190); // lighter color
-    public static Color COLOR_BACKGROUND = Color.WHITE; // main bg color
-    public static Color COLOR_BACKGROUND_HIGH = Color.rgb(245, 245, 245); // heightened bg color
+    public static final Color COLOR_PRIMARY = Color.rgb(255, 172, 70); // main bright color
+    public static final Color COLOR_SECONDARY = Color.rgb(255, 140, 0); // darker color
+    public static final Color COLOR_TERTIARY = Color.rgb(255, 235, 190); // lighter color
+    public static final Color COLOR_BACKGROUND = Color.WHITE; // main bg color
+    public static final Color COLOR_BACKGROUND_HIGH = 
+            Color.rgb(245, 245, 245); // heightened bg color
 
     // string versions of main colors
-    public static String STRING_PRIMARY = getStringFromColor(COLOR_PRIMARY);
-    public static String STRING_SECONDARY = getStringFromColor(COLOR_SECONDARY);
-    public static String STRING_TERTIARY = getStringFromColor(COLOR_TERTIARY);
-    public static String STRING_BACKGROUND = getStringFromColor(COLOR_BACKGROUND);
-    public static String STRING_BACKGROUND_HIGH = getStringFromColor(COLOR_BACKGROUND_HIGH);
+    public static final String STRING_PRIMARY = getStringFromColor(COLOR_PRIMARY);
+    public static final String STRING_SECONDARY = getStringFromColor(COLOR_SECONDARY);
+    public static final String STRING_TERTIARY = getStringFromColor(COLOR_TERTIARY);
+    public static final String STRING_BACKGROUND = getStringFromColor(COLOR_BACKGROUND);
+    public static final String STRING_BACKGROUND_HIGH = getStringFromColor(COLOR_BACKGROUND_HIGH);
 
     // general layout variables used throughout application.
     public static final int GENERAL_SIZE = 10000;
@@ -38,49 +39,6 @@ public final class TweakingHelper {
                 + color.getOpacity() + ")";
     }
 
-    /**
-     * Set primary application color to new value.
-     * @param color to set.
-     */
-    public static void setPrimaryColor(Color color) {
-        COLOR_PRIMARY = color;
-        STRING_PRIMARY = getStringFromColor(color);
-    }
-
-    /**
-     * Set secondary application color to new value.
-     * @param color to set.
-     */
-    public static void setSecondaryColor(Color color) {
-        COLOR_SECONDARY = color;
-        STRING_SECONDARY = getStringFromColor(color);
-    }
-
-    /**
-     * Set tertiary application color to new value.
-     * @param color to set.
-     */
-    public static void setTertiaryColor(Color color) {
-        COLOR_TERTIARY = color;
-        STRING_TERTIARY = getStringFromColor(color);
-    }
-
-    /**
-     * Set background application color to new value.
-     * @param color to set.
-     */
-    public static void setBackroundColor(Color color) {
-        COLOR_BACKGROUND = color;
-        STRING_BACKGROUND = getStringFromColor(color);
-    }
-
-    /**
-     * Set heightened background application color to new value.
-     * @param color to set.
-     */
-    public static void setBackroundHighColor(Color color) {
-        COLOR_BACKGROUND_HIGH = color;
-        STRING_BACKGROUND_HIGH = getStringFromColor(color);
-    }
+    
 
 }

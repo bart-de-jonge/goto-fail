@@ -6,19 +6,17 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.geometry.Point3D;
 import javafx.scene.control.Button;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Represents a stylized button.
- * @author Mark
  */
 public class StyledButton extends Button {
+    
+    private StyledElementHelper helper = new StyledElementHelper();
 
     /*
      * Tweakable variables
@@ -47,9 +45,10 @@ public class StyledButton extends Button {
     private DropShadow dropShadow; // adds simple drop shadow.
     private TransitionHelper transitionHelper; // provides transition-effects.
     private ObjectProperty<Color> borderColorProperty = new SimpleObjectProperty<>(borderColor);
-    private StringProperty borderStringProperty = createColorStringProperty(borderColorProperty);
+    private StringProperty borderStringProperty = 
+            helper.createColorStringProperty(borderColorProperty);
     private ObjectProperty<Color> fillColorProperty = new SimpleObjectProperty<>(Color.WHITE);
-    private StringProperty fillStringProperty = createColorStringProperty(fillColorProperty);
+    private StringProperty fillStringProperty = helper.createColorStringProperty(fillColorProperty);
 
     /**
      * Constructor class.
@@ -71,6 +70,7 @@ public class StyledButton extends Button {
      * Initialization helper function.
      */
     private void init() {
+        helper = new StyledElementHelper();
         // initialize effects that can't be done by css all at once
         this.dropShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, shadowOpacity),
                 shadowRadius, 0.05, 2, 2);
@@ -112,33 +112,7 @@ public class StyledButton extends Button {
                 Color.rgb(0, 0, 0, shadowClickOpacity), Interpolator.LINEAR);
     }
 
-    /**
-     * Helper function for binding a fill color. Creates a string property used
-     * to modify the style at runtime.
-     * @param colorProperty the colorProperty whose color we want to show.
-     * @return The StringProperty which we'll use to set the style.
-     */
-    private StringProperty createColorStringProperty(ObjectProperty<Color> colorProperty) {
-        StringProperty stringProperty = new SimpleStringProperty();
-        stringProperty.set(getStringFromColor(colorProperty.get()));
-        colorProperty.addListener(
-            e -> {
-                stringProperty.set(getStringFromColor(colorProperty.get()));
-            });
-        return stringProperty;
-    }
-
-    /**
-     * Parses color from a Color object to javafx-css-compatible string.
-     * @param color the color to parse.
-     * @return a representative string.
-     */
-    private String getStringFromColor(Color color) {
-        return "rgba(" + ((int) (color.getRed()   * 255)) + ","
-                + ((int) (color.getGreen() * 255)) + ","
-                + ((int) (color.getBlue()  * 255)) + ","
-                + color.getOpacity() + ")";
-    }
+    
 
     /**
      * Set the fill color of this button.
