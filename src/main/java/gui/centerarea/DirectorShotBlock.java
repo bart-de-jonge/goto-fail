@@ -43,16 +43,12 @@ public class DirectorShotBlock extends ShotBlock {
                              DirectorShot shot) {
 
         super(rootCenterArea, beginCount, endCount, description,
-                name, shot, CameraTimetableBlock.class);
+                name, shot, DirectorTimetableBlock.class);
 
         this.shotId = shotId;
         this.grid = rootCenterArea.getDirectorGridPane();
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
-                this.setBeginCount(TimelinesGridPane.getRowIndex(
-                        this.getTimetableBlock()), false);
-                this.setEndCount(TimelinesGridPane.getRowSpan(
-                    this.getTimetableBlock()) + this.getBeginCount(), false);
 
                 if (e instanceof DirectorShotBlockUpdatedEvent) {
                     handler.handle((DirectorShotBlockUpdatedEvent) e);

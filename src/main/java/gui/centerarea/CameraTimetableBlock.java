@@ -35,18 +35,18 @@ public class CameraTimetableBlock extends TimetableBlock {
 
     }
 
-    @Override
+    /**
+     * Initialize the dragpane with blur, title, count and description labels.
+     */
     void initDraggedPane() {
-        // Init the dragpane with blur, title, count and description labels
-        super.initDraggedPane();
+        super.initDraggedPane(getRootCenterArea().getMainTimeLineAnchorPane());
 
         this.getDraggedPane().getStyleClass().add("block_Background_Dragged");
         this.getDraggedContentPane().getStyleClass().add("block_Foreground_Dragged");
     }
 
-    @Override
     void initFeedbackPane() {
         // Init feedbackpane with blur and darken
-        super.initFeedbackPane();
+        super.initFeedbackPane(getRootCenterArea().getMainTimeLineGridPane());
     }
 }

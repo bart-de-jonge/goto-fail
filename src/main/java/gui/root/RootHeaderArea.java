@@ -36,8 +36,8 @@ public class RootHeaderArea extends VBox {
     public RootHeaderArea(RootPane rootPane) {
         this.rootPane = rootPane;
 
-        dropShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0,0,0,0.2), 20, 0.1, 0, 5);
-        this.setEffect(dropShadow);
+//        dropShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0,0,0,0.2), 20, 0.1, 0, 5);
+//        this.setEffect(dropShadow);
 
         getChildren().add(initMenus());
         getChildren().add(initHeaderBar());

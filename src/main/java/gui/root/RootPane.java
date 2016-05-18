@@ -61,15 +61,15 @@ public class RootPane extends Application {
         primaryStage.setWidth(startingResolutionX);
         primaryStage.centerOnScreen();
 
+        // represents center of ui
+        rootCenterArea = new RootCenterArea(this, 0, true);
+        topLevelPane.setCenter(rootCenterArea);
         // represents file-view-help bar and button bars at top of gui.
         rootHeaderArea = new RootHeaderArea(this);
         topLevelPane.setTop(rootHeaderArea);
         // represents simple bar at bottom of gui.
         rootFooterArea = new RootFooterArea();
         topLevelPane.setBottom(rootFooterArea);
-        // represents center of ui
-        rootCenterArea = new RootCenterArea(this, 0, true);
-        topLevelPane.setCenter(rootCenterArea);
         // startup modal view.
         startupModalView = new StartupModalView(this);
         

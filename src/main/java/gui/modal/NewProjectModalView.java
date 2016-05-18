@@ -84,8 +84,6 @@ public class NewProjectModalView extends ModalView {
     @Getter
     private StyledListview<HBox> cameraList;
     @Getter
-    private StyledListview<HBox> timelineList;
-    @Getter
     private StyledListview<HBox> cameraTypeList;
 
     // Labels
@@ -120,6 +118,10 @@ public class NewProjectModalView extends ModalView {
     @Getter
     private ArrayList<CameraTimeline> timelines;
 
+    /**
+     * Construct a new NewProjectModalView.
+     * @param rootPane the rootPane for this modal.
+     */
     public NewProjectModalView(RootPane rootPane) {
         this(rootPane, width, height);
     }

@@ -1,5 +1,6 @@
 package gui.centerarea;
 
+import control.CountUtilities;
 import data.Shot;
 import gui.root.RootCenterArea;
 import gui.events.ShotblockUpdatedEvent;
@@ -177,9 +178,10 @@ public abstract class ShotBlock {
      */
     public void recompute() {
         TimelinesGridPane.setRowIndex(timetableBlock,
-                (int) Math.round(beginCount * 4));
+                (int) Math.round(beginCount * CountUtilities.NUMBER_OF_CELLS_PER_COUNT));
         TimelinesGridPane.setRowSpan(timetableBlock,
-                (int) Math.round((endCount - beginCount) * 4));
+                (int) Math.round((endCount - beginCount)
+                        * CountUtilities.NUMBER_OF_CELLS_PER_COUNT));
     }
 
     /**
