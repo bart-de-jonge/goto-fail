@@ -2,11 +2,9 @@ package gui.root;
 
 import gui.headerarea.DetailView;
 import gui.headerarea.ToolView;
-import gui.misc.TweakingHelper;
-import javafx.scene.control.MenuItem;
-
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.HBox;
@@ -124,10 +122,10 @@ public class RootHeaderArea extends VBox {
 
         MenuItem quit = new MenuItem("Quit");
         quit.setOnAction(e -> {
-                if (rootPane.getControllerManager().getScriptingProject() != null) {
-                    if (rootPane.getControllerManager().getScriptingProject().isChanged()) {
+                if (rootPane.getControllerManager().getScriptingProject() != null 
+                        && rootPane.getControllerManager()
+                                   .getScriptingProject().isChanged()) {
                         rootPane.getControllerManager().initSaveModal();
-                    }
                 }
             });
         Menu fileMenu = new Menu("File");

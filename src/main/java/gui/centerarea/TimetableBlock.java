@@ -1,9 +1,10 @@
 package gui.centerarea;
 
+import static gui.centerarea.TimetableBlock.DraggingTypes.Move;
+
 import control.CountUtilities;
 import gui.misc.BlurHelper;
 import gui.root.RootCenterArea;
-import gui.root.RootPane;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -26,8 +27,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import lombok.Getter;
-
-import static gui.centerarea.TimetableBlock.DraggingTypes.Move;
 
 /**
  * Class that resembles a draggable, resizable block inside the timetable,

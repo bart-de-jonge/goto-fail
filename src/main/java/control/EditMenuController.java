@@ -16,7 +16,9 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class EditMenuController {
     
     private ControllerManager controllerManager;
@@ -122,6 +124,7 @@ public class EditMenuController {
             editModal.getTimelines().remove(selectedIndex);
             editModal.getCameraList().getItems().remove(selectedIndex);
         } else {
+            log.debug("TODO: Error message should select camera");
             // TODO: Error message: should select camera
         }
     }
@@ -188,6 +191,7 @@ public class EditMenuController {
             editModal.getTypes().remove(selectedIndex);
             editModal.getCameraTypeList().getItems().remove(selectedIndex);
         } else {
+            log.debug("TODO: Error message select camera");
             // TODO: Error message, select camera type
         }
     }

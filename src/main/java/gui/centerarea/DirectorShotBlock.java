@@ -1,6 +1,5 @@
 package gui.centerarea;
 
-import data.CameraShot;
 import data.DirectorShot;
 import gui.events.DirectorShotBlockUpdatedEvent;
 import gui.events.ShotblockUpdatedEvent;
