@@ -35,7 +35,7 @@ public class EditProjectModalView extends ModalView {
     @Getter
     private NumberTextField secondsPerCountField;
     @Getter
-    private TextField directorDescriptionField;
+    private TextField directorTimelineDescriptionField;
     @Getter
     private Button addCameraButton;
     @Getter
@@ -45,7 +45,7 @@ public class EditProjectModalView extends ModalView {
     @Getter
     private Button deleteCameraTypeButton;
     @Getter
-    private Button saveButton;
+    private Button creationButton;
     @Getter
     private Button cancelButton;
     @Getter
@@ -53,13 +53,13 @@ public class EditProjectModalView extends ModalView {
     @Getter
     private ListView<HBox> cameraTypeList;
     @Getter
-    private ArrayList<CameraType> types;
+    private ArrayList<CameraType> cameraTypes;
     @Getter
     private ArrayList<Camera> cameras;
     @Getter
     private ArrayList<CameraTimeline> timelines;
     @Getter
-    private Label errorLabel;
+    private Label titleLabel;
     
     
     /**
@@ -81,7 +81,7 @@ public class EditProjectModalView extends ModalView {
         this.rootPane = rootPane;
         this.project = rootPane.getControllerManager().getScriptingProject();
         this.cameras = project.getCameras();
-        this.types = project.getCameraTypes();
+        this.cameraTypes = project.getCameraTypes();
         this.timelines = project.getCameraTimelines();
         initializeView();
     }
@@ -91,8 +91,8 @@ public class EditProjectModalView extends ModalView {
      */
     private void initializeView() {
         viewPane = new VBox(20);
-        errorLabel = new Label("");
-        viewPane.getChildren().add(errorLabel);
+        titleLabel = new Label("");
+        viewPane.getChildren().add(titleLabel);
         
         initFields();
         initCameraTypeSection();
@@ -110,9 +110,9 @@ public class EditProjectModalView extends ModalView {
         nameField = new TextField(project.getName());
         descriptionField = new TextField(project.getDescription());
         secondsPerCountField = new NumberTextField(Double.toString(project.getSecondsPerCount()));
-        directorDescriptionField = new TextField(project.getDirectorTimeline().getDescription());
+        directorTimelineDescriptionField = new TextField(project.getDirectorTimeline().getDescription());
         viewPane.getChildren().addAll(nameField, descriptionField, 
-                secondsPerCountField, directorDescriptionField);
+                secondsPerCountField, directorTimelineDescriptionField);
     }
     
     /**
@@ -171,9 +171,9 @@ public class EditProjectModalView extends ModalView {
      * Initialize the save/cancel buttons.
      */
     private void initFinalButtons() {
-        saveButton = new Button("Save");
+        creationButton = new Button("Save");
         cancelButton = new Button("Cancel");
-        viewPane.getChildren().addAll(saveButton, cancelButton);
+        viewPane.getChildren().addAll(creationButton, cancelButton);
     }
     
     

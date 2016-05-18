@@ -19,7 +19,7 @@ import lombok.Getter;
  */
 public class StyledTextfield extends TextField {
     
-    private StyledElementHelper helper;
+    private StyledElementHelper helper = new StyledElementHelper();
 
     /*
      * Tweakable variables

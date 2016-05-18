@@ -45,7 +45,7 @@ public class EditMenuController {
         editModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);
         editModal.getDeleteCameraTypeButton().setOnMouseClicked(this::deleteCameraType);
         editModal.getCancelButton().setOnMouseClicked(this::cancel);
-        editModal.getSaveButton().setOnMouseClicked(this::save);
+        editModal.getCreationButton().setOnMouseClicked(this::save);
     }
     
     /**
@@ -53,7 +53,7 @@ public class EditMenuController {
      * @param event the MouseEvent for this handler
      */
     private void addCamera(MouseEvent event) {
-        cameraModal = new AddCameraModalView(controllerManager.getRootPane(), editModal.getTypes());
+        cameraModal = new AddCameraModalView(controllerManager.getRootPane(), editModal.getCameraTypes());
         cameraModal.getAddCameraButton().setOnMouseClicked(this::cameraAdded);
     }
     
@@ -146,7 +146,7 @@ public class EditMenuController {
             double movementMargin = Double.parseDouble(
                     typeModal.getMovementMarginField().getText());
             CameraType type = new CameraType(name, description, movementMargin);
-            editModal.getTypes().add(type);
+            editModal.getCameraTypes().add(type);
             HBox box = new HBox();
             box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
             editModal.getCameraTypeList().getItems().add(box);
@@ -188,7 +188,7 @@ public class EditMenuController {
     private void deleteCameraType(MouseEvent event) {
         int selectedIndex = editModal.getCameraTypeList().getSelectionModel().getSelectedIndex();
         if (selectedIndex != -1) {
-            editModal.getTypes().remove(selectedIndex);
+            editModal.getCameraTypes().remove(selectedIndex);
             editModal.getCameraTypeList().getItems().remove(selectedIndex);
         } else {
             log.debug("TODO: Error message select camera");
@@ -214,13 +214,13 @@ public class EditMenuController {
             
             String name = editModal.getNameField().getText();
             String description = editModal.getDescriptionField().getText();
-            String directorTimelineDescription = editModal.getDirectorDescriptionField().getText();
+            String directorTimelineDescription = editModal.getDirectorTimelineDescriptionField().getText();
             double secondsPerCount = Double.parseDouble(
                     editModal.getSecondsPerCountField().getText());
             
             ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
             project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
-            project.setCameraTypes(editModal.getTypes());
+            project.setCameraTypes(editModal.getCameraTypes());
             project.setCameras(editModal.getCameras());
             project.setCameraTimelines(editModal.getTimelines());
             project.getDirectorTimeline().setProject(project);
@@ -255,7 +255,7 @@ public class EditMenuController {
      */
     private boolean validateProjectData() {
         String errorString = "";
-        String directorTimelineDescription = editModal.getDirectorDescriptionField().getText();
+        String directorTimelineDescription = editModal.getDirectorTimelineDescriptionField().getText();
         
         if (directorTimelineDescription.isEmpty()) {
             errorString = "Please enter a director timeline description\n";
@@ -277,8 +277,8 @@ public class EditMenuController {
             errorString = "Please enter a project name\n";
         }
         
-        editModal.getErrorLabel().setText(errorString);
-        editModal.getErrorLabel().setTextFill(Color.RED);
+        editModal.getTitleLabel().setText(errorString);
+        editModal.getTitleLabel().setTextFill(Color.RED);
         
         return errorString.isEmpty();
     }

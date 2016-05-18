@@ -1,6 +1,10 @@
 package control;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -11,12 +15,10 @@ import gui.centerarea.CameraShotBlock;
 import gui.modal.AddCameraModalView;
 import gui.modal.AddCameraTypeModalView;
 import gui.modal.AddTimelineModalView;
+import gui.modal.EditProjectModalView;
 import gui.modal.NewProjectModalView;
 import gui.root.RootCenterArea;
 import gui.root.RootPane;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -30,7 +32,7 @@ public class FileMenuController {
     
     private ControllerManager controllerManager;
     
-    private NewProjectModalView newProjectModal;
+    private EditProjectModalView newProjectModal;
     private AddCameraModalView cameraModal;
     private AddCameraTypeModalView cameraTypeModal;
     private AddTimelineModalView timelineModal;
@@ -191,7 +193,7 @@ public class FileMenuController {
      * Method to show the modal to create a new project.
      */
     public void newProject() {
-        newProjectModal = new NewProjectModalView(controllerManager.getRootPane());
+        newProjectModal = new EditProjectModalView(controllerManager.getRootPane());
         newProjectModal.getCreationButton().setOnMouseClicked(this::createProject);
         newProjectModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
         newProjectModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);

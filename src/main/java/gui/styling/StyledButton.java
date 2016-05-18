@@ -17,7 +17,7 @@ import javafx.scene.paint.Color;
  */
 public class StyledButton extends Button {
     
-    private StyledElementHelper helper;
+    private StyledElementHelper helper = new StyledElementHelper();
 
     /*
      * Tweakable variables
