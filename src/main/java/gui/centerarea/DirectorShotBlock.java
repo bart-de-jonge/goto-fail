@@ -43,7 +43,7 @@ public class DirectorShotBlock extends ShotBlock {
                              DirectorShot shot) {
 
         super(rootCenterArea, beginCount, endCount, description,
-                name, shot, CameraTimetableBlock.class);
+                name, shot, DirectorTimetableBlock.class);
 
         this.shotId = shotId;
         this.grid = rootCenterArea.getDirectorGridPane();

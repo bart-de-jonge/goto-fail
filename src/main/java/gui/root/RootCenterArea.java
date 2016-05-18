@@ -174,13 +174,13 @@ public class RootCenterArea extends VBox {
         directorAnchorPane.setRightAnchor(directorGridPane, 0.0);
         directorAnchorPane.setTopAnchor(directorGridPane, 0.0);
         directorAnchorPane.getChildren().add(directorGridPane);
+        directorAnchorPane.setStyle("-fx-background-color: green;");
         directorScrollpane.setContent(directorAnchorPane);
         directorScrollpane.setMinWidth(directorTimelineWidth);
         directorScrollpane.setFitToWidth(true);
         directorScrollpane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         directorScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        directorScrollpane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        directorScrollpane.setStyle("-fx-background-color: lightblue"); // debugcolor for now
+        directorGridPane.setGridLinesVisible(false);
         timelinesPane.getChildren().add(directorScrollpane);
     }
 

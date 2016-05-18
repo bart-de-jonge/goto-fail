@@ -316,7 +316,6 @@ public abstract class TimetableBlock extends Pane {
             darken.setInput(gaussianBlur);
             image.setEffect(darken);
             feedbackPane.getChildren().add(image);
-            //feedbackPane.setStyle("-fx-background-color: rgb(255,0,0)");
             feedbackPane.toBack();
             feedbackPane.setVisible(true);
 
@@ -328,6 +327,7 @@ public abstract class TimetableBlock extends Pane {
                 TimelinesGridPane.setRowSpan(feedbackPane, TimelinesGridPane.getRowSpan(thisBlock));
             } else {
                 gridPane = getRootCenterArea().getDirectorGridPane();
+                DirectorGridPane.setColumnIndex(feedbackPane, DirectorGridPane.getColumnIndex(thisBlock));
                 DirectorGridPane.setRowIndex(feedbackPane, DirectorGridPane.getRowIndex(thisBlock));
                 DirectorGridPane.setRowSpan(feedbackPane, DirectorGridPane.getRowSpan(thisBlock));
             }

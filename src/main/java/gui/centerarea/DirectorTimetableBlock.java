@@ -41,10 +41,13 @@ public class DirectorTimetableBlock extends TimetableBlock {
 
         this.getDraggedPane().getStyleClass().add("block_Background_Dragged");
         this.getDraggedContentPane().getStyleClass().add("block_Foreground_Dragged");
+        //this.getDraggedPane().toFront();
+        //this.getDraggedContentPane().toFront();
     }
 
     void initFeedbackPane() {
         // Init feedbackpane with blur and darken
         super.initFeedbackPane(getRootCenterArea().getDirectorGridPane());
+        //this.getFeedbackPane().toFront();
     }
 }
