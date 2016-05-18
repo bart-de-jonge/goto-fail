@@ -49,10 +49,10 @@ public class DirectorGridPane extends ScrollableGridPane {
                 this.add(pane, i, j);
                 getPanes().add(pane);
                 if (c > CountUtilities.NUMBER_OF_CELLS_PER_COUNT) {
-                    pane.getStyleClass().add("timeline_Background_Lines");
+                    pane.getStyleClass().add("director_Background_Lines");
                     c = 2;
                 } else {
-                    pane.getStyleClass().add("timeline_Background_Empty");
+                    pane.getStyleClass().add("director_Background_Empty");
                     c++;
                 }
             }

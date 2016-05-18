@@ -173,7 +173,7 @@ public abstract class TimetableBlock extends Pane {
         draggedContentPane.maxWidthProperty().bind(draggedPane.widthProperty());
         draggedContentPane.minHeightProperty().bind(draggedPane.heightProperty());
         draggedContentPane.maxHeightProperty().bind(draggedPane.heightProperty());
-        
+
         // add some labels etc
         titleDraggedLabel = initTitleLabel(draggedContentPane);
         countDraggedLabel = initCountLabel(draggedContentPane);
@@ -511,6 +511,7 @@ public abstract class TimetableBlock extends Pane {
         Bounds parentBounds = parentPane.localToScene(parentPane.getBoundsInLocal());
 
         draggedPane.setLayoutX(x - parentBounds.getMinX() - dragXOffset);
+        draggedPane.setLayoutY(y - parentBounds.getMinY() - dragYOffset);
     }
 
     /**

@@ -38,7 +38,7 @@ public class RootCenterArea extends VBox {
     @Getter
     private int counterWidth = 40;
     @Getter
-    private int directorTimelineWidth = 100;
+    private int directorTimelineWidth = 150;
     @Getter
     private int timelineWidth = 100; // 100 works well, if you've changed this.
     @Getter
@@ -163,6 +163,7 @@ public class RootCenterArea extends VBox {
         mainTimelineScrollpane.setFitToWidth(true);
         mainTimelineScrollpane.setPrefWidth(TweakingHelper.GENERAL_SIZE);
         mainTimelineScrollpane.setContent(mainTimeLineAnchorPane);
+        mainTimelineScrollpane.setPadding(new Insets(0,0,0,0));
         timelinesPane.getChildren().add(mainTimelineScrollpane);
     }
 
@@ -196,16 +197,17 @@ public class RootCenterArea extends VBox {
         directorAnchorPane.setRightAnchor(directorGridPane, 0.0);
         directorAnchorPane.setTopAnchor(directorGridPane, 0.0);
         directorAnchorPane.getChildren().add(directorGridPane);
-        directorAnchorPane.setStyle("-fx-background-color: green;");
         directorScrollpane.setContent(directorAnchorPane);
         directorScrollpane.setMinWidth(directorTimelineWidth);
         directorScrollpane.setFitToWidth(true);
         directorScrollpane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         directorScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         directorGridPane.setGridLinesVisible(false);
+        directorScrollpane.setPadding(new Insets(0,0,0,0));
+        directorScrollpane.setStyle("-fx-border-width: 0 0.5px 0 0.5px;"
+            + "-fx-border-color: gray;");
         timelinesPane.getChildren().add(directorScrollpane);
     }
-
 
 }
 
