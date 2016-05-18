@@ -191,11 +191,72 @@ public class CreationModalViewController {
         directorShotCreationModalView.getCreationButton().setOnMouseReleased(
                 this::createDirectorShot);
 
-        // todo: add parsing of counts to the right fields
-        // see showCameraCreationWindow
+        // Add listeners for parsing to startfield
+        directorShotCreationModalView.getStartField().setOnKeyPressed(
+                this::directorShotStartCountEnterHandler);
+        directorShotCreationModalView.getStartField().focusedProperty().addListener(
+                this::directorShotStartCountFocusHandler);
+
+        // Add listeners for parsing to endfield
+        directorShotCreationModalView.getEndField().setOnKeyPressed(
+                this::directorShotEndCountEnterHandler);
+        directorShotCreationModalView.getEndField().focusedProperty().addListener(
+                this::directorShotEndCountFocusHandler);
     }
 
+/**
+     * Handler for when enter is pressed on the startcount field in directorshot creation.
+     * @param event - the keyevent
+     */
+    private void directorShotStartCountEnterHandler(KeyEvent event) {
+        if (event.getCode().equals(KeyCode.ENTER)) {
+            directorShotCreationModalView.getStartField().setText(
+                    CountUtilities.parseCountNumber(
+                            directorShotCreationModalView.getStartField().getText()));
+        }
+    }
 
+    /**
+     * Handler for when focus is lost on the startcount field in directorshot creation.
+     * @param observable - the observable
+     * @param oldValue - the old value of the focus
+     * @param newValue - the new value of the focus
+     */
+    private void directorShotEndCountFocusHandler(ObservableValue<? extends Boolean> observable,
+                                                Boolean oldValue, Boolean newValue) {
+        if (!newValue) {
+            directorShotCreationModalView.getEndField().setText(
+                    CountUtilities.parseCountNumber(
+                            directorShotCreationModalView.getEndField().getText()));
+        }
+    }
+
+    /**
+     * Handler for when enter is pressed on the endcount field in directorshot creation.
+     * @param event - the keyevent
+     */
+    private void directorShotEndCountEnterHandler(KeyEvent event) {
+        if (event.getCode().equals(KeyCode.ENTER)) {
+            directorShotCreationModalView.getEndField().setText(
+                    CountUtilities.parseCountNumber(
+                            directorShotCreationModalView.getEndField().getText()));
+        }
+    }
+
+    /**
+     * Handler for when focus is lost on the endcount field in directorshot creation.
+     * @param observable - the observable
+     * @param oldValue - the old value of the focus
+     * @param newValue - the new value of the focus
+     */
+    private void directorShotStartCountFocusHandler(ObservableValue<? extends Boolean> observable,
+                                                  Boolean oldValue, Boolean newValue) {
+        if (!newValue) {
+            directorShotCreationModalView.getStartField().setText(
+                    CountUtilities.parseCountNumber(
+                            directorShotCreationModalView.getStartField().getText()));
+        }
+    }
 
     /**
      * Event handler for the creation of a director shot.
