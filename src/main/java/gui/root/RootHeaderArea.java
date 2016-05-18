@@ -125,7 +125,7 @@ public class RootHeaderArea extends VBox {
                 if (rootPane.getControllerManager().getScriptingProject() != null 
                         && rootPane.getControllerManager()
                                    .getScriptingProject().isChanged()) {
-                        rootPane.getControllerManager().initSaveModal();
+                    rootPane.getControllerManager().initSaveModal();
                 }
             });
         Menu fileMenu = new Menu("File");
