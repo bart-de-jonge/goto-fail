@@ -319,7 +319,7 @@ public abstract class TimetableBlock extends Pane {
             feedbackPane.toBack();
             feedbackPane.setVisible(true);
 
-            GridPane gridPane = null;
+            GridPane gridPane;
             if (timeline) {
                 gridPane = getRootCenterArea().getMainTimeLineGridPane();
                 TimelinesGridPane.setColumnIndex(feedbackPane, TimelinesGridPane.getColumnIndex(thisBlock));
@@ -417,7 +417,7 @@ public abstract class TimetableBlock extends Pane {
         // Fix dragging out of grid
         if (draggingType == DraggingTypes.Resize_Bottom
                 || draggingType == DraggingTypes.Resize_Top) {
-            GridPane gridPane = null;
+            GridPane gridPane;
             if (horizontalAllowed) {
                 gridPane = getRootCenterArea().getMainTimeLineGridPane();
             } else {
@@ -478,7 +478,7 @@ public abstract class TimetableBlock extends Pane {
             xCoordinate = mappingPane.getLayoutX() + mappingPane.getWidth() / 2;
         }
 
-        ScrollableGridPane gridPane = null;
+        ScrollableGridPane gridPane;
 
         if (horizontal) {
             gridPane = rootCenterArea.getMainTimeLineGridPane();
@@ -516,7 +516,7 @@ public abstract class TimetableBlock extends Pane {
      * @param y - the y coordinate needed to process the vertical dragging
      */
     private void onMouseDraggedHelperNormal(double x, double y, boolean horizontal) {
-        AnchorPane parentPane = null;
+        AnchorPane parentPane;
         if (horizontal) {
             parentPane = rootCenterArea.getMainTimeLineAnchorPane();
         } else {

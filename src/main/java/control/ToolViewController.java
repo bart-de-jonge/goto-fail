@@ -55,10 +55,13 @@ public class ToolViewController {
     private void deleteActiveCameraShot() {
         ShotBlock currentShot = this.controllerManager.getActiveShotBlock();
 
-        // TODO: Make this a more general deletion for the active timeline (i.e. director)
         if (currentShot instanceof CameraShotBlock) {
             CameraShotBlock cameraShotBlock = (CameraShotBlock) currentShot;
             this.controllerManager.getTimelineControl().removeCameraShot(cameraShotBlock);
+        }
+        if (currentShot instanceof DirectorShotBlock) {
+            DirectorShotBlock directorShotBlock = (DirectorShotBlock) currentShot;
+            this.controllerManager.getDirectorTimelineControl().removeShot(directorShotBlock);
         }
     }
 
