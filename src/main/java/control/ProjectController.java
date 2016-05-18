@@ -255,8 +255,8 @@ public class ProjectController {
             editProjectModal.getCameraTypes().remove(selectedIndex);
             editProjectModal.getCameraTypeList().getItems().remove(selectedIndex);
         } else {
-            log.debug("TODO: Error message select camera");
-            // TODO: Error message, select camera type
+            editProjectModal.getTitleLabel().setText("Please select a camera type first");
+            editProjectModal.getTitleLabel().setTextFill(Color.RED);
         }
     }
     
@@ -280,8 +280,8 @@ public class ProjectController {
             editProjectModal.getTimelines().remove(selectedIndex);
             editProjectModal.getCameraList().getItems().remove(selectedIndex);
         } else {
-            log.debug("TODO: Error message should select camera");
-            // TODO: Error message: should select camera
+            editProjectModal.getTitleLabel().setText("Please select a camera first");
+            editProjectModal.getTitleLabel().setTextFill(Color.RED);
         }
     }
     
