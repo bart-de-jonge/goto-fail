@@ -16,7 +16,6 @@ import gui.modal.AddCameraModalView;
 import gui.modal.AddCameraTypeModalView;
 import gui.modal.AddTimelineModalView;
 import gui.modal.EditProjectModalView;
-import gui.modal.NewProjectModalView;
 import gui.root.RootCenterArea;
 import gui.root.RootPane;
 import javafx.scene.control.Label;
