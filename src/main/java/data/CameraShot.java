@@ -9,7 +9,6 @@ import lombok.extern.log4j.Log4j2;
 
 /**
  * This class extends the Shot class, this one is specific for the CameraTimeline.
- * Created by martijn.
  */
 @XmlRootElement(name = "cameraShot")
 @ToString
@@ -60,5 +59,13 @@ public class CameraShot extends Shot {
      */
     public static void incrementCounter() {
         instanceCounter++;
+    }
+    
+    @Override
+    public CameraShot clone() {
+        CameraShot result = new CameraShot(
+                getName(), getDescription(), getBeginCount(), getEndCount(), getDirectorShot());
+        result.setColliding(isColliding());
+        return result;
     }
 }

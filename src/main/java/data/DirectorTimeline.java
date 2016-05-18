@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
  * Class to store information about a directors timeline.
- * @author Bart.
  */
 @XmlRootElement(name = "directorTimeline")
 @ToString
@@ -26,11 +26,15 @@ public class DirectorTimeline extends Timeline {
     @XmlElement(name = "shot")
     private LinkedList<DirectorShot> shots;
     
+    @Getter @Setter
+    private String description;
+    
     /**
      * Default constructor.
      */
     public DirectorTimeline() {
         super();
+        description = "";
         shots = null;
     }
 
@@ -41,7 +45,8 @@ public class DirectorTimeline extends Timeline {
      * @param project the project that contains this timeline
      */
     public DirectorTimeline(String description, ScriptingProject project) {
-        super(description, project);
+        super(project);
+        this.description = description;
         shots = new LinkedList<>();
     }
 

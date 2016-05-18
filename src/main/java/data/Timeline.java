@@ -8,15 +8,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Created by Bart.
  * Abstract class for centerarea.
  */
 @XmlRootElement(name = "timeline")
 public abstract class Timeline {
 
-    // Description of this Timeline.
-    @Getter
-    private String description;
 
     // The project this timeline is currently in
     @Setter
@@ -27,17 +23,14 @@ public abstract class Timeline {
      * Default constructor.
      */
     public Timeline() {
-        description = "";
         project = null;
     }
 
     /**
      * Constructor.
-     * @param description the description of this timeline
      * @param project the project that contains this timeline
      */
-    public Timeline(String description, ScriptingProject project) {
-        this.description = description;
+    public Timeline(ScriptingProject project) {
         this.project = project;
     }
 

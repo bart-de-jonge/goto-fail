@@ -9,7 +9,6 @@ import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
 /**
- * Created by Bart.
  * Class to store information about cameras.
  */
 @XmlRootElement(name = "camera")

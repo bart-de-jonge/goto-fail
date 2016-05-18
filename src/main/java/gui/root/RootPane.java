@@ -2,6 +2,8 @@ package gui.root;
 
 import control.ControllerManager;
 
+import gui.modal.StartupModalView;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -22,8 +24,8 @@ public class RootPane extends Application {
 
     private int minimumResolutionX = 640;
     private int minimumResolutionY = 480;
-    private int startingResolutionX = 800;
-    private int startingResolutionY = 600;
+    private int startingResolutionX = 1280;
+    private int startingResolutionY = 800;
     
     @Getter
     private static final String CONFIG_FILEPATH = "config.ini";
@@ -40,6 +42,8 @@ public class RootPane extends Application {
     private RootCenterArea rootCenterArea;
     @Getter
     private ControllerManager controllerManager;
+    @Getter
+    private StartupModalView startupModalView;
     
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -51,37 +55,52 @@ public class RootPane extends Application {
         // Create scene and set the stage. This is where the window is basically
         // created. Also has some useful settings.
         Scene scene = new Scene(topLevelPane);
-        scene.getStylesheets().add("Stylesheets/stylesheet.css");
+        initStylesheets(scene);
         primaryStage.setScene(scene);
         primaryStage.setTitle("New Project");
         primaryStage.setMinHeight(minimumResolutionY);
         primaryStage.setMinWidth(minimumResolutionX);
         primaryStage.setHeight(startingResolutionY);
         primaryStage.setWidth(startingResolutionX);
+        primaryStage.centerOnScreen();
 
+        // represents center of ui
+        rootCenterArea = new RootCenterArea(this, 0, true);
+        topLevelPane.setCenter(rootCenterArea);
         // represents file-view-help bar and button bars at top of gui.
         rootHeaderArea = new RootHeaderArea(this);
         topLevelPane.setTop(rootHeaderArea);
-
         // represents simple bar at bottom of gui.
         rootFooterArea = new RootFooterArea();
         topLevelPane.setBottom(rootFooterArea);
-
-        rootCenterArea = new RootCenterArea(this, 0, true);
-        topLevelPane.setCenter(rootCenterArea);
+        // startup modal view.
+        startupModalView = new StartupModalView(this);
         
         controllerManager = new ControllerManager(this);
-        
+
         String recentProjectPath = readPathFromConfig();
         if (recentProjectPath != null) {
             controllerManager.getFileMenuController().load(new File(recentProjectPath));
             primaryStage.setTitle(controllerManager.getScriptingProject().getName());
+        } else {
+            initStartupScreen(false);
         }
 
-        primaryStage.centerOnScreen();
-        primaryStage.show();
     }
-    
+
+    /**
+     * Load all main stylesheets for this scene.
+     * @param scene scene to load.
+     */
+    private void initStylesheets(Scene scene) {
+        scene.getStylesheets().add("Stylesheets/Misc.css");
+        scene.getStylesheets().add("Stylesheets/StyledButton.css");
+        scene.getStylesheets().add("Stylesheets/StyledCheckbox.css");
+        scene.getStylesheets().add("Stylesheets/StyledTextfield.css");
+        scene.getStylesheets().add("Stylesheets/StyledListview.css");
+        scene.getStylesheets().add("Stylesheets/StyledMenu.css");
+    }
+
     /**
      * Read the most recent project filepath from the config file, for auto load.
      * @return the filepath if one is found, null otherwise
@@ -104,9 +123,32 @@ public class RootPane extends Application {
             }
         }
     }
-    
+
+    /**
+     * Forces reload of root center area.
+     * @param area the rootcenterarea to load.
+     */
     public void reInitRootCenterArea(RootCenterArea area) {
         topLevelPane.setCenter(area);
         rootCenterArea = area;
+        primaryStage.show();
+    }
+
+    /**
+     * Forces load of startup screen.
+     * @param loadFailed whether to display a load failure message or not.
+     */
+    public void initStartupScreen(boolean loadFailed) {
+        if (loadFailed) {
+            startupModalView.setLoadFailed();
+        }
+        startupModalView.displayModal();
+    }
+
+    /**
+     * Removes startup screen.
+     */
+    public void closeStartupScreen() {
+        startupModalView.hideModal();
     }
 }

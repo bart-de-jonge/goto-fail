@@ -13,7 +13,6 @@ import java.util.Set;
 
 /**
  * The DirectorShot class has more elaborate information for the Director, like the description.
- * Created by martijn.
  */
 @XmlRootElement(name = "directorShot")
 @ToString

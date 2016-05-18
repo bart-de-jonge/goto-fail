@@ -7,6 +7,9 @@ import gui.headerarea.DetailView;
 import gui.headerarea.DoubleTextField;
 import gui.root.RootHeaderArea;
 import gui.root.RootPane;
+import gui.styling.StyledTextfield;
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -19,7 +22,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.testfx.framework.junit.ApplicationTest;
@@ -55,8 +60,8 @@ public class DetailViewControllerTest extends ApplicationTest {
         beginCountField = new DoubleTextField("0");
         endCountField = new DoubleTextField("0");
 
-        when(detailView.getDescriptionField()).thenReturn(new TextField());
-        when(detailView.getNameField()).thenReturn(new TextField());
+        when(detailView.getDescriptionField()).thenReturn(new StyledTextfield());
+        when(detailView.getNameField()).thenReturn(new StyledTextfield());
         when(detailView.getBeginCountField()).thenReturn(beginCountField);
         when(detailView.getEndCountField()).thenReturn(endCountField);
 
@@ -66,10 +71,6 @@ public class DetailViewControllerTest extends ApplicationTest {
     @Test
     public void constructor() {
         assertNotNull(detailViewController);
-    }
-
-    @Override
-    public void start(Stage stage) throws Exception {
     }
 
     @Test
@@ -156,16 +157,20 @@ public class DetailViewControllerTest extends ApplicationTest {
             @Override
             public void addListener(ChangeListener<? super Boolean> listener) {
             }
+
             @Override
             public void removeListener(ChangeListener<? super Boolean> listener) {
             }
+
             @Override
             public Boolean getValue() {
                 return null;
             }
+
             @Override
             public void addListener(InvalidationListener listener) {
             }
+
             @Override
             public void removeListener(InvalidationListener listener) {
             }
@@ -186,16 +191,20 @@ public class DetailViewControllerTest extends ApplicationTest {
             @Override
             public void addListener(ChangeListener<? super Boolean> listener) {
             }
+
             @Override
             public void removeListener(ChangeListener<? super Boolean> listener) {
             }
+
             @Override
             public Boolean getValue() {
                 return null;
             }
+
             @Override
             public void addListener(InvalidationListener listener) {
             }
+
             @Override
             public void removeListener(InvalidationListener listener) {
             }
@@ -216,16 +225,20 @@ public class DetailViewControllerTest extends ApplicationTest {
             @Override
             public void addListener(ChangeListener<? super String> listener) {
             }
+
             @Override
             public void removeListener(ChangeListener<? super String> listener) {
             }
+
             @Override
             public String getValue() {
                 return null;
             }
+
             @Override
             public void addListener(InvalidationListener listener) {
             }
+
             @Override
             public void removeListener(InvalidationListener listener) {
             }
@@ -246,16 +259,20 @@ public class DetailViewControllerTest extends ApplicationTest {
             @Override
             public void addListener(ChangeListener<? super String> listener) {
             }
+
             @Override
             public void removeListener(ChangeListener<? super String> listener) {
             }
+
             @Override
             public String getValue() {
                 return null;
             }
+
             @Override
             public void addListener(InvalidationListener listener) {
             }
+
             @Override
             public void removeListener(InvalidationListener listener) {
             }
@@ -265,4 +282,8 @@ public class DetailViewControllerTest extends ApplicationTest {
         verify(shot, times(1)).setDescription("test newvalue");
     }
 
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
 }

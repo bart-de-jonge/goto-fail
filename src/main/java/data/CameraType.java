@@ -9,7 +9,7 @@ import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
 /**
- * Created by Bart.
+ * Class that represents a camera type.
  */
 @EqualsAndHashCode
 @ToString

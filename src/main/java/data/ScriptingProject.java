@@ -1,9 +1,9 @@
 package data;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.extern.log4j.Log4j2;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -14,11 +14,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.File;
-import java.util.ArrayList;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
 /**
- * Created by Bart.
  * Class to store top-level properties of a scripting project.
  */
 @XmlRootElement(name = "scriptingProject")
@@ -26,6 +28,9 @@ import java.util.ArrayList;
 @ToString
 @Log4j2
 public class ScriptingProject {
+    
+    @Getter @Setter
+    private ArrayList<CameraType> cameraTypes;
     
     // Name of this project
     @Getter @Setter
@@ -84,6 +89,7 @@ public class ScriptingProject {
         this.cameras = new ArrayList<Camera>();
         this.cameraTimelines = new ArrayList<CameraTimeline>();
         this.directorTimeline = new DirectorTimeline(description, this);
+        this.cameraTypes = new ArrayList<CameraType>();
         this.changed = true;
     }
     
@@ -176,6 +182,19 @@ public class ScriptingProject {
      */
     public double secondsToCounts(double seconds) {
         return seconds / secondsPerCount;
+    }
+    
+    /**
+     * Get a distinct list of camera types.
+     * @return a list of camera types.
+     */
+    public Set<CameraType> getDistinctCameraTypes() {
+        Set<CameraType> result = new HashSet<CameraType>();
+        for (Camera c: cameras) {
+            result.add(c.getCameraType());
+        }
+        
+        return result;
     }
 
     /**

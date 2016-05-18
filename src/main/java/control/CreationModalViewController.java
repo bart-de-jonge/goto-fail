@@ -10,17 +10,21 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 /**
- * Created by Bart on 11/05/2016.
+ * Controller for the CreationModalView.
  */
 public class CreationModalViewController {
 
     private ControllerManager controllerManager;
 
+    @Getter @Setter
     private CameraShotCreationModalView cameraShotCreationModalView;
+    @Getter @Setter
     private DirectorShotCreationModalView directorShotCreationModalView;
 
     public CreationModalViewController(ControllerManager controllerManager) {
@@ -37,10 +41,10 @@ public class CreationModalViewController {
                 this.controllerManager.getScriptingProject().getCameraTimelines());
 
         // Add mouse handlers
-        cameraShotCreationModalView.getCreationButton().setOnMouseReleased(this::createCameraShot);
-        cameraShotCreationModalView.getCancelButton().setOnMouseReleased(e -> {
-                cameraShotCreationModalView.getModalStage().close();
-            });
+        cameraShotCreationModalView.getCreationButton().setOnMouseReleased(
+                this::createCameraShot);
+        cameraShotCreationModalView.getCancelButton().setOnMouseReleased(
+                this::cameraCreationCancelButtonHandler);
 
         // Add listeners for parsing to startfield
         cameraShotCreationModalView.getStartField().setOnKeyPressed(
@@ -133,12 +137,16 @@ public class CreationModalViewController {
         }
     }
 
+    private void cameraCreationCancelButtonHandler(MouseEvent event) {
+        cameraShotCreationModalView.getModalStage().close();
+    }
+
     /**
      * Validates that the fields are correctly filled, and if not, isplays
      * a corresponding error message.
      * @return whether or not the fields are valid
      */
-    private boolean validateCameraShot() {
+    protected boolean validateCameraShot() {
         String errorString = "";
 
         boolean aCameraSelected = false;
@@ -287,7 +295,7 @@ public class CreationModalViewController {
      * a corresponding error message.
      * @return whether or not the fields are valid
      */
-    private boolean validateDirectorShot() {
+    protected boolean validateDirectorShot() {
         String errorString = "";
         if (directorShotCreationModalView.getNameField().getText().isEmpty()) {
             errorString += "Please name your shot.\n";

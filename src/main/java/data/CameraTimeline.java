@@ -13,11 +13,13 @@ import java.util.stream.Collectors;
 
 /**
  * Class to store information about a camera timeline.
- * @author Bart.
  */
 @XmlRootElement(name = "cameraTimeline")
 @ToString
 public class CameraTimeline extends Timeline {
+    
+    @Getter @Setter
+    private String description;
     
     // Name of this timeline
     @Getter @Setter
@@ -37,7 +39,8 @@ public class CameraTimeline extends Timeline {
      * Default constructor.
      */
     public CameraTimeline() {
-        super("", null);
+        super(null);
+        description = null;
         camera = null;
         shots = null;
     }
@@ -50,7 +53,8 @@ public class CameraTimeline extends Timeline {
      * @param project the project that contains this timeline
      */
     public CameraTimeline(Camera camera, String description, ScriptingProject project) {
-        super(description, project);
+        super(project);
+        this.description = description;
         this.camera = camera;
         shots = new LinkedList<>();
     }

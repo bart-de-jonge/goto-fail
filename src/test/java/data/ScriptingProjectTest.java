@@ -118,7 +118,7 @@ public class ScriptingProjectTest {
     
     @Test
     public void toStringTest() {
-        assertEquals("ScriptingProject(name=, description=A test scripting project, cameras=[], directorTimeline=DirectorTimeline(shots=[]), cameraTimelines=[], secondsPerCount=2.0, filePath=null, changed=true)", project.toString());
+        assertEquals("ScriptingProject(cameraTypes=[], name=, description=A test scripting project, cameras=[], directorTimeline=DirectorTimeline(shots=[], description=A test scripting project), cameraTimelines=[], secondsPerCount=2.0, filePath=null, changed=true)", project.toString());
     }
     
     @Test

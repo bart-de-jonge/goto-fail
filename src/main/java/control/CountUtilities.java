@@ -1,7 +1,7 @@
 package control;
 
 /**
- * Created by Bart on 10/05/2016.
+ * Class for count utilities.
  */
 public class CountUtilities {
 

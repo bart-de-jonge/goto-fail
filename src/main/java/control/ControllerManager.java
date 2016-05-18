@@ -12,7 +12,6 @@ import lombok.extern.log4j.Log4j2;
 
 /**
  * Class wrapper for model management controllers.
- * @author alex
  */
 @Log4j2
 public class ControllerManager {
@@ -34,6 +33,9 @@ public class ControllerManager {
 
     @Getter
     private FileMenuController fileMenuController;
+    
+    @Getter
+    private EditMenuController editMenuController;
 
     @Getter
     private ShotBlock activeShotBlock;
@@ -84,6 +86,7 @@ public class ControllerManager {
         detailViewController = new DetailViewController(this);
         toolViewController = new ToolViewController(this);
         fileMenuController = new FileMenuController(this);
+        editMenuController = new EditMenuController(this);
     }
 
     /**

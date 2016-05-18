@@ -1,10 +1,10 @@
 package gui.modal;
 
+import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -22,19 +22,17 @@ public class SaveModalView extends ModalView {
     private static final int height = 200;
 
     // three main colors used throughout window. Experiment a little!
-    private static final Color mainColor = Color.rgb(255, 172, 70); // main bright color
-    private static final Color secondaryColor = Color.rgb(255, 140, 0); // darker color
 
     // variables for spacing
     private static final int topAreaHeight = 80;
     private static final int bottomAreaHeight = 60;
 
     // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: " + getStringFromColor(mainColor) + ";"
+    private String topStyle = "-fx-background-color: " + TweakingHelper.STRING_PRIMARY + ";"
             + "-fx-text-fill: white; -fx-font-size: 20;"
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: " + getStringFromColor(secondaryColor) + ";";
+            + "-fx-border-color: " + TweakingHelper.STRING_SECONDARY + ";";
 
     // variables for the buttons
     private int buttonWidth = 120;
@@ -47,12 +45,6 @@ public class SaveModalView extends ModalView {
     /*
      * Other variables
      */
-
-    // No touching these constants. They work well for all general cases,
-    // and there is no reason to change them ever again.
-    private static final int GENERAL_SIZE = 10000;
-    private static final int GENERAL_SPACING = 10;
-    private static final int GENERAL_PADDING = 20;
 
     private Label informationLabel;
     @Getter
@@ -114,7 +106,7 @@ public class SaveModalView extends ModalView {
         informationLabel.setAlignment(Pos.CENTER);
         informationLabel.setPadding(new Insets(0, titlelabelOffsetFromLeft,
                 0, titlelabelOffsetFromLeft));
-        informationLabel.setPrefWidth(GENERAL_SIZE);
+        informationLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
         informationLabel.setMinHeight(topAreaHeight);
         informationLabel.setPrefHeight(topAreaHeight);
         informationLabel.setMaxHeight(topAreaHeight);
@@ -125,10 +117,10 @@ public class SaveModalView extends ModalView {
      * Initialize the buttons.
      */
     private void initButtons() {
-        HBox content = new HBox(GENERAL_SPACING);
+        HBox content = new HBox(TweakingHelper.GENERAL_SPACING);
         content.setSpacing(buttonSpacing);
         content.setAlignment(Pos.CENTER);
-        content.setPrefHeight(GENERAL_SIZE);
+        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
         content.setPadding(new Insets(0, titlelabelOffsetFromLeft,
                 0, titlelabelOffsetFromLeft));
         this.viewPane.getChildren().add(content);
@@ -137,33 +129,21 @@ public class SaveModalView extends ModalView {
         saveButton.setPrefWidth(buttonWidth);
         saveButton.setPrefHeight(buttonHeight);
         saveButton.setFillColor(Color.WHITE);
-        saveButton.setBorderColor(mainColor);
+        saveButton.setBorderColor(TweakingHelper.COLOR_PRIMARY);
 
         dontSaveButton = new StyledButton("Don't save");
         dontSaveButton.setPrefWidth(buttonWidth);
         dontSaveButton.setPrefHeight(buttonHeight);
         dontSaveButton.setFillColor(Color.WHITE);
-        dontSaveButton.setBorderColor(mainColor);
+        dontSaveButton.setBorderColor(TweakingHelper.COLOR_PRIMARY);
 
         cancelButton = new StyledButton("Cancel");
         cancelButton.setPrefWidth(buttonWidth);
         cancelButton.setPrefHeight(buttonHeight);
         cancelButton.setFillColor(Color.WHITE);
-        cancelButton.setBorderColor(mainColor);
+        cancelButton.setBorderColor(TweakingHelper.COLOR_PRIMARY);
 
         content.getChildren().addAll(saveButton, dontSaveButton, cancelButton);
-    }
-
-    /**
-     * Parses color from a Color object to javafx-css-compatible string.
-     * @param color the color to parse.
-     * @return a representative string.
-     */
-    private String getStringFromColor(Color color) {
-        return "rgba(" + ((int) (color.getRed()   * 255)) + ","
-                + ((int) (color.getGreen() * 255)) + ","
-                + ((int) (color.getBlue()  * 255)) + ","
-                + color.getOpacity() + ")";
     }
 
 }

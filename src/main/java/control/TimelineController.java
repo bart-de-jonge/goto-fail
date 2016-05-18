@@ -19,7 +19,6 @@ import lombok.extern.log4j.Log4j2;
 
 /**
  * Class that controls the timeline.
- * @author alex
  */
 @Log4j2
 public class TimelineController {

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 /**
  * Class representing the grid inside a timeline.
- * Created by markv on 5/4/2016.
  */
 public class ScrollableGridPane extends GridPane {
 
@@ -26,8 +25,6 @@ public class ScrollableGridPane extends GridPane {
     private int verticalElementSize; // size of every vertical grid lane.
     @Getter @Setter
     private ArrayList<SnappingPane> panes;
-    @Getter @Setter
-    private int offsetFromLeft;
 
     /**
      * Constructor of class.
@@ -76,8 +73,8 @@ public class ScrollableGridPane extends GridPane {
 
         // Correct for points outside grid
         Bounds sceneBounds = this.localToScene(this.getLayoutBounds());
-        if (sceneBounds.getMinX() + offsetFromLeft > x) {
-            return getMyPane(sceneBounds.getMinX() + offsetFromLeft, y);
+        if (sceneBounds.getMinX() > x) {
+            return getMyPane(sceneBounds.getMinX(), y);
         } else if (sceneBounds.getMaxX() < x) {
             return getMyPane(sceneBounds.getMaxX(), y);
         } else if (sceneBounds.getMinY() > y) {

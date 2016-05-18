@@ -31,7 +31,7 @@ public class DirectorTimelineTest {
     
     @Test
     public void toStringTest() {
-        assertEquals("DirectorTimeline(shots=[])", timeline.toString());
+        assertEquals("DirectorTimeline(shots=[], description=A test director timeline)", timeline.toString());
     }
 
     @Test

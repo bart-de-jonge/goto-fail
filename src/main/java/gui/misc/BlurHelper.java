@@ -15,7 +15,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Created by markv on 5/3/2016.
  * Class to assist in quickly blurring behind a supplied node.
  * Also has support for moving elements.
  * Is kind of extremely buggy. May have horrible performance impact.
