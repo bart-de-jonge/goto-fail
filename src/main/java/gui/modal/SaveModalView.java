@@ -21,8 +21,6 @@ public class SaveModalView extends ModalView {
     private static final int width = 450;
     private static final int height = 200;
 
-    // three main colors used throughout window. Experiment a little!
-
     // variables for spacing
     private static final int topAreaHeight = 80;
     private static final int bottomAreaHeight = 60;
