@@ -1,5 +1,8 @@
 package gui.modal;
 
+import lombok.extern.log4j.Log4j2;
+
+
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -23,10 +26,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Class responsible for displaying a modal view for editing a project.
  */
+@Log4j2
 public class EditProjectModalView extends ModalView {
 
     /*
@@ -83,14 +88,13 @@ public class EditProjectModalView extends ModalView {
     @Getter
     private HBox buttonPane;
     @Getter
-    private ListView<HBox> cameraList;
+    private StyledListview<HBox> cameraList;
     @Getter
-    private ListView<HBox> cameraTypeList;
+    private StyledListview<HBox> cameraTypeList;
 
     // Labels
     @Getter
-
-    private TextField directorTimelineDescriptionField;
+    private StyledTextfield directorTimelineDescriptionField;
 
 
     // Text fields
@@ -101,14 +105,14 @@ public class EditProjectModalView extends ModalView {
     private StyledTextfield descriptionField;
     @Getter
     private NumberTextField secondsPerCountField;
-    @Getter
-    private StyledTextfield directorDescriptionField;
+    
 
     // Buttons
     @Getter
 
     private Button creationButton;
 
+    @Getter
     private StyledButton addCameraButton;
 
     @Getter
@@ -169,12 +173,6 @@ public class EditProjectModalView extends ModalView {
      */
     private void initializeView() {
 
-        
-        
-        initFields();
-        
-       
-
         // force minimum size
         getModalStage().setHeight(height);
         getModalStage().setWidth(width);
@@ -213,9 +211,14 @@ public class EditProjectModalView extends ModalView {
         nameField.setText(project.getName());
         descriptionField.setText(project.getDescription());
         secondsPerCountField.setText(Double.toString(project.getSecondsPerCount()));
+        log.error(directorTimelineDescriptionField);
+        log.error(project);
+        log.error(project.getDirectorTimeline());
+        log.error(project.getDirectorTimeline().getDescription());
+        
         directorTimelineDescriptionField.setText(project.getDirectorTimeline().getDescription());
-        //initCameraTypeList(cameraTypeList);
-        //initCameraList(cameraList);
+        initCameraTypeList(cameraTypeList);
+        initCameraList(cameraList);
     }
     
 
@@ -266,7 +269,7 @@ public class EditProjectModalView extends ModalView {
     private void initNameDescriptionFields(VBox content) {
         // init name field
         final Label nameLabel = new Label("Project name: ");
-        nameField = new StyledTextfield(project.getName());
+        nameField = new StyledTextfield();
         nameField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
         nameField.setTextColor(TweakingHelper.COLOR_PRIMARY);
         nameField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
@@ -277,7 +280,7 @@ public class EditProjectModalView extends ModalView {
 
         // init description field
         final Label descriptionLabel = new Label("Project description: ");
-        descriptionField = new StyledTextfield(project.getDescription());
+        descriptionField = new StyledTextfield();
         descriptionField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
         descriptionField.setTextColor(TweakingHelper.COLOR_PRIMARY);
         descriptionField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
@@ -296,8 +299,7 @@ public class EditProjectModalView extends ModalView {
     private void initTimelineFields(VBox content) {
         // init seconds per count field
         final Label secondsPerCountLabel = new Label("Seconds per count: ");
-        secondsPerCountField = new NumberTextField(
-                Double.toString(project.getSecondsPerCount()));
+        secondsPerCountField = new NumberTextField();
         secondsPerCountField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
         secondsPerCountField.setTextColor(TweakingHelper.COLOR_PRIMARY);
         secondsPerCountField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
@@ -308,15 +310,14 @@ public class EditProjectModalView extends ModalView {
 
         // init timeline description field (this ought to die)
         final Label directorTimelineDescriptionLabel = new Label("Director Timeline Description: ");
-        directorDescriptionField = new StyledTextfield(
-                project.getDirectorTimeline().getDescription());
-        directorDescriptionField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        directorDescriptionField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        directorDescriptionField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        directorDescriptionField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
+        directorTimelineDescriptionField = new StyledTextfield();
+        directorTimelineDescriptionField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
+        directorTimelineDescriptionField.setTextColor(TweakingHelper.COLOR_PRIMARY);
+        directorTimelineDescriptionField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
+        directorTimelineDescriptionField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         HBox directorTimelineDescriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
         directorTimelineDescriptionBox.getChildren().addAll(directorTimelineDescriptionLabel,
-                directorDescriptionField);
+                directorTimelineDescriptionField);
         directorTimelineDescriptionBox.setAlignment(Pos.CENTER_RIGHT);
 
         content.getChildren().addAll(secondsPerCountBox, directorTimelineDescriptionBox);
@@ -346,7 +347,7 @@ public class EditProjectModalView extends ModalView {
         HBox cameraTypeContent = new HBox(TweakingHelper.GENERAL_SPACING);
         cameraTypeContent.getChildren().addAll(addCameraTypeButton,
                 deleteCameraTypeButton);
-        cameraTypeList = initCameraTypeList();
+        cameraTypeList = new StyledListview<HBox>();
         content.getChildren().addAll(cameraTypeContent, cameraTypeList);
 
         // add camera
@@ -358,7 +359,8 @@ public class EditProjectModalView extends ModalView {
         deleteCameraButton.setBorderColor(TweakingHelper.COLOR_PRIMARY);
         HBox cameraContent = new HBox(TweakingHelper.GENERAL_SPACING);
         cameraContent.getChildren().addAll(addCameraButton, deleteCameraButton);
-        cameraList = initCameraList();
+        //cameraList = initCameraList();
+        cameraList = new StyledListview<HBox>();
         content.getChildren().addAll(cameraContent, cameraList);
 
         this.centerPane.getChildren().add(content);
@@ -369,17 +371,15 @@ public class EditProjectModalView extends ModalView {
      * @return the camera type list.
      */
 
-    private StyledListview<HBox> initCameraTypeList() {
-        StyledListview<HBox> result = new StyledListview<HBox>();
-        result.setMinHeight(75);
+    private void initCameraTypeList(ListView<HBox> typeList) {
+        typeList.setMinHeight(75);
         Set<CameraType> types = project.getDistinctCameraTypes();
         for (CameraType type: types) {
             HBox box = new HBox();
             box.getChildren().addAll(
                     new Label(type.getName()), new Label(" - "), new Label(type.getDescription()));
-            result.getItems().add(box);
+            typeList.getItems().add(box);
         }
-        return result;
         
     }
     
@@ -388,9 +388,8 @@ public class EditProjectModalView extends ModalView {
      * Initialize the camera list.
      * @return the camera list.
      */
-    private StyledListview<HBox> initCameraList() {
-        StyledListview<HBox> result = new StyledListview<HBox>();
-        result.setMinHeight(75);
+    private void initCameraList(ListView<HBox> cameraList) {
+        cameraList.setMinHeight(75);
 
         ArrayList<Camera> cameras = project.getCameras();
         for (Camera c: cameras) {
@@ -399,7 +398,7 @@ public class EditProjectModalView extends ModalView {
                     new Label(c.getName()), new Label(" - "), new Label(c.getDescription()));
             cameraList.getItems().add(box);
         }
-        return result;
+        
     }
     
     /**
