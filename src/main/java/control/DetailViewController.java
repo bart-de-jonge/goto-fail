@@ -68,10 +68,7 @@ public class DetailViewController {
             double newVal = Double.parseDouble(newValue);
 
             manager.getActiveShotBlock().setBeginCount(newVal);
-            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
-                        .setBeginCount(newVal);
-            }
+            manager.getActiveShotBlock().getShot().setEndCount(newVal);
         }
     }
 
@@ -118,10 +115,7 @@ public class DetailViewController {
             detailView.getEndCountField().setText(newValue);
 
             manager.getActiveShotBlock().setEndCount(newVal);
-            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
-                        .setEndCount(newVal);
-            }
+            manager.getActiveShotBlock().getShot().setEndCount(newVal);
         }
     }
 
@@ -145,10 +139,7 @@ public class DetailViewController {
                                String oldValue, String newValue) {
         if (manager.getActiveShotBlock() != null) {
             manager.getActiveShotBlock().setDescription(newValue);
-            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
-                        .setDescription(newValue);
-            }
+            manager.getActiveShotBlock().getShot().setDescription(newValue);
         }
     }
 
@@ -172,10 +163,7 @@ public class DetailViewController {
                                         String oldValue, String newValue) {
         if (manager.getActiveShotBlock() != null) {
             manager.getActiveShotBlock().setName(newValue);
-            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveShotBlock())
-                        .getShot().setName(newValue);
-            }
+            manager.getActiveShotBlock().getShot().setName(newValue);
         }
     }
 
