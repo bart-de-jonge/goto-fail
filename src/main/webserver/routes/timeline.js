@@ -1,7 +1,3 @@
-/**
- * Created by Bart on 17/05/2016.
- */
-
 import express from "express";
 import TimelineBlock from "./../objects/timelineBlock";
 const router = new express.Router();
