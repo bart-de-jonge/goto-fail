@@ -39,7 +39,7 @@ public class EditMenuController {
      * Start the edit project modal.
      */
     public void editProject() {
-        editModal = new EditProjectModalView(controllerManager.getRootPane());
+        editModal = new EditProjectModalView(controllerManager.getRootPane(), true);
         editModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
         editModal.getDeleteCameraButton().setOnMouseClicked(this::deleteCamera);
         editModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);

@@ -60,14 +60,15 @@ public class EditProjectModalView extends ModalView {
     private ArrayList<CameraTimeline> timelines;
     @Getter
     private Label titleLabel;
+    private boolean fillWithCurrentProjectInfo;
     
     
     /**
      * Construct a new EditProjectModalView.
      * @param rootPane the rootPane for this modal.
      */
-    public EditProjectModalView(RootPane rootPane) {
-        this(rootPane, width, height);
+    public EditProjectModalView(RootPane rootPane, boolean fillWithCurrentProjectInfo) {
+        this(rootPane, fillWithCurrentProjectInfo, width, height);
     }
     
     /**
@@ -76,8 +77,9 @@ public class EditProjectModalView extends ModalView {
      * @param width the width of this modal
      * @param height the height of this modal
      */
-    public EditProjectModalView(RootPane rootPane, int width, int height) {
+    public EditProjectModalView(RootPane rootPane, boolean fillWithCurrentProjectInfo, int width, int height) {
         super(rootPane, width, height);
+        this.fillWithCurrentProjectInfo = fillWithCurrentProjectInfo;
         this.rootPane = rootPane;
         this.project = rootPane.getControllerManager().getScriptingProject();
         this.cameras = project.getCameras();
@@ -98,7 +100,9 @@ public class EditProjectModalView extends ModalView {
         initCameraTypeSection();
         initCameraSection();
         initFinalButtons();
-       // fillInformation();
+        if (fillWithCurrentProjectInfo) {
+            fillInformation();
+        }
         
         super.setModalView(this.viewPane);
         super.displayModal();
@@ -109,8 +113,8 @@ public class EditProjectModalView extends ModalView {
         descriptionField.setText(project.getDescription());
         secondsPerCountField.setText(Double.toString(project.getSecondsPerCount()));
         directorTimelineDescriptionField.setText(project.getDirectorTimeline().getDescription());
-        cameraTypeList = initCameraTypeList();
-        cameraList = initCameraList();
+        initCameraTypeList(cameraTypeList);
+        initCameraList(cameraList);
     }
     
     /**
@@ -139,16 +143,15 @@ public class EditProjectModalView extends ModalView {
      * Initialize the camera type list.
      * @return the camera type list.
      */
-    private ListView<HBox> initCameraTypeList() {
-        ListView<HBox> result = new ListView<HBox>();
+    private void initCameraTypeList(ListView<HBox> typeList) {
         Set<CameraType> types = project.getDistinctCameraTypes();
         for (CameraType type: types) {
             HBox box = new HBox();
             box.getChildren().addAll(
                     new Label(type.getName()), new Label(" - "), new Label(type.getDescription()));
-            result.getItems().add(box);
+            typeList.getItems().add(box);
         }
-        return result;
+        
     }
     
     /**
@@ -165,16 +168,14 @@ public class EditProjectModalView extends ModalView {
      * Initialize the camera list.
      * @return the camera list.
      */
-    private ListView<HBox> initCameraList() {
-        ListView<HBox> result = new ListView<HBox>();
+    private void initCameraList(ListView<HBox> cameraList) {
         ArrayList<Camera> cameras = project.getCameras();
         for (Camera c: cameras) {
             HBox box = new HBox();
             box.getChildren().addAll(
                     new Label(c.getName()), new Label(" - "), new Label(c.getDescription()));
-            result.getItems().add(box);
+            cameraList.getItems().add(box);
         }
-        return result;
     }
     
     /**

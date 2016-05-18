@@ -193,7 +193,7 @@ public class FileMenuController {
      * Method to show the modal to create a new project.
      */
     public void newProject() {
-        newProjectModal = new EditProjectModalView(controllerManager.getRootPane());
+        newProjectModal = new EditProjectModalView(controllerManager.getRootPane(), false);
         newProjectModal.getCreationButton().setOnMouseClicked(this::createProject);
         newProjectModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
         newProjectModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);
