@@ -13,7 +13,6 @@ import javafx.scene.paint.Color;
 
 /**
  * Represents a stylized button.
- * @author Mark
  */
 public class StyledButton extends Button {
     
