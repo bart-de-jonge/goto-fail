@@ -7,13 +7,13 @@ import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
 import gui.events.DirectorShotBlockUpdatedEvent;
 import gui.root.RootPane;
-import lombok.Getter;
-import lombok.extern.log4j.Log4j2;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
+
 
 /**
  * Controller for the DirectorTimeline.
@@ -138,10 +138,10 @@ public class DirectorTimelineController {
         ArrayList<DirectorShotBlock> toRemove = new ArrayList<>();
         this.overlappingShotBlocks.stream()
                 .filter(shotBlock ->
-                            shotBlock.getShot().getCollidesWith().isEmpty()).forEach(shotBlock -> {
-                                    shotBlock.setColliding(false);
-                                    toRemove.add(shotBlock);
-                                });
+                    shotBlock.getShot().getCollidesWith().isEmpty()).forEach(shotBlock -> {
+                        shotBlock.setColliding(false);
+                        toRemove.add(shotBlock);
+                    });
         this.overlappingShotBlocks.removeAll(toRemove);
 
         // Check for collisions
@@ -154,13 +154,14 @@ public class DirectorTimelineController {
             ArrayList<Integer> instances = overlappingShots.stream().map(Shot::getInstance)
                     .collect(Collectors.toCollection(supplier));
             // Get CameraShotBlock
-            this.shotBlocks.stream().filter(shotBlock ->
-                    instances.contains(shotBlock.getShotId())).forEach(shotBlock -> {
-                            overlappingShotBlocks.add(shotBlock);
-                            if (!this.overlappingShotBlocks.contains(shotBlock)) {
-                                this.overlappingShotBlocks.add(shotBlock);
-                            }
-                        });
+            this.shotBlocks.stream().filter(
+                shotBlock -> instances.contains(shotBlock.getShotId()))
+                .forEach(shotBlock -> {
+                    overlappingShotBlocks.add(shotBlock);
+                    if (!this.overlappingShotBlocks.contains(shotBlock)) {
+                        this.overlappingShotBlocks.add(shotBlock);
+                    }
+                });
             // Make DirectorShotBlocks red
             for (DirectorShotBlock shotBlock : overlappingShotBlocks) {
                 shotBlock.setColliding(true);
