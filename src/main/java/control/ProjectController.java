@@ -104,9 +104,7 @@ public class ProjectController {
                 CameraTimeline newLine = project.getCameraTimelines().get(i);
                 CameraTimeline oldLine = editProjectModal.getProject().getCameraTimelines().get(i);
                 LinkedList<CameraShot> shots = new LinkedList<CameraShot>();
-                for (CameraShot shot: oldLine.getShots()) {
-                    shots.add(shot);
-                }
+                oldLine.getShots().forEach(shots::add);
                 for (CameraShot shot: shots) {
                     newLine.addShot(shot);
                     controllerManager.getTimelineControl().addCameraShot(i, shot);
