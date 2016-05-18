@@ -82,6 +82,7 @@ public class ScrollableGridPane extends GridPane {
         } else if (sceneBounds.getMaxY() < y) {
             return getMyPane(x, sceneBounds.getMaxY());
         }
+
         for (SnappingPane pane : panes) {
             Bounds bounds = pane.localToScene(pane.getBoundsInLocal());
             if (bounds.contains(x, y)) {
@@ -93,6 +94,7 @@ public class ScrollableGridPane extends GridPane {
                 return pane;
             }
         }
+
         return null;
     }
 }

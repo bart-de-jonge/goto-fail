@@ -329,6 +329,7 @@ public abstract class TimetableBlock extends Pane {
             } else if (draggingType == DraggingTypes.Resize_Bottom) {
                 startingY = blockY;
             }
+            
         };
     }
 
@@ -462,6 +463,7 @@ public abstract class TimetableBlock extends Pane {
         } else {
             yCoordinate = y;
             xCoordinate = mappingPane.getLayoutX() + mappingPane.getWidth() / 2;
+            System.out.println(xCoordinate);
         }
 
         ScrollableGridPane gridPane = null;
@@ -489,6 +491,7 @@ public abstract class TimetableBlock extends Pane {
             }
 
             GridPane.setColumnIndex(targetRegion, myPane.getColumn());
+
             GridPane.setRowSpan(targetRegion, Math.max(numCounts, 1));
             return true;
         } else {
