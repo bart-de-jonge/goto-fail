@@ -264,6 +264,11 @@ public class ProjectController {
         cameraModal = new AddCameraModalView(controllerManager.getRootPane(),
                                              editProjectModal.getCameraTypes());
         cameraModal.getAddCameraButton().setOnMouseClicked(this::cameraAdded);
+        cameraModal.getCancelButton().setOnMouseClicked(this::cancelAddCamera);
+    }
+    
+    private void cancelAddCamera(MouseEvent event) {
+        cameraModal.hideModal();
     }
     
     /**
@@ -326,6 +331,11 @@ public class ProjectController {
     private void addCameraType(MouseEvent event) {
         cameraTypeModal = new AddCameraTypeModalView(controllerManager.getRootPane());
         cameraTypeModal.getAddCameraTypeButton().setOnMouseClicked(this::typeAdded);
+        cameraTypeModal.getCancelButton().setOnMouseClicked(this::cancelAddCameraType);
+    }
+    
+    private void cancelAddCameraType(MouseEvent event) {
+        cameraTypeModal.hideModal();
     }
     
     /**
