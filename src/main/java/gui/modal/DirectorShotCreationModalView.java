@@ -34,7 +34,7 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
     private static final int width = 680;
     private static final int height = 460;
 
-    
+
 
     /*
      * Other variables

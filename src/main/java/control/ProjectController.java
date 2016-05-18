@@ -15,7 +15,6 @@ import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
 import gui.modal.AddCameraModalView;
 import gui.modal.AddCameraTypeModalView;
-import gui.modal.AddTimelineModalView;
 import gui.modal.EditProjectModalView;
 import gui.root.RootCenterArea;
 import gui.root.RootPane;

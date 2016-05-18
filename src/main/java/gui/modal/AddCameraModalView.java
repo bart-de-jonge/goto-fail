@@ -27,15 +27,17 @@ public class AddCameraModalView extends CameraModificationModalView {
     // width and height of screen. 450 and 300 work very, very well.
     private static final int width = 600;
     private static final int height = 350;
+
     
     private static final String BACKGROUND_STYLE_STRING = "-fx-background-color: ";
 
     // simple background styles of the three main areas.
+
     private String centerLeftStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.STRING_BACKGROUND_HIGH + ";";
     private String centerRightStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.STRING_BACKGROUND + ";";
-    
+
 
     /*
      * Other variables.

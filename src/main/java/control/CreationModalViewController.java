@@ -226,7 +226,7 @@ public class CreationModalViewController {
                   directorShotCreationModalView.getEndPaddingField().getText());        
                 
             List<Integer> camerasInShot = directorShotCreationModalView.getCamerasInShot();
-            
+           
             // keep at end of if statement
             directorShotCreationModalView.getModalStage().close();
         }

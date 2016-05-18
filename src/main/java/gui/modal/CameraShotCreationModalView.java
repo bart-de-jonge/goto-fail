@@ -33,7 +33,7 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
     private static final int width = 680;
     private static final int height = 370;
 
-    
+
 
     /*
      * Other variables.
