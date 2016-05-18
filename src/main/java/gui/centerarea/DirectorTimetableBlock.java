@@ -35,18 +35,22 @@ public class DirectorTimetableBlock extends TimetableBlock {
 
     }
 
-    @Override
     void initDraggedPane() {
         // Init the dragpane with blur, title, count and description labels
-        super.initDraggedPane();
+        super.initDraggedPane(getRootCenterArea().getDirectorAnchorPane());
 
-        this.getDraggedPane().getStyleClass().add("block_Background_Dragged");
-        this.getDraggedContentPane().getStyleClass().add("block_Foreground_Dragged");
+//        this.getDraggedPane().getStyleClass().add("block_Background_Dragged");
+//        this.getDraggedContentPane().getStyleClass().add("block_Foreground_Dragged");
+        this.getDraggedPane().setStyle("-fx-background-color: black");
+        this.getDraggedContentPane().setStyle("-fx-background-color: purple");
+        //this.getDraggedPane().toFront();
+        //this.getDraggedContentPane().toFront();
     }
 
-    @Override
     void initFeedbackPane() {
         // Init feedbackpane with blur and darken
-        super.initFeedbackPane();
+        super.initFeedbackPane(getRootCenterArea().getDirectorGridPane());
+        this.getFeedbackPane().setStyle("-fx-background-color: red");
+        //this.getFeedbackPane().toFront();
     }
 }

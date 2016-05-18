@@ -23,11 +23,14 @@ public class ControllerManager {
     private TimelineController timelineControl;
 
     @Getter
+    private DirectorTimelineController directorTimelineControl;
+
+    @Getter
     private ToolViewController toolViewController;
 
     @Getter
     private DetailViewController detailViewController;
-    
+
     @Getter
     private FileMenuController fileMenuController;
     
@@ -36,9 +39,8 @@ public class ControllerManager {
 
     @Getter
     private ShotBlock activeShotBlock;
-    
-    private SaveModalView saveModal;
 
+    private SaveModalView saveModal;
     // Placeholder project in lieu of XML loading
     @Getter
     private ScriptingProject scriptingProject;
@@ -80,6 +82,7 @@ public class ControllerManager {
      */
     private void initializeControllers() {
         timelineControl = new TimelineController(this);
+        directorTimelineControl = new DirectorTimelineController(this);
         detailViewController = new DetailViewController(this);
         toolViewController = new ToolViewController(this);
         fileMenuController = new FileMenuController(this);

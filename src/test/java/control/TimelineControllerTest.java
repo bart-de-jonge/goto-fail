@@ -18,6 +18,8 @@ import gui.centerarea.CameraShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;
 import gui.root.RootPane;
 
+import java.util.ArrayList;
+
 /**
  * @author alex
  */
@@ -84,7 +86,8 @@ public class TimelineControllerTest {
 
     @Test
     public void decoupleTest() {
-        DirectorShot directorShotSpy = Mockito.spy(new DirectorShot("dir shot", "description", 1, 2, 0, 0));
+        DirectorShot directorShotSpy = Mockito.spy(new DirectorShot("dir shot", "description",
+                1, 2, 0, 0, new ArrayList<>()));
         CameraShot shotSpy = Mockito.spy(shot);
         directorShotSpy.addCameraTimelineIndex(0);
         directorShotSpy.addCameraShot(shotSpy);

@@ -19,6 +19,8 @@ import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.awt.*;
+
 /**
  * Class representing the center (main section) of the gui.
  * In other words, the time line view goes here.
@@ -102,7 +104,6 @@ public class RootCenterArea extends VBox {
         } else {
             this.rootPane = rootPane;
             this.numberOfTimelines = numberOfTimelines;
-
             this.topPane = new HBox();
             this.timelinesPane = new HBox();
             this.getChildren().addAll(topPane, timelinesPane);
@@ -195,12 +196,13 @@ public class RootCenterArea extends VBox {
         directorAnchorPane.setRightAnchor(directorGridPane, 0.0);
         directorAnchorPane.setTopAnchor(directorGridPane, 0.0);
         directorAnchorPane.getChildren().add(directorGridPane);
+        directorAnchorPane.setStyle("-fx-background-color: green;");
         directorScrollpane.setContent(directorAnchorPane);
         directorScrollpane.setMinWidth(directorTimelineWidth);
         directorScrollpane.setFitToWidth(true);
-        directorScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         directorScrollpane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        directorScrollpane.setStyle("-fx-background-color: lightblue"); // debugcolor for now
+        directorScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        directorGridPane.setGridLinesVisible(false);
         timelinesPane.getChildren().add(directorScrollpane);
     }
 
