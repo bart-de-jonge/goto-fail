@@ -34,6 +34,7 @@ public class CreationModalViewControllerTest extends ApplicationTest {
 
     private ControllerManager manager;
     private CreationModalViewController creationModalViewController;
+    private DirectorTimelineController directorTimelineController;
 
     @Before
     public void initialize() {
@@ -44,6 +45,8 @@ public class CreationModalViewControllerTest extends ApplicationTest {
         when(manager.getRootPane()).thenReturn(rootPane);
         when(manager.getScriptingProject()).thenReturn(scriptingProject);
         when(scriptingProject.getCameraTimelines()).thenReturn(new ArrayList<>());
+
+        directorTimelineController = Mockito.mock(DirectorTimelineController.class);
 
         creationModalViewController = new CreationModalViewController(manager);
     }
@@ -265,6 +268,7 @@ public class CreationModalViewControllerTest extends ApplicationTest {
 
             CreationModalViewController controller = spy(creationModalViewController);
             when(controller.validateDirectorShot()).thenReturn(true);
+            when(manager.getDirectorTimelineControl()).thenReturn(directorTimelineController);
 
             modalView[0] = spy(controller.getDirectorShotCreationModalView());
             controller.setDirectorShotCreationModalView(modalView[0]);
