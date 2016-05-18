@@ -33,7 +33,7 @@ public class DirectorGridPane extends ScrollableGridPane {
     }
 
     public void removeDirectorShotBlock(DirectorShotBlock block) {
-        this.getChildren().remove(block.getGrid());
+        this.getChildren().remove(block.getTimetableBlock());
     }
 
     /**

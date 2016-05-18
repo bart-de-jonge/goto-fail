@@ -180,7 +180,8 @@ public abstract class ShotBlock {
         TimelinesGridPane.setRowIndex(timetableBlock,
                 (int) Math.round(beginCount * CountUtilities.NUMBER_OF_CELLS_PER_COUNT));
         TimelinesGridPane.setRowSpan(timetableBlock,
-                (int) Math.round((endCount - beginCount) * CountUtilities.NUMBER_OF_CELLS_PER_COUNT));
+                (int) Math.round((endCount - beginCount)
+                        * CountUtilities.NUMBER_OF_CELLS_PER_COUNT));
     }
 
     /**

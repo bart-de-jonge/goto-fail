@@ -34,17 +34,20 @@ public class DirectorTimetableBlock extends TimetableBlock {
 
     }
 
-    void initDraggedPane() {
-        // Init the dragpane with blur, title, count and description labels
+    /**
+     * Init the dragpane with blur, title, count and description labels.
+     */
+    private void initDraggedPane() {
         super.initDraggedPane(getRootCenterArea().getDirectorAnchorPane());
 
         this.getDraggedPane().getStyleClass().add("block_Background_Dragged");
         this.getDraggedContentPane().getStyleClass().add("block_Foreground_Dragged");
     }
 
-    void initFeedbackPane() {
-        // Init feedbackpane with blur and darken
+    /**
+     * Init feedbackpane with blur and darken.
+     */
+    private void initFeedbackPane() {
         super.initFeedbackPane(getRootCenterArea().getDirectorGridPane());
-        //this.getFeedbackPane().toFront();
     }
 }

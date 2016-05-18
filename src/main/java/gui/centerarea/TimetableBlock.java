@@ -1,7 +1,9 @@
 package gui.centerarea;
 
 import control.CountUtilities;
-import gui.misc.BlurHelper;
+
+import static gui.centerarea.TimetableBlock.DraggingTypes.Move;
+
 import gui.root.RootCenterArea;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
@@ -26,7 +28,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 
-import static gui.centerarea.TimetableBlock.DraggingTypes.Move;
 
 /**
  * Class that resembles a draggable, resizable block inside the timetable,
@@ -143,7 +144,8 @@ public abstract class TimetableBlock extends Pane {
         setBlendMode(BlendMode.MULTIPLY);
         getStyleClass().add("block_Background_Normal");
 
-        // content rootCenterArea for our actual rootCenterArea, which holds content (text and stuff)
+        // content rootCenterArea for our
+        // actual rootCenterArea, which holds content (text and stuff)
         contentPane = new VBox();
         contentPane.minWidthProperty().bind(widthProperty());
         contentPane.maxWidthProperty().bind(widthProperty());
@@ -161,13 +163,15 @@ public abstract class TimetableBlock extends Pane {
 
     /**
      * Helper function to initialize dragged (visible when dragging) blocks.
+     * @param anchorPane the AnchorPane drag on
      */
     void initDraggedPane(AnchorPane anchorPane) {
         // draggedPane itself
         draggedPane = new Pane();
         draggedPane.setVisible(false);
 
-        // dragged content rootCenterArea which mirrors our content rootCenterArea, shown when dragging.
+        // dragged content rootCenterArea which mirrors
+        // our content rootCenterArea, shown when dragging.
         draggedContentPane = new VBox() ;
         draggedContentPane.minWidthProperty().bind(draggedPane.widthProperty());
         draggedContentPane.maxWidthProperty().bind(draggedPane.widthProperty());
@@ -190,8 +194,9 @@ public abstract class TimetableBlock extends Pane {
 
     /**
      * Helper function to initialize feedback (the snapping) blocks.
+     * @param gridPane the gridpane to have the feedback on
      */
-    void initFeedbackPane(GridPane gridPane) {
+    public void initFeedbackPane(GridPane gridPane) {
         feedbackPane = new Pane();
         feedbackPane.setVisible(false);
         gaussianBlur = new GaussianBlur(15.0);
@@ -284,41 +289,30 @@ public abstract class TimetableBlock extends Pane {
 
     /**
      * Event handler for on mouse pressed.
+     * @param isCameraTimeline true when action is on the CameraTimeline
      * @return - the eventhandler
      */
-    private EventHandler<MouseEvent> getOnPressedHandler(boolean timeline) {
+    private EventHandler<MouseEvent> getOnPressedHandler(boolean isCameraTimeline) {
         return e -> {
-            // init correct object ordering
-            feedbackPane.toFront();
-            draggedPane.toFront();
-            this.toFront();
+            onPressedHandlerHelper(e);
 
-            // init draggingpane
-            draggingType = findEdgeZone(e);
-            draggedPane.setLayoutX(getLayoutX());
-            draggedPane.setLayoutY(getLayoutY());
-
-            // Init feedbackpane
-            feedbackImage = this.snapshot(new SnapshotParameters(), null);
-            ImageView image = new ImageView(feedbackImage);
-            image.fitHeightProperty().bind(feedbackPane.heightProperty());
-            darken.setInput(gaussianBlur);
-            image.setEffect(darken);
-            feedbackPane.getChildren().add(image);
-            feedbackPane.toBack();
-            feedbackPane.setVisible(true);
-
-            GridPane gridPane = null;
-            if (timeline) {
+            GridPane gridPane;
+            if (isCameraTimeline) {
                 gridPane = getRootCenterArea().getMainTimeLineGridPane();
-                TimelinesGridPane.setColumnIndex(feedbackPane, TimelinesGridPane.getColumnIndex(thisBlock));
-                TimelinesGridPane.setRowIndex(feedbackPane, TimelinesGridPane.getRowIndex(thisBlock));
-                TimelinesGridPane.setRowSpan(feedbackPane, TimelinesGridPane.getRowSpan(thisBlock));
+                TimelinesGridPane.setColumnIndex(
+                        feedbackPane, TimelinesGridPane.getColumnIndex(thisBlock));
+                TimelinesGridPane.setRowIndex(
+                        feedbackPane, TimelinesGridPane.getRowIndex(thisBlock));
+                TimelinesGridPane.setRowSpan(
+                        feedbackPane, TimelinesGridPane.getRowSpan(thisBlock));
             } else {
                 gridPane = getRootCenterArea().getDirectorGridPane();
-                DirectorGridPane.setColumnIndex(feedbackPane, DirectorGridPane.getColumnIndex(thisBlock));
-                DirectorGridPane.setRowIndex(feedbackPane, DirectorGridPane.getRowIndex(thisBlock));
-                DirectorGridPane.setRowSpan(feedbackPane, DirectorGridPane.getRowSpan(thisBlock));
+                DirectorGridPane.setColumnIndex(
+                        feedbackPane, DirectorGridPane.getColumnIndex(thisBlock));
+                DirectorGridPane.setRowIndex(
+                        feedbackPane, DirectorGridPane.getRowIndex(thisBlock));
+                DirectorGridPane.setRowSpan(
+                        feedbackPane, DirectorGridPane.getRowSpan(thisBlock));
             }
 
             // Set startingY if dragging
@@ -334,12 +328,38 @@ public abstract class TimetableBlock extends Pane {
     }
 
     /**
+     * Helper method for on Mouse Pressed.
+     * @param e the MouseEvent.
+     */
+    private void onPressedHandlerHelper(MouseEvent e) {
+        // init correct object ordering
+        feedbackPane.toFront();
+        draggedPane.toFront();
+        this.toFront();
+
+        // init draggingpane
+        draggingType = findEdgeZone(e);
+        draggedPane.setLayoutX(getLayoutX());
+        draggedPane.setLayoutY(getLayoutY());
+
+        // Init feedbackpane
+        feedbackImage = this.snapshot(new SnapshotParameters(), null);
+        ImageView image = new ImageView(feedbackImage);
+        image.fitHeightProperty().bind(feedbackPane.heightProperty());
+        darken.setInput(gaussianBlur);
+        image.setEffect(darken);
+        feedbackPane.getChildren().add(image);
+        feedbackPane.toBack();
+        feedbackPane.setVisible(true);
+    }
+
+    /**
      * Event handler for on mouse dragged.
-     * @param horizontalAllowed - specifies if horizontal dragging (between timelines)
-     *                          is allowed
+     * @param isCameraTimeline - specifies if horizontal dragging
+     *                         (between timelines) is allowed
      * @return - the eventhandler
      */
-    private EventHandler<MouseEvent> getOnDraggedHandler(boolean horizontalAllowed) {
+    private EventHandler<MouseEvent> getOnDraggedHandler(boolean isCameraTimeline) {
         return e -> {
             if (!dragging) {
                 dragXOffset = e.getX();
@@ -353,27 +373,29 @@ public abstract class TimetableBlock extends Pane {
                 draggedPane.setPrefWidth(getWidth());
                 thisBlock.setVisible(false);
             }
-            onMouseDraggedHelper(e, horizontalAllowed);
+
+            onMouseDraggedHelper(e, isCameraTimeline);
             e.consume();
         };
     }
 
     /**
      * Event handler for on mouse release.
+     * @param isCameraTimeline true if the action is on a CameraTimeline
      * @return - the event handler
      */
-    private EventHandler<MouseEvent> getOnreleaseHandler(boolean horizontal) {
+    private EventHandler<MouseEvent> getOnreleaseHandler(boolean isCameraTimeline) {
         return e -> {
             draggedPane.setVisible(false);
             thisBlock.setVisible(true);
-            snapPane(thisBlock, feedbackPane, e.getSceneY(), draggingType, horizontal);
+            snapPane(thisBlock, feedbackPane, e.getSceneY(), draggingType, isCameraTimeline);
 
             feedbackPane.setVisible(false);
             feedbackPane.getChildren().remove(0);
             dragging = false;
 
             // Update ShotBlock
-            if (horizontal) {
+            if (isCameraTimeline) {
                 double newBeginCount = TimelinesGridPane.getRowIndex(thisBlock)
                         / (double) CountUtilities.NUMBER_OF_CELLS_PER_COUNT;
                 parentBlock.setBeginCount(newBeginCount, false);
@@ -394,18 +416,18 @@ public abstract class TimetableBlock extends Pane {
     /**
      * Helper function for MouseDragged event. Normal (actual dragging) part.
      * @param event the mousedrag event in question.
-     * @param horizontalAllowed - specifies if horizontal dragging (between timelines)
-     *                          is allowed
+     * @param isCameraTimeline - specifies if horizontal dragging
+     *                          (between timelines) is allowed
      */
-    private void onMouseDraggedHelper(MouseEvent event, boolean horizontalAllowed) {
+    private void onMouseDraggedHelper(MouseEvent event, boolean isCameraTimeline) {
         double x = event.getSceneX();
         double y = event.getSceneY();
 
         // Fix dragging out of grid
         if (draggingType == DraggingTypes.Resize_Bottom
                 || draggingType == DraggingTypes.Resize_Top) {
-            GridPane gridPane = null;
-            if (horizontalAllowed) {
+            GridPane gridPane;
+            if (isCameraTimeline) {
                 gridPane = getRootCenterArea().getMainTimeLineGridPane();
             } else {
                 gridPane = getRootCenterArea().getDirectorGridPane();
@@ -415,23 +437,19 @@ public abstract class TimetableBlock extends Pane {
                 y = sceneBounds.getMinY();
             }
         }
-        // Mouse movement in pixels during this event.
+
         mouseCurrentXMovement = x - mouseCurrentXPosition;
         mouseCurrentYMovement = y - mouseCurrentYPosition;
 
-        // determine what kind of dragging we're going to do.
-        if (draggingType == DraggingTypes.Resize_Bottom
-                || draggingType == DraggingTypes.Resize_Top
-                || (draggingType == DraggingTypes.Move && !horizontalAllowed)) {
-            // handle vertical drags in helper.
-            onMouseDraggedHelperVertical(x, y, horizontalAllowed);
-        } else if (draggingType == Move) { // handle just general dragging
-            onMouseDraggedHelperNormal(x, y, horizontalAllowed);
+        // determine what kind of dragging we're going to do, and handle it.
+        if (draggingType == DraggingTypes.Resize_Bottom || draggingType == DraggingTypes.Resize_Top
+                || (draggingType == DraggingTypes.Move && !isCameraTimeline)) {
+            onMouseDraggedHelperVertical(x, y, isCameraTimeline);
+        } else if (draggingType == Move) {
+            onMouseDraggedHelperNormal(x, y, isCameraTimeline);
         }
-
         // set feedbackpane
-        if (snapPane(feedbackPane, draggedPane, y,
-                draggingType, horizontalAllowed)) {
+        if (snapPane(feedbackPane, draggedPane, y, draggingType, isCameraTimeline)) {
             feedbackPane.setVisible(true);
         } else {
             feedbackPane.setVisible(false);
@@ -448,10 +466,11 @@ public abstract class TimetableBlock extends Pane {
      * @param mappingPane - the model mappingPane to follow while snapping
      * @param y - the Y coordinate of the mouse during this snap
      * @param dragType - The type of drag used while snapping (move, resize)
+     * @param isCameraTimeline true if the action is on the CameraTimeline
      * @return - boolean that indicates if the snap was possible and completed
      */
     private boolean snapPane(Region targetRegion, Region mappingPane,
-                              double y, DraggingTypes dragType, Boolean horizontal) {
+                              double y, DraggingTypes dragType, boolean isCameraTimeline) {
         // set feedback rootCenterArea
         double yCoordinate;
         double xCoordinate;
@@ -463,17 +482,14 @@ public abstract class TimetableBlock extends Pane {
         } else {
             yCoordinate = y;
             xCoordinate = mappingPane.getLayoutX() + mappingPane.getWidth() / 2;
-            System.out.println(xCoordinate);
         }
 
-        ScrollableGridPane gridPane = null;
-
-        if (horizontal) {
+        ScrollableGridPane gridPane;
+        if (isCameraTimeline) {
             gridPane = rootCenterArea.getMainTimeLineGridPane();
         } else {
             gridPane = rootCenterArea.getDirectorGridPane();
         }
-
         SnappingPane myPane = gridPane.getMyPane(xCoordinate, yCoordinate);
         if (myPane != null) {
             int numCounts = (int) Math.round(mappingPane.getHeight()
@@ -482,31 +498,28 @@ public abstract class TimetableBlock extends Pane {
                 numCounts = (int) Math.round((mappingPane.getHeight() - 5)
                         / gridPane.getVerticalElementSize());
             }
-
             if (myPane.isBottomHalf() && (dragType == DraggingTypes.Resize_Top
                     || dragType == Move)) {
                 GridPane.setRowIndex(targetRegion, myPane.getRow() + 1);
             } else if (dragType == Move || dragType == DraggingTypes.Resize_Top) {
                 GridPane.setRowIndex(targetRegion, myPane.getRow());
             }
-
             GridPane.setColumnIndex(targetRegion, myPane.getColumn());
-
             GridPane.setRowSpan(targetRegion, Math.max(numCounts, 1));
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
      * Helper function for MouseDragged event. Normal (actual dragging) part.
      * @param x - the x coordinate needed to process the vertical dragging
      * @param y - the y coordinate needed to process the vertical dragging
+     * @param isCameraTimeline true if the action is in the CameraTimeline
      */
-    private void onMouseDraggedHelperNormal(double x, double y, boolean horizontal) {
-        AnchorPane parentPane = null;
-        if (horizontal) {
+    private void onMouseDraggedHelperNormal(double x, double y, boolean isCameraTimeline) {
+        AnchorPane parentPane;
+        if (isCameraTimeline) {
             parentPane = rootCenterArea.getMainTimeLineAnchorPane();
         } else {
             parentPane = rootCenterArea.getDirectorAnchorPane();
@@ -521,13 +534,14 @@ public abstract class TimetableBlock extends Pane {
      * Helper function for MouseDragged event. Vertical part.
      * @param x - the x coordinate needed to process the vertical dragging
      * @param y - the y coordinate needed to process the vertical dragging
+     * @param isCameraTimeline true if the action is in the CameraTimeline
      */
-    private void onMouseDraggedHelperVertical(double x, double y, boolean horizontal) {
+    private void onMouseDraggedHelperVertical(double x, double y, boolean isCameraTimeline) {
         double newLayoutY = 0;
         double newPrefHeight = 0;
         AnchorPane anchorPane;
         ScrollableGridPane gridPane;
-        if (horizontal) {
+        if (isCameraTimeline) {
             anchorPane = rootCenterArea.getMainTimeLineAnchorPane();
             gridPane = rootCenterArea.getMainTimeLineGridPane();
         } else {
@@ -542,7 +556,7 @@ public abstract class TimetableBlock extends Pane {
         } else if (thisBlock.draggingType == DraggingTypes.Resize_Bottom) {
             newLayoutY = anchorPane.sceneToLocal(0, startingY).getY();
             newPrefHeight = bounds.getY() - newLayoutY;
-        } else if (thisBlock.draggingType == DraggingTypes.Move && !horizontal) {
+        } else if (thisBlock.draggingType == DraggingTypes.Move && !isCameraTimeline) {
             Bounds parentBounds = anchorPane.localToScene(anchorPane.getBoundsInLocal());
             newLayoutY = y - parentBounds.getMinY() - dragYOffset;
             newPrefHeight = getHeight();
