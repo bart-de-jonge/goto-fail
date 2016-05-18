@@ -4,14 +4,17 @@ import gui.centerarea.CounterGridPane;
 import gui.centerarea.DirectorGridPane;
 import gui.centerarea.TimelinesGridPane;
 import gui.misc.TweakingHelper;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,7 +40,7 @@ public class RootCenterArea extends VBox {
     @Getter
     private int timelineWidth = 100; // 100 works well, if you've changed this.
     @Getter
-    private int topBarHeight = 100;
+    private int topBarHeight = 20;
     @Getter
     private RootPane rootPane;
     @Getter
@@ -104,11 +107,10 @@ public class RootCenterArea extends VBox {
             this.timelinesPane = new HBox();
             this.getChildren().addAll(topPane, timelinesPane);
 
-            this.topPane.getChildren().add(new Rectangle(counterWidth + directorTimelineWidth, topBarHeight));
-
             initCounterPane();
             initDirectorPane();
             initMainTimeLinePane();
+            initTopPane();
 
             counterScrollpane.vvalueProperty().bindBidirectional(
                     mainTimelineScrollpane.vvalueProperty());
@@ -123,6 +125,25 @@ public class RootCenterArea extends VBox {
      */
     public RootCenterArea(RootPane rootPane) {
         this(rootPane, DEFAULT_TIMELINES, false);
+    }
+
+    /**
+     * Adds content to top pane.
+     */
+    private void initTopPane() {
+        this.topPane.setStyle("-fx-border-width: 0 0 1px 0; -fx-border-color: rgba(0,0,0,0.25);");
+        this.topPane.getChildren().add(new Rectangle(counterWidth + directorTimelineWidth, topBarHeight, Color.WHITE));
+        for (int i = 0; i < numberOfTimelines; i++) {
+            String name = getRootPane().getControllerManager()
+                    .getScriptingProject().getCameraTimelines().get(i).getName();
+            Label label = new Label(name);
+            label.prefWidthProperty().bind(getMainTimeLineGridPane()
+                    .widthProperty().divide(numberOfTimelines));
+            label.setAlignment(Pos.CENTER);
+            label.setPadding(new Insets(topBarHeight / 2.0, 0,
+                    topBarHeight / 2.0, 0));
+            this.topPane.getChildren().add(label);
+        }
     }
 
     /**
