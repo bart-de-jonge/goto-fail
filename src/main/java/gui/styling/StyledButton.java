@@ -46,7 +46,8 @@ public class StyledButton extends Button {
     private DropShadow dropShadow; // adds simple drop shadow.
     private TransitionHelper transitionHelper; // provides transition-effects.
     private ObjectProperty<Color> borderColorProperty = new SimpleObjectProperty<>(borderColor);
-    private StringProperty borderStringProperty = helper.createColorStringProperty(borderColorProperty);
+    private StringProperty borderStringProperty = 
+            helper.createColorStringProperty(borderColorProperty);
     private ObjectProperty<Color> fillColorProperty = new SimpleObjectProperty<>(Color.WHITE);
     private StringProperty fillStringProperty = helper.createColorStringProperty(fillColorProperty);
 

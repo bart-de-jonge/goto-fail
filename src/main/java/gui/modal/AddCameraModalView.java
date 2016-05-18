@@ -154,7 +154,7 @@ public class AddCameraModalView extends CameraModificationModalView {
      */
     private void initButtons() {
         // setup button pane
-        HBox content = initHBoxForButtons();
+        
         
         // Add adding button
         addCameraButton = new StyledButton("Add");
@@ -165,6 +165,7 @@ public class AddCameraModalView extends CameraModificationModalView {
         addCameraButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
 
         initCancelButton();
+        HBox content = initHBoxForButtons();
 
         content.getChildren().addAll(addCameraButton, cancelButton);
     }

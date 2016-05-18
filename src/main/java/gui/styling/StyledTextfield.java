@@ -53,7 +53,8 @@ public class StyledTextfield extends TextField {
     private InnerShadow innerShadow;
     private TransitionHelper transitionHelper;
     private ObjectProperty<Color> borderColorProperty = new SimpleObjectProperty<>(borderColor);
-    private StringProperty borderStringProperty = helper.createColorStringProperty(borderColorProperty);
+    private StringProperty borderStringProperty = 
+            helper.createColorStringProperty(borderColorProperty);
     private ObjectProperty<Color> fillColorProperty = new SimpleObjectProperty<>(fillColor);
     private StringProperty fillStringProperty = helper.createColorStringProperty(fillColorProperty);
     private ObjectProperty<Color> textColorProperty = new SimpleObjectProperty<>(textColor);

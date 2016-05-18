@@ -84,7 +84,7 @@ public class AddCameraTypeModalView extends CameraModificationModalView {
      * Initialize the fields.
      */
     private void initFields() {
-        VBox content = initNameDescriptionFields();
+        
         
         final Label marginLabel = new Label("Movement margin (in seconds): ");
         movementMarginField = new DoubleTextField();
@@ -95,6 +95,7 @@ public class AddCameraTypeModalView extends CameraModificationModalView {
         HBox movementMarginBox = new HBox(TweakingHelper.GENERAL_SPACING);
         movementMarginBox.getChildren().addAll(marginLabel, movementMarginField);
         movementMarginBox.setAlignment(Pos.CENTER_RIGHT);
+        VBox content = initNameDescriptionFields();
         content.getChildren().add(movementMarginBox);
         this.viewPane.getChildren().add(content);
     }
@@ -103,9 +104,6 @@ public class AddCameraTypeModalView extends CameraModificationModalView {
      * Initialize the buttons.
      */
     private void initButtons() {
-        // setup button pane
-        HBox content = initHBoxForButtons();
-        
         // Add adding button
         addCameraTypeButton = new StyledButton("Add");
         addCameraTypeButton.setPrefWidth(buttonWidth);
@@ -115,6 +113,7 @@ public class AddCameraTypeModalView extends CameraModificationModalView {
         addCameraTypeButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
 
         initCancelButton();
+        HBox content = initHBoxForButtons();
 
         content.getChildren().addAll(addCameraTypeButton, cancelButton);
     }

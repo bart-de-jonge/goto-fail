@@ -118,7 +118,7 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
      * Initialize the checkboxes with labels for each camera, in a flowpane.
      */
     private void initCamCheckBoxes() {
-       styleCamCheckBoxes();
+        styleCamCheckBoxes();
 
         // add checkboxes
         cameraCheckboxes = new ArrayList<>();

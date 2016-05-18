@@ -71,6 +71,51 @@ public class ProjectController {
     }
     
     /**
+     * Handler for when the save button is clicked.
+     * @param event the MouseEvent for this handler
+     */
+    private void save(MouseEvent event) {
+        if (validateProjectData()) {
+            editProjectModal.hideModal();
+            
+            String name = editProjectModal.getNameField().getText();
+            String description = editProjectModal.getDescriptionField().getText();
+            String directorTimelineDescription = editProjectModal
+                    .getDirectorTimelineDescriptionField().getText();
+            double secondsPerCount = Double.parseDouble(
+                    editProjectModal.getSecondsPerCountField().getText());
+            
+            ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
+            project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
+            project.setCameraTypes(editProjectModal.getCameraTypes());
+            project.setCameras(editProjectModal.getCameras());
+            project.setCameraTimelines(editProjectModal.getTimelines());
+            project.getDirectorTimeline().setProject(project);
+            project.setFilePath(editProjectModal.getProject().getFilePath());
+            for (CameraTimeline timeline : project.getCameraTimelines()) {
+                timeline.setProject(project);
+            }
+            controllerManager.setScriptingProject(project);
+            controllerManager.updateWindowTitle();
+            RootCenterArea area = new RootCenterArea(
+                    controllerManager.getRootPane(), editProjectModal.getTimelines().size(), false);
+            controllerManager.getRootPane().reInitRootCenterArea(area);
+            for (int i = 0;i < project.getCameraTimelines().size();i++) {
+                CameraTimeline newLine = project.getCameraTimelines().get(i);
+                CameraTimeline oldLine = editProjectModal.getProject().getCameraTimelines().get(i);
+                LinkedList<CameraShot> shots = new LinkedList<CameraShot>();
+                for (CameraShot shot: oldLine.getShots()) {
+                    shots.add(shot);
+                }
+                for (CameraShot shot: shots) {
+                    newLine.addShot(shot);
+                    controllerManager.getTimelineControl().addCameraShot(i, shot);
+                }
+            }  
+        }
+    }
+    
+    /**
      * Save the current project.
      If the file path of this project is already known, write to that file
      Otherwise, treat as if save as was clicked
@@ -187,6 +232,9 @@ public class ProjectController {
         controllerManager.getTimelineControl().getCameraShotBlocks().add(shotBlock);
     }
     
+    /**
+     * Start the edit project modal with information of the current project filled in.
+     */
     public void editProject() {
         editProjectModal = new EditProjectModalView(controllerManager.getRootPane(), true);
         editProjectModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
@@ -202,7 +250,8 @@ public class ProjectController {
      * @param event the MouseEvent for this handler
      */
     private void deleteCameraType(MouseEvent event) {
-        int selectedIndex = editProjectModal.getCameraTypeList().getSelectionModel().getSelectedIndex();
+        int selectedIndex = editProjectModal.getCameraTypeList()
+                                            .getSelectionModel().getSelectedIndex();
         if (selectedIndex != -1) {
             editProjectModal.getCameraTypes().remove(selectedIndex);
             editProjectModal.getCameraTypeList().getItems().remove(selectedIndex);
@@ -385,50 +434,7 @@ public class ProjectController {
         return errorString.isEmpty();
     }
     
-    /**
-     * Handler for when the save button is clicked.
-     * @param event the MouseEvent for this handler
-     */
-    private void save(MouseEvent event) {
-        if (validateProjectData()) {
-            editProjectModal.hideModal();
-            
-            String name = editProjectModal.getNameField().getText();
-            String description = editProjectModal.getDescriptionField().getText();
-            String directorTimelineDescription = editProjectModal.getDirectorTimelineDescriptionField().getText();
-            double secondsPerCount = Double.parseDouble(
-                    editProjectModal.getSecondsPerCountField().getText());
-            
-            ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
-            project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
-            project.setCameraTypes(editProjectModal.getCameraTypes());
-            project.setCameras(editProjectModal.getCameras());
-            project.setCameraTimelines(editProjectModal.getTimelines());
-            project.getDirectorTimeline().setProject(project);
-            project.setFilePath(editProjectModal.getProject().getFilePath());
-            for (CameraTimeline timeline : project.getCameraTimelines()) {
-                timeline.setProject(project);
-            }
-            controllerManager.setScriptingProject(project);
-            controllerManager.updateWindowTitle();
-            RootCenterArea area = new RootCenterArea(
-                    controllerManager.getRootPane(), editProjectModal.getTimelines().size(), false);
-            controllerManager.getRootPane().reInitRootCenterArea(area);
-            
-            for (int i = 0;i < project.getCameraTimelines().size();i++) {
-                CameraTimeline newLine = project.getCameraTimelines().get(i);
-                CameraTimeline oldLine = editProjectModal.getProject().getCameraTimelines().get(i);
-                LinkedList<CameraShot> shots = new LinkedList<CameraShot>();
-                for (CameraShot shot: oldLine.getShots()) {
-                    shots.add(shot);
-                }
-                for (CameraShot shot: shots) {
-                    newLine.addShot(shot);
-                    controllerManager.getTimelineControl().addCameraShot(i, shot);
-                }
-            }  
-        }
-    }
+    
     
     /**
      * Validate the data entered by the user in the modal to create a project.

@@ -154,10 +154,12 @@ public class EditProjectModalView extends ModalView {
     /**
      * Construct a new EditProjectModalView.
      * @param rootPane the rootPane for this modal.
+     * @param fillWithCurrentProjectInfo if the modal should be filled with current project info
      * @param width the width of this modal
      * @param height the height of this modal
      */
-    public EditProjectModalView(RootPane rootPane, boolean fillWithCurrentProjectInfo, int width, int height) {
+    public EditProjectModalView(RootPane rootPane, 
+            boolean fillWithCurrentProjectInfo, int width, int height) {
         super(rootPane, width, height);
         this.fillWithCurrentProjectInfo = fillWithCurrentProjectInfo;
         this.rootPane = rootPane;
@@ -206,7 +208,9 @@ public class EditProjectModalView extends ModalView {
         super.displayModal();
     }
 
-    
+    /**
+     * Fill in the information of the current project.
+     */
     private void fillInformation() {
         nameField.setText(project.getName());
         descriptionField.setText(project.getDescription());
@@ -368,7 +372,7 @@ public class EditProjectModalView extends ModalView {
     
     /**
      * Initialize the camera type list.
-     * @return the camera type list.
+     * @param typeList the list that should be initiated.
      */
 
     private void initCameraTypeList(ListView<HBox> typeList) {
@@ -386,7 +390,7 @@ public class EditProjectModalView extends ModalView {
     
     /**
      * Initialize the camera list.
-     * @return the camera list.
+     * @param cameraList the camera list that should be initiated
      */
     private void initCameraList(ListView<HBox> cameraList) {
         cameraList.setMinHeight(75);

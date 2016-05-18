@@ -91,6 +91,7 @@ public class ShotCreationModalView extends ModalView {
     
     /**
      * Initialize title label.
+     * @param text the text to put in the title label
      */
     protected void initTitleLabel(String text) {
         titleLabel = new Label(text);
@@ -134,6 +135,9 @@ public class ShotCreationModalView extends ModalView {
         content.getChildren().addAll(nameBox, descriptionBox);
     }
     
+    /**
+     * Style the checkboxes for cameras.
+     */
     protected void styleCamCheckBoxes() {
         this.checkboxPane = new FlowPane();
         this.checkboxPane.setHgap(TweakingHelper.GENERAL_PADDING);
@@ -211,6 +215,10 @@ public class ShotCreationModalView extends ModalView {
         content.getChildren().addAll(startBox, endBox);
     }
     
+    /**
+     * Get the box containing the text fields.
+     * @return the box containing the text fields
+     */
     protected VBox getTextfieldBox() {
         VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
         content.setAlignment(Pos.CENTER_LEFT);

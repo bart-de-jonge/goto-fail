@@ -47,11 +47,19 @@ public class CameraModificationModalView extends ModalView {
     @Getter
     protected StyledButton cancelButton;
 
-    
+    /**
+     * Construct a new CameraModficationModalView.
+     * @param pane the pane that this modal is built on
+     * @param width the width of the modal
+     * @param height the height of the modal
+     */
     public CameraModificationModalView(RootPane pane, int width, int height) {
         super(pane, width, height);
     }
     
+    /**
+     * Init the title label.
+     */
     protected void initTitleLabel() {
         titleLabel = new Label("Add a camera...");
         titleLabel.setStyle(topStyle);
@@ -64,6 +72,10 @@ public class CameraModificationModalView extends ModalView {
         this.viewPane.getChildren().add(titleLabel);
     }
     
+    /**
+     * Init the name and description fields.
+     * @return a VBox with these fields
+     */
     protected VBox initNameDescriptionFields() {
         VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
         content.setAlignment(Pos.CENTER);
@@ -95,6 +107,9 @@ public class CameraModificationModalView extends ModalView {
         return content;
     }
     
+    /**
+     * Init the cancel button.
+     */
     protected void initCancelButton() {
         cancelButton = new StyledButton("Cancel");
         cancelButton.setPrefWidth(buttonWidth);
@@ -104,6 +119,10 @@ public class CameraModificationModalView extends ModalView {
         cancelButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
     }
     
+    /**
+     * Init a HBox for the buttons.
+     * @return a HBox styled and ready to take in some buttons.
+     */
     protected HBox initHBoxForButtons() {
         // setup button pane
         HBox content = new HBox();
@@ -118,10 +137,4 @@ public class CameraModificationModalView extends ModalView {
         this.viewPane.getChildren().add(content);
         return content;
     }
-    
-    
-    
-    
-    
-    
 }
