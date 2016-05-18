@@ -101,11 +101,7 @@ public class EditProjectModalView extends ModalView {
     private NumberTextField secondsPerCountField;
     
 
-    // Buttons
-    @Getter
-
-    private Button creationButton;
-
+    // buttons
     @Getter
     private StyledButton addCameraButton;
 

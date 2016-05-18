@@ -241,7 +241,7 @@ public class ProjectController {
         editProjectModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);
         editProjectModal.getDeleteCameraTypeButton().setOnMouseClicked(this::deleteCameraType);
         editProjectModal.getCancelButton().setOnMouseClicked(this::cancel);
-        editProjectModal.getCreationButton().setOnMouseClicked(this::save);
+        editProjectModal.getSaveButton().setOnMouseClicked(this::save);
     }
     
     /**
