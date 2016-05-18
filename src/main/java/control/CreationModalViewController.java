@@ -214,21 +214,6 @@ public class CreationModalViewController {
         // TODO: Implement adding a DirectorShot
 
         if (validateDirectorShot()) {
-            // Placeholder variables for creating director shot, please inline them when used
-            String shotName = directorShotCreationModalView.getNameField().getText();
-            String shotDescrip = directorShotCreationModalView.getDescriptionField().getText();
-            double startPoint = Double.parseDouble(
-                    directorShotCreationModalView.getStartField().getText());
-            double endPoint = Double.parseDouble(
-                    directorShotCreationModalView.getEndField().getText());
-            double frontPadding = Double.parseDouble(
-                    directorShotCreationModalView.getFrontPaddingField().getText());
-            double endPadding = Double.parseDouble(
-                    directorShotCreationModalView.getEndPaddingField().getText());
-
-            List<Integer> camerasInShot = directorShotCreationModalView.getCamerasInShot();
-
-
             // keep at end of if statement
             directorShotCreationModalView.getModalStage().close();
         }

@@ -26,9 +26,6 @@ public class ShotDecouplingModalView extends ModalView {
     // variables for the Confirm and Cancel buttons
     private int buttonWidth = 90;
     private int buttonHeight = 25;
-    private Point3D createButtonColor = new Point3D(200, 200, 200);
-    private Point3D cancelButtonColor = new Point3D(200, 200, 200);
-    private int buttonFontSize = 16;
     private int buttonSpacing = 20;
 
     private static final int DEFAULT_WIDTH = 400;
