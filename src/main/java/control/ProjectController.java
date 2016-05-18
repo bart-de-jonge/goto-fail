@@ -107,9 +107,9 @@ public class ProjectController {
                 oldLine.getShots().forEach(shots::add);
                 int j = i;
                 shots.forEach(shot -> {
-                    newLine.addShot(shot);
-                    controllerManager.getTimelineControl().addCameraShot(j, shot);
-                });
+                        newLine.addShot(shot);
+                        controllerManager.getTimelineControl().addCameraShot(j, shot);
+                    });
             }  
         }
     }
