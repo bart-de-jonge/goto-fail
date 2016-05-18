@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/stylesheets/timeline.css">
+    <script src="/javascripts/jquery-offline.js"></script>
+    <script src="/javascripts/timeline.js"></script>
+</head>
+
+<body>
+    <div class="page-wrap">
+        <header>
+            <div class="content">
+                <h1>Goto fail; web-based timeline</h1>
+            </div>
+        </header>
+
+        <main>
+            <div class="content">
+                <p>Placeholder main</p>
+                <table class="timeline">
+                    <tbody>
+                        <tr>
+                            <th>Count number</th>
+                            <th>Timeline blocks</th>
+                        </tr>
+                        <%
+                            var curBlockNumber = 0;
+                            var prevBlock = null;
+                            var curBlock = timelineBlocks[curBlockNumber];
+                            for(i = minCount; i <= maxCount; i++) {
+                                var nextBlock = timelineBlocks %>
+                                <tr>
+                                    <td><%= i %></td>
+                                    <% if (curBlockNumber != -1 && curBlock.beginCount === i) { %>
+                                        <td rowspan="<%= curBlock.endCount - curBlock.beginCount + 1 %>">
+                                            <div class="timeline-block">
+                                                <span><%= curBlock.beginCount %> - <%= curBlock.endCount %></span>
+                                            </div>
+                                        </td>
+                                        <% curBlockNumber++;
+                                        if (curBlockNumber < timelineBlocks.length) {
+                                            prevBlock = curBlock;
+                                            curBlock = timelineBlocks[curBlockNumber];
+                                        } else {
+                                            curBlockNumber = -1;
+                                        }
+                                    } else if (prevBlock === null || curBlock.beginCount > i && prevBlock.endCount < i) { %>
+                                        <td></td>
+                                    <% } %>
+                                </tr>
+                        <% }; %>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <div class="content">
+            <p>Goto fail; All rights reserved</p>
+        </div>
+    </footer>
+</body>
+
+</html>
