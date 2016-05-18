@@ -81,9 +81,10 @@ public class DirectorTimelineController {
 
     /**
      * Handle updated director shot. The previous timeline is used to retrieve the corresponding
-     * shot. The correct {@link DirectorShot} is then updated using the latest {@link DirectorShotBlock}
-     * position and counts. As the event is unclear as to whether the shot has switched centerarea,
-     * it is removed from the previous timeline and added to the new one.
+     * shot. The correct {@link DirectorShot} is then updated using the latest
+     * {@link DirectorShotBlock} position and counts. As the event is unclear as to
+     * whether the shot has switched centerarea, it is removed from the previous timeline
+     * and added to the new one.
      * @param event Camera shot change event.
      */
     public void shotChangedHandler(DirectorShotBlockUpdatedEvent event) {
@@ -95,7 +96,6 @@ public class DirectorTimelineController {
         controllerManager.setActiveShotBlock(changedBlock);
 
         DirectorShot shot = changedBlock.getShot();
-        System.out.println(changedBlock.getBeginCount());
 
         // Adjust model
         shot.setBeginCount(changedBlock.getBeginCount());
@@ -138,11 +138,10 @@ public class DirectorTimelineController {
         ArrayList<DirectorShotBlock> toRemove = new ArrayList<>();
         this.overlappingShotBlocks.stream()
                 .filter(shotBlock ->
-                        shotBlock.getShot().getCollidesWith().isEmpty()).forEach(shotBlock -> {
-                            shotBlock.setColliding(false);
-                            toRemove.add(shotBlock);
-                        }
-        );
+                            shotBlock.getShot().getCollidesWith().isEmpty()).forEach(shotBlock -> {
+                                    shotBlock.setColliding(false);
+                                    toRemove.add(shotBlock);
+                                });
         this.overlappingShotBlocks.removeAll(toRemove);
 
         // Check for collisions
@@ -157,11 +156,11 @@ public class DirectorTimelineController {
             // Get CameraShotBlock
             this.shotBlocks.stream().filter(shotBlock ->
                     instances.contains(shotBlock.getShotId())).forEach(shotBlock -> {
-                overlappingShotBlocks.add(shotBlock);
-                if (!this.overlappingShotBlocks.contains(shotBlock)) {
-                    this.overlappingShotBlocks.add(shotBlock);
-                }
-            });
+                            overlappingShotBlocks.add(shotBlock);
+                            if (!this.overlappingShotBlocks.contains(shotBlock)) {
+                                this.overlappingShotBlocks.add(shotBlock);
+                            }
+                        });
             // Make DirectorShotBlocks red
             for (DirectorShotBlock shotBlock : overlappingShotBlocks) {
                 shotBlock.setColliding(true);

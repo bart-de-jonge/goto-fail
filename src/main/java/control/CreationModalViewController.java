@@ -183,10 +183,9 @@ public class CreationModalViewController {
         }
     }
 
-
     /**
-     * When triggered, this initializes and displays the modal view for the creation of
-     * a new DirectorBlock.
+     * When triggered, this initializes and displays the modal view for
+     * the creation of a new DirectorBlock.
      */
     public void showDirectorCreationWindow() {
         directorShotCreationModalView = new DirectorShotCreationModalView(
@@ -212,7 +211,7 @@ public class CreationModalViewController {
                 this::directorShotEndCountFocusHandler);
     }
 
-/**
+    /**
      * Handler for when enter is pressed on the startcount field in directorshot creation.
      * @param event - the keyevent
      */
@@ -277,13 +276,13 @@ public class CreationModalViewController {
                     this.controllerManager.getDirectorTimelineControl();
 
             directorTimelineController.addDirectorShot(
-                    directorShotCreationModalView.getNameField().getText(),
-                    directorShotCreationModalView.getDescriptionField().getText(),
-                    Double.parseDouble(directorShotCreationModalView.getStartField().getText()),
-                    Double.parseDouble(directorShotCreationModalView.getEndField().getText()),
-                    Double.parseDouble(directorShotCreationModalView.getFrontPaddingField().getText()),
-                    Double.parseDouble(directorShotCreationModalView.getEndPaddingField().getText()),
-                    directorShotCreationModalView.getCamerasInShot());
+                directorShotCreationModalView.getNameField().getText(),
+                directorShotCreationModalView.getDescriptionField().getText(),
+                Double.parseDouble(directorShotCreationModalView.getStartField().getText()),
+                Double.parseDouble(directorShotCreationModalView.getEndField().getText()),
+                Double.parseDouble(directorShotCreationModalView.getFrontPaddingField().getText()),
+                Double.parseDouble(directorShotCreationModalView.getEndPaddingField().getText()),
+                directorShotCreationModalView.getCamerasInShot());
 
             // keep at end of if statement
             directorShotCreationModalView.getModalStage().close();

@@ -55,7 +55,8 @@ public class DirectorShot extends Shot {
      * @param endShotPadding the additional time to film after the shot starts
      * @param cameras the cameras that the shot will or can use
      */
-    public DirectorShot(String name, String description, double startCount, double endCount, double frontShotPadding, double endShotPadding, List<Integer> cameras) {
+    public DirectorShot(String name, String description, double startCount, double endCount,
+                        double frontShotPadding, double endShotPadding, List<Integer> cameras) {
         super(instanceCounter, name, description, startCount, endCount);
         this.frontShotPadding = frontShotPadding;
         this.endShotPadding = endShotPadding;
