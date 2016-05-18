@@ -358,8 +358,7 @@ public class EditProjectModalView extends ModalView {
 
     private void initCameraTypeList(ListView<HBox> typeList) {
         typeList.setMinHeight(75);
-        Set<CameraType> types = project.getDistinctCameraTypes();
-        for (CameraType type: types) {
+        for (CameraType type: cameraTypes) {
             HBox box = new HBox();
             box.getChildren().addAll(
                     new Label(type.getName()), new Label(" - "), new Label(type.getDescription()));
