@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,9 +37,13 @@ public class RootCenterArea extends VBox {
     @Getter
     private int timelineWidth = 100; // 100 works well, if you've changed this.
     @Getter
+    private int topBarHeight = 100;
+    @Getter
     private RootPane rootPane;
     @Getter
-    private HBox timelinesPane;
+    private HBox timelinesPane; // stores the three timelines next to each other
+    @Getter
+    private HBox topPane; // stores the window above the timelines
     @Getter
     private Button newButton;
     @Getter
@@ -95,8 +100,11 @@ public class RootCenterArea extends VBox {
             this.rootPane = rootPane;
             this.numberOfTimelines = numberOfTimelines;
 
+            this.topPane = new HBox();
             this.timelinesPane = new HBox();
-            this.getChildren().add(timelinesPane);
+            this.getChildren().addAll(topPane, timelinesPane);
+
+            this.topPane.getChildren().add(new Rectangle(counterWidth + directorTimelineWidth, topBarHeight));
 
             initCounterPane();
             initDirectorPane();
