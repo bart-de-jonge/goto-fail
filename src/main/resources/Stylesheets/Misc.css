@@ -70,11 +70,21 @@
 
 .timeline_Background_Lines {
     -fx-border-color: gray;
-    -fx-border-width: 0.1px 1px 0px 1px;
+    -fx-border-width: 0.1px 0.5px 0px 0px;
 }
 
 .timeline_Background_Empty {
     -fx-border-color: gray;
-    -fx-border-width: 0px 1px 0px 1px;
+    -fx-border-width: 0px 0.5px 0px 0px;
+}
+
+.director_Background_Lines {
+    -fx-border-color: gray;
+    -fx-border-width: 0.1px 0px 0px 0px;
+}
+
+.director_Background_Empty {
+    -fx-border-color: gray;
+    -fx-border-width: 0px 0px 0px 0px;
 }
 

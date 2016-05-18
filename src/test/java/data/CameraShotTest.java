@@ -3,6 +3,8 @@ package data;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -57,14 +59,16 @@ public class CameraShotTest {
 
     @Test
     public void getInitializedDirectorShotTest() {
-        DirectorShot directorShot = new DirectorShot("direct shot", "descrip", 0, 1, 0, 0);
+        DirectorShot directorShot = new DirectorShot("direct shot", "descrip", 0, 1, 0, 0,
+                new ArrayList<>());
         CameraShot shot = new CameraShot("name", "another-description", 1, 2, directorShot);
         assertEquals(directorShot, shot.getDirectorShot());
     }
 
     @Test
     public void setDirectorShotTest() {
-        DirectorShot directorShot = new DirectorShot("direct shot", "descrip", 0, 1, 0, 0);
+        DirectorShot directorShot = new DirectorShot("direct shot", "descrip", 0, 1, 0, 0,
+                new ArrayList<>());
         cameraShot.setDirectorShot(directorShot);
         assertEquals(directorShot, cameraShot.getDirectorShot());
     }

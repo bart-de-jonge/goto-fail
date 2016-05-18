@@ -1,13 +1,14 @@
 package data;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -41,7 +42,7 @@ public class DirectorShot extends Shot {
      * Default Constructor.
      */
     public DirectorShot() {
-        this("", "", 0, 0, 0, 0);
+        this("", "", 0, 0, 0, 0, new ArrayList<>());
     }
 
     /**
@@ -52,18 +53,19 @@ public class DirectorShot extends Shot {
      * @param endCount the end count of the Shot
      * @param frontShotPadding the additional time to film before the shot starts
      * @param endShotPadding the additional time to film after the shot starts
+     * @param cameras the cameras that the shot will or can use
      */
     public DirectorShot(String name, String description, double startCount, double endCount,
-                        double frontShotPadding, double endShotPadding) {
+                        double frontShotPadding, double endShotPadding, List<Integer> cameras) {
         super(instanceCounter, name, description, startCount, endCount);
         this.frontShotPadding = frontShotPadding;
         this.endShotPadding = endShotPadding;
-        this.timelineIndices = new HashSet<>();
+        this.timelineIndices = new HashSet<>(cameras);
         this.cameraShots = new HashSet<>();
         log.debug("Created new DirectorShot");
         DirectorShot.incrementCounter();
     }
-    
+
     public static void incrementCounter() {
         instanceCounter++;
     }

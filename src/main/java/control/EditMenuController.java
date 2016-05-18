@@ -273,8 +273,8 @@ public class EditMenuController {
             errorString = "Please enter a project name\n";
         }
         
-        editModal.getErrorLabel().setText(errorString);
-        editModal.getErrorLabel().setTextFill(Color.RED);
+        editModal.getTitleLabel().setText(errorString);
+        editModal.getTitleLabel().setTextFill(Color.RED);
         
         return errorString.isEmpty();
     }
