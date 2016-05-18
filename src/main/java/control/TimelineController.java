@@ -245,7 +245,7 @@ public class TimelineController {
      * @param shotBlock CameraShot for which to confirm changes.
      */
     private void decoupleAndModify(CameraShotBlockUpdatedEvent event, CameraShotBlock shotBlock) {
-        if (shotBlock.getShot().getDirectorShot() != null) {
+        if (shotBlock.getShot().getDirectorShot() != null && this.shotModified(event)) {
             ShotDecouplingModalView decouplingModalView = new ShotDecouplingModalView(
                     this.rootPane, shotBlock.getShot());
 
@@ -276,5 +276,16 @@ public class TimelineController {
         DirectorShot directorShot = shot.getDirectorShot();
         directorShot.removeCameraShot(shot, timelineIndex);
         shot.setDirectorShot(null);
+    }
+
+    private boolean shotModified(CameraShotBlockUpdatedEvent event) {
+        CameraShotBlock shotBlock = event.getCameraShotBlock();
+        CameraShot shot = shotBlock.getShot();
+        if (shotBlock.getBeginCount() == shot.getBeginCount()
+                && shotBlock.getEndCount() == shot.getEndCount()
+                && event.getOldTimelineNumber() == shotBlock.getTimetableNumber()) {
+            return false;
+        }
+        return true;
     }
 }
