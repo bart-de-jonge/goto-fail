@@ -18,7 +18,7 @@ import lombok.Getter;
 /**
  * Class responsible for displaying a modal view for the addition of a camera to the project.
  */
-public class AddCameraModalView extends ModalView {
+public class AddCameraModalView extends CameraModificationModalView {
 
     /*
      * Tweakable styling variables.
@@ -27,35 +27,15 @@ public class AddCameraModalView extends ModalView {
     // width and height of screen. 450 and 300 work very, very well.
     private static final int width = 600;
     private static final int height = 350;
-
-    // variables for spacing
-    private static final int topAreaHeight = 50;
-    private static final int bottomAreaHeight = 60;
     
     private static final String BACKGROUND_STYLE_STRING = "-fx-background-color: ";
 
     // simple background styles of the three main areas.
-    private String topStyle = BACKGROUND_STYLE_STRING
-            + TweakingHelper.STRING_PRIMARY + ";"
-            + "-fx-text-fill: white; -fx-font-size: 22;"
-            + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
-            + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: "
-            + TweakingHelper.STRING_SECONDARY + ";";
     private String centerLeftStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.STRING_BACKGROUND_HIGH + ";";
     private String centerRightStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.STRING_BACKGROUND + ";";
-    private String bottomStyle = BACKGROUND_STYLE_STRING
-            + TweakingHelper.STRING_PRIMARY + ";";
-
-    // variables for the Create and Cancel buttons
-    private static final int buttonWidth = 90;
-    private static final int buttonHeight = 25;
-    private static final int buttonSpacing = 20;
-
-    // variables for the title label
-    private static final int titlelabelOffsetFromLeft = 20;
+    
 
     /*
      * Other variables.
@@ -66,21 +46,15 @@ public class AddCameraModalView extends ModalView {
     private static final int TEXT_AREA_MIN_WIDTH = 280;
     private static final int LISTS_AREA_MIN_WIDTH = 250;
 
-    @Getter
-    private StyledTextfield nameField;
-    @Getter
-    private StyledTextfield descriptionField;
+    
     @Getter
     private StyledListview<Label> cameraTypes;
     @Getter
     private StyledButton addCameraButton;
-    @Getter
-    private StyledButton cancelButton;
-    @Getter
-    private VBox viewPane;
+   
+    
     private HBox centerPane;
-    @Getter
-    private Label titleLabel;
+    
     @Getter
     private ArrayList<CameraType> cameraTypeList;
     
@@ -140,54 +114,13 @@ public class AddCameraModalView extends ModalView {
         super.displayModal();
     }
 
-    /**
-     * Initialize title label.
-     */
-    private void initTitleLabel() {
-        titleLabel = new Label("Add a camera...");
-        titleLabel.setStyle(topStyle);
-        titleLabel.setAlignment(Pos.CENTER_LEFT);
-        titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        titleLabel.setMinHeight(topAreaHeight);
-        titleLabel.setPrefHeight(topAreaHeight);
-        titleLabel.setMaxHeight(topAreaHeight);
-        this.viewPane.getChildren().add(titleLabel);
-    }
+    
     
     /**
      * Initialize the fields.
      */
     private void initFields() {
-        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
-        content.setAlignment(Pos.CENTER);
-        content.setMinWidth(TEXT_AREA_MIN_WIDTH);
-        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
-        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
-        content.setStyle(centerLeftStyle);
-
-        final Label nameLabel = new Label("Name:  ");
-        nameField = new StyledTextfield();
-        nameField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        nameField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        nameField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        nameField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
-        HBox nameBox = new HBox(TweakingHelper.GENERAL_SPACING);
-        nameBox.getChildren().addAll(nameLabel, nameField);
-        nameBox.setAlignment(Pos.CENTER_RIGHT);
-        
-        final Label descriptionLabel = new Label("Description: ");
-        descriptionField = new StyledTextfield();
-        descriptionField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        descriptionField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        descriptionField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        descriptionField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
-        HBox descriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
-        descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
-        descriptionBox.setAlignment(Pos.CENTER_RIGHT);
-        
-        content.getChildren().addAll(nameBox, descriptionBox);
+        VBox content = initNameDescriptionFields();
         this.centerPane.getChildren().add(content);
     }
     
@@ -220,17 +153,8 @@ public class AddCameraModalView extends ModalView {
      */
     private void initButtons() {
         // setup button pane
-        HBox content = new HBox();
-        content.setSpacing(buttonSpacing);
-        content.setAlignment(Pos.CENTER_LEFT);
-        content.setMinHeight(bottomAreaHeight);
-        content.setPrefHeight(bottomAreaHeight);
-        content.setMaxHeight(bottomAreaHeight);
-        content.setStyle(bottomStyle);
-        content.setPadding(new Insets(0, titlelabelOffsetFromLeft,
-                0, titlelabelOffsetFromLeft));
-        this.viewPane.getChildren().add(content);
-
+        HBox content = initHBoxForButtons();
+        
         // Add adding button
         addCameraButton = new StyledButton("Add");
         addCameraButton.setPrefWidth(buttonWidth);
@@ -239,13 +163,7 @@ public class AddCameraModalView extends ModalView {
         addCameraButton.setBorderColor(Color.WHITE);
         addCameraButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
 
-        // Add cancel button
-        cancelButton = new StyledButton("Cancel");
-        cancelButton.setPrefWidth(buttonWidth);
-        cancelButton.setPrefHeight(buttonHeight);
-        cancelButton.setAlignment(Pos.CENTER);
-        cancelButton.setBorderColor(Color.WHITE);
-        cancelButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
+        initCancelButton();
 
         content.getChildren().addAll(addCameraButton, cancelButton);
     }
