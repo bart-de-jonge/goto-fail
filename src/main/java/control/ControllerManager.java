@@ -28,10 +28,7 @@ public class ControllerManager {
     private DetailViewController detailViewController;
     
     @Getter
-    private FileMenuController fileMenuController;
-    
-    @Getter
-    private EditMenuController editMenuController;
+    private ProjectController projectController;
 
     @Getter
     private ShotBlock activeShotBlock;
@@ -81,8 +78,7 @@ public class ControllerManager {
         timelineControl = new TimelineController(this);
         detailViewController = new DetailViewController(this);
         toolViewController = new ToolViewController(this);
-        fileMenuController = new FileMenuController(this);
-        editMenuController = new EditMenuController(this);
+        projectController = new ProjectController(this);
     }
 
     /**
@@ -118,7 +114,7 @@ public class ControllerManager {
      * @param event the MouseEvent for this handler.
      */
     private void handleSave(MouseEvent event) {
-        fileMenuController.save();
+        projectController.save();
         saveModal.hideModal();
         rootPane.getPrimaryStage().close();
     }
