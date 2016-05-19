@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import data.Camera;
 import data.CameraShot;
@@ -15,6 +17,7 @@ import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
 import gui.modal.AddCameraModalView;
 import gui.modal.AddCameraTypeModalView;
+import gui.modal.DeleteCameraTypeWarningModalView;
 import gui.modal.EditProjectModalView;
 import gui.root.RootCenterArea;
 import gui.root.RootPane;
@@ -34,6 +37,7 @@ public class ProjectController {
     private EditProjectModalView editProjectModal;
     private AddCameraModalView cameraModal;
     private AddCameraTypeModalView cameraTypeModal;
+    private DeleteCameraTypeWarningModalView typeWarningModal;
     
     /**
      * Construct a new FileMenuController.
@@ -231,19 +235,7 @@ public class ProjectController {
         controllerManager.getTimelineControl().getCameraShotBlocks().add(shotBlock);
     }
     
-    /**
-     * Start the edit project modal with information of the current project filled in.
-     */
-    public void editProject() {
-        editProjectModal = new EditProjectModalView(controllerManager.getRootPane(), true);
-        editProjectModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
-        editProjectModal.getDeleteCameraButton().setOnMouseClicked(this::deleteCamera);
-        editProjectModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);
-        editProjectModal.getDeleteCameraTypeButton().setOnMouseClicked(this::deleteCameraType);
-        editProjectModal.getCancelButton().setOnMouseClicked(this::cancel);
-        editProjectModal.getCreationButton().setOnMouseClicked(this::save);
-    }
-    
+   
     /**
      * Handler for deleting a camera type.
      * @param event the MouseEvent for this handler
@@ -252,12 +244,60 @@ public class ProjectController {
         int selectedIndex = editProjectModal.getCameraTypeList()
                                             .getSelectionModel().getSelectedIndex();
         if (selectedIndex != -1) {
-            editProjectModal.getCameraTypes().remove(selectedIndex);
-            editProjectModal.getCameraTypeList().getItems().remove(selectedIndex);
+            List<Camera> camerasUsingType = getCamerasThatUse(
+                    editProjectModal.getCameraTypes().get(selectedIndex));
+            if (camerasUsingType.size() == 0) {
+                editProjectModal.getCameraTypes().remove(selectedIndex);
+                editProjectModal.getCameraTypeList().getItems().remove(selectedIndex);
+            } else {
+                typeWarningModal = new DeleteCameraTypeWarningModalView(
+                        controllerManager.getRootPane(), camerasUsingType);
+                typeWarningModal.getConfirmButton().setOnMouseClicked(
+                        e -> confirmTypeDelete(e, camerasUsingType, selectedIndex));
+                typeWarningModal.getCancelButton().setOnMouseClicked(this::cancelTypeDelete);
+            }
         } else {
-            log.debug("TODO: Error message select camera");
-            // TODO: Error message, select camera type
+            editProjectModal.getTitleLabel().setText("Please select a camera type first");
+            editProjectModal.getTitleLabel().setTextFill(Color.RED);
         }
+    }
+    
+    /**
+     * Event handler for when the warning modal for type delete is shown and the confirm
+     button is clicked.
+     * @param event the MouseEvent for this event
+     * @param toBeDeleted the list of camera's to be deleted
+     * @param selectedIndex the index of the type selected
+     */
+    private void confirmTypeDelete(MouseEvent event, List<Camera> toBeDeleted, int selectedIndex) {
+        typeWarningModal.hideModal();
+        editProjectModal.getCameraTypes().remove(selectedIndex);
+        editProjectModal.getCameraTypeList().getItems().remove(selectedIndex);
+        toBeDeleted.forEach(e -> {
+                int index = editProjectModal.getCameras().indexOf(e);
+                editProjectModal.getCameras().remove(index);
+                editProjectModal.getTimelines().remove(index);
+                editProjectModal.getCameraList().getItems().remove(index);
+            });
+    }
+    
+    /**
+     * Event handler for when the cancel button on the type delete warning modal is clicked.
+     * @param event the MouseEvent for this event
+     */
+    private void cancelTypeDelete(MouseEvent event) {
+        typeWarningModal.hideModal();
+    }
+    
+    /**
+     * Get a list of cameras that use a certain camera type.
+     * @param type the type to check for
+     * @return a list of cameras that use type as their camera type
+     */
+    private List<Camera> getCamerasThatUse(CameraType type) {
+        return editProjectModal.getCameras().stream()
+                                   .filter(e -> e.getCameraType().equals(type))
+                                   .collect(Collectors.toList());
     }
     
     /**
@@ -265,6 +305,7 @@ public class ProjectController {
      * @param event the MouseEvent for this handler
      */
     private void cancel(MouseEvent event) {
+        log.error("Cancel button clicked");
         editProjectModal.hideModal();
     }
     
@@ -280,8 +321,8 @@ public class ProjectController {
             editProjectModal.getTimelines().remove(selectedIndex);
             editProjectModal.getCameraList().getItems().remove(selectedIndex);
         } else {
-            log.debug("TODO: Error message should select camera");
-            // TODO: Error message: should select camera
+            editProjectModal.getTitleLabel().setText("Please select a camera first");
+            editProjectModal.getTitleLabel().setTextFill(Color.RED);
         }
     }
     
@@ -290,9 +331,7 @@ public class ProjectController {
      */
     public void newProject() {
         editProjectModal = new EditProjectModalView(controllerManager.getRootPane(), false);
-        editProjectModal.getCreationButton().setOnMouseClicked(this::save);
-        editProjectModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
-        editProjectModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);
+        initHandlersForEditProjectModal();
     }
     
     /**
@@ -302,6 +341,136 @@ public class ProjectController {
      */
     public void newProject(MouseEvent event) {
         newProject();
+    }
+    
+    /**
+     * Start the edit project modal with information of the current project filled in.
+     */
+    public void editProject() {
+        editProjectModal = new EditProjectModalView(controllerManager.getRootPane(), true);
+        initHandlersForEditProjectModal();
+    }
+    
+    /**
+     * Init the button handlers for the edit project modal.
+     */
+    private void initHandlersForEditProjectModal() {
+        editProjectModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
+        editProjectModal.getEditCameraButton().setOnMouseClicked(this::editCamera);
+        editProjectModal.getDeleteCameraButton().setOnMouseClicked(this::deleteCamera);
+        editProjectModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);
+        editProjectModal.getEditCameraTypeButton().setOnMouseClicked(this::editCameraType);
+        editProjectModal.getDeleteCameraTypeButton().setOnMouseClicked(this::deleteCameraType);
+        editProjectModal.getCancelButton().setOnMouseClicked(this::cancel);
+        editProjectModal.getSaveButton().setOnMouseClicked(this::save);
+    }
+    
+    /**
+     * Event handler for when the edit camera button is clicked.
+     * @param event the MouseEvent for this event
+     */
+    private void editCamera(MouseEvent event) {
+        int selectedIndex = editProjectModal.getCameraList().getSelectionModel().getSelectedIndex();
+        if (selectedIndex != -1) {
+            cameraModal = new AddCameraModalView(controllerManager.getRootPane(),
+                    editProjectModal.getCameraTypes(),
+                    editProjectModal.getCameras().get(selectedIndex),
+                    editProjectModal.getCameraTypes().indexOf(
+                            editProjectModal.getCameras().get(selectedIndex).getCameraType()));
+            cameraModal.getAddCameraButton().setOnMouseClicked(e -> cameraEdited(e, selectedIndex));
+            cameraModal.getCancelButton().setOnMouseClicked(this::cameraEditCancelled);
+        } else {
+            editProjectModal.getTitleLabel().setText("Please select a camera to edit");
+            editProjectModal.getTitleLabel().setTextFill(Color.RED);
+        }
+    }
+    
+    /**
+     * Event handler for when the save button in the camera edit modal is clicked.
+     * @param event the MouseEvent for this event
+     * @param selectedIndex the index of the camera to change
+     */
+    private void cameraEdited(MouseEvent event, int selectedIndex) {
+        if (this.validateCameraData()) {
+            cameraModal.hideModal();
+            String name = cameraModal.getNameField().getText();
+            String description = cameraModal.getDescriptionField().getText();
+            CameraType type = editProjectModal.getCameraTypes().get(selectedIndex);
+            editProjectModal.getCameras().get(selectedIndex).setName(name);
+            editProjectModal.getCameras().get(selectedIndex).setDescription(description);
+            editProjectModal.getCameras().get(selectedIndex).setCameraType(type);
+            HBox box = new HBox();
+            box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
+            editProjectModal.getCameraList().getItems().set(selectedIndex, box);
+        }
+    }
+    
+    /**
+     * Event handler for when the cancel button in the camera edit modal is clicked.
+     * @param event the MouseEvent for this event
+     */
+    private void cameraEditCancelled(MouseEvent event) {
+        cameraModal.hideModal();
+    }
+    
+    /**
+     * Event handler for when the edit camera type button is clicked.
+     * @param event the MouseEvent for this event.
+     */
+    private void editCameraType(MouseEvent event) {
+        int selectedIndex = editProjectModal.getCameraTypeList()
+                                            .getSelectionModel().getSelectedIndex();
+        if (selectedIndex != -1) {
+            cameraTypeModal = new AddCameraTypeModalView(
+                    controllerManager.getRootPane(),
+                    editProjectModal.getCameraTypes().get(selectedIndex));
+            cameraTypeModal.getAddCameraTypeButton().setOnMouseClicked(
+                    e -> cameraTypeEdited(e, selectedIndex));
+            cameraTypeModal.getCancelButton().setOnMouseClicked(this::cameraTypeEditCancelled);
+        } else {
+            editProjectModal.getTitleLabel().setText("Please select a camera type to edit");
+            editProjectModal.getTitleLabel().setTextFill(Color.RED);
+        }
+    }
+    
+    /**
+     * Event handler for when the save button in the edit camera type modal is clicked.
+     * @param event the MouseEvent for this event.
+     * @param selectedIndex the index of the camera type to edit.
+     */
+    private void cameraTypeEdited(MouseEvent event, int selectedIndex) {
+        if (validateCameraTypeData()) {
+            cameraTypeModal.hideModal();
+            
+            
+            String name = cameraTypeModal.getNameField().getText();
+            String description = cameraTypeModal.getDescriptionField().getText();
+            double movementMargin = Double.parseDouble(
+                    cameraTypeModal.getMovementMarginField().getText());
+            
+            
+            CameraType type = new CameraType(name, description, movementMargin);
+            
+            editProjectModal.getCameras().forEach(e -> {
+                    if (e.getCameraType().equals(
+                            editProjectModal.getCameraTypes().get(selectedIndex))) {
+                        e.setCameraType(type);
+                    }
+                });
+            
+            editProjectModal.getCameraTypes().set(selectedIndex, type);
+            HBox box = new HBox();
+            box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
+            editProjectModal.getCameraTypeList().getItems().set(selectedIndex, box);
+        }
+    }
+    
+    /**
+     * Event handler for when the cancel button in the camera type edit modal is clicked.
+     * @param event the MouseEvent for this event
+     */
+    private void cameraTypeEditCancelled(MouseEvent event) {
+        cameraTypeModal.hideModal();
     }
 
     /**
@@ -315,6 +484,10 @@ public class ProjectController {
         cameraModal.getCancelButton().setOnMouseClicked(this::cancelAddCamera);
     }
     
+    /**
+     * Event handler for when the cancel button is clicked in the add camera modal.
+     * @param event the MouseEvent for this event
+     */
     private void cancelAddCamera(MouseEvent event) {
         cameraModal.hideModal();
     }
@@ -382,6 +555,10 @@ public class ProjectController {
         cameraTypeModal.getCancelButton().setOnMouseClicked(this::cancelAddCameraType);
     }
     
+    /**
+     * Event handler for when the cancel button is clicked in the add camera type modal.
+     * @param event the MouseEvent for this event
+     */
     private void cancelAddCameraType(MouseEvent event) {
         cameraTypeModal.hideModal();
     }
@@ -471,12 +648,19 @@ public class ProjectController {
 
         return errorString.isEmpty();
     }
-     
+    
+    /**
+     * Event handler for when the load button is clicked.
+     * @param event the MouseEvent for this event
+     */
     public void loadProject(MouseEvent event) {
         load();
     }
 
-
+    /**
+     * Event handler for when the exit button is clicked in the start up screen.
+     * @param event the MouseEvent for this event.
+     */
     private void exit(MouseEvent event) {
         controllerManager.getRootPane().closeStartupScreen();
     }

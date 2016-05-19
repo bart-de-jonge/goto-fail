@@ -1,5 +1,6 @@
 package gui.modal;
 
+import data.CameraType;
 import gui.headerarea.DoubleTextField;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
@@ -8,7 +9,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import lombok.Getter;
 
 /**
@@ -32,9 +32,7 @@ public class AddCameraTypeModalView extends CameraModificationModalView {
     private DoubleTextField movementMarginField;
     @Getter
     private StyledButton addCameraTypeButton;
-    
-   
-    
+
     public AddCameraTypeModalView(RootPane rootPane) {
         this(rootPane, width, height);
     }
@@ -50,6 +48,20 @@ public class AddCameraTypeModalView extends CameraModificationModalView {
                                   int height) {
         super(rootPane, width, height);
         initializeView();
+    }
+    
+    /**
+     * Constructor that fills in data (used for edit).
+     * @param rootPane the rootPane that has this modal
+     * @param type the camera type to be displayed
+     */
+    public AddCameraTypeModalView(RootPane rootPane, CameraType type) {
+        this(rootPane, width, height);
+        this.nameField.setText(type.getName());
+        this.descriptionField.setText(type.getDescription());
+        this.movementMarginField.setText(Double.toString(type.getMovementMargin()));
+        this.addCameraTypeButton.setText("Save");
+        this.titleLabel.setText("Edit a camera type");
     }
     
     /**
@@ -84,8 +96,6 @@ public class AddCameraTypeModalView extends CameraModificationModalView {
      * Initialize the fields.
      */
     private void initFields() {
-        
-        
         final Label marginLabel = new Label("Movement margin (in seconds): ");
         movementMarginField = new DoubleTextField();
         movementMarginField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
@@ -105,17 +115,9 @@ public class AddCameraTypeModalView extends CameraModificationModalView {
      */
     private void initButtons() {
         // Add adding button
-        addCameraTypeButton = new StyledButton("Add");
-        addCameraTypeButton.setPrefWidth(buttonWidth);
-        addCameraTypeButton.setPrefHeight(buttonHeight);
-        addCameraTypeButton.setAlignment(Pos.CENTER);
-        addCameraTypeButton.setBorderColor(Color.WHITE);
-        addCameraTypeButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
-
+        addCameraTypeButton = createButton("Add", false);
         initCancelButton();
-        HBox content = initHBoxForButtons();
-
-        content.getChildren().addAll(addCameraTypeButton, cancelButton);
+        initHBoxForButtons().getChildren().addAll(addCameraTypeButton, cancelButton);
     }
 
 }

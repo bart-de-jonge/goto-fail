@@ -113,6 +113,11 @@ public class RootCenterArea extends VBox {
                     mainTimelineScrollpane.vvalueProperty());
             directorScrollpane.vvalueProperty().bindBidirectional(
                     mainTimelineScrollpane.vvalueProperty());
+
+            this.setOnMousePressed(
+                event -> {
+                    rootPane.getControllerManager().setActiveShotBlock(null);
+                });
         }
     }
 
@@ -128,17 +133,32 @@ public class RootCenterArea extends VBox {
      * Adds content to top pane.
      */
     private void initTopPane() {
+        // basic toppane style: white with a gray border. Simple.
         this.topPane.setStyle("-fx-border-width: 0 0 1px 0; -fx-border-color: rgba(0,0,0,0.25);");
-        this.topPane.getChildren().add(new Rectangle(counterWidth + directorTimelineWidth,
+        // filler for the counter timeline.
+        this.topPane.getChildren().add(new Rectangle(counterWidth,
                 topBarHeight, Color.WHITE));
+        // label for director timeline: white with gray border again. Simple.
+        Label directorLabel = new Label("Director");
+        directorLabel.setStyle("-fx-border-width: 0 1px 0 0; -fx-border-color: rgba(0,0,0,0.40);");
+        directorLabel.setMinWidth(directorTimelineWidth);
+        directorLabel.setPrefWidth(directorTimelineWidth);
+        directorLabel.setMaxWidth(directorTimelineWidth);
+        directorLabel.setPrefHeight(topBarHeight);
+        directorLabel.setAlignment(Pos.CENTER);
+        directorLabel.setPadding(new Insets(topBarHeight / 2.0, 0,
+                topBarHeight / 2.0, 0));
+        this.topPane.getChildren().add(directorLabel);
+        // labels for camera timelines
         for (int i = 0; i < numberOfTimelines; i++) {
             String name = getRootPane().getControllerManager()
                     .getScriptingProject().getCameraTimelines().get(i).getName();
             Label label = new Label(name);
-            label.prefWidthProperty().bind(getMainTimeLineGridPane()
-                    .widthProperty().divide(numberOfTimelines));
+            
             label.setAlignment(Pos.CENTER);
+            label.setPrefWidth(TweakingHelper.GENERAL_SIZE);
             label.setPadding(new Insets(topBarHeight / 2.0, 0,
+
                     topBarHeight / 2.0, 0));
             this.topPane.getChildren().add(label);
         }
@@ -200,8 +220,8 @@ public class RootCenterArea extends VBox {
         directorScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         directorGridPane.setGridLinesVisible(false);
         directorScrollpane.setPadding(new Insets(0,0,0,0));
-        directorScrollpane.setStyle("-fx-border-width: 0 0.5px 0 0.5px;"
-            + "-fx-border-color: gray;");
+        directorScrollpane.setStyle("-fx-border-width: 0 1px 0 0.5px;"
+            + "-fx-border-color: rgba(0,0,0,0.40);");
         timelinesPane.getChildren().add(directorScrollpane);
     }
 

@@ -2,6 +2,7 @@ package gui.modal;
 
 import java.util.ArrayList;
 
+import data.Camera;
 import data.CameraType;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
@@ -12,7 +13,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import lombok.Getter;
 
 /**
@@ -27,16 +27,12 @@ public class AddCameraModalView extends CameraModificationModalView {
     // width and height of screen. 450 and 300 work very, very well.
     private static final int width = 600;
     private static final int height = 350;
-
     
     private static final String BACKGROUND_STYLE_STRING = "-fx-background-color: ";
 
     // simple background styles of the three main areas.
-
-   
     private String centerRightStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.STRING_BACKGROUND + ";";
-
 
     /*
      * Other variables.
@@ -46,20 +42,17 @@ public class AddCameraModalView extends CameraModificationModalView {
     // and there is no reason to change them ever again.
     private static final int TEXT_AREA_MIN_WIDTH = 280;
     private static final int LISTS_AREA_MIN_WIDTH = 250;
-
     
     @Getter
     private StyledListview<Label> cameraTypes;
     @Getter
     private StyledButton addCameraButton;
-   
-    
+
     private HBox centerPane;
     
     @Getter
     private ArrayList<CameraType> cameraTypeList;
-    
-    
+
     public AddCameraModalView(RootPane rootPane,
                               ArrayList<CameraType> types) {
         this(rootPane, types, width, height);
@@ -79,6 +72,24 @@ public class AddCameraModalView extends CameraModificationModalView {
         super(rootPane, width, height);
         this.cameraTypeList = types;
         initializeView();
+    }
+    
+    /**
+     * Constructor that fills in data (used for edit).
+     * @param rootPane the rootPane that uses the modal
+     * @param types the camera types that are available
+     * @param camera the camera displayed
+     * @param typeIndex the index of the camera type that the camera uses
+     */
+    public AddCameraModalView(RootPane rootPane, ArrayList<CameraType> types,
+            Camera camera,int typeIndex) {
+        this(rootPane, types, width, height);
+        this.nameField.setText(camera.getName());
+        this.descriptionField.setText(camera.getDescription());
+        this.cameraTypes.getSelectionModel().select(typeIndex);
+        this.addCameraButton.setText("Save");
+        this.titleLabel.setText("Edit a camera");
+        
     }
     
     /**
@@ -153,21 +164,11 @@ public class AddCameraModalView extends CameraModificationModalView {
      * Initialize the buttons.
      */
     private void initButtons() {
-        // setup button pane
-        
-        
         // Add adding button
-        addCameraButton = new StyledButton("Add");
-        addCameraButton.setPrefWidth(buttonWidth);
-        addCameraButton.setPrefHeight(buttonHeight);
-        addCameraButton.setAlignment(Pos.CENTER);
-        addCameraButton.setBorderColor(Color.WHITE);
-        addCameraButton.setFillColor(TweakingHelper.COLOR_PRIMARY);
-
+        addCameraButton = createButton("Add", false);
         initCancelButton();
-        HBox content = initHBoxForButtons();
-
-        content.getChildren().addAll(addCameraButton, cancelButton);
+        //HBox content = initHBoxForButtons();
+        initHBoxForButtons().getChildren().addAll(addCameraButton, cancelButton);
     }
 
 }
