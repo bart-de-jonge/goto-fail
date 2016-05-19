@@ -92,14 +92,16 @@ public class StartupModalView extends ModalView {
      * Initialize the view of this modal.
      */
     private void initializeView() {
+       
+
+        // Create a new VBox for vertical layout
+        this.viewPane = new VBox();
+        
         // force minimum size
         getModalStage().setHeight(height);
         getModalStage().setWidth(width);
         getModalStage().setMinWidth(width);
         getModalStage().setMinHeight(height);
-
-        // Create a new VBox for vertical layout
-        this.viewPane = new VBox();
 
         // Add label at top
         initInformationLabel();
@@ -140,23 +142,9 @@ public class StartupModalView extends ModalView {
                 0, titlelabelOffsetFromLeft));
         this.viewPane.getChildren().add(content);
 
-        newButton = new StyledButton("New project");
-        newButton.setPrefWidth(buttonWidth);
-        newButton.setPrefHeight(buttonHeight);
-        newButton.setFillColor(Color.WHITE);
-        newButton.setBorderColor(mainColor);
-
-        loadButton = new StyledButton("Load project");
-        loadButton.setPrefWidth(buttonWidth);
-        loadButton.setPrefHeight(buttonHeight);
-        loadButton.setFillColor(Color.WHITE);
-        loadButton.setBorderColor(mainColor);
-
-        exitButton = new StyledButton("Exit");
-        exitButton.setPrefWidth(buttonWidth);
-        exitButton.setPrefHeight(buttonHeight);
-        exitButton.setFillColor(Color.WHITE);
-        exitButton.setBorderColor(mainColor);
+        newButton = createButton("New", true);
+        loadButton = createButton("Load", true);
+        exitButton = createButton("Exit", true);
 
         content.getChildren().addAll(newButton, loadButton, exitButton);
     }

@@ -9,7 +9,10 @@
     </description>
 
     <rule ref="rulesets/java/basic.xml"/>
-    <rule ref="rulesets/java/unusedcode.xml"/>
+    <rule ref="rulesets/java/unusedcode.xml">
+		<exclude name="UnusedPrivateField"/>
+		<exclude name="UnusedFormalParameter"/>
+	</rule>
     <rule ref="rulesets/java/imports.xml"/>
     <rule ref="rulesets/java/strings.xml"/>
     <rule ref="rulesets/java/codesize.xml">

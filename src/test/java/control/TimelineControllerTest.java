@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 
+import java.util.ArrayList;
+
 /**
  * @author alex
  */
@@ -91,8 +93,9 @@ public class TimelineControllerTest extends ApplicationTest {
 
     @Test
     public void decoupleTest() {
-        DirectorShot directorShotSpy = spy(new DirectorShot("dir shot", "description", 1, 2, 0, 0));
-        CameraShot shotSpy = spy(shot);
+        DirectorShot directorShotSpy = Mockito.spy(new DirectorShot("dir shot", "description",
+                1, 2, 0, 0, new ArrayList<>()));
+        CameraShot shotSpy = Mockito.spy(shot);
         directorShotSpy.addCameraTimelineIndex(0);
         directorShotSpy.addCameraShot(shotSpy);
         shotSpy.setDirectorShot(directorShotSpy);
