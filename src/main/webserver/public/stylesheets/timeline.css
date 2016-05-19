@@ -57,14 +57,14 @@ footer {
 }
 
 .timeline th:nth-child(2), .timeline td:nth-child(2) {
-    width: 80%;
+    width: 40%;
 }
 
 .timeline, .timeline tbody, .timeline tr, .timeline th, .timeline td {
     box-sizing: border-box;
 }
 
-.timeline td:nth-child(2) > .timeline-block {
+.timeline td > .timeline-block {
     width: 100%;
     height: 100%;
     background-color: rgb(69, 162, 217);
@@ -74,7 +74,7 @@ footer {
     box-sizing: border-box;
 }
 
-.timeline td:nth-child(2) > .timeline-block > span {
+.timeline td > .timeline-block > span {
     position: absolute;
     top: 0;
     left: 0;
@@ -87,7 +87,7 @@ footer {
 }
 
 .timeline {
-    width: 600px;
+    width: 1000px;
 }
 
 .timeline > tbody, .timeline > tbody > tr {

@@ -21,12 +21,23 @@
                     <tbody>
                         <tr>
                             <th>Count number</th>
-                            <th>Timeline blocks</th>
+                            <% cameraTimelines.forEach(timeline => { %>
+                            <th><%= timeline.name %></th>
+                            <% }); %>
                         </tr>
                         <%
-                            var curShotNumber = 0;
-                            var prevShot = null;
-                            var curShot = cameraTimeline.getCameraShots()[curShotNumber];
+                            // Setup vars
+                            var curShotNumber = new Array();
+                            var prevShot = new Array();
+                            var curShot = new Array();
+                            console.log("\n STARTING \n");
+                            for (j = 0; j < cameraTimelines.length; j++) {
+                                curShotNumber[j] = 0;
+                                prevShot[j] = null;
+                                curShot[j] = cameraTimelines[j].getCameraShots()[0];
+                                console.log(curShot[j]);
+                            }
+
                             for(i = minCount*4; i <= maxCount*4; i++) { %>
                                 <tr>
                                     <td><% if (i%4 === 0) {
@@ -34,22 +45,30 @@
                                         } else {
                                             %>-<%
                                         }%></td>
-                                    <% if (curShotNumber != -1 && curShot.beginCount*4 === i) { %>
-                                        <td rowspan="<%= (curShot.endCount - curShot.beginCount) * 4 + 1 %>">
+                                    <% for(j = 0; j < cameraTimelines.length; j++) {
+                                        if(j == 1) {
+                                            console.log(j);
+                                            console.log("hidasfero");
+                                            console.log(curShotNumber[j]);
+                                            console.log(curShot[j].beginCount);
+                                        }
+                                        if (curShotNumber[j] != -1 && curShot[j].beginCount*4 === i) { console.log("hiero") %>
+                                        <td rowspan="<%= (curShot[j].endCount - curShot[j].beginCount) * 4 + 1 %>">
                                             <div class="timeline-block">
-                                                <span><%= curShot.beginCount %> - <%= curShot.endCount %></span>
+                                                <span><%= curShot[j].beginCount %> - <%= curShot[j].endCount %></span>
                                             </div>
                                         </td>
-                                        <% curShotNumber++;
-                                        if (curShotNumber < cameraTimeline.getCameraShots().length) {
-                                            prevShot = curShot;
-                                            curShot = cameraTimeline.getCameraShots()[curShotNumber];
+                                        <% curShotNumber[j]++;
+                                        if (curShotNumber[j] < cameraTimelines[j].getCameraShots().length) {
+                                            prevShot[j] = curShot[j];
+                                            curShot[j] = cameraTimelines[j].getCameraShots()[curShotNumber[j]];
                                         } else {
-                                            curShotNumber = -1;
+                                            curShotNumber[j] = -1;
                                         }
-                                    } else if (prevShot === null || curShot.beginCount*4 > i && prevShot.endCount*4 < i) { %>
+                                    } else if (prevShot[j] === null || curShot[j].beginCount*4 > i && prevShot[j].endCount*4 < i) { %>
                                         <td></td>
-                                    <% } %>
+                                    <% }
+                                    } %>
                                 </tr>
                         <% }; %>
                     </tbody>
