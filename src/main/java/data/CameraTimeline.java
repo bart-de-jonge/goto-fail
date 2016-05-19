@@ -59,6 +59,14 @@ public class CameraTimeline extends Timeline {
         shots = new LinkedList<>();
     }
     
+    public CameraTimeline(CameraTimeline timeline) {
+        super(timeline.getProject());
+        this.description = timeline.getDescription();
+        this.camera = new Camera(timeline.getCamera());
+        this.shots = timeline.getShots();
+        this.name = timeline.getName();
+    }
+    
     /**
      * Constructor with name variable.
      * @param name the name of the timeline

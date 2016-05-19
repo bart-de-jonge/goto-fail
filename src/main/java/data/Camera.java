@@ -55,7 +55,14 @@ public class Camera {
         log.debug("Created new Camera(name={}, description={}, cameraType={}",
                 name, description, cameraType);
     }
-
+    
+    public Camera(Camera camera) {
+        this.name = camera.getName();
+        this.description = camera.getDescription();
+        this.movementMargin = camera.getMovementMargin();
+        this.cameraType = new CameraType(camera.getCameraType());
+    }
+    
     /**
      * Number of counts this camera needs at maximum to move to a new position.
      * This defines the minimum margin between the two consecutive shots defined in

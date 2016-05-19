@@ -289,6 +289,7 @@ public class ProjectController {
      * @param event the MouseEvent for this handler
      */
     private void cancel(MouseEvent event) {
+        log.error("Cancel button clicked");
         editProjectModal.hideModal();
     }
     

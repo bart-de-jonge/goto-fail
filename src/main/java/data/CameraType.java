@@ -37,6 +37,12 @@ public class CameraType {
     public CameraType() {
         this("", "", -1);
     }
+    
+    public CameraType(CameraType type) {
+        this.name = type.getName();
+        this.description = type.getDescription();
+        this.movementMargin = type.getMovementMargin();
+    }
 
     /**
      * Constructor.
