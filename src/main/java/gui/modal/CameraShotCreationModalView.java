@@ -114,9 +114,6 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
             j = (j > 4) ? 0 : j + 1;
             String checkBoxString = this.cameraTimelines.get(i).getCamera().getName();
             StyledCheckbox checkBox = new StyledCheckbox(checkBoxString);
-            checkBox.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-            checkBox.setMarkColor(TweakingHelper.COLOR_PRIMARY);
-            checkBox.setFillColor(TweakingHelper.COLOR_TERTIARY);
             cameraCheckboxes.add(checkBox);
         }
 

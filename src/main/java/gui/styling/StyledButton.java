@@ -1,6 +1,7 @@
 package gui.styling;
 
 import gui.misc.TransitionHelper;
+import gui.misc.TweakingHelper;
 import javafx.animation.Interpolator;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -33,10 +34,10 @@ public class StyledButton extends Button {
 
     // colors
     // Color of normal borders and text. Becomes fillColor on click.
-    private Color borderColor = Color.rgb(60, 190, 255);
+    private Color borderColor = TweakingHelper.COLOR_PRIMARY;
     // Color of (blank) background. Becomes borderColor on click.
     // Can be set transparent?
-    private Color fillColor = Color.rgb(255, 255, 255);
+    private Color fillColor = TweakingHelper.COLOR_BACKGROUND;
 
     /*
      * Misc variables

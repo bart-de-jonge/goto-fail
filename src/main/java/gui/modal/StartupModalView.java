@@ -1,5 +1,6 @@
 package gui.modal;
 
+import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import javafx.geometry.Insets;
@@ -20,20 +21,16 @@ public class StartupModalView extends ModalView {
     private static final int width = 550;
     private static final int height = 200;
 
-    // three main colors used throughout window. Experiment a little!
-    private static final Color mainColor = Color.rgb(255, 172, 70); // main bright color
-    private static final Color secondaryColor = Color.rgb(255, 140, 0); // darker color
-
     // variables for spacing
     private static final int topAreaHeight = 80;
     private static final int bottomAreaHeight = 60;
 
     // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: " + getStringFromColor(mainColor) + ";"
+    private String topStyle = "-fx-background-color: " + TweakingHelper.STRING_PRIMARY + ";"
             + "-fx-text-fill: white; -fx-font-size: 20;"
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: " + getStringFromColor(secondaryColor) + ";";
+            + "-fx-border-color: " + TweakingHelper.STRING_TERTIARY + ";";
 
     // variables for the buttons
     private int buttonWidth = 120;

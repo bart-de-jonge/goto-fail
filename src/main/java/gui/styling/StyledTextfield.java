@@ -2,6 +2,7 @@ package gui.styling;
 
 
 import gui.misc.TransitionHelper;
+import gui.misc.TweakingHelper;
 import javafx.animation.Interpolator;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -32,15 +33,15 @@ public class StyledTextfield extends TextField {
 
     // colors
     @Getter
-    private Color borderColor = Color.rgb(60, 190, 255);
+    private Color borderColor = TweakingHelper.COLOR_PRIMARY;
     @Getter
     private Color fillColor = Color.WHITE;
     @Getter
-    private Color fillActiveColor = Color.rgb(245, 245, 245);
+    private Color fillActiveColor = TweakingHelper.COLOR_BACKGROUND_HIGH;
     @Getter
-    private Color textColor = borderColor;
+    private Color textColor = TweakingHelper.COLOR_PRIMARY;
     @Getter
-    private Color textActiveColor = Color.WHITE;
+    private Color textActiveColor = TweakingHelper.COLOR_SECONDARY;
 
     // transitions
     private int transitionFocusTime = 50;

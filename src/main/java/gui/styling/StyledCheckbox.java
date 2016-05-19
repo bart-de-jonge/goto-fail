@@ -1,6 +1,7 @@
 package gui.styling;
 
 import gui.misc.TransitionHelper;
+import gui.misc.TweakingHelper;
 import javafx.animation.Interpolator;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -28,11 +29,11 @@ public class StyledCheckbox extends CheckBox {
      * so they might not do anything.
      */
     @Getter
-    private Color borderColor = Color.rgb(60, 190, 255);
+    private Color borderColor = TweakingHelper.COLOR_PRIMARY;
     @Getter
-    private Color markColor = Color.rgb(60, 190, 255);
+    private Color markColor = TweakingHelper.COLOR_TERTIARY;
     @Getter
-    private Color fillColor = Color.rgb(255, 255, 255);
+    private Color fillColor = TweakingHelper.COLOR_QUADRATORY;
 
     /*
      * Effect and transition tweaking.
