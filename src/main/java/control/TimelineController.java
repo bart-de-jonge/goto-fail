@@ -83,7 +83,10 @@ public class TimelineController {
                               .getCameraTimelines()
                               .get(cameraIndex)
                               .addShot(newShot);
-        CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex, rootPane.getRootCenterArea(), newShot.getBeginCount(), newShot.getEndCount(), newShot.getDescription(), newShot.getName(), this::shotChangedHandler, newShot);
+        CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(),
+                cameraIndex, rootPane.getRootCenterArea(), newShot.getBeginCount(),
+                newShot.getEndCount(), newShot.getDescription(), newShot.getName(),
+                this::shotChangedHandler, newShot);
 
         controllerManager.setActiveShotBlock(shotBlock);
         this.cameraShotBlocks.add(shotBlock);
@@ -208,7 +211,6 @@ public class TimelineController {
             Supplier<ArrayList<Integer>> supplier = ArrayList::new;
             ArrayList<Integer> myInts = overlappingShots.stream().map(Shot::getInstance)
                     .collect(Collectors.toCollection(supplier));
-
             // Get CameraShotBlock
             this.cameraShotBlocks.stream().filter(shotBlock ->
                     myInts.contains(shotBlock.getShotId())).forEach(shotBlock -> {
