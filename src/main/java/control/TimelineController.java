@@ -40,6 +40,7 @@ public class TimelineController {
     private ArrayList<CameraShotBlock> cameraShotBlocks;
 
     // List of all currently colliding camerashotblocks
+    @Getter
     private ArrayList<CameraShotBlock> overlappingCameraShotBlocks;
 
     /**
@@ -180,7 +181,7 @@ public class TimelineController {
      *                          anymore should be negative when adding new block
      * @param cameraShotBlock - the shotblock to check collisions with
      */
-    private void checkCollisions(int timelineNumber, int oldTimelineNumber,
+    protected void checkCollisions(int timelineNumber, int oldTimelineNumber,
                                  CameraShotBlock cameraShotBlock) {
         CameraTimeline timeline = controllerManager.getScriptingProject()
                                                    .getCameraTimelines()
@@ -207,6 +208,7 @@ public class TimelineController {
             Supplier<ArrayList<Integer>> supplier = ArrayList::new;
             ArrayList<Integer> myInts = overlappingShots.stream().map(Shot::getInstance)
                     .collect(Collectors.toCollection(supplier));
+
             // Get CameraShotBlock
             this.cameraShotBlocks.stream().filter(shotBlock ->
                     myInts.contains(shotBlock.getShotId())).forEach(shotBlock -> {
@@ -227,7 +229,7 @@ public class TimelineController {
      * Removes the collisions from the counterpart in each collision as well
      * @param shotBlock - the shotblock to remove the collisions from
      */
-    private void removeCollisionFromCameraShotBlock(CameraShotBlock shotBlock) {
+    protected void removeCollisionFromCameraShotBlock(CameraShotBlock shotBlock) {
         ArrayList<Shot> toRemove = new ArrayList<>();
         for (Shot shot : shotBlock.getShot().getCollidesWith()) {
             toRemove.add(shot);

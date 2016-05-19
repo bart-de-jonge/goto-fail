@@ -5,7 +5,7 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.*;
 
-import data.DirectorShot;
+import data.*;
 import gui.centerarea.TimelinesGridPane;
 import gui.root.RootCenterArea;
 import javafx.application.Platform;
@@ -18,16 +18,13 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import data.Camera;
-import data.CameraShot;
-import data.CameraTimeline;
-import data.CameraType;
-import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;
 import gui.root.RootPane;
 import org.testfx.framework.junit.ApplicationTest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -198,6 +195,47 @@ public class TimelineControllerTest extends ApplicationTest {
         assertTrue(project.getCameraTimelines().get(1).getShots().contains(shot));
         assertFalse(project.getCameraTimelines().get(0).getShots().contains(shot));
         assertEquals(shotBlock, manager.getActiveShotBlock());
+    }
+
+    @Test
+    public void checkCollisionsAdding() throws InterruptedException {
+        CameraShot shot = new CameraShot("name", "description", 2.0, 4.0);
+        CameraShot shot2 = new CameraShot("name2", "description2", 2.0, 5.0);
+
+        ArrayList<CameraTimeline> timelines = Mockito.mock(ArrayList.class);
+        CameraTimeline timeline = Mockito.mock(CameraTimeline.class);
+        when(timelines.get(0)).thenReturn(timeline);
+        when(project.getCameraTimelines()).thenReturn(timelines);
+        CameraShotBlock shotBlock = Mockito.mock(CameraShotBlock.class);
+        Mockito.doNothing().when(timelineController).removeCollisionFromCameraShotBlock(anyObject());
+        when(timeline.getOverlappingShots(anyObject())).thenReturn(new ArrayList<>(Arrays.asList(shot, shot2)));
+        timelineController.getCameraShotBlocks().add(shotBlock);
+        when(shotBlock.getShotId()).thenReturn(shot.getInstance());
+
+        // Call method under test
+        timelineController.checkCollisions(0, 1, shotBlock);
+
+        // Do verifications
+        assertTrue(timelineController.getOverlappingCameraShotBlocks().contains(shotBlock));
+        Mockito.verify(shotBlock, times(1)).setColliding(true);
+    }
+
+    @Test
+    public void checkCollisionsRemoving() throws InterruptedException {
+        CameraShot shot = new CameraShot("name", "description", 2.0, 4.0);
+
+        CameraShotBlock shotBlock = Mockito.mock(CameraShotBlock.class);
+        Mockito.doNothing().when(timelineController).removeCollisionFromCameraShotBlock(anyObject());
+        timelineController.getOverlappingCameraShotBlocks().add(shotBlock);
+        timelineController.getCameraShotBlocks().add(shotBlock);
+        when(shotBlock.getShot()).thenReturn(shot);
+
+        // Call method under test
+        timelineController.checkCollisions(0, 1, shotBlock);
+
+        // Do verifications
+        assertTrue(timelineController.getOverlappingCameraShotBlocks().isEmpty());
+        Mockito.verify(shotBlock, times(1)).setColliding(false);
     }
 
     @Override

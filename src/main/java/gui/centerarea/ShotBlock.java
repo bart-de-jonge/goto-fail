@@ -71,21 +71,13 @@ public abstract class ShotBlock {
 
         // TimetableBlock set in subclass constructors!!
         try {
-            System.out.println(timetableBlockClass);
-
-
             Constructor<?> constructor = timetableBlockClass
                     .getConstructor(RootCenterArea.class, ShotBlock.class);
-
-            System.out.println(constructor);
-
-            TimetableBlock block = (TimetableBlock) constructor.newInstance(rootCenterArea, this);
 
             this.setTimetableBlock((TimetableBlock) constructor.newInstance(rootCenterArea, this));
         } catch (Exception e) {
             log.error("No valid timetableblock class, could not initialize timetableblock!");
             this.timetableBlock = null;
-            System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
