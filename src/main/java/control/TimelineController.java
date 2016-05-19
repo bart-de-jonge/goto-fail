@@ -245,7 +245,7 @@ public class TimelineController {
      * @param event shot changed event.
      * @param shotBlock CameraShot for which to confirm changes.
      */
-    private void decoupleAndModify(CameraShotBlockUpdatedEvent event, CameraShotBlock shotBlock) {
+    protected void decoupleAndModify(CameraShotBlockUpdatedEvent event, CameraShotBlock shotBlock) {
         if (shotBlock.getShot().getDirectorShot() != null) {
             ShotDecouplingModalView decouplingModalView = new ShotDecouplingModalView(
                     this.rootPane, shotBlock.getShot());
