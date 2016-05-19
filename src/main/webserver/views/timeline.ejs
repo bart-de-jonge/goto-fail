@@ -24,27 +24,30 @@
                             <th>Timeline blocks</th>
                         </tr>
                         <%
-                            var curBlockNumber = 0;
-                            var prevBlock = null;
-                            var curBlock = timelineBlocks[curBlockNumber];
-                            for(i = minCount; i <= maxCount; i++) {
-                                var nextBlock = timelineBlocks %>
+                            var curShotNumber = 0;
+                            var prevShot = null;
+                            var curShot = cameraTimeline.getCameraShots()[curShotNumber];
+                            for(i = minCount*4; i <= maxCount*4; i++) { %>
                                 <tr>
-                                    <td><%= i %></td>
-                                    <% if (curBlockNumber != -1 && curBlock.beginCount === i) { %>
-                                        <td rowspan="<%= curBlock.endCount - curBlock.beginCount + 1 %>">
+                                    <td><% if (i%4 === 0) {
+                                            %><%=i/4%><%
+                                        } else {
+                                            %>-<%
+                                        }%></td>
+                                    <% if (curShotNumber != -1 && curShot.beginCount*4 === i) { %>
+                                        <td rowspan="<%= (curShot.endCount - curShot.beginCount) * 4 + 1 %>">
                                             <div class="timeline-block">
-                                                <span><%= curBlock.beginCount %> - <%= curBlock.endCount %></span>
+                                                <span><%= curShot.beginCount %> - <%= curShot.endCount %></span>
                                             </div>
                                         </td>
-                                        <% curBlockNumber++;
-                                        if (curBlockNumber < timelineBlocks.length) {
-                                            prevBlock = curBlock;
-                                            curBlock = timelineBlocks[curBlockNumber];
+                                        <% curShotNumber++;
+                                        if (curShotNumber < cameraTimeline.getCameraShots().length) {
+                                            prevShot = curShot;
+                                            curShot = cameraTimeline.getCameraShots()[curShotNumber];
                                         } else {
-                                            curBlockNumber = -1;
+                                            curShotNumber = -1;
                                         }
-                                    } else if (prevBlock === null || curBlock.beginCount > i && prevBlock.endCount < i) { %>
+                                    } else if (prevShot === null || curShot.beginCount*4 > i && prevShot.endCount*4 < i) { %>
                                         <td></td>
                                     <% } %>
                                 </tr>

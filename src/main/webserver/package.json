@@ -17,7 +17,8 @@
     "express": "~4.13.1",
     "morgan": "~1.6.1",
     "node-sass-middleware": "0.8.0",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "xml2js": "latest"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",
