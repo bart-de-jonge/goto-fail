@@ -15,7 +15,7 @@ import lombok.extern.log4j.Log4j2;
 @EqualsAndHashCode
 @ToString
 @Log4j2
-public class Camera {
+public class Camera implements Cloneable {
 
     // Name of the camera
     @Getter @Setter
@@ -56,15 +56,10 @@ public class Camera {
                 name, description, cameraType);
     }
     
-    /**
-     * Clone constructor.
-     * @param camera camera to clone.
-     */
-    public Camera(Camera camera) {
-        this.name = camera.getName();
-        this.description = camera.getDescription();
-        this.movementMargin = camera.getMovementMargin();
-        this.cameraType = new CameraType(camera.getCameraType());
+    @Override
+    public Camera clone() {
+        Camera camera = new Camera(name, description, cameraType.clone());
+        return camera;
     }
     
     /**

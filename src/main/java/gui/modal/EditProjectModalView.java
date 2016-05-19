@@ -160,17 +160,17 @@ public class EditProjectModalView extends ModalView {
         this.project = rootPane.getControllerManager().getScriptingProject();
         this.cameras =  new ArrayList<Camera>();
         ArrayList<Camera> projectCameras = project.getCameras();
-        projectCameras.forEach(e -> cameras.add(new Camera(e)));
+        projectCameras.forEach(e -> cameras.add(e.clone()));
 
         
         this.cameraTypes = new ArrayList<CameraType>();
         ArrayList<CameraType> projectTypes = project.getCameraTypes();
-        projectTypes.forEach(e -> cameraTypes.add(new CameraType(e)));
+        projectTypes.forEach(e -> cameraTypes.add(e.clone()));
         
         
         this.timelines = new ArrayList<CameraTimeline>();
         ArrayList<CameraTimeline> projectTimelines = project.getCameraTimelines();
-        projectTimelines.forEach(e -> timelines.add(new CameraTimeline(e)));
+        projectTimelines.forEach(e -> timelines.add(e.clone()));
         initializeView();
     }
     

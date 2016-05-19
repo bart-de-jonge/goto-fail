@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  */
 @XmlRootElement(name = "cameraTimeline")
 @ToString
-public class CameraTimeline extends Timeline {
+public class CameraTimeline extends Timeline implements Cloneable {
     
     @Getter @Setter
     private String description;
@@ -60,18 +60,6 @@ public class CameraTimeline extends Timeline {
     }
     
     /**
-     * Clone constructor.
-     * @param timeline timeline to clone
-     */
-    public CameraTimeline(CameraTimeline timeline) {
-        super(timeline.getProject());
-        this.description = timeline.getDescription();
-        this.camera = new Camera(timeline.getCamera());
-        this.shots = timeline.getShots();
-        this.name = timeline.getName();
-    }
-    
-    /**
      * Constructor with name variable.
      * @param name the name of the timeline
      * @param camera the camera of this timeline
@@ -82,6 +70,13 @@ public class CameraTimeline extends Timeline {
             String description, ScriptingProject project) {
         this(camera, description, project);
         this.name = name;
+    }
+    
+    @Override
+    public CameraTimeline clone() {
+       CameraTimeline timeline = new CameraTimeline(name, camera.clone(), description, getProject()); 
+       timeline.shots = (LinkedList) shots.clone();
+       return timeline;
     }
 
     /**
