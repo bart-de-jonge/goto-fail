@@ -2,6 +2,7 @@ package gui.centerarea;
 
 import control.CountUtilities;
 import data.Shot;
+import gui.misc.TweakingHelper;
 import gui.root.RootCenterArea;
 import gui.events.ShotblockUpdatedEvent;
 import javafx.event.EventHandler;
@@ -93,9 +94,23 @@ public abstract class ShotBlock {
         this.colliding = colliding;
 
         if (colliding) {
-            this.timetableBlock.setStyle("-fx-background-color: red");
+            this.timetableBlock.setStyle("-fx-background-color: "
+                    + TweakingHelper.STRING_TERTIARY + ";"
+                    + "-fx-border-color: red;"
+                    + "-fx-border-width: 3;");
+            this.timetableBlock.getContentPane().setStyle("-fx-background-color: "
+                    + TweakingHelper.STRING_TERTIARY + ";"
+                    + "-fx-border-color: "
+                    + TweakingHelper.STRING_SECONDARY + ";");
         } else {
-            this.timetableBlock.setStyle("-fx-background-color: none");
+            this.timetableBlock.setStyle("-fx-background-color: "
+                    + TweakingHelper.STRING_TERTIARY + ";"
+                    + "-fx-border-color: "
+                    + TweakingHelper.STRING_SECONDARY + ";");
+            this.timetableBlock.getContentPane().setStyle("-fx-background-color: "
+                    + TweakingHelper.STRING_TERTIARY + ";"
+                    + "-fx-border-color: "
+                    + TweakingHelper.STRING_SECONDARY + ";");
         }
     }
 

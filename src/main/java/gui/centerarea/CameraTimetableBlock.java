@@ -1,5 +1,6 @@
 package gui.centerarea;
 
+import gui.misc.TweakingHelper;
 import gui.root.RootCenterArea;
 
 /**
@@ -30,9 +31,6 @@ public class CameraTimetableBlock extends TimetableBlock {
     void initNormalPane() {
         // Add width/height properties, title label, count label and description label
         super.initNormalPane();
-
-        this.getContentPane().getStyleClass().add("block_Foreground_Normal");
-
     }
 
     /**
@@ -40,9 +38,6 @@ public class CameraTimetableBlock extends TimetableBlock {
      */
     void initDraggedPane() {
         super.initDraggedPane(getRootCenterArea().getMainTimeLineAnchorPane());
-
-        this.getDraggedPane().getStyleClass().add("block_Background_Dragged");
-        this.getDraggedContentPane().getStyleClass().add("block_Foreground_Dragged");
     }
 
     void initFeedbackPane() {
