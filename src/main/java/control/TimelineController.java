@@ -110,6 +110,8 @@ public class TimelineController {
         cameraTimeline.removeShot(cameraShotBlock.getShot());
         controllerManager.getScriptingProject().changed();
 
+        this.decoupleShot(cameraShotBlock.getTimetableNumber(), cameraShotBlock.getShot());
+
         // Then remove the shot from the view
         cameraShotBlock.removeFromView();
     }
@@ -274,8 +276,10 @@ public class TimelineController {
     void decoupleShot(int timelineIndex, CameraShot shot) {
         log.info("Decoupling shot.", shot);
         DirectorShot directorShot = shot.getDirectorShot();
-        directorShot.removeCameraShot(shot, timelineIndex);
-        shot.setDirectorShot(null);
+        if (directorShot != null) {
+            directorShot.removeCameraShot(shot, timelineIndex);
+            shot.setDirectorShot(null);
+        }
     }
 
     private boolean shotModified(CameraShotBlockUpdatedEvent event) {
