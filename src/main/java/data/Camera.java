@@ -15,7 +15,7 @@ import lombok.extern.log4j.Log4j2;
 @EqualsAndHashCode
 @ToString
 @Log4j2
-public class Camera {
+public class Camera implements Cloneable {
 
     // Name of the camera
     @Getter @Setter
@@ -55,7 +55,13 @@ public class Camera {
         log.debug("Created new Camera(name={}, description={}, cameraType={}",
                 name, description, cameraType);
     }
-
+    
+    @Override
+    public Camera clone() {
+        Camera camera = new Camera(name, description, cameraType.clone());
+        return camera;
+    }
+    
     /**
      * Number of counts this camera needs at maximum to move to a new position.
      * This defines the minimum margin between the two consecutive shots defined in

@@ -15,7 +15,7 @@ import lombok.extern.log4j.Log4j2;
 @ToString
 @XmlRootElement(name = "cameraType")
 @Log4j2
-public class CameraType {
+public class CameraType implements Cloneable {
 
     // Name of the cameraType
     @Getter @Setter
@@ -37,7 +37,7 @@ public class CameraType {
     public CameraType() {
         this("", "", -1);
     }
-
+    
     /**
      * Constructor.
      * @param name - the name of this camera
@@ -50,5 +50,10 @@ public class CameraType {
         this.movementMargin = movementMargin;
         log.debug("Created new CameraType(name={}, description={}, movementMargin={})",
             name, description, movementMargin);
+    }
+    
+    public CameraType clone() {
+        CameraType type = new CameraType(name, description, movementMargin);
+        return type;
     }
 }
