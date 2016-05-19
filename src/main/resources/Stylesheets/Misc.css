@@ -12,6 +12,10 @@
   -fx-background-color: white;
 }
 
+/*
+ * Scrollpanes and scrollbars.
+ */
+
 .scroll-pane > .viewport {
     -fx-background-color: transparent;
 }
@@ -76,30 +80,43 @@
     -fx-background-color: rgba(0,0,0,0.55);
 }
 
-
+/*
+ * Timetable blocks.
+ */
 
 .block_Background_Normal {
-    -fx-background-color: -c-block-borders;
     -fx-background-insets: 1 1 1 1;
     -fx-border-style: solid inside;
-    -fx-border-color: -c-block-background;
     -fx-border-width: 0.5 0 0.5 0;
+
+/*
+    -fx-border-color: -c-block-background;
+    -fx-background-color: -c-block-borders;
+*/
 }
 
 .block_Foreground_Normal {
     -fx-padding: 4 0 4 0;
+    -fx-opacity: 0.9;
+    -fx-blend-mode: multiply;
     -fx-border-style: solid inside;
     -fx-border-insets: 4 0 4 0;
     -fx-border-width: 2 0 0 0;
+    -fx-background-insets: 4 2 4 2;
+
+/*
     -fx-border-color: -c-block-highlight;
     -fx-background-color: -c-block-background;
-    -fx-background-insets: 4 2 4 2;
+*/
 }
 
 .block_Background_Dragged {
-    -fx-background-color: -c-block-borders;
     -fx-background-insets: 1 1 1 1;
     -fx-background-radius: 3;
+
+/*
+    -fx-background-color: -c-block-borders;
+*/
 }
 
 .block_Foreground_Dragged {
@@ -109,22 +126,35 @@
     -fx-border-style: solid inside;
     -fx-border-insets: 4 0 4 0;
     -fx-border-width: 2 0 0 0;
+    -fx-background-insets: 4 2 4 2;
+
+/*
     -fx-border-color: -c-block-highlight;
     -fx-background-color: -c-block-background;
-    -fx-background-insets: 4 2 4 2;
+*/
 }
 
 .block_Text_Title {
-    -fx-text-fill: -c-block-highlight;
-    -fx-font-size: 13;
+    -fx-font-size: 16;
     -fx-padding: 0 0 0 5;
+    -fx-blend-mode: multiply;
+    /*
+    -fx-text-fill: -c-block-highlight;
+    */
 }
 
 .block_Text_Normal {
-    -fx-text-fill: -c-block-text;
-    -fx-font-size: 12;
+    -fx-font-size: 14;
     -fx-padding: 0 5 5 5;
+    -fx-blend-mode: multiply;
+    /*
+    -fx-text-fill: -c-block-text;
+    */
 }
+
+/*
+ * Timeline sub-gridding.
+ */
 
 .timeline_Background_Lines {
     -fx-border-color: gray;
