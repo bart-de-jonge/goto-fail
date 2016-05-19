@@ -113,6 +113,8 @@ public class TimelineController {
         cameraTimeline.removeShot(cameraShotBlock.getShot());
         controllerManager.getScriptingProject().changed();
 
+        this.decoupleShot(cameraShotBlock.getTimetableNumber(), cameraShotBlock.getShot());
+
         // Then remove the shot from the view
         cameraShotBlock.removeFromView();
     }
@@ -248,7 +250,7 @@ public class TimelineController {
      * @param shotBlock CameraShot for which to confirm changes.
      */
     protected void decoupleAndModify(CameraShotBlockUpdatedEvent event, CameraShotBlock shotBlock) {
-        if (shotBlock.getShot().getDirectorShot() != null) {
+        if (shotBlock.getShot().getDirectorShot() != null && this.shotBlockTimingModified(event)) {
             ShotDecouplingModalView decouplingModalView = new ShotDecouplingModalView(
                     this.rootPane, shotBlock.getShot());
 
@@ -277,7 +279,25 @@ public class TimelineController {
     void decoupleShot(int timelineIndex, CameraShot shot) {
         log.info("Decoupling shot.", shot);
         DirectorShot directorShot = shot.getDirectorShot();
-        directorShot.removeCameraShot(shot, timelineIndex);
-        shot.setDirectorShot(null);
+        if (directorShot != null) {
+            directorShot.removeCameraShot(shot, timelineIndex);
+            shot.setDirectorShot(null);
+        }
+    }
+
+    /**
+     * Checks whether or not a shot block's timing properties were altered.
+     * @param event Camera update event with possible changes
+     * @return Whether or not the timing properties changed
+     */
+    private boolean shotBlockTimingModified(CameraShotBlockUpdatedEvent event) {
+        CameraShotBlock shotBlock = event.getCameraShotBlock();
+        CameraShot shot = shotBlock.getShot();
+        if (shotBlock.getBeginCount() == shot.getBeginCount()
+                && shotBlock.getEndCount() == shot.getEndCount()
+                && event.getOldTimelineNumber() == shotBlock.getTimetableNumber()) {
+            return false;
+        }
+        return true;
     }
 }

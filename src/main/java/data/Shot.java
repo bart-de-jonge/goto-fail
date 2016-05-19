@@ -1,5 +1,7 @@
 package data;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -27,12 +29,10 @@ public abstract class Shot {
     private int instance;
 
     // The start count of the Shot.
-    @Getter @Setter
-    private double beginCount;
+    private DoubleProperty beginCount;
 
     // The end count of the Shot.
-    @Getter @Setter
-    private double endCount;
+    private DoubleProperty endCount;
 
     // True if the shot is colliding with another Shot.
     @Getter @Setter
@@ -48,8 +48,8 @@ public abstract class Shot {
         name = "";
         description = "";
         instance = 0;
-        beginCount = 0;
-        endCount = 0;
+        beginCount = new SimpleDoubleProperty(0);
+        endCount = new SimpleDoubleProperty(0);
         collidesWith = new ArrayList<>();
     }
 
@@ -71,8 +71,8 @@ public abstract class Shot {
         this.name = name;
         this.description = description;
         this.instance = instance;
-        this.beginCount = beginCount;
-        this.endCount = endCount;
+        this.beginCount = new SimpleDoubleProperty(beginCount);
+        this.endCount = new SimpleDoubleProperty(endCount);
         this.collidesWith = new ArrayList<>();
     }
 
@@ -166,5 +166,53 @@ public abstract class Shot {
                 other.getCollidesWith().remove(this);
             }
         }
+    }
+
+    /**
+     * Get the begin count of this shot.
+     * @return The begin count
+     */
+    public double getBeginCount() {
+        return this.beginCount.get();
+    }
+
+    /**
+     * Set the begin count of this shot.
+     * @param beginCount The new begin count
+     */
+    public void setBeginCount(double beginCount) {
+        this.beginCount.set(beginCount);
+    }
+
+    /**
+     * Get the begin count's property (useful for bindings).
+     * @return The Begin Count Property
+     */
+    public DoubleProperty getBeginCountProperty() {
+        return this.beginCount;
+    }
+
+    /**
+     * Get the end count of this shot.
+     * @return The end count
+     */
+    public double getEndCount() {
+        return this.endCount.get();
+    }
+
+    /**
+     * Set the end count of this shot.
+     * @param endCount The new end count
+     */
+    public void setEndCount(double endCount) {
+        this.endCount.set(endCount);
+    }
+
+    /**
+     * Get the end count's property (useful for bindings).
+     * @return The End Count Property
+     */
+    public DoubleProperty getEndCountProperty() {
+        return this.endCount;
     }
 }
