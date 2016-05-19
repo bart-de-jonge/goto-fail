@@ -148,9 +148,7 @@ public class RootCenterArea extends VBox {
         for (int i = 0; i < numberOfTimelines; i++) {
             String name = getRootPane().getControllerManager()
                     .getScriptingProject().getCameraTimelines().get(i).getName();
-
             Label label = new Label(name);
-            
             
             label.setAlignment(Pos.CENTER);
             label.setPrefWidth(TweakingHelper.GENERAL_SIZE);

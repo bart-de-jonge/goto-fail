@@ -462,8 +462,6 @@ public class ProjectController {
             HBox box = new HBox();
             box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
             editProjectModal.getCameraTypeList().getItems().set(selectedIndex, box);
-            
-           
         }
     }
     
@@ -474,9 +472,6 @@ public class ProjectController {
     private void cameraTypeEditCancelled(MouseEvent event) {
         cameraTypeModal.hideModal();
     }
-    
-    
-    
 
     /**
      * Event handler for when the add camera button in the NewProjectModalView is clicked.

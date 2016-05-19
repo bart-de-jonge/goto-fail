@@ -92,8 +92,6 @@ public class AddCameraModalView extends CameraModificationModalView {
         
     }
     
-    
-    
     /**
      * Initialize the view of this modal.
      */
