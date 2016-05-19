@@ -15,27 +15,14 @@ import lombok.Getter;
  */
 class RootFooterArea extends HBox {
 
-    @Getter
-    private Label textOutputLabel;
-
-    private DropShadow dropShadow;
+    private static final int FOOTER_AREA_HEIGHT = 10;
 
     /**
      * RootFooterArea Constructor.
      */
     RootFooterArea() {
-        // border style to mark it, for debugging for now.
-        setStyle("-fx-background-color: " + TweakingHelper.STRING_PRIMARY + ";");
-        setPadding(new Insets(5, 10, 5, 10));
+        setStyle("-fx-background-color: " + TweakingHelper.STRING_SECONDARY + ";");
 
-
-//        dropShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0,0,0,0.2), 20, 0.1, 0, -5);
-//        this.setEffect(dropShadow);
-
-        textOutputLabel = new Label("Text output goes here.");
-        textOutputLabel.setStyle("-fx-text-fill: " + TweakingHelper.STRING_BACKGROUND + ";");
-        getChildren().add(textOutputLabel);
-
-        this.setPrefHeight(30);
+        this.setPrefHeight(FOOTER_AREA_HEIGHT);
     }
 }

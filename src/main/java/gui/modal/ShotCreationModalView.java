@@ -109,10 +109,6 @@ public class ShotCreationModalView extends ModalView {
         // init name field
         final Label nameLabel = new Label("Shot Name: ");
         nameField = new StyledTextfield();
-        nameField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        nameField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        nameField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        nameField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         HBox nameBox = new HBox(TweakingHelper.GENERAL_SPACING);
         nameBox.getChildren().addAll(nameLabel, nameField);
         nameBox.setAlignment(Pos.CENTER_RIGHT);
@@ -120,10 +116,6 @@ public class ShotCreationModalView extends ModalView {
         // init description field
         final Label descripLabel = new Label("Shot Description: ");
         descriptionField = new StyledTextfield();
-        descriptionField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        descriptionField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        descriptionField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        descriptionField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         HBox descriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
         descriptionBox.getChildren().addAll(descripLabel, descriptionField);
         descriptionBox.setAlignment(Pos.CENTER_RIGHT);
@@ -178,10 +170,6 @@ public class ShotCreationModalView extends ModalView {
         final Label startLabel = new Label("Start:");
         startField = new DoubleTextField();
         startField.setText(this.defaultStartCount);
-        startField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        startField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        startField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        startField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         HBox startBox = new HBox(TweakingHelper.GENERAL_SPACING);
         startBox.getChildren().addAll(startLabel, startField);
         startBox.setAlignment(Pos.CENTER_RIGHT);
@@ -190,10 +178,6 @@ public class ShotCreationModalView extends ModalView {
         final Label endLabel = new Label("End:");
         endField = new DoubleTextField();
         endField.setText(this.defaultEndCount);
-        endField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        endField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        endField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        endField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         HBox endBox = new HBox(TweakingHelper.GENERAL_SPACING);
         endBox.getChildren().addAll(endLabel, endField);
         endBox.setAlignment(Pos.CENTER_RIGHT);

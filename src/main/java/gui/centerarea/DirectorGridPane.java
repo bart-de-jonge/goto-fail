@@ -17,7 +17,7 @@ public class DirectorGridPane extends ScrollableGridPane {
      */
     public DirectorGridPane(int numberOfCounts, int width, int verticalElementSize) {
         super(1, numberOfCounts, width, verticalElementSize);
-
+        setStyle("-fx-background-color: rgba(0,0,0,0.04);");
         addPanes();
     }
 

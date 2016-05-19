@@ -86,20 +86,12 @@ public class CameraModificationModalView extends ModalView {
 
         final Label nameLabel = new Label("Name:  ");
         nameField = new StyledTextfield();
-        nameField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        nameField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        nameField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        nameField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         HBox nameBox = new HBox(TweakingHelper.GENERAL_SPACING);
         nameBox.getChildren().addAll(nameLabel, nameField);
         nameBox.setAlignment(Pos.CENTER_RIGHT);
         
         final Label descriptionLabel = new Label("Description: ");
         descriptionField = new StyledTextfield();
-        descriptionField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        descriptionField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        descriptionField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        descriptionField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         HBox descriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
         descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
         descriptionBox.setAlignment(Pos.CENTER_RIGHT);

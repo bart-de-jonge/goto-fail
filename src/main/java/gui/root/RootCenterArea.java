@@ -199,6 +199,7 @@ public class RootCenterArea extends VBox {
         counterScrollpane.setFitToWidth(true);
         counterScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         counterScrollpane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        counterScrollpane.setPadding(new Insets(0,0,0,0));
         timelinesPane.getChildren().add(counterScrollpane);
     }
 

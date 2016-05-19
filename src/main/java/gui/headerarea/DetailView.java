@@ -15,7 +15,9 @@ public class DetailView extends HBox {
 
     private String style = "-fx-background-color: "
             + TweakingHelper.STRING_BACKGROUND_HIGH + ";"
-            + "-fx-min-height: 50;";
+            + "-fx-min-height: 40;"
+            + "-fx-border-width: 0 0 1px 0;"
+            + "-fx-border-color: rgba(0,0,0,0.40);";
 
     private static final String defaultEmptyString = "";
     private static final String defaultEmptyNumber = "0";
@@ -43,7 +45,7 @@ public class DetailView extends HBox {
     public DetailView() {
         this.setStyle(style);
         this.setAlignment(Pos.CENTER);
-        this.setPadding(new Insets(0, 0, 0, TweakingHelper.GENERAL_PADDING));
+        this.setPadding(new Insets(0));
         this.setSpacing(TweakingHelper.GENERAL_SPACING * 2);
         initName();
         initDescription();
@@ -102,10 +104,6 @@ public class DetailView extends HBox {
      */
     private  void initBeginCount() {
         beginCountField = new DoubleTextField("123");
-        beginCountField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        beginCountField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        beginCountField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        beginCountField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         beginCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("Start Count:");
         beginCountBox.getChildren().addAll(specifierLabel, beginCountField);
@@ -118,10 +116,6 @@ public class DetailView extends HBox {
      */
     private  void initEndCount() {
         endCountField = new DoubleTextField("123");
-        endCountField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        endCountField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        endCountField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        endCountField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         endCountField.setAlignment(Pos.CENTER);
         endCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("End Count:");
@@ -135,10 +129,6 @@ public class DetailView extends HBox {
      */
     private void initName() {
         nameField = new StyledTextfield("Placeholder");
-        nameField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        nameField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        nameField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        nameField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         nameField.setAlignment(Pos.CENTER);
         nameBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("Name:");
@@ -152,10 +142,6 @@ public class DetailView extends HBox {
      */
     private void initDescription() {
         descriptionField = new StyledTextfield("");
-        descriptionField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        descriptionField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        descriptionField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        descriptionField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         descriptionField.setAlignment(Pos.CENTER);
         descriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("Description:");
