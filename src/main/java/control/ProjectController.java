@@ -348,7 +348,8 @@ public class ProjectController {
             cameraModal.getAddCameraButton().setOnMouseClicked(e -> cameraEdited(e, selectedIndex));
             cameraModal.getCancelButton().setOnMouseClicked(this::cameraEditCancelled);
         } else {
-            // no cam selected, display error
+            editProjectModal.getTitleLabel().setText("Please select a camera to edit");
+            editProjectModal.getTitleLabel().setTextFill(Color.RED);
         }
     }
     
@@ -379,7 +380,8 @@ public class ProjectController {
             cameraTypeModal.getAddCameraTypeButton().setOnMouseClicked(e -> cameraTypeEdited(e, selectedIndex));
             cameraTypeModal.getCancelButton().setOnMouseClicked(this::cameraTypeEditCancelled);
         } else {
-            // no cam type selected, display error
+            editProjectModal.getTitleLabel().setText("Please select a camera type to edit");
+            editProjectModal.getTitleLabel().setTextFill(Color.RED);
         }
     }
     
