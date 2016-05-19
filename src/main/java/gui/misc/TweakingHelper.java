@@ -7,27 +7,39 @@ import javafx.scene.paint.Color;
  */
 public final class TweakingHelper {
 
-    // four main colors used throughout application. Experiment a little!
+    private static final int colorChoice = 1;
 
-    /*
-     * Orange-y!
-     */
+    private static final Color[][] colors = {
+            {
+                    Color.rgb(69, 162, 217),
+                    Color.rgb(9, 135, 210),
+                    Color.rgb(2, 80, 126),
+                    Color.rgb(144, 199, 232)
+            },
+            {
+                    Color.rgb(255, 172, 70),
+                    Color.rgb(255, 140, 0),
+                    Color.rgb(198, 109, 0),
+                    Color.rgb(255, 209, 152)
+            },
+            {
+                    Color.rgb(123, 241, 67),
+                    Color.rgb(77, 238, 0),
+                    Color.rgb(55, 171, 0),
+                    Color.rgb(179, 247, 147)
+            },
+            {
+                    Color.rgb(255, 102, 70),
+                    Color.rgb(255, 44, 0),
+                    Color.rgb(198, 34, 0),
+                    Color.rgb(255, 170, 152)
+            }
+    };
 
-//    public static final Color COLOR_PRIMARY = Color.rgb(255, 172, 70); // main bright color
-//    public static final Color COLOR_TERTIARY = Color.rgb(255, 140, 0); // darker color
-//    public static final Color COLOR_SECONDARY = Color.rgb(255, 235, 190); // lighter color
-//    public static final Color COLOR_BACKGROUND = Color.WHITE; // main bg color
-//    public static final Color COLOR_BACKGROUND_HIGH =
-//            Color.rgb(245, 245, 245); // heightened bg color
-
-    /*
-     * Cool-blue!
-     */
-
-    public static final Color COLOR_PRIMARY = Color.rgb(69, 162, 217); // main (light) color
-    public static final Color COLOR_SECONDARY = Color.rgb(9, 135, 210); // dark color
-    public static final Color COLOR_TERTIARY = Color.rgb(2, 80, 126); // very dark color
-    public static final Color COLOR_QUADRATORY = Color.rgb(144, 199, 232); // very light color
+    public static final Color COLOR_PRIMARY = colors[colorChoice][0]; // main (light) color
+    public static final Color COLOR_SECONDARY = colors[colorChoice][1]; // dark color
+    public static final Color COLOR_TERTIARY = colors[colorChoice][2]; // very dark color
+    public static final Color COLOR_QUADRATORY = colors[colorChoice][3]; // very light color
 
     /*
      * Some whites and grays used throughout the application.
@@ -61,7 +73,4 @@ public final class TweakingHelper {
                 + ((int) (color.getBlue()  * 255)) + ","
                 + color.getOpacity() + ")";
     }
-
-    
-
 }

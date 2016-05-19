@@ -15,7 +15,9 @@ public class DetailView extends HBox {
 
     private String style = "-fx-background-color: "
             + TweakingHelper.STRING_BACKGROUND_HIGH + ";"
-            + "-fx-min-height: 50;";
+            + "-fx-min-height: 40;"
+            + "-fx-border-width: 0 0 1px 0;"
+            + "-fx-border-color: rgba(0,0,0,0.40);";
 
     private static final String defaultEmptyString = "";
     private static final String defaultEmptyNumber = "0";
@@ -43,7 +45,7 @@ public class DetailView extends HBox {
     public DetailView() {
         this.setStyle(style);
         this.setAlignment(Pos.CENTER);
-        this.setPadding(new Insets(0, 0, 0, TweakingHelper.GENERAL_PADDING));
+        this.setPadding(new Insets(0));
         this.setSpacing(TweakingHelper.GENERAL_SPACING * 2);
         initName();
         initDescription();
