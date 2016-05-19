@@ -84,6 +84,30 @@
  * Timetable blocks.
  */
 
+.block_Background {
+    -fx-background-insets: 0 0.5 0 0.5;
+    -fx-border-style: solid inside;
+    -fx-border-width: 0.5 0 0.5 0;
+}
+
+.block_Foreground {
+    -fx-padding: 4 0 4 0;
+    -fx-border-style: solid inside;
+    -fx-border-insets: 4 0 4 0;
+    -fx-border-width: 2 0 0 0;
+    -fx-background-insets: 4 2 4 2;
+}
+
+.block_Text_Title {
+    -fx-font-size: 16;
+    -fx-padding: 0 0 0 5;
+}
+
+.block_Text_Normal {
+    -fx-font-size: 14;
+    -fx-padding: 0 5 5 5;
+}
+
 .block_Background_Normal {
     -fx-background-insets: 0 0.5 0 0.5;
     -fx-border-style: solid inside;
@@ -131,21 +155,7 @@
 */
 }
 
-.block_Text_Title {
-    -fx-font-size: 16;
-    -fx-padding: 0 0 0 5;
-    /*
-    -fx-text-fill: -c-block-highlight;
-    */
-}
 
-.block_Text_Normal {
-    -fx-font-size: 14;
-    -fx-padding: 0 5 5 5;
-    /*
-    -fx-text-fill: -c-block-text;
-    */
-}
 
 /*
  * Timeline sub-gridding.

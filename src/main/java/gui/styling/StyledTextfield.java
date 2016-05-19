@@ -41,7 +41,7 @@ public class StyledTextfield extends TextField {
     @Getter
     private Color textColor = TweakingHelper.COLOR_PRIMARY;
     @Getter
-    private Color textActiveColor = TweakingHelper.COLOR_SECONDARY;
+    private Color textActiveColor = TweakingHelper.COLOR_TERTIARY;
 
     // transitions
     private int transitionFocusTime = 50;

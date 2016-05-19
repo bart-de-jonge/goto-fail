@@ -362,7 +362,6 @@ public class EditProjectModalView extends ModalView {
                     new Label(type.getName()), new Label(" - "), new Label(type.getDescription()));
             typeList.getItems().add(box);
         }
-        
     }
 
     /**

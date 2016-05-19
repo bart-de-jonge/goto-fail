@@ -31,7 +31,7 @@ public class StyledCheckbox extends CheckBox {
     @Getter
     private Color borderColor = TweakingHelper.COLOR_PRIMARY;
     @Getter
-    private Color markColor = TweakingHelper.COLOR_TERTIARY;
+    private Color markColor = TweakingHelper.COLOR_SECONDARY;
     @Getter
     private Color fillColor = TweakingHelper.COLOR_QUADRATORY;
 

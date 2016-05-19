@@ -14,8 +14,8 @@ public final class TweakingHelper {
      */
 
 //    public static final Color COLOR_PRIMARY = Color.rgb(255, 172, 70); // main bright color
-//    public static final Color COLOR_SECONDARY = Color.rgb(255, 140, 0); // darker color
-//    public static final Color COLOR_TERTIARY = Color.rgb(255, 235, 190); // lighter color
+//    public static final Color COLOR_TERTIARY = Color.rgb(255, 140, 0); // darker color
+//    public static final Color COLOR_SECONDARY = Color.rgb(255, 235, 190); // lighter color
 //    public static final Color COLOR_BACKGROUND = Color.WHITE; // main bg color
 //    public static final Color COLOR_BACKGROUND_HIGH =
 //            Color.rgb(245, 245, 245); // heightened bg color
@@ -24,10 +24,15 @@ public final class TweakingHelper {
      * Cool-blue!
      */
 
-    public static final Color COLOR_PRIMARY = Color.rgb(69, 162, 217); // light color
-    public static final Color COLOR_SECONDARY = Color.rgb(2, 80, 126); // very dark color
-    public static final Color COLOR_TERTIARY = Color.rgb(9, 135, 210); // dark color
+    public static final Color COLOR_PRIMARY = Color.rgb(69, 162, 217); // main (light) color
+    public static final Color COLOR_SECONDARY = Color.rgb(9, 135, 210); // dark color
+    public static final Color COLOR_TERTIARY = Color.rgb(2, 80, 126); // very dark color
     public static final Color COLOR_QUADRATORY = Color.rgb(144, 199, 232); // very light color
+
+    /*
+     * Some whites and grays used throughout the application.
+     */
+
     public static final Color COLOR_BACKGROUND = Color.WHITE; // main bg color
     public static final Color COLOR_BACKGROUND_HIGH =
             Color.rgb(245, 245, 245); // heightened bg color
