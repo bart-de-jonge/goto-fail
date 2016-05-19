@@ -371,7 +371,33 @@ public class ProjectController {
     }
     
     private void editCameraType(MouseEvent event) {
-        
+        int selectedIndex = editProjectModal.getCameraTypeList().getSelectionModel().getSelectedIndex();
+        if (selectedIndex != -1) {
+            cameraTypeModal = new AddCameraTypeModalView(
+                    controllerManager.getRootPane(), editProjectModal.getCameraTypes().get(selectedIndex));
+            cameraTypeModal.getAddCameraTypeButton().setOnMouseClicked(e -> cameraTypeEdited(e, selectedIndex));
+            cameraTypeModal.getCancelButton().setOnMouseClicked(this::cameraTypeEditCancelled);
+        } else {
+            // no cam type selected, display error
+        }
+    }
+    
+    private void cameraTypeEdited(MouseEvent event, int selectedIndex) {
+        if (validateCameraTypeData()) {
+            cameraTypeModal.hideModal();
+            String name = cameraTypeModal.getNameField().getText();
+            String description = cameraTypeModal.getDescriptionField().getText();
+            double movementMargin = Double.parseDouble(cameraTypeModal.getMovementMarginField().getText());
+            CameraType type = new CameraType(name, description, movementMargin);
+            editProjectModal.getCameraTypes().set(selectedIndex, type);
+            HBox box = new HBox();
+            box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
+            editProjectModal.getCameraTypeList().getItems().set(selectedIndex, box);
+        }
+    }
+    
+    private void cameraTypeEditCancelled(MouseEvent event) {
+        cameraTypeModal.hideModal();
     }
     
     

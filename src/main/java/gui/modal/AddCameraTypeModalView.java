@@ -1,5 +1,6 @@
 package gui.modal;
 
+import data.CameraType;
 import gui.headerarea.DoubleTextField;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
@@ -8,7 +9,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import lombok.Getter;
 
 /**
@@ -48,6 +48,15 @@ public class AddCameraTypeModalView extends CameraModificationModalView {
                                   int height) {
         super(rootPane, width, height);
         initializeView();
+    }
+    
+    public AddCameraTypeModalView(RootPane rootPane, CameraType type) {
+        this(rootPane, width, height);
+        this.nameField.setText(type.getName());
+        this.descriptionField.setText(type.getDescription());
+        this.movementMarginField.setText(Double.toString(type.getMovementMargin()));
+        this.addCameraTypeButton.setText("Save");
+        this.titleLabel.setText("Edit a camera type");
     }
     
     /**
