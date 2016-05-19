@@ -267,6 +267,7 @@ public class TimelineControllerTest extends ApplicationTest {
         DirectorShot directorShot = Mockito.mock(DirectorShot.class);
         shot.setDirectorShot(directorShot);
         CameraShotBlockUpdatedEvent event = Mockito.mock(CameraShotBlockUpdatedEvent.class);
+        when(event.getCameraShotBlock()).thenReturn(shotBlock);
 
         // Call method under test
         final CountDownLatch[] latch = {new CountDownLatch(1)};
@@ -277,7 +278,7 @@ public class TimelineControllerTest extends ApplicationTest {
         latch[0].await();
 
         // Do verifications
-        Mockito.verify(shotBlock, times(2)).getShot();
+        Mockito.verify(shotBlock, times(3)).getShot();
     }
 
     @Override
