@@ -389,8 +389,12 @@ public abstract class TimetableBlock extends Pane {
         return e -> {
             draggedPane.setVisible(false);
             thisBlock.setVisible(true);
-            snapPane(thisBlock, feedbackPane, e.getSceneY(), draggingType, isCameraTimeline);
-
+            // only snap if there actually was dragging. Don't want to make weird stuff happen.
+            if (dragging) {
+                snapPane(thisBlock, feedbackPane, e.getSceneY(), draggingType, isCameraTimeline);
+            } else {
+                // perform selection
+            }
             feedbackPane.setVisible(false);
             feedbackPane.getChildren().remove(0);
             dragging = false;

@@ -32,7 +32,6 @@ public class CameraTimetableBlock extends TimetableBlock {
         super.initNormalPane();
 
         this.getContentPane().getStyleClass().add("block_Foreground_Normal");
-
     }
 
     /**
