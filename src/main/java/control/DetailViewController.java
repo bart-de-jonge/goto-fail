@@ -35,7 +35,8 @@ public class DetailViewController {
         detailView.getBeginCountField().focusedProperty()
                 .addListener(this::beginCountFocusListener);
 
-        detailView.getBeginCountField().setOnKeyPressed(event -> {
+        detailView.getBeginCountField().setOnKeyPressed(
+            event -> {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     this.beginCountUpdateHelper();
                 }
@@ -84,7 +85,8 @@ public class DetailViewController {
         detailView.getEndCountField().focusedProperty()
                 .addListener(this::endCountFocusListener);
 
-        detailView.getEndCountField().setOnKeyPressed(event -> {
+        detailView.getEndCountField().setOnKeyPressed(
+            event -> {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     endCountUpdateHelper();
                 }
@@ -188,8 +190,10 @@ public class DetailViewController {
             detailView.setName(manager.getActiveShotBlock().getName());
             detailView.setBeginCount(manager.getActiveShotBlock().getBeginCount());
             detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
+            detailView.setVisible();
         } else {
             detailView.resetDetails();
+            detailView.setInvisible();
         }
     }
 }

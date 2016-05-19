@@ -113,6 +113,11 @@ public class RootCenterArea extends VBox {
                     mainTimelineScrollpane.vvalueProperty());
             directorScrollpane.vvalueProperty().bindBidirectional(
                     mainTimelineScrollpane.vvalueProperty());
+
+            this.setOnMousePressed(
+                event -> {
+                    rootPane.getControllerManager().setActiveShotBlock(null);
+                });
         }
     }
 
