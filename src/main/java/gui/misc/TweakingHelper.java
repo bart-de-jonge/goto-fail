@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
  */
 public final class TweakingHelper {
 
-    private static final int colorChoice = 1;
+    private static final int colorChoice = 0;
 
     private static final Color[][] colors = {
             {
@@ -73,4 +73,5 @@ public final class TweakingHelper {
                 + ((int) (color.getBlue()  * 255)) + ","
                 + color.getOpacity() + ")";
     }
+    
 }
