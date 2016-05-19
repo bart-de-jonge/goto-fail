@@ -2,6 +2,7 @@ package gui.modal;
 
 import java.util.ArrayList;
 
+import data.Camera;
 import data.CameraType;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
@@ -12,7 +13,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import lombok.Getter;
 
 /**
@@ -73,6 +73,19 @@ public class AddCameraModalView extends CameraModificationModalView {
         this.cameraTypeList = types;
         initializeView();
     }
+    
+    public AddCameraModalView(RootPane rootPane, ArrayList<CameraType> types,
+            Camera camera,int typeIndex) {
+        this(rootPane, types, width, height);
+        this.nameField.setText(camera.getName());
+        this.descriptionField.setText(camera.getDescription());
+        this.cameraTypes.getSelectionModel().select(typeIndex);
+        this.addCameraButton.setText("Save");
+        this.titleLabel.setText("Edit a camera");
+        
+    }
+    
+    
     
     /**
      * Initialize the view of this modal.

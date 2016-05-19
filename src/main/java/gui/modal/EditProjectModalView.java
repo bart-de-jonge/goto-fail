@@ -104,11 +104,14 @@ public class EditProjectModalView extends ModalView {
     // buttons
     @Getter
     private StyledButton addCameraButton;
-
+    @Getter
+    private StyledButton editCameraButton;
     @Getter
     private StyledButton deleteCameraButton;
     @Getter
     private StyledButton addCameraTypeButton;
+    @Getter
+    private StyledButton editCameraTypeButton;
     @Getter
     private StyledButton deleteCameraTypeButton;
     @Getter
@@ -331,18 +334,20 @@ public class EditProjectModalView extends ModalView {
 
         // add camera type
         addCameraTypeButton = createButton("Add Camera Type", true);
+        editCameraTypeButton = createButton("Edit Camera Type", true);
         deleteCameraTypeButton = createButton("Delete Camera Type", true);
         HBox cameraTypeContent = new HBox(TweakingHelper.GENERAL_SPACING);
-        cameraTypeContent.getChildren().addAll(addCameraTypeButton,
+        cameraTypeContent.getChildren().addAll(addCameraTypeButton, editCameraTypeButton,
                 deleteCameraTypeButton);
         cameraTypeList = new StyledListview<HBox>();
         content.getChildren().addAll(cameraTypeContent, cameraTypeList);
 
         // add camera
         addCameraButton = createButton("Add Camera", true);
+        editCameraButton = createButton("Edit Camera", true);
         deleteCameraButton = createButton("Delete Camera", true);
         HBox cameraContent = new HBox(TweakingHelper.GENERAL_SPACING);
-        cameraContent.getChildren().addAll(addCameraButton, deleteCameraButton);
+        cameraContent.getChildren().addAll(addCameraButton, editCameraButton, deleteCameraButton);
         //cameraList = initCameraList();
         cameraList = new StyledListview<HBox>();
         content.getChildren().addAll(cameraContent, cameraList);
