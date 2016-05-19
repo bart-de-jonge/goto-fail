@@ -32,7 +32,7 @@ public class ShotCreationModalView extends ModalView {
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 10 0;"
             + "-fx-border-color: "
-            + TweakingHelper.STRING_TERTIARY + ";";
+            + TweakingHelper.STRING_SECONDARY + ";";
     protected String centerLeftStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.STRING_BACKGROUND_HIGH + ";";
     protected String centerRightStyle = BACKGROUND_STYLE_STRING

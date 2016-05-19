@@ -1,3 +1,7 @@
+.root {
+    -c-color-primary: rgb(0,0,0);
+}
+
 .menu-bar {
     -fx-background-color: rgb(255, 172, 70);
     -fx-text-fill: white;

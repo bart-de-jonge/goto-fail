@@ -19,7 +19,7 @@ public class ToolView extends HBox {
             + TweakingHelper.STRING_PRIMARY + ";"
             + "-fx-border-width: 0 0 10 0;"
             + "-fx-border-color:"
-            + TweakingHelper.STRING_TERTIARY + ";";
+            + TweakingHelper.STRING_SECONDARY + ";";
 
     @Getter
     private ToolButton directorBlockCreationTool;

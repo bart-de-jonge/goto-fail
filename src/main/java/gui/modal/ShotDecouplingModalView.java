@@ -35,7 +35,7 @@ public class ShotDecouplingModalView extends ModalView {
             + "-fx-text-fill: white; -fx-font-size: 20;"
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: " + TweakingHelper.STRING_TERTIARY + ";";
+            + "-fx-border-color: " + TweakingHelper.STRING_SECONDARY + ";";
 
     // variables for the buttons
     private int buttonSpacing = 20;

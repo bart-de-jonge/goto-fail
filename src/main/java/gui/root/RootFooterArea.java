@@ -25,17 +25,13 @@ class RootFooterArea extends HBox {
      */
     RootFooterArea() {
         // border style to mark it, for debugging for now.
-        setStyle("-fx-background-color: " + TweakingHelper.STRING_PRIMARY + ";");
-        setPadding(new Insets(5, 10, 5, 10));
+        setStyle("-fx-background-color: " + TweakingHelper.STRING_SECONDARY + ";");
+//        setPadding(new Insets(5, 10, 5, 10));
+//
+//        textOutputLabel = new Label("Text output goes here.");
+//        textOutputLabel.setStyle("-fx-text-fill: " + TweakingHelper.STRING_BACKGROUND + ";");
+//        getChildren().add(textOutputLabel);
 
-
-//        dropShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0,0,0,0.2), 20, 0.1, 0, -5);
-//        this.setEffect(dropShadow);
-
-        textOutputLabel = new Label("Text output goes here.");
-        textOutputLabel.setStyle("-fx-text-fill: " + TweakingHelper.STRING_BACKGROUND + ";");
-        getChildren().add(textOutputLabel);
-
-        this.setPrefHeight(30);
+        this.setPrefHeight(10);
     }
 }

@@ -170,7 +170,7 @@ public abstract class TimetableBlock extends Pane {
         this.getContentPane().setStyle("-fx-background-color: "
                 + TweakingHelper.STRING_QUADRATORY + ";"
                 + "-fx-border-color: "
-                + TweakingHelper.STRING_SECONDARY + ";");
+                + TweakingHelper.STRING_TERTIARY + ";");
     }
 
     /**
@@ -212,7 +212,7 @@ public abstract class TimetableBlock extends Pane {
         this.getDraggedContentPane().setStyle("-fx-background-color: "
                 + TweakingHelper.STRING_QUADRATORY + ";"
                 + "-fx-border-color: "
-                + TweakingHelper.STRING_SECONDARY + ";");
+                + TweakingHelper.STRING_TERTIARY + ";");
     }
 
     /**

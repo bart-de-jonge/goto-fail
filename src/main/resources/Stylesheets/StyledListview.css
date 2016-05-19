@@ -17,12 +17,12 @@
 }
 
 .list-cell: even {
-    -fx-background-color: rgb(255, 255, 255);
+    -fx-background-color: -c-color-primary;
     -fx-background-radius: 4;
 }
 
 .list-cell: odd {
-    -fx-background-color: rgb(245, 245, 245);
+    -fx-background-color: -c-color-primary;
     -fx-background-radius: 4;
 }
 

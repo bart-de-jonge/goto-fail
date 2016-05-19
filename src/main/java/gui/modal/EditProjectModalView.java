@@ -47,7 +47,7 @@ public class EditProjectModalView extends ModalView {
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 10 0;"
             + "-fx-border-color: "
-            + TweakingHelper.STRING_TERTIARY + ";";
+            + TweakingHelper.STRING_SECONDARY + ";";
     private String centerLeftStyle = "-fx-background-color: "
             + TweakingHelper.STRING_BACKGROUND_HIGH + ";";
     private String centerRightStyle = "-fx-background-color: "
