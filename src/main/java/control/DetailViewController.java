@@ -1,6 +1,7 @@
 package control;
 
 import gui.centerarea.CameraShotBlock;
+import gui.centerarea.DirectorShotBlock;
 import gui.headerarea.DetailView;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.input.KeyCode;
@@ -68,7 +69,7 @@ public class DetailViewController {
             double newVal = Double.parseDouble(newValue);
 
             manager.getActiveShotBlock().setBeginCount(newVal);
-            manager.getActiveShotBlock().getShot().setEndCount(newVal);
+            manager.getActiveShotBlock().getShot().setBeginCount(newVal);
         }
     }
 

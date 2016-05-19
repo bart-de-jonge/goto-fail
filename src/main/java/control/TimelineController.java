@@ -247,7 +247,7 @@ public class TimelineController {
      * @param shotBlock CameraShot for which to confirm changes.
      */
     private void decoupleAndModify(CameraShotBlockUpdatedEvent event, CameraShotBlock shotBlock) {
-        if (shotBlock.getShot().getDirectorShot() != null && this.shotModified(event)) {
+        if (shotBlock.getShot().getDirectorShot() != null && this.shotBlockTimingModified(event)) {
             ShotDecouplingModalView decouplingModalView = new ShotDecouplingModalView(
                     this.rootPane, shotBlock.getShot());
 
@@ -282,7 +282,12 @@ public class TimelineController {
         }
     }
 
-    private boolean shotModified(CameraShotBlockUpdatedEvent event) {
+    /**
+     * Checks whether or not a shot block's timing properties were altered.
+     * @param event Camera update event with possible changes
+     * @return Whether or not the timing properties changed
+     */
+    private boolean shotBlockTimingModified(CameraShotBlockUpdatedEvent event) {
         CameraShotBlock shotBlock = event.getCameraShotBlock();
         CameraShot shot = shotBlock.getShot();
         if (shotBlock.getBeginCount() == shot.getBeginCount()

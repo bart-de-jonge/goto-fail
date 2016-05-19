@@ -62,12 +62,12 @@ public class CameraShotBlock extends ShotBlock {
         this.previousTimetableNumber = -1;
 
         this.getShot().getBeginCountProperty().addListener((observable, oldValue, newValue) -> {
-            this.setBeginCount(newValue.doubleValue(), true);
-        });
+                this.forceSetBeginCount(newValue.doubleValue());
+            });
 
         this.getShot().getEndCountProperty().addListener(((observable, oldValue, newValue) -> {
-            this.setEndCount(newValue.doubleValue(), true);
-        }));
+                this.forceSetEndCount(newValue.doubleValue());
+            }));
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
                 this.previousTimetableNumber = this.timetableNumber;
