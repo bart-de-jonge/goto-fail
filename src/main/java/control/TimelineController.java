@@ -132,7 +132,7 @@ public class TimelineController {
      * @param event CameraShot's change event
      * @param changedBlock CameraShot to modify
      */
-    private void modifyCameraShot(CameraShotBlockUpdatedEvent event,
+    protected void modifyCameraShot(CameraShotBlockUpdatedEvent event,
                                   CameraShotBlock changedBlock) {
         controllerManager.getScriptingProject().changed();
         log.info("Shot moved to new TimeLine");
