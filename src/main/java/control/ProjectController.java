@@ -385,14 +385,27 @@ public class ProjectController {
     private void cameraTypeEdited(MouseEvent event, int selectedIndex) {
         if (validateCameraTypeData()) {
             cameraTypeModal.hideModal();
+            
+            
             String name = cameraTypeModal.getNameField().getText();
             String description = cameraTypeModal.getDescriptionField().getText();
             double movementMargin = Double.parseDouble(cameraTypeModal.getMovementMarginField().getText());
+            
+            
             CameraType type = new CameraType(name, description, movementMargin);
+            
+            editProjectModal.getCameras().forEach(e -> {
+                if (e.getCameraType().equals(editProjectModal.getCameraTypes().get(selectedIndex))) {
+                    e.setCameraType(type);
+                }
+            });
+            
             editProjectModal.getCameraTypes().set(selectedIndex, type);
             HBox box = new HBox();
             box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
             editProjectModal.getCameraTypeList().getItems().set(selectedIndex, box);
+            
+           
         }
     }
     
