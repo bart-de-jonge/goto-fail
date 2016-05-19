@@ -38,6 +38,10 @@ public class CameraType {
         this("", "", -1);
     }
     
+    /**
+     * Clone constructor.
+     * @param type type to clone
+     */
     public CameraType(CameraType type) {
         this.name = type.getName();
         this.description = type.getDescription();

@@ -59,6 +59,10 @@ public class CameraTimeline extends Timeline {
         shots = new LinkedList<>();
     }
     
+    /**
+     * Clone constructor.
+     * @param timeline timeline to clone
+     */
     public CameraTimeline(CameraTimeline timeline) {
         super(timeline.getProject());
         this.description = timeline.getDescription();

@@ -50,6 +50,11 @@ public class AddCameraTypeModalView extends CameraModificationModalView {
         initializeView();
     }
     
+    /**
+     * Constructor that fills in data (used for edit).
+     * @param rootPane the rootPane that has this modal
+     * @param type the camera type to be displayed
+     */
     public AddCameraTypeModalView(RootPane rootPane, CameraType type) {
         this(rootPane, width, height);
         this.nameField.setText(type.getName());

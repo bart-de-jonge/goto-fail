@@ -56,6 +56,10 @@ public class Camera {
                 name, description, cameraType);
     }
     
+    /**
+     * Clone constructor.
+     * @param camera camera to clone.
+     */
     public Camera(Camera camera) {
         this.name = camera.getName();
         this.description = camera.getDescription();
