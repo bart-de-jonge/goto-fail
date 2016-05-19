@@ -25,6 +25,7 @@ public class TimelineController {
     
     private final int defaultAmountTimelines = 8;
 
+    @Setter
     private RootPane rootPane;
 
     // TODO: replace number of centerarea with xml data
@@ -81,9 +82,7 @@ public class TimelineController {
                               .getCameraTimelines()
                               .get(cameraIndex)
                               .addShot(newShot);
-        CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex,
-                rootPane.getRootCenterArea(), newShot.getBeginCount(), newShot.getEndCount(),
-                newShot.getDescription(), newShot.getName(), this::shotChangedHandler, newShot);
+        CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex, rootPane.getRootCenterArea(), newShot.getBeginCount(), newShot.getEndCount(), newShot.getDescription(), newShot.getName(), this::shotChangedHandler, newShot);
 
         controllerManager.setActiveShotBlock(shotBlock);
         this.cameraShotBlocks.add(shotBlock);
@@ -170,7 +169,7 @@ public class TimelineController {
      * @param timelineNumber - the timelinenumber where the camerashotblock is added
      * @param cameraShotBlock - the camerashotblock to check collisions with
      */
-    private void checkCollisions(int timelineNumber, CameraShotBlock cameraShotBlock) {
+    protected void checkCollisions(int timelineNumber, CameraShotBlock cameraShotBlock) {
         checkCollisions(timelineNumber, -1, cameraShotBlock);
     }
 

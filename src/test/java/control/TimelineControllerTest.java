@@ -1,12 +1,21 @@
 package control;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.*;
 
 import data.DirectorShot;
+import gui.centerarea.TimelinesGridPane;
+import gui.root.RootCenterArea;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import data.Camera;
@@ -17,12 +26,16 @@ import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;
 import gui.root.RootPane;
+import org.testfx.framework.junit.ApplicationTest;
+
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author alex
  */
-public class TimelineControllerTest {
+public class TimelineControllerTest extends ApplicationTest {
     private TimelineController timelineController;
+    private ControllerManager manager;
     private ScriptingProject project;
     private CameraShot shot;
     private CameraShotBlock shotBlock;
@@ -33,17 +46,14 @@ public class TimelineControllerTest {
         TimelineController timelineControllerMock = Mockito.mock(TimelineController.class);
         DetailViewController detailViewController = Mockito.mock(DetailViewController.class);
         ToolViewController toolViewController = Mockito.mock(ToolViewController.class);
-        ControllerManager controllerManager = new ControllerManager(rootPane, timelineControllerMock,
-                                                                    detailViewController, toolViewController);
+        manager = spy(new ControllerManager(rootPane, timelineControllerMock, detailViewController, toolViewController));
 
-        ScriptingProject defaultProject = new ScriptingProject();
-        defaultProject.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), "kek", null));
-        defaultProject.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), "kek", null));
+        project = spy(new ScriptingProject());
+        project.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), "kek", null));
+        project.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), "kek", null));
 
-        timelineController = new TimelineController(controllerManager);
-        timelineController.getControllerManager().setScriptingProject(defaultProject);
-
-        project = timelineController.getControllerManager().getScriptingProject();
+        timelineController = spy(new TimelineController(manager));
+        timelineController.getControllerManager().setScriptingProject(project);
 
         shot = new CameraShot("Shot test", "", 1, 2);
         project.getCameraTimelines().get(0).addShot(shot);
@@ -84,8 +94,8 @@ public class TimelineControllerTest {
 
     @Test
     public void decoupleTest() {
-        DirectorShot directorShotSpy = Mockito.spy(new DirectorShot("dir shot", "description", 1, 2, 0, 0));
-        CameraShot shotSpy = Mockito.spy(shot);
+        DirectorShot directorShotSpy = spy(new DirectorShot("dir shot", "description", 1, 2, 0, 0));
+        CameraShot shotSpy = spy(shot);
         directorShotSpy.addCameraTimelineIndex(0);
         directorShotSpy.addCameraShot(shotSpy);
         shotSpy.setDirectorShot(directorShotSpy);
@@ -93,5 +103,60 @@ public class TimelineControllerTest {
         timelineController.decoupleShot(0, shotSpy);
         verify(directorShotSpy).removeCameraShot(shotSpy, 0);
         verify(shotSpy).setDirectorShot(null);
+    }
+
+    @Test
+    public void addCameraShot1() {
+        Mockito.doNothing().when(timelineController).addCameraShot(anyInt(), anyObject());
+        timelineController.addCameraShot(1, "name", "description", 2.0, 3.0);
+        Mockito.verify(timelineController, times(1)).addCameraShot(anyInt(), anyObject());
+    }
+
+    @Test
+    public void addCameraShot2() throws InterruptedException {
+        CameraTimeline timeline = manager.getScriptingProject().getCameraTimelines().get(0);
+        int curTimelineLength = timeline.getShots().size();
+        CameraShot shot = new CameraShot("name", "description", 2.0, 3.0);
+
+        Mockito.doNothing().when(manager).setActiveShotBlock(anyObject());
+        int curLength = timelineController.getCameraShotBlocks().size();
+        Mockito.doNothing().when(project).changed();
+        Mockito.doNothing().when(timelineController).checkCollisions(anyInt(), anyObject());
+
+        // Set rootpane of timelinecontroller to a mock
+        RootPane rootPane = Mockito.mock(RootPane.class);
+        timelineController.setRootPane(rootPane);
+
+        // Add needed mocks to the rootpane
+        RootCenterArea rootCenterArea = Mockito.mock(RootCenterArea.class);
+        ObservableList<Node> nodeList = Mockito.mock(ObservableList.class);
+        AnchorPane mainTimelineAchorPane = Mockito.mock(AnchorPane.class);
+        when(rootCenterArea.getMainTimeLineAnchorPane()).thenReturn(mainTimelineAchorPane);
+        when(mainTimelineAchorPane.getChildren()).thenReturn(nodeList);
+        when(rootPane.getRootCenterArea()).thenReturn(rootCenterArea);
+        TimelinesGridPane timelinesGridPane = Mockito.mock(TimelinesGridPane.class);
+        when(timelinesGridPane.getChildren()).thenReturn(nodeList);
+        when(rootCenterArea.getMainTimeLineGridPane()).thenReturn(timelinesGridPane);
+
+        // Call method under test
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        Platform.runLater(() -> {
+            timelineController.addCameraShot(0, shot);
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        // Do verifications
+        Mockito.verify(timelineController, times(1)).checkCollisions(anyInt(), anyObject());
+        Mockito.verify(manager, times(1)).setActiveShotBlock(anyObject());
+        assertEquals(curLength + 1, timelineController.getCameraShotBlocks().size());
+        Mockito.verify(project, times(1)).changed();
+        assertEquals(curTimelineLength + 1, timeline.getShots().size());
+        assertEquals(shot, timeline.getShots().get(timeline.getShots().size() - 1));
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+
     }
 }
