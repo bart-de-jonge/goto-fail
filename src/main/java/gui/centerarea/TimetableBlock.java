@@ -4,6 +4,7 @@ import control.CountUtilities;
 
 import static gui.centerarea.TimetableBlock.DraggingTypes.Move;
 
+import gui.misc.BlurHelper;
 import gui.misc.TweakingHelper;
 import gui.root.RootCenterArea;
 import javafx.event.EventHandler;
@@ -78,11 +79,13 @@ public abstract class TimetableBlock extends Pane {
     private VBox contentPane; // content of this rootCenterArea
     @Getter
     private VBox draggedContentPane; // content of rootCenterArea shown when dragging
-    // for feedbackPane
+
+    // for effects
     private WritableImage feedbackImage; // content of feedbackPane (is just an image, sneaky!)
     private GaussianBlur gaussianBlur;
     private ColorAdjust darken;
     private ImageView image;
+    private BlurHelper blurHelper;
 
     @Getter
     private double dragXOffset;
@@ -150,14 +153,12 @@ public abstract class TimetableBlock extends Pane {
 
         this.getStyleClass().add("block_Background");
         this.getContentPane().getStyleClass().add("block_Foreground");
-        this.setStyle("-fx-background-color: "
-                + TweakingHelper.STRING_PRIMARY + ";"
-                + "-fx-border-color: "
-                + TweakingHelper.STRING_SECONDARY + ";");
-        this.getContentPane().setStyle("-fx-background-color: "
-                + TweakingHelper.STRING_QUADRATORY + ";"
-                + "-fx-border-color: "
-                + TweakingHelper.STRING_TERTIARY + ";");
+        this.setStyle(
+                "-fx-background-color: "  + TweakingHelper.STRING_PRIMARY + ";"
+                + "-fx-border-color: " + TweakingHelper.STRING_SECONDARY + ";");
+        this.getContentPane().setStyle(
+                "-fx-background-color: " + TweakingHelper.STRING_QUADRATORY + ";"
+                + "-fx-border-color: " + TweakingHelper.STRING_TERTIARY + ";");
     }
 
     /**
@@ -168,6 +169,10 @@ public abstract class TimetableBlock extends Pane {
         // draggedPane itself
         draggedPane = new Pane();
         draggedPane.setVisible(false);
+
+        blurHelper = new BlurHelper(draggedPane);
+        blurHelper.setOffset(new Point2D(8,8));
+        addWithClipRegion(blurHelper.getImageView(), draggedPane);
 
         // dragged content rootCenterArea which mirrors
         // our content rootCenterArea, shown when dragging.
@@ -192,14 +197,13 @@ public abstract class TimetableBlock extends Pane {
 
         this.getDraggedPane().getStyleClass().add("block_Background");
         this.getDraggedContentPane().getStyleClass().add("block_Foreground");
-        this.getDraggedPane().setStyle("-fx-background-color: "
-                + TweakingHelper.STRING_PRIMARY + ";"
-                + "-fx-border-color: "
-                + TweakingHelper.STRING_SECONDARY + ";");
-        this.getDraggedContentPane().setStyle("-fx-background-color: "
-                + TweakingHelper.STRING_QUADRATORY + ";"
-                + "-fx-border-color: "
-                + TweakingHelper.STRING_TERTIARY + ";");
+        this.getDraggedPane().setStyle(
+                "-fx-background-color: " + TweakingHelper.STRING_PRIMARY + ";"
+                + "-fx-border-color: " + TweakingHelper.STRING_SECONDARY + ";");
+        this.getDraggedContentPane().setStyle(
+                "-fx-background-color: " + TweakingHelper.STRING_QUADRATORY + ";"
+                + "-fx-border-color: " + TweakingHelper.STRING_TERTIARY + ";"
+                + "-fx-blend-mode: multiply; -fx-opacity: 0.9;");
     }
 
     /**
@@ -341,7 +345,8 @@ public abstract class TimetableBlock extends Pane {
             } else if (draggingType == DraggingTypes.Resize_Bottom) {
                 startingY = blockY;
             }
-            
+
+            blurHelper.processBlurUsingBounds();
         };
     }
 
@@ -390,6 +395,7 @@ public abstract class TimetableBlock extends Pane {
             }
 
             onMouseDraggedHelper(e, isCameraTimeline);
+            blurHelper.processBlurUsingBounds();
             e.consume();
         };
     }
