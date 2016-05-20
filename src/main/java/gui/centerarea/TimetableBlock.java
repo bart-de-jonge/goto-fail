@@ -6,6 +6,7 @@ import control.CountUtilities;
 
 import static gui.centerarea.TimetableBlock.DraggingTypes.Move;
 
+import gui.misc.TweakingHelper;
 import gui.root.RootCenterArea;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
@@ -44,7 +45,7 @@ public abstract class TimetableBlock extends Pane {
      *  For tweaking the styling.
      */
 
-    private double verticalBorderSize = 4.0;
+    private double verticalBorderSize = 6.0;
     private double margin = 5.0;
     private double blurRadius = 20.0;
 
@@ -143,7 +144,6 @@ public abstract class TimetableBlock extends Pane {
      */
     void initNormalPane() {
         setBlendMode(BlendMode.MULTIPLY);
-        getStyleClass().add("block_Background_Normal");
 
         // content rootCenterArea for our
         // actual rootCenterArea, which holds content (text and stuff)
@@ -160,6 +160,17 @@ public abstract class TimetableBlock extends Pane {
         descriptionNormalLabel.setWrapText(true);
 
         addWithClipRegion(contentPane, this);
+
+        this.getStyleClass().add("block_Background");
+        this.getContentPane().getStyleClass().add("block_Foreground");
+        this.setStyle("-fx-background-color: "
+                + TweakingHelper.STRING_PRIMARY + ";"
+                + "-fx-border-color: "
+                + TweakingHelper.STRING_SECONDARY + ";");
+        this.getContentPane().setStyle("-fx-background-color: "
+                + TweakingHelper.STRING_QUADRATORY + ";"
+                + "-fx-border-color: "
+                + TweakingHelper.STRING_TERTIARY + ";");
     }
 
     /**
@@ -191,6 +202,17 @@ public abstract class TimetableBlock extends Pane {
 
         addWithClipRegion(draggedContentPane, draggedPane);
         anchorPane.getChildren().add(draggedPane);
+
+        this.getDraggedPane().getStyleClass().add("block_Background");
+        this.getDraggedContentPane().getStyleClass().add("block_Foreground");
+        this.getDraggedPane().setStyle("-fx-background-color: "
+                + TweakingHelper.STRING_PRIMARY + ";"
+                + "-fx-border-color: "
+                + TweakingHelper.STRING_SECONDARY + ";");
+        this.getDraggedContentPane().setStyle("-fx-background-color: "
+                + TweakingHelper.STRING_QUADRATORY + ";"
+                + "-fx-border-color: "
+                + TweakingHelper.STRING_TERTIARY + ";");
     }
 
     /**
@@ -227,6 +249,7 @@ public abstract class TimetableBlock extends Pane {
         Label res = new Label(parentBlock.getName());
         res.maxWidthProperty().bind(this.widthProperty());
         res.getStyleClass().add("block_Text_Title");
+        res.setStyle("-fx-text-fill:" + TweakingHelper.STRING_SECONDARY + ";");
         vbox.getChildren().add(res);
         return res;
     }
@@ -240,6 +263,7 @@ public abstract class TimetableBlock extends Pane {
         Label res = new Label(parentBlock.getDescription());
         res.maxWidthProperty().bind(this.widthProperty());
         res.getStyleClass().add("block_Text_Normal");
+        res.setStyle("-fx-text-fill:" + TweakingHelper.STRING_TERTIARY + ";");
         vbox.getChildren().add(res);
         return res;
     }
@@ -254,6 +278,7 @@ public abstract class TimetableBlock extends Pane {
         Label res = new Label(labelText);
         res.maxWidthProperty().bind(this.widthProperty());
         res.getStyleClass().add("block_Text_Normal");
+        res.setStyle("-fx-text-fill:" + TweakingHelper.STRING_TERTIARY + ";");
         vbox.getChildren().add(res);
         return res;
     }
@@ -389,7 +414,10 @@ public abstract class TimetableBlock extends Pane {
         return e -> {
             draggedPane.setVisible(false);
             thisBlock.setVisible(true);
-            snapPane(thisBlock, feedbackPane, e.getSceneY(), draggingType, isCameraTimeline);
+
+            if (dragging) {
+                snapPane(thisBlock, feedbackPane, e.getSceneY(), draggingType, isCameraTimeline);
+            }
 
             feedbackPane.setVisible(false);
             feedbackPane.getChildren().remove(0);

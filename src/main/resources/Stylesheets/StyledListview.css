@@ -1,30 +1,32 @@
+.root {
+  -c-color-primary: rgb(0,0,0);
+}
+
 .list-view {
     -fx-background-color: white;
     -fx-background-radius: 4;
 
     -fx-border-width: 1px;
-    -fx-border-color: rgb(255, 172, 70);
     -fx-border-radius: 4;
 }
 
 .list-view: selected {
     -fx-background-color: white;
     -fx-background-radius: 4;
-
     -fx-border-radius: 4;
 }
 
 .list-cell: even {
-    -fx-background-color: rgb(255, 255, 255);
+    -fx-background-color: -c-color-primary;
     -fx-background-radius: 4;
 }
 
 .list-cell: odd {
-    -fx-background-color: rgb(245, 245, 245);
+    -fx-background-color: -c-color-primary;
     -fx-background-radius: 4;
 }
 
-.list-cell:selected {
-    -fx-background-color: rgb(255, 172, 70);
+.list-cell: selected {
+    -fx-background-color:  -c-color-primary;
     -fx-background-radius: 4;
 }

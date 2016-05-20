@@ -2,6 +2,7 @@ package gui.centerarea;
 
 import control.CountUtilities;
 import data.Shot;
+import gui.misc.TweakingHelper;
 import gui.root.RootCenterArea;
 import gui.events.ShotblockUpdatedEvent;
 import javafx.event.EventHandler;
@@ -31,6 +32,10 @@ public abstract class ShotBlock {
     // The end shot of this count
     @Getter
     private double endCount;
+
+    // Drag and drop helper fields
+    private double tempBeginCount;
+    private double tempEndCount;
 
     // The description of this shotblock
     @Getter
@@ -69,11 +74,14 @@ public abstract class ShotBlock {
         this.endCount = endCount;
         this.shot = shot;
         this.colliding = false;
+        this.tempBeginCount = -1;
+        this.tempEndCount = -1;
 
         // TimetableBlock set in subclass constructors!!
         try {
             Constructor<?> constructor = timetableBlockClass
                     .getConstructor(RootCenterArea.class, ShotBlock.class);
+
             this.setTimetableBlock((TimetableBlock) constructor.newInstance(rootCenterArea, this));
         } catch (Exception e) {
             log.error("No valid timetableblock class, could not initialize timetableblock!");
@@ -92,9 +100,23 @@ public abstract class ShotBlock {
         this.colliding = colliding;
 
         if (colliding) {
-            this.timetableBlock.setStyle("-fx-background-color: red");
+            this.timetableBlock.setStyle("-fx-background-color: "
+                    + TweakingHelper.STRING_PRIMARY + ";"
+                    + "-fx-border-color: red;"
+                    + "-fx-border-width: 3;");
+            this.timetableBlock.getContentPane().setStyle("-fx-background-color: "
+                    + TweakingHelper.STRING_QUADRATORY + ";"
+                    + "-fx-border-color: "
+                    + TweakingHelper.STRING_TERTIARY + ";");
         } else {
-            this.timetableBlock.setStyle("-fx-background-color: none");
+            this.timetableBlock.setStyle("-fx-background-color: "
+                    + TweakingHelper.STRING_PRIMARY + ";"
+                    + "-fx-border-color: "
+                    + TweakingHelper.STRING_SECONDARY + ";");
+            this.timetableBlock.getContentPane().setStyle("-fx-background-color: "
+                    + TweakingHelper.STRING_QUADRATORY + ";"
+                    + "-fx-border-color: "
+                    + TweakingHelper.STRING_TERTIARY + ";");
         }
     }
 
@@ -104,7 +126,7 @@ public abstract class ShotBlock {
      * @param recompute - should we recompute after setting
      */
     public void setBeginCount(double count, boolean recompute) {
-        if (count <= this.endCount - 1 || !recompute) {
+        if (count < this.endCount || !recompute) {
             this.beginCount = count;
         }
         if (recompute) {
@@ -127,7 +149,7 @@ public abstract class ShotBlock {
      * @param recompute - should we recompute after setting
      */
     public void setEndCount(double count, boolean recompute) {
-        if (count >= this.beginCount + 1 || !recompute) {
+        if (count > this.beginCount || !recompute) {
             this.endCount = count;
         }
         if (recompute) {
@@ -142,6 +164,62 @@ public abstract class ShotBlock {
      */
     public void setEndCount(double count) {
         this.setEndCount(count, true);
+    }
+
+    /**
+     * Force the begin count to be set during a split drag and drop.
+     * If it violates a ShotBlock's assertion that the begin count must be less
+     * than the end count then it is cached unless the end count is already cached.
+     * If this is the case then both are discarded.
+     * @param beginCount Begin count to set
+     */
+    public void forceSetBeginCount(double beginCount) {
+        // Take care of temporary movement
+        double newEndCount = this.endCount;
+        boolean cacheUntouched = true;
+        if (this.tempEndCount >= 0) {
+            cacheUntouched = false;
+            newEndCount = this.tempEndCount;
+            this.tempEndCount = -1;
+        }
+
+        if (beginCount < newEndCount) {
+            this.beginCount = beginCount;
+            this.endCount = newEndCount;
+            this.recompute();
+            this.redrawCounts();
+        } else if (cacheUntouched) {
+            // Cache if the end count wasn't already cached
+            this.tempBeginCount = beginCount;
+        }
+    }
+
+    /**
+     * Force the end count to be set during a split drag and drop.
+     * If it violates a ShotBlock's assertion that the end count must be greater
+     * than the begin count then it is cached unless the begin count is already cached.
+     * If this is the case then both are discarded.
+     * @param endCount End count to set
+     */
+    public void forceSetEndCount(double endCount) {
+        // Take care of temporary movement
+        double newBeginCount = this.beginCount;
+        boolean cacheUntouched = true;
+        if (this.tempBeginCount >= 0) {
+            cacheUntouched = false;
+            newBeginCount = this.tempBeginCount;
+            this.tempBeginCount = -1;
+        }
+
+        if (newBeginCount < endCount) {
+            this.beginCount = newBeginCount;
+            this.endCount = endCount;
+            this.recompute();
+            this.redrawCounts();
+        } else if (cacheUntouched) {
+            // Cache if the begin count wasn't already cached
+            this.tempEndCount = endCount;
+        }
     }
 
     /**

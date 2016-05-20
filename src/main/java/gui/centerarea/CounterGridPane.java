@@ -26,7 +26,7 @@ public class CounterGridPane extends ScrollableGridPane {
      */
     public CounterGridPane(int numberOfCounts, int width, int verticalElementSize) {
         super(1, numberOfCounts, width, verticalElementSize);
-
+        setStyle("-fx-background-color: rgba(0,0,0,0.0.15);");
         initGridConstaints(numberOfCounts, verticalElementSize);
         initGridNumbers(numberOfCounts);
     }

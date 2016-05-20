@@ -1,5 +1,6 @@
 package gui.modal;
 
+import data.CameraType;
 import gui.headerarea.DoubleTextField;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
@@ -8,7 +9,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import lombok.Getter;
 
 /**
@@ -51,6 +51,20 @@ public class AddCameraTypeModalView extends CameraModificationModalView {
     }
     
     /**
+     * Constructor that fills in data (used for edit).
+     * @param rootPane the rootPane that has this modal
+     * @param type the camera type to be displayed
+     */
+    public AddCameraTypeModalView(RootPane rootPane, CameraType type) {
+        this(rootPane, width, height);
+        this.nameField.setText(type.getName());
+        this.descriptionField.setText(type.getDescription());
+        this.movementMarginField.setText(Double.toString(type.getMovementMargin()));
+        this.addCameraTypeButton.setText("Save");
+        this.titleLabel.setText("Edit a camera type");
+    }
+    
+    /**
      * Initialize the view of this modal.
      */
     private void initializeView() {
@@ -84,10 +98,6 @@ public class AddCameraTypeModalView extends CameraModificationModalView {
     private void initFields() {
         final Label marginLabel = new Label("Movement margin (in seconds): ");
         movementMarginField = new DoubleTextField();
-        movementMarginField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        movementMarginField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        movementMarginField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        movementMarginField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         HBox movementMarginBox = new HBox(TweakingHelper.GENERAL_SPACING);
         movementMarginBox.getChildren().addAll(marginLabel, movementMarginField);
         movementMarginBox.setAlignment(Pos.CENTER_RIGHT);

@@ -113,6 +113,11 @@ public class RootCenterArea extends VBox {
                     mainTimelineScrollpane.vvalueProperty());
             directorScrollpane.vvalueProperty().bindBidirectional(
                     mainTimelineScrollpane.vvalueProperty());
+
+            this.setOnMousePressed(
+                event -> {
+                    rootPane.getControllerManager().setActiveShotBlock(null);
+                });
         }
     }
 
@@ -148,13 +153,14 @@ public class RootCenterArea extends VBox {
         for (int i = 0; i < numberOfTimelines; i++) {
             String name = getRootPane().getControllerManager()
                     .getScriptingProject().getCameraTimelines().get(i).getName();
-            Label cameraLabel = new Label(name);
-            cameraLabel.prefWidthProperty().bind(getMainTimeLineGridPane()
-                    .widthProperty().divide(numberOfTimelines));
-            cameraLabel.setAlignment(Pos.CENTER);
-            cameraLabel.setPadding(new Insets(topBarHeight / 2.0, 0,
+            Label label = new Label(name);
+            
+            label.setAlignment(Pos.CENTER);
+            label.setPrefWidth(TweakingHelper.GENERAL_SIZE);
+            label.setPadding(new Insets(topBarHeight / 2.0, 0,
+
                     topBarHeight / 2.0, 0));
-            this.topPane.getChildren().add(cameraLabel);
+            this.topPane.getChildren().add(label);
         }
     }
 
@@ -193,6 +199,7 @@ public class RootCenterArea extends VBox {
         counterScrollpane.setFitToWidth(true);
         counterScrollpane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         counterScrollpane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        counterScrollpane.setPadding(new Insets(0,0,0,0));
         timelinesPane.getChildren().add(counterScrollpane);
     }
 
