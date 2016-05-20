@@ -6,9 +6,8 @@ import fs from "fs";
 const router = new express.Router();
 const parser = new xml2js.Parser();
 
-
-/* GET home page. */
-router.get("/", (req, res) => {
+// Get timelines from xml
+const getTimelines = function (callback) {
     // Dummyfile Todo: replace with dynamic
     fs.readFile(`${__dirname}/../test_project.scp`, (err, data) => {
         parser.parseString(data, (err, result) => {
@@ -33,29 +32,48 @@ router.get("/", (req, res) => {
                 }
                 cameraTimelines.push(cameraTimeline);
             });
-
-            // Calculate minimum and maximum counts
-            let minCount = 0;
-            let maxCount = 0;
-            if (flattenedCameraTimelines.length > 0) {
-                minCount = Number(flattenedCameraTimelines[0].beginCount);
-                maxCount = Number(flattenedCameraTimelines[0].endCount);
-                flattenedCameraTimelines.forEach(shot => {
-                    if (shot.beginCount < minCount) {
-                        minCount = Number(shot.beginCount);
-                    }
-                    if (shot.endCount > maxCount) {
-                        maxCount = Number(shot.endCount);
-                    }
-                });
-            }
-
-            // Render the timeline.ejs file with the correct variables
-            res.render("timeline", {
-                cameraTimelines,
-                minCount,
-                maxCount });
+            console.log("here though");
+            callback([cameraTimelines, flattenedCameraTimelines]);
         });
+    });
+};
+
+// Get max and mincount of an array of shots
+const getMaxAndMinCount = function (flattenedCameraTimelines) {
+    // Calculate minimum and maximum counts
+    let minCount = 0;
+    let maxCount = 0;
+    if (flattenedCameraTimelines.length > 0) {
+        minCount = Number(flattenedCameraTimelines[0].beginCount);
+        maxCount = Number(flattenedCameraTimelines[0].endCount);
+        flattenedCameraTimelines.forEach(shot => {
+            if (shot.beginCount < minCount) {
+                minCount = Number(shot.beginCount);
+            }
+            if (shot.endCount > maxCount) {
+                maxCount = Number(shot.endCount);
+            }
+        });
+    }
+
+    return [minCount, maxCount];
+};
+
+
+/* GET home page. */
+router.get("/", (req, res) => {
+    // Get the timelines
+    getTimelines((timelines) => {
+        const cameraTimelines = timelines[0];
+        const counts = getMaxAndMinCount(timelines[1]);
+        const minCount = counts[0];
+        const maxCount = counts[1];
+
+        // Render the timeline.ejs file with the correct variables
+        res.render("timeline", {
+            cameraTimelines,
+            minCount,
+            maxCount});
     });
 });
 
