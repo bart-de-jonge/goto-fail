@@ -8,7 +8,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import data.*;
+import data.Camera;
+import data.CameraShot;
+import data.CameraTimeline;
+import data.CameraType;
+import data.DirectorShot;
+import data.DirectorTimeline;
+import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
 import gui.modal.AddCameraModalView;
@@ -77,41 +83,39 @@ public class ProjectController {
     private void save(MouseEvent event) {
         if (validateProjectData()) {
             editProjectModal.hideModal();
-            
+
             String name = editProjectModal.getNameField().getText();
             String description = editProjectModal.getDescriptionField().getText();
             String directorTimelineDescription = editProjectModal
                     .getDirectorTimelineDescriptionField().getText();
             double secondsPerCount = Double.parseDouble(
                     editProjectModal.getSecondsPerCountField().getText());
-            
             ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
             project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
             project.setCameraTypes(editProjectModal.getCameraTypes());
             project.setCameras(editProjectModal.getCameras());
             project.setCameraTimelines(editProjectModal.getTimelines());
             project.getDirectorTimeline().setProject(project);
-            for (CameraTimeline timeline : project.getCameraTimelines()) {
-                timeline.setProject(project);
-            }
+            project.getCameraTimelines().forEach(c -> c.setProject(project));
             controllerManager.setScriptingProject(project);
             controllerManager.updateWindowTitle();
-            RootCenterArea area = new RootCenterArea(
-                    controllerManager.getRootPane(), editProjectModal.getTimelines().size(), false);
+            RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),
+                    editProjectModal.getTimelines().size(), false);
             controllerManager.getRootPane().reInitRootCenterArea(area);
             if (editProjectModal.getProject() != null
                     && editProjectModal.getProject().getCameraTimelines().size()
                     > project.getCameraTimelines().size()) {
                 for (int i = 0; i < project.getCameraTimelines().size(); i++) {
                     CameraTimeline newLine = project.getCameraTimelines().get(i);
-                    CameraTimeline oldLine = editProjectModal.getProject().getCameraTimelines().get(i);
+                    CameraTimeline oldLine = editProjectModal.getProject()
+                            .getCameraTimelines().get(i);
                     LinkedList<CameraShot> shots = new LinkedList<>();
                     oldLine.getShots().forEach(shots::add);
                     int j = i;
                     shots.forEach(shot -> {
-                        newLine.addShot(shot);
-                        controllerManager.getTimelineControl().addCameraShot(j, shot);
-                    });
+                            newLine.addShot(shot);
+                            controllerManager.getTimelineControl().addCameraShot(j, shot);
+                        });
                 }
             }
         }

@@ -75,6 +75,14 @@ public class RootPane extends Application {
         
         controllerManager = new ControllerManager(this);
 
+        startupMethod(primaryStage);
+    }
+
+    /**
+     * Specify the method to start up depending on the previously loaded project.
+     * @param primaryStage the main stage that is started
+     */
+    private void startupMethod(Stage primaryStage) {
         String recentProjectPath = readPathFromConfig();
         if (recentProjectPath != null) {
             File file = new File(recentProjectPath);
