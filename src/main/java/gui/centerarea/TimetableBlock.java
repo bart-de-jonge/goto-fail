@@ -4,8 +4,6 @@ import static gui.centerarea.TimetableBlock.DraggingTypes.Move;
 
 import control.CountUtilities;
 
-import static gui.centerarea.TimetableBlock.DraggingTypes.Move;
-
 import gui.misc.TweakingHelper;
 import gui.root.RootCenterArea;
 import javafx.event.EventHandler;
@@ -481,6 +479,7 @@ public abstract class TimetableBlock extends Pane {
         } else if (draggingType == Move) {
             onMouseDraggedHelperNormal(x, y, isCameraTimeline);
         }
+
         // set feedbackpane
         if (snapPane(feedbackPane, draggedPane, y, draggingType, isCameraTimeline)) {
             feedbackPane.setVisible(true);
@@ -510,12 +509,12 @@ public abstract class TimetableBlock extends Pane {
 
         if (dragType == Move) {
             yCoordinate = y - dragYOffset;
-            xCoordinate = mappingPane.localToScene(mappingPane.getBoundsInLocal()).getMinX()
-                    + mappingPane.getWidth() / 2;
         } else {
             yCoordinate = y;
-            xCoordinate = mappingPane.getLayoutX() + mappingPane.getWidth() / 2;
         }
+
+        xCoordinate = mappingPane.localToScene(mappingPane.getBoundsInLocal()).getMinX()
+                + mappingPane.getWidth() / 2;
 
         ScrollableGridPane gridPane;
         if (isCameraTimeline) {

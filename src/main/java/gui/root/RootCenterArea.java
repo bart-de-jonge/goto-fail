@@ -171,7 +171,7 @@ public class RootCenterArea extends VBox {
         mainTimelineScrollpane = new ScrollPane();
         mainTimeLineAnchorPane = new AnchorPane();
         mainTimeLineGridPane = new TimelinesGridPane(numberOfTimelines, numberOfCounts,
-                timelineWidth,  countHeight, directorTimelineWidth + counterWidth);
+                timelineWidth,  countHeight);
         mainTimeLineAnchorPane.setLeftAnchor(mainTimeLineGridPane, 0.0);
         mainTimeLineAnchorPane.setRightAnchor(mainTimeLineGridPane, 0.0);
         mainTimeLineAnchorPane.setTopAnchor(mainTimeLineGridPane, 0.0);
