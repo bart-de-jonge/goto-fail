@@ -33,7 +33,7 @@ public class EditProjectModalView extends ModalView {
      */
 
     // preferred width and height of screen.
-    private static final int width = 800;
+    private static final int width = 900;
     private static final int height = 500;
 
     // variables for spacing
@@ -56,8 +56,7 @@ public class EditProjectModalView extends ModalView {
             + TweakingHelper.STRING_PRIMARY + ";";
 
     // variables for the Create and Cancel buttons
-    private static final int buttonWidth = 90;
-    private static final int buttonHeight = 25;
+    private static final int buttonWidth = 155;
     private static final int buttonSpacing = 20;
 
     // variables for the title label
@@ -70,7 +69,7 @@ public class EditProjectModalView extends ModalView {
     // No touching these constants. They work well for all general cases,
     // and there is no reason to change them ever again.
     private static final int TEXT_AREA_MIN_WIDTH = 300;
-    private static final int LISTS_AREA_MIN_WIDTH = 300;
+    private static final int LISTS_AREA_MIN_WIDTH = 500;
 
     // General panes used
     @Getter
@@ -218,10 +217,6 @@ public class EditProjectModalView extends ModalView {
         nameField.setText(project.getName());
         descriptionField.setText(project.getDescription());
         secondsPerCountField.setText(Double.toString(project.getSecondsPerCount()));
-        log.error(directorTimelineDescriptionField);
-        log.error(project);
-        log.error(project.getDirectorTimeline());
-        log.error(project.getDirectorTimeline().getDescription());
         
         directorTimelineDescriptionField.setText(project.getDirectorTimeline().getDescription());
         initCameraTypeList(cameraTypeList);
@@ -330,6 +325,9 @@ public class EditProjectModalView extends ModalView {
         addCameraTypeButton = createButton("Add Camera Type", true);
         editCameraTypeButton = createButton("Edit Camera Type", true);
         deleteCameraTypeButton = createButton("Delete Camera Type", true);
+        addCameraTypeButton.setPrefWidth(buttonWidth);
+        editCameraTypeButton.setPrefWidth(buttonWidth);
+        deleteCameraTypeButton.setPrefWidth(buttonWidth);
         HBox cameraTypeContent = new HBox(TweakingHelper.GENERAL_SPACING);
         cameraTypeContent.getChildren().addAll(addCameraTypeButton, editCameraTypeButton,
                 deleteCameraTypeButton);
@@ -340,6 +338,9 @@ public class EditProjectModalView extends ModalView {
         addCameraButton = createButton("Add Camera", true);
         editCameraButton = createButton("Edit Camera", true);
         deleteCameraButton = createButton("Delete Camera", true);
+        addCameraButton.setPrefWidth(buttonWidth);
+        editCameraButton.setPrefWidth(buttonWidth);
+        deleteCameraButton.setPrefWidth(buttonWidth);
         HBox cameraContent = new HBox(TweakingHelper.GENERAL_SPACING);
         cameraContent.getChildren().addAll(addCameraButton, editCameraButton, deleteCameraButton);
         //cameraList = initCameraList();

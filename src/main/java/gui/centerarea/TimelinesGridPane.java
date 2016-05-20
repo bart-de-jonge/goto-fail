@@ -24,9 +24,6 @@ public class TimelinesGridPane extends ScrollableGridPane {
         super(numberOfHorizontalGrids, numberOfVerticalGrids,
                 horizontalElementMinimumSize, verticalElementSize);
 
-        // add padding to the left for overlapping sidebars
-        this.setPadding(new Insets(0,0,0,0));
-
         // add snapping panes
         addPanes();
     }

@@ -26,6 +26,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -41,17 +43,23 @@ import org.json.JSONObject;
 @Log4j2
 public class ProjectController {
     
+    @Getter
     private ControllerManager controllerManager;
+    
     
     private EditProjectModalView editProjectModal;
     private AddCameraModalView cameraModal;
     private AddCameraTypeModalView cameraTypeModal;
+    @Setter
     private DeleteCameraTypeWarningModalView typeWarningModal;
 
-
-    // Upload veriablesa
+    // Upload variables
     // Todo: replace with popup or something like that for user
     private String url = "http://localhost:3000/upload-scp";
+
+    public void setEditProjectModal(EditProjectModalView modal) {
+        editProjectModal = modal;
+    }
     
     /**
      * Construct a new FileMenuController.
@@ -358,7 +366,6 @@ public class ProjectController {
      * @param event the MouseEvent for this handler
      */
     private void cancel(MouseEvent event) {
-        log.error("Cancel button clicked");
         editProjectModal.hideModal();
     }
     
