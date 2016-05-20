@@ -122,8 +122,8 @@ public class RootHeaderArea extends VBox {
 
         MenuItem uploadItem = new MenuItem("Upload to webserver");
         uploadItem.setOnAction(e -> {
-            rootPane.getControllerManager().getProjectController().uploadToWebserver();
-        });
+                rootPane.getControllerManager().getProjectController().uploadToWebserver();
+            });
 
         MenuItem quit = new MenuItem("Quit");
         quit.setOnAction(e -> {

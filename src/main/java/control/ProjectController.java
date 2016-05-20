@@ -1,15 +1,12 @@
 package control;
 
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.sun.xml.internal.ws.encoding.xml.XMLMessage;
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -52,11 +49,9 @@ public class ProjectController {
     private DeleteCameraTypeWarningModalView typeWarningModal;
 
 
-    // Upload veriables
+    // Upload veriablesa
+    // Todo: replace with popup or something like that for user
     private String url = "http://localhost:3000/upload-scp";
-    private String charset = "UTF-8";
-    private String boundary = Long.toHexString(System.currentTimeMillis());
-    private String CRLF = "\r\n";
     
     /**
      * Construct a new FileMenuController.
@@ -72,6 +67,9 @@ public class ProjectController {
                          .setOnMouseClicked(this::exit);
     }
 
+    /**
+     * Upload the current project to the webserver.
+     */
     public void uploadToWebserver() {
         // Save the project
         this.save();
@@ -80,7 +78,9 @@ public class ProjectController {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost uploadFile = new HttpPost(url);
         MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-        builder.addBinaryBody("project", new File(controllerManager.getScriptingProject().getFilePath()), ContentType.APPLICATION_XML, "project.scp");
+        builder.addBinaryBody("project", new File(
+                controllerManager.getScriptingProject().getFilePath()),
+                ContentType.APPLICATION_XML, "project.scp");
         HttpEntity multipart = builder.build();
         uploadFile.setEntity(multipart);
         try {
@@ -91,7 +91,7 @@ public class ProjectController {
             boolean result = resultJson.getBoolean("succes");
 
             // Do something with response
-            if(result) {
+            if (result) {
                 // awesome, Todo: give feedback to user
                 System.out.println("Upload successful");
             } else {
@@ -104,9 +104,6 @@ public class ProjectController {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-        System.out.println("aslkdfjsakdj");
     }
     
     /**
