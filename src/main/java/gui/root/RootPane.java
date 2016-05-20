@@ -77,8 +77,13 @@ public class RootPane extends Application {
 
         String recentProjectPath = readPathFromConfig();
         if (recentProjectPath != null) {
-            controllerManager.getProjectController().load(new File(recentProjectPath));
-            primaryStage.setTitle(controllerManager.getScriptingProject().getName());
+            File file = new File(recentProjectPath);
+            if (file.exists()) {
+                controllerManager.getProjectController().load(file);
+                primaryStage.setTitle(controllerManager.getScriptingProject().getName());
+            } else {
+                initStartupScreen(true);
+            }
         } else {
             initStartupScreen(false);
         }

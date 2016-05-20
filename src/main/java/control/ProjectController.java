@@ -8,13 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import data.Camera;
-import data.CameraShot;
-import data.CameraTimeline;
-import data.CameraType;
-import data.DirectorTimeline;
-import data.ScriptingProject;
+import data.*;
 import gui.centerarea.CameraShotBlock;
+import gui.centerarea.DirectorShotBlock;
 import gui.modal.AddCameraModalView;
 import gui.modal.AddCameraTypeModalView;
 import gui.modal.DeleteCameraTypeWarningModalView;
@@ -154,7 +150,8 @@ public class ProjectController {
                             controllerManager.getScriptingProject()
                                     .getCameraTimelines()
                                     .size(), false));
-            addLoadedBlocks(controllerManager.getScriptingProject());
+            addLoadedCameraShotBlocks(controllerManager.getScriptingProject());
+            addLoadedDirectorShotBlocks(controllerManager.getScriptingProject());
             controllerManager.getTimelineControl()
                     .setNumTimelines(controllerManager.getScriptingProject()
                             .getCameraTimelines()
@@ -162,7 +159,7 @@ public class ProjectController {
             changeConfigFile(temp);
         }
     }
-    
+
     /**
      * Load a project from file.
      * A file chooser window will be opened to select the file.
@@ -181,7 +178,7 @@ public class ProjectController {
             log.info("User did not select a file");
         }
     }
-    
+
     /**
      * Overwrite most recent project path in config file.
      * @param project the project to write the path from
@@ -202,13 +199,13 @@ public class ProjectController {
             }
         }
     }
-    
+
     /**
-     * Add the blocks that were loaded from file to the UI.
+     * Add the loaded camera shotblocks that were loaded from file to the UI.
      * @param project the project that was loaded
      */
-    public void addLoadedBlocks(ScriptingProject project) {
-        log.info("Adding loaded blocks");
+    public void addLoadedCameraShotBlocks(ScriptingProject project) {
+        log.info("Adding loaded CameraShotBlocks");
         for (int i = 0; i < project.getCameraTimelines().size();i++) {
             CameraTimeline timeline = project.getCameraTimelines().get(i);
             int amountShots = timeline.getShots().size();
@@ -217,24 +214,45 @@ public class ProjectController {
             }
         }
     }
-    
+
+    /**
+     * Add the loaded director shotblocks that were loaded from the file to the UI.
+     * @param project the project that was loaded
+     */
+    private void addLoadedDirectorShotBlocks(ScriptingProject project) {
+        log.info("Adding loaded DirectorShotBlocks");
+        DirectorTimeline timeline = project.getDirectorTimeline();
+        for (int i = 0; i < timeline.getShots().size(); i++) {
+            addDirectorShotForLoad(timeline.getShots().get(i));
+        }
+    }
+
     /**
      * Add a camera shot that is loaded from file.
      * @param cameraIndex the index of the camera timeline to use
      * @param shot the shot to add
      */
     private void addCameraShotForLoad(int cameraIndex, CameraShot shot) {
-        CameraShotBlock shotBlock = 
-                new CameraShotBlock(shot,
-                                    cameraIndex, 
-                                    controllerManager.getRootPane()
-                                                     .getRootCenterArea(),
-                                    controllerManager.getTimelineControl()
-                                                     ::shotChangedHandler);
-        controllerManager.setActiveShotBlock(shotBlock);
+        CameraShotBlock shotBlock = new CameraShotBlock(shot,
+                cameraIndex,
+                controllerManager.getRootPane().getRootCenterArea(),
+                controllerManager.getTimelineControl()::shotChangedHandler);
         controllerManager.getTimelineControl().getCameraShotBlocks().add(shotBlock);
+        controllerManager.setActiveShotBlock(shotBlock);
     }
-    
+
+    /**
+     * Add a director shot that is loaded from file.
+     * @param shot the shot to add
+     */
+    private void addDirectorShotForLoad(DirectorShot shot) {
+        DirectorShotBlock shotBlock = new DirectorShotBlock(shot,
+                controllerManager.getRootPane().getRootCenterArea(),
+                controllerManager.getDirectorTimelineControl()::shotChangedHandler);
+        controllerManager.getDirectorTimelineControl().getShotBlocks().add(shotBlock);
+        controllerManager.setActiveShotBlock(shotBlock);
+    }
+
    
     /**
      * Handler for deleting a camera type.
