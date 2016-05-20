@@ -9,24 +9,24 @@ const parser = new xml2js.Parser();
 
 /* GET home page. */
 router.get("/", (req, res) => {
-
     // Dummyfile Todo: replace with dynamic
     fs.readFile(`${__dirname}/../test_project.scp`, (err, data) => {
         parser.parseString(data, (err, result) => {
             // Read timelines from xml
-            const cameraTimelinesXML = result.scriptingProject["camera-centerarea"][0].cameraTimeline;
+            const cameraTimelinesXML =
+                result.scriptingProject["camera-centerarea"][0].cameraTimeline;
 
-            const cameraTimelines = new Array();
-            const flattenedCameraTimelines = new Array();
+            const cameraTimelines = [];
+            const flattenedCameraTimelines = [];
 
             // Insert shots in timeline which is pushed to timelinesarray
             // and push to flattenedArray
             cameraTimelinesXML.forEach(timeline => {
-                console.log(timeline);
                 const cameraTimeline = new CameraTimeline("dummy", "dymmy");
                 if (typeof timeline.shotList[0].shot !== "undefined") {
                     timeline.shotList[0].shot.forEach(shot => {
-                        const cameraShot = new CameraShot(shot.beginCount[0], shot.endCount[0], shot.name[0], shot.description[0]);
+                        const cameraShot = new CameraShot(shot.beginCount[0],
+                            shot.endCount[0], shot.name[0], shot.description[0]);
                         cameraTimeline.addCameraShot(cameraShot);
                         flattenedCameraTimelines.push(cameraShot);
                     });

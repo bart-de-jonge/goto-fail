@@ -1,3 +1,6 @@
+/*
+ * Class for storing camerashots
+ */
 class CameraShot {
     constructor(beginCount, endCount, name, description) {
         this.beginCount = beginCount;
@@ -6,6 +9,7 @@ class CameraShot {
         this.description = description;
     }
 
+    // Returns the length of this cameraShot in counts
     getLength() {
         return this.endCount - this.beginCount;
     }
