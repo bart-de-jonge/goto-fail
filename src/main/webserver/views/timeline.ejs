@@ -46,28 +46,27 @@
                                             %>-<%
                                         }%></td>
                                     <% for(j = 0; j < cameraTimelines.length; j++) {
-                                        if(j == 1) {
-                                            console.log(j);
-                                            console.log("hidasfero");
-                                            console.log(curShotNumber[j]);
-                                            console.log(curShot[j].beginCount);
+                                        if (typeof curShot[j] !== "undefined" && curShotNumber[j] != -1 && curShot[j].beginCount*4 === i) { %>
+                                            <td rowspan="<%= (curShot[j].endCount - curShot[j].beginCount) * 4 + 1 %>">
+                                                <div class="timeline-block">
+                                                    <span><%= curShot[j].beginCount %> - <%= curShot[j].endCount %></span>
+                                                </div>
+                                            </td>
+                                            <% curShotNumber[j]++;
+                                            if (curShotNumber[j] < cameraTimelines[j].getCameraShots().length) {
+                                                prevShot[j] = curShot[j];
+                                                curShot[j] = cameraTimelines[j].getCameraShots()[curShotNumber[j]];
+                                            } else {
+                                                curShotNumber[j] = -1;
+                                            }
+                                        } else if (prevShot[j] === null || curShot[j].beginCount*4 > j && prevShot[j].endCount*4 < j) { %>
+                                            <td></td>
+                                        <%
+                                        if(j === 3) {
+                                            console.log("acjalksdfj");
+                                            console.log(curShot[j]);
                                         }
-                                        if (curShotNumber[j] != -1 && curShot[j].beginCount*4 === i) { console.log("hiero") %>
-                                        <td rowspan="<%= (curShot[j].endCount - curShot[j].beginCount) * 4 + 1 %>">
-                                            <div class="timeline-block">
-                                                <span><%= curShot[j].beginCount %> - <%= curShot[j].endCount %></span>
-                                            </div>
-                                        </td>
-                                        <% curShotNumber[j]++;
-                                        if (curShotNumber[j] < cameraTimelines[j].getCameraShots().length) {
-                                            prevShot[j] = curShot[j];
-                                            curShot[j] = cameraTimelines[j].getCameraShots()[curShotNumber[j]];
-                                        } else {
-                                            curShotNumber[j] = -1;
                                         }
-                                    } else if (prevShot[j] === null || curShot[j].beginCount*4 > i && prevShot[j].endCount*4 < i) { %>
-                                        <td></td>
-                                    <% }
                                     } %>
                                 </tr>
                         <% }; %>

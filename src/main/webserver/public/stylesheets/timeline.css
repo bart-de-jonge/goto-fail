@@ -53,11 +53,9 @@ footer {
 }
 
 .timeline th:first-child, .timeline td:first-child {
-    width: 20%;
-}
-
-.timeline th:nth-child(2), .timeline td:nth-child(2) {
-    width: 40%;
+    width: 10%;
+    max-width: 100px;
+    min-width: 50px;
 }
 
 .timeline, .timeline tbody, .timeline tr, .timeline th, .timeline td {
@@ -87,7 +85,7 @@ footer {
 }
 
 .timeline {
-    width: 1000px;
+    width: 100%;
 }
 
 .timeline > tbody, .timeline > tbody > tr {
