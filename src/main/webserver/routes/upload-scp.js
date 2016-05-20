@@ -10,7 +10,6 @@ router.post("/", multipartMiddleware, (req, res) => {
     if (req.files.project.name.endsWith(".scp")) {
         fs.rename(req.files.project.path, newPath, (err) => {
             if (err) {
-                console.log(err);
                 res.json({
                     succes: false, message: "Some error occurred, please try again later!" });
             } else {
