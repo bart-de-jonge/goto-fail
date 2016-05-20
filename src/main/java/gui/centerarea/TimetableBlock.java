@@ -377,6 +377,10 @@ public abstract class TimetableBlock extends Pane {
         feedbackPane.getChildren().add(image);
         feedbackPane.toBack();
         feedbackPane.setVisible(true);
+
+        // init position
+        mouseCurrentXPosition = e.getSceneX();
+        mouseCurrentYPosition = e.getSceneY();
     }
 
     /**
