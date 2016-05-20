@@ -1,6 +1,7 @@
 package data;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -163,7 +164,7 @@ public class ScriptingProject {
         try {
             JAXBContext context = JAXBContext.newInstance(ScriptingProject.class);
             Unmarshaller um = context.createUnmarshaller();
-            ScriptingProject result =  (ScriptingProject) um.unmarshal(file);
+            ScriptingProject result = (ScriptingProject) um.unmarshal(file);
             result.getDirectorTimeline().setProject(result);
             result.getCameraTimelines().forEach(e -> e.setProject(result));
             result.setFilePath(file.getAbsolutePath());

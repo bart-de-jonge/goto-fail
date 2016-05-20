@@ -75,10 +75,23 @@ public class RootPane extends Application {
         
         controllerManager = new ControllerManager(this);
 
+        startupMethod(primaryStage);
+    }
+
+    /**
+     * Specify the method to start up depending on the previously loaded project.
+     * @param primaryStage the main stage that is started
+     */
+    private void startupMethod(Stage primaryStage) {
         String recentProjectPath = readPathFromConfig();
         if (recentProjectPath != null) {
-            controllerManager.getProjectController().load(new File(recentProjectPath));
-            primaryStage.setTitle(controllerManager.getScriptingProject().getName());
+            File file = new File(recentProjectPath);
+            if (file.exists()) {
+                controllerManager.getProjectController().load(file);
+                primaryStage.setTitle(controllerManager.getScriptingProject().getName());
+            } else {
+                initStartupScreen(true);
+            }
         } else {
             initStartupScreen(false);
         }

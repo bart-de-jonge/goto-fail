@@ -50,7 +50,35 @@
         </camera>
     </cameraList>
     <directorTimeline>
-        <shotList/>
+        <shotList>
+            <shot>
+                <beginCount>2.0</beginCount>
+                <colliding>false</colliding>
+                <description>sdfsdf</description>
+                <endCount>4.0</endCount>
+                <name>dfgsdfg</name>
+                <endShotPadding>0.0</endShotPadding>
+                <frontShotPadding>0.0</frontShotPadding>
+            </shot>
+            <shot>
+                <beginCount>6.0</beginCount>
+                <colliding>false</colliding>
+                <description>sdfsdf</description>
+                <endCount>8.0</endCount>
+                <name>dfgsdfg</name>
+                <endShotPadding>0.0</endShotPadding>
+                <frontShotPadding>0.0</frontShotPadding>
+            </shot>
+            <shot>
+                <beginCount>9.0</beginCount>
+                <colliding>false</colliding>
+                <description>sdfsdf</description>
+                <endCount>10.0</endCount>
+                <name>dfgsdfg</name>
+                <endShotPadding>0.0</endShotPadding>
+                <frontShotPadding>0.0</frontShotPadding>
+            </shot>
+        </shotList>
         <description>OpieOP</description>
     </directorTimeline>
     <camera-centerarea>
