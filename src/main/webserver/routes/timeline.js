@@ -7,7 +7,7 @@ const router = new express.Router();
 const parser = new xml2js.Parser();
 
 // Get timelines from xml
-const getTimelines = function (callback) {
+const getTimelines = function getTimelines(callback) {
     // Dummyfile Todo: replace with dynamic
     fs.readFile(`${__dirname}/../test_project.scp`, (err, data) => {
         parser.parseString(data, (err, result) => {
@@ -32,14 +32,13 @@ const getTimelines = function (callback) {
                 }
                 cameraTimelines.push(cameraTimeline);
             });
-            console.log("here though");
             callback([cameraTimelines, flattenedCameraTimelines]);
         });
     });
 };
 
 // Get max and mincount of an array of shots
-const getMaxAndMinCount = function (flattenedCameraTimelines) {
+const getMaxAndMinCount = function getMaxAndMinCount(flattenedCameraTimelines) {
     // Calculate minimum and maximum counts
     let minCount = 0;
     let maxCount = 0;
@@ -73,7 +72,7 @@ router.get("/", (req, res) => {
         res.render("timeline", {
             cameraTimelines,
             minCount,
-            maxCount});
+            maxCount });
     });
 });
 
