@@ -99,7 +99,9 @@ public class ProjectController {
             RootCenterArea area = new RootCenterArea(
                     controllerManager.getRootPane(), editProjectModal.getTimelines().size(), false);
             controllerManager.getRootPane().reInitRootCenterArea(area);
-            if (editProjectModal.getProject() != null) {
+            if (editProjectModal.getProject() != null
+                    && editProjectModal.getProject().getCameraTimelines().size()
+                    > project.getCameraTimelines().size()) {
                 for (int i = 0; i < project.getCameraTimelines().size(); i++) {
                     CameraTimeline newLine = project.getCameraTimelines().get(i);
                     CameraTimeline oldLine = editProjectModal.getProject().getCameraTimelines().get(i);
@@ -359,6 +361,7 @@ public class ProjectController {
      * @param event the MouseEvent, e.g. when clicking the new project button
      */
     public void newProject(MouseEvent event) {
+        controllerManager.getRootPane().getStartupModalView().hideModal();
         newProject();
     }
     
