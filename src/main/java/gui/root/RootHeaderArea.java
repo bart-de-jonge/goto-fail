@@ -2,6 +2,7 @@ package gui.root;
 
 import gui.headerarea.DetailView;
 import gui.headerarea.ToolView;
+import gui.misc.TweakingHelper;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -35,9 +36,6 @@ public class RootHeaderArea extends VBox {
      */
     public RootHeaderArea(RootPane rootPane) {
         this.rootPane = rootPane;
-
-//        dropShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0,0,0,0.2), 20, 0.1, 0, 5);
-//        this.setEffect(dropShadow);
 
         getChildren().add(initMenus());
         getChildren().add(initHeaderBar());
@@ -90,6 +88,8 @@ public class RootHeaderArea extends VBox {
         Menu viewMenu = new Menu("View");
 
         MenuBar topMenuBar = new MenuBar();
+        topMenuBar.setStyle("-c-color-primary: "
+                + TweakingHelper.STRING_PRIMARY + ";");
         topMenuBar.setUseSystemMenuBar(true);
         topMenuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
         return topMenuBar;

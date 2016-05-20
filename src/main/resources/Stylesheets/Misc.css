@@ -84,72 +84,28 @@
  * Timetable blocks.
  */
 
-.block_Background_Normal {
-    -fx-background-insets: 1 1 1 1;
+.block_Background {
+    -fx-background-insets: 0 0.5 0 0.5;
     -fx-border-style: solid inside;
     -fx-border-width: 0.5 0 0.5 0;
-
-/*
-    -fx-border-color: -c-block-background;
-    -fx-background-color: -c-block-borders;
-*/
 }
 
-.block_Foreground_Normal {
-    -fx-padding: 4 0 4 0;
-    -fx-opacity: 0.9;
-    -fx-blend-mode: multiply;
-    -fx-border-style: solid inside;
-    -fx-border-insets: 4 0 4 0;
-    -fx-border-width: 2 0 0 0;
-    -fx-background-insets: 4 2 4 2;
-
-/*
-    -fx-border-color: -c-block-highlight;
-    -fx-background-color: -c-block-background;
-*/
-}
-
-.block_Background_Dragged {
-    -fx-background-insets: 1 1 1 1;
-    -fx-background-radius: 3;
-
-/*
-    -fx-background-color: -c-block-borders;
-*/
-}
-
-.block_Foreground_Dragged {
-    -fx-blend-mode: multiply;
-    -fx-opacity: 0.9;
+.block_Foreground {
     -fx-padding: 4 0 4 0;
     -fx-border-style: solid inside;
     -fx-border-insets: 4 0 4 0;
-    -fx-border-width: 2 0 0 0;
+    -fx-border-width: 3 0 0 0;
     -fx-background-insets: 4 2 4 2;
-
-/*
-    -fx-border-color: -c-block-highlight;
-    -fx-background-color: -c-block-background;
-*/
 }
 
 .block_Text_Title {
     -fx-font-size: 16;
     -fx-padding: 0 0 0 5;
-    -fx-blend-mode: multiply;
-    /*
-    -fx-text-fill: -c-block-highlight;
-    */
 }
 
 .block_Text_Normal {
     -fx-font-size: 14;
     -fx-padding: 0 5 5 5;
-    -fx-blend-mode: multiply;
-    /*
-    -fx-text-fill: -c-block-text;
-    */
 }
 
 /*
@@ -175,4 +131,3 @@
     -fx-border-color: gray;
     -fx-border-width: 0px 0px 0px 0px;
 }
-

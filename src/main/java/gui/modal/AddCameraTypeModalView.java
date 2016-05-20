@@ -98,10 +98,6 @@ public class AddCameraTypeModalView extends CameraModificationModalView {
     private void initFields() {
         final Label marginLabel = new Label("Movement margin (in seconds): ");
         movementMarginField = new DoubleTextField();
-        movementMarginField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        movementMarginField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        movementMarginField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        movementMarginField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         HBox movementMarginBox = new HBox(TweakingHelper.GENERAL_SPACING);
         movementMarginBox.getChildren().addAll(marginLabel, movementMarginField);
         movementMarginBox.setAlignment(Pos.CENTER_RIGHT);

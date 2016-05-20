@@ -1,5 +1,9 @@
+.root {
+    -c-color-primary: rgb(0,0,0);
+}
+
 .menu-bar {
-    -fx-background-color: rgb(255, 172, 70);
+    -fx-background-color: -c-color-primary;
     -fx-text-fill: white;
 }
 
@@ -12,7 +16,7 @@
 }
 
 .menu-bar {
-    -fx-background-color: rgb(255, 172, 70);
+    -fx-background-color: -c-color-primary;
 }
 
 .menu-bar .label {

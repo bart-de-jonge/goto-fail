@@ -1,7 +1,10 @@
 package gui.styling;
 
 import gui.misc.TransitionHelper;
+import gui.misc.TweakingHelper;
 import javafx.animation.Interpolator;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
@@ -25,12 +28,18 @@ public class StyledListview<T> extends ListView {
     // transitions
     private int transitionMouseoverTime = 100;
 
+    private String style = "-fx-border-color:"
+            + TweakingHelper.STRING_PRIMARY + ";"
+            + "-c-color-primary: "
+            + TweakingHelper.STRING_PRIMARY + ";";
+
     /*
      * Misc variables
      */
 
     private InnerShadow innerShadow;
     private TransitionHelper transitionHelper;
+    private StyledListview<T> self;
 
     /**
      * Constructor of class.
@@ -55,6 +64,8 @@ public class StyledListview<T> extends ListView {
         transitionHelper.addMouseOverTransition(innerShadow.colorProperty(),
                 transitionMouseoverTime,  Color.rgb(0, 0, 0, 0),
                 Color.rgb(0, 0, 0, shadowOpacity), Interpolator.LINEAR);
+
+        this.setStyle(style);
     }
 
     

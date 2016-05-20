@@ -275,10 +275,6 @@ public class EditProjectModalView extends ModalView {
         // init name field
         final Label nameLabel = new Label("Project name: ");
         nameField = new StyledTextfield();
-        nameField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        nameField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        nameField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        nameField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         HBox nameBox = new HBox(TweakingHelper.GENERAL_SPACING);
         nameBox.getChildren().addAll(nameLabel, nameField);
         nameBox.setAlignment(Pos.CENTER_RIGHT);
@@ -286,10 +282,6 @@ public class EditProjectModalView extends ModalView {
         // init description field
         final Label descriptionLabel = new Label("Project description: ");
         descriptionField = new StyledTextfield();
-        descriptionField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        descriptionField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        descriptionField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        descriptionField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         HBox descriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
         descriptionBox.getChildren().addAll(descriptionLabel, descriptionField);
         descriptionBox.setAlignment(Pos.CENTER_RIGHT);
@@ -305,10 +297,6 @@ public class EditProjectModalView extends ModalView {
         // init seconds per count field
         final Label secondsPerCountLabel = new Label("Seconds per count: ");
         secondsPerCountField = new DoubleTextField();
-        secondsPerCountField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        secondsPerCountField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        secondsPerCountField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        secondsPerCountField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         HBox secondsPerCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
         secondsPerCountBox.getChildren().addAll(secondsPerCountLabel, secondsPerCountField);
         secondsPerCountBox.setAlignment(Pos.CENTER_RIGHT);
@@ -316,10 +304,6 @@ public class EditProjectModalView extends ModalView {
         // init timeline description field (this ought to die)
         final Label directorTimelineDescriptionLabel = new Label("Director Timeline Description: ");
         directorTimelineDescriptionField = new StyledTextfield();
-        directorTimelineDescriptionField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        directorTimelineDescriptionField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        directorTimelineDescriptionField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        directorTimelineDescriptionField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         HBox directorTimelineDescriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
         directorTimelineDescriptionBox.getChildren().addAll(directorTimelineDescriptionLabel,
                 directorTimelineDescriptionField);
@@ -378,7 +362,6 @@ public class EditProjectModalView extends ModalView {
                     new Label(type.getName()), new Label(" - "), new Label(type.getDescription()));
             typeList.getItems().add(box);
         }
-        
     }
 
     /**

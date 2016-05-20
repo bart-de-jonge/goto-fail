@@ -127,10 +127,6 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
         final Label frontPaddingLabel = new Label("Padding before shot:");
         frontPaddingField = new DoubleTextField();
         frontPaddingField.setText("0.0");
-        frontPaddingField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        frontPaddingField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        frontPaddingField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        frontPaddingField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         HBox frontPaddingBox = new HBox(TweakingHelper.GENERAL_SPACING);
         frontPaddingBox.getChildren().addAll(frontPaddingLabel, frontPaddingField);
         frontPaddingBox.setAlignment(Pos.CENTER_RIGHT);
@@ -139,10 +135,6 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
         final Label endPaddingLabel = new Label("Padding after shot:");
         endPaddingField = new DoubleTextField();
         endPaddingField.setText("0.0");
-        endPaddingField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        endPaddingField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        endPaddingField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        endPaddingField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         HBox endPaddingBox = new HBox(TweakingHelper.GENERAL_SPACING);
         endPaddingBox.getChildren().addAll(endPaddingLabel, endPaddingField);
         endPaddingBox.setAlignment(Pos.CENTER_RIGHT);
@@ -160,9 +152,6 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
         for (int i = 0; i < numberOfCameras; i++) {
             String checkBoxString = "Camera " + (i + 1);
             StyledCheckbox checkBox = new StyledCheckbox(checkBoxString);
-            checkBox.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-            checkBox.setMarkColor(TweakingHelper.COLOR_PRIMARY);
-            checkBox.setFillColor(TweakingHelper.COLOR_TERTIARY);
             cameraCheckboxes.add(checkBox);
         }
 
