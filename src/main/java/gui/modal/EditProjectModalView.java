@@ -115,7 +115,7 @@ public class EditProjectModalView extends ModalView {
     @Getter
     private StyledButton deleteCameraTypeButton;
     @Getter
-    private StyledButton saveButton;
+    private StyledButton applyButton;
     @Getter
     private StyledButton cancelButton;
     
@@ -170,13 +170,9 @@ public class EditProjectModalView extends ModalView {
             ArrayList<CameraTimeline> projectTimelines = project.getCameraTimelines();
             projectTimelines.forEach(e -> timelines.add(e.clone()));
         }
-
-
-
-
         initializeView();
     }
-    
+
     /**
      * Initialize the view of this modal.
      */
@@ -346,7 +342,7 @@ public class EditProjectModalView extends ModalView {
         HBox cameraContent = new HBox(TweakingHelper.GENERAL_SPACING);
         cameraContent.getChildren().addAll(addCameraButton, editCameraButton, deleteCameraButton);
         //cameraList = initCameraList();
-        cameraList = new StyledListview<HBox>();
+        cameraList = new StyledListview<>();
         content.getChildren().addAll(cameraContent, cameraList);
 
         this.centerPane.getChildren().add(content);
@@ -400,9 +396,9 @@ public class EditProjectModalView extends ModalView {
         // Add cancel button
         cancelButton = createButton("Cancel", false);
         // Add creation button
-        saveButton = createButton("Save", false);
+        applyButton = createButton("Apply", false);
 
-        this.buttonPane.getChildren().addAll(saveButton, cancelButton);
+        this.buttonPane.getChildren().addAll(applyButton, cancelButton);
     }
 
 }

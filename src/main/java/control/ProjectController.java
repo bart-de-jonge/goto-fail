@@ -91,7 +91,6 @@ public class ProjectController {
             project.setCameras(editProjectModal.getCameras());
             project.setCameraTimelines(editProjectModal.getTimelines());
             project.getDirectorTimeline().setProject(project);
-            project.setFilePath(editProjectModal.getProject().getFilePath());
             for (CameraTimeline timeline : project.getCameraTimelines()) {
                 timeline.setProject(project);
             }
@@ -100,17 +99,19 @@ public class ProjectController {
             RootCenterArea area = new RootCenterArea(
                     controllerManager.getRootPane(), editProjectModal.getTimelines().size(), false);
             controllerManager.getRootPane().reInitRootCenterArea(area);
-            for (int i = 0;i < project.getCameraTimelines().size();i++) {
-                CameraTimeline newLine = project.getCameraTimelines().get(i);
-                CameraTimeline oldLine = editProjectModal.getProject().getCameraTimelines().get(i);
-                LinkedList<CameraShot> shots = new LinkedList<CameraShot>();
-                oldLine.getShots().forEach(shots::add);
-                int j = i;
-                shots.forEach(shot -> {
+            if (editProjectModal.getProject() != null) {
+                for (int i = 0; i < project.getCameraTimelines().size(); i++) {
+                    CameraTimeline newLine = project.getCameraTimelines().get(i);
+                    CameraTimeline oldLine = editProjectModal.getProject().getCameraTimelines().get(i);
+                    LinkedList<CameraShot> shots = new LinkedList<>();
+                    oldLine.getShots().forEach(shots::add);
+                    int j = i;
+                    shots.forEach(shot -> {
                         newLine.addShot(shot);
                         controllerManager.getTimelineControl().addCameraShot(j, shot);
                     });
-            }  
+                }
+            }
         }
     }
     
@@ -380,7 +381,7 @@ public class ProjectController {
         editProjectModal.getEditCameraTypeButton().setOnMouseClicked(this::editCameraType);
         editProjectModal.getDeleteCameraTypeButton().setOnMouseClicked(this::deleteCameraType);
         editProjectModal.getCancelButton().setOnMouseClicked(this::cancel);
-        editProjectModal.getSaveButton().setOnMouseClicked(this::save);
+        editProjectModal.getApplyButton().setOnMouseClicked(this::save);
     }
     
     /**
