@@ -43,10 +43,7 @@ public class ProjectController {
     private AddCameraTypeModalView cameraTypeModal;
     @Setter
     private DeleteCameraTypeWarningModalView typeWarningModal;
-    
-    private void someMethod(MouseEvent event) {
-        System.out.println("Kek");
-    }
+   
     
     public void setEditProjectModal(EditProjectModalView modal) {
         editProjectModal = modal;
