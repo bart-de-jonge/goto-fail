@@ -16,8 +16,6 @@ import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 public class DeleteCameraTypeWarningModalView extends ModalView {
-    
-
 
     /*
      * Tweakable styling variables.
