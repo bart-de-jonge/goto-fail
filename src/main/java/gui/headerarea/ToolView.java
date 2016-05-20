@@ -1,13 +1,12 @@
 package gui.headerarea;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gui.misc.TweakingHelper;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class that is responsible for displaying the toolbox.
@@ -18,7 +17,7 @@ public class ToolView extends HBox {
 
     private String style = "-fx-background-color: "
             + TweakingHelper.STRING_PRIMARY + ";"
-            + "-fx-border-width: 0 0 10 0;"
+            + "-fx-border-width: 0 0 8 0;"
             + "-fx-border-color:"
             + TweakingHelper.STRING_SECONDARY + ";";
 
@@ -36,7 +35,7 @@ public class ToolView extends HBox {
      */
     public ToolView() {
         this.setSpacing(15);
-        this.setPadding(new Insets(5, 10, 10, 10));
+        this.setPadding(new Insets(8, 10, 8, 10));
         this.setStyle(style);
 
         buttonList = new ArrayList<>();

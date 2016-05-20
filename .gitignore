@@ -15,3 +15,5 @@ project_write_test.txt
 coverage-error.log
 src/main/webserver/node_modules/
 src/main/webserver/.idea/
+src/main/webserver/npm-debug.log
+src/main/webserver/project-scp-files/

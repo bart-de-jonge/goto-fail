@@ -1,7 +1,10 @@
 package gui.styling;
 
 import gui.misc.TransitionHelper;
+import gui.misc.TweakingHelper;
 import javafx.animation.Interpolator;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;
@@ -25,12 +28,18 @@ public class StyledListview<T> extends ListView {
     // transitions
     private int transitionMouseoverTime = 100;
 
+    private String style = "-fx-border-color:"
+            + TweakingHelper.STRING_PRIMARY + ";"
+            + "-c-color-primary: "
+            + TweakingHelper.STRING_PRIMARY + ";";
+
     /*
      * Misc variables
      */
 
     private InnerShadow innerShadow;
     private TransitionHelper transitionHelper;
+    private StyledListview<T> self;
 
     /**
      * Constructor of class.
@@ -55,18 +64,10 @@ public class StyledListview<T> extends ListView {
         transitionHelper.addMouseOverTransition(innerShadow.colorProperty(),
                 transitionMouseoverTime,  Color.rgb(0, 0, 0, 0),
                 Color.rgb(0, 0, 0, shadowOpacity), Interpolator.LINEAR);
+
+        this.setStyle(style);
     }
 
-    /**
-     * Parses color from a Color object to javafx-css-compatible string.
-     * @param color the color to parse.
-     * @return a representative string.
-     */
-    private String getStringFromColor(Color color) {
-        return "rgba(" + ((int) (color.getRed()   * 255)) + ","
-                + ((int) (color.getGreen() * 255)) + ","
-                + ((int) (color.getBlue()  * 255)) + ","
-                + color.getOpacity() + ")";
-    }
+    
 
 }

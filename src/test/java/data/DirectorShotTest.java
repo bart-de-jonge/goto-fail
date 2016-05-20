@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -14,7 +15,7 @@ public class DirectorShotTest {
     DirectorShot shot;
     @Before
     public void initializeTest() {
-        shot = new DirectorShot("directorshot-1", "A test director shot", 1, 2, 0, 0);
+        shot = new DirectorShot("directorshot-1", "A test director shot", 1, 2, 0, 0, new ArrayList<>());
     }
 
     @Test
@@ -36,7 +37,7 @@ public class DirectorShotTest {
     @Test
     public void getInstanceTest() {
         int oldInstance = shot.getInstance();
-        DirectorShot newShot = new DirectorShot("name", "description", 1, 2, 0, 0);
+        DirectorShot newShot = new DirectorShot("name", "description", 1, 2, 0, 0, new ArrayList<>());
         assertEquals(oldInstance + 1, newShot.getInstance());
     }
 

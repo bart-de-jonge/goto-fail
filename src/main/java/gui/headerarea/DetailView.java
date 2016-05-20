@@ -5,12 +5,7 @@ import gui.styling.StyledTextfield;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 /**
@@ -20,10 +15,20 @@ public class DetailView extends HBox {
 
     private String style = "-fx-background-color: "
             + TweakingHelper.STRING_BACKGROUND_HIGH + ";"
-            + "-fx-min-height: 50;";
+            + "-fx-min-height: 40;"
+            + "-fx-border-width: 0 0 1px 0;"
+            + "-fx-border-color: rgba(0,0,0,0.40);";
 
     private static final String defaultEmptyString = "";
     private static final String defaultEmptyNumber = "0";
+
+    private boolean visible = false;
+
+    Label invisibleLabel;
+    HBox nameBox;
+    HBox descriptionBox;
+    HBox beginCountBox;
+    HBox endCountBox;
 
     @Getter
     private StyledTextfield nameField;
@@ -39,13 +44,14 @@ public class DetailView extends HBox {
      */
     public DetailView() {
         this.setStyle(style);
-        this.setAlignment(Pos.CENTER_LEFT);
-        this.setPadding(new Insets(0, 0, 0, TweakingHelper.GENERAL_PADDING));
+        this.setAlignment(Pos.CENTER);
+        this.setPadding(new Insets(0));
         this.setSpacing(TweakingHelper.GENERAL_SPACING * 2);
         initName();
         initDescription();
         initBeginCount();
         initEndCount();
+        initInvisible();
     }
 
     /**
@@ -98,15 +104,11 @@ public class DetailView extends HBox {
      */
     private  void initBeginCount() {
         beginCountField = new DoubleTextField("123");
-        beginCountField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        beginCountField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        beginCountField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        beginCountField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
-        HBox startCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
+        beginCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("Start Count:");
-        startCountBox.getChildren().addAll(specifierLabel, beginCountField);
-        startCountBox.setAlignment(Pos.CENTER);
-        this.getChildren().add(startCountBox);
+        beginCountBox.getChildren().addAll(specifierLabel, beginCountField);
+        beginCountBox.setAlignment(Pos.CENTER);
+        this.getChildren().add(beginCountBox);
     }
 
     /**
@@ -114,12 +116,8 @@ public class DetailView extends HBox {
      */
     private  void initEndCount() {
         endCountField = new DoubleTextField("123");
-        endCountField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        endCountField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        endCountField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        endCountField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         endCountField.setAlignment(Pos.CENTER);
-        HBox endCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
+        endCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("End Count:");
         endCountBox.getChildren().addAll(specifierLabel, endCountField);
         endCountBox.setAlignment(Pos.CENTER);
@@ -131,12 +129,8 @@ public class DetailView extends HBox {
      */
     private void initName() {
         nameField = new StyledTextfield("Placeholder");
-        nameField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        nameField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        nameField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        nameField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         nameField.setAlignment(Pos.CENTER);
-        HBox nameBox = new HBox(TweakingHelper.GENERAL_SPACING);
+        nameBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("Name:");
         nameBox.getChildren().addAll(specifierLabel, nameField);
         nameBox.setAlignment(Pos.CENTER);
@@ -148,16 +142,51 @@ public class DetailView extends HBox {
      */
     private void initDescription() {
         descriptionField = new StyledTextfield("");
-        descriptionField.setBorderColor(TweakingHelper.COLOR_PRIMARY);
-        descriptionField.setTextColor(TweakingHelper.COLOR_PRIMARY);
-        descriptionField.setTextActiveColor(TweakingHelper.COLOR_SECONDARY);
-        descriptionField.setFillActiveColor(TweakingHelper.COLOR_TERTIARY);
         descriptionField.setAlignment(Pos.CENTER);
-        HBox descriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
+        descriptionBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("Description:");
         descriptionBox.getChildren().addAll(specifierLabel, descriptionField);
         descriptionBox.setAlignment(Pos.CENTER);
         this.getChildren().add(descriptionBox);
+    }
+
+    /**
+     * Initializes the detailview with no selected shot.
+     */
+    private void initInvisible() {
+        this.getChildren().removeAll(nameBox, descriptionBox, beginCountBox, endCountBox);
+        this.setPadding(new Insets(0));
+        this.setSpacing(0);
+        invisibleLabel = new Label("Select a shot to edit it.");
+        invisibleLabel.setAlignment(Pos.CENTER);
+        invisibleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
+        this.getChildren().add(invisibleLabel);
+    }
+
+    /**
+     * Make content of the DetailView visible.
+     */
+    public void setVisible() {
+        if (!visible) {
+            this.setPadding(new Insets(0, 0, 0, TweakingHelper.GENERAL_PADDING));
+            this.setSpacing(TweakingHelper.GENERAL_SPACING * 2);
+            this.getChildren().remove(invisibleLabel);
+            this.getChildren().addAll(nameBox, descriptionBox, beginCountBox, endCountBox);
+            visible = true;
+        }
+    }
+
+    /**
+     * Make content of the DetailView invisible.
+     */
+    public void setInvisible() {
+        if (visible) {
+            this.setPadding(new Insets(0));
+            this.setSpacing(0);
+            this.getChildren().removeAll(nameBox, descriptionBox, beginCountBox, endCountBox);
+            this.getChildren().add(invisibleLabel);
+            visible = false;
+        }
     }
 
     /**

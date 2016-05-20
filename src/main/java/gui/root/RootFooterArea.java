@@ -1,8 +1,12 @@
 package gui.root;
 
+import gui.misc.TweakingHelper;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import lombok.Getter;
 
 /**
@@ -11,22 +15,14 @@ import lombok.Getter;
  */
 class RootFooterArea extends HBox {
 
-    @Getter
-    private Label textOutputLabel;
+    private static final int FOOTER_AREA_HEIGHT = 10;
 
     /**
      * RootFooterArea Constructor.
      */
     RootFooterArea() {
-        // border style to mark it, for debugging for now.
-        setStyle("-fx-border-style: solid inside;"
-                + "-fx-border-width: 1;");
-        setPadding(new Insets(5, 10, 5, 10));
+        setStyle("-fx-background-color: " + TweakingHelper.STRING_SECONDARY + ";");
 
-        textOutputLabel = new Label("Text output goes here.");
-        getChildren().add(textOutputLabel);
-
-        this.setPrefHeight(30);
+        this.setPrefHeight(FOOTER_AREA_HEIGHT);
     }
-
 }

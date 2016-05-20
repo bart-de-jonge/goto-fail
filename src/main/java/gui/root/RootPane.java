@@ -1,14 +1,11 @@
 package gui.root;
 
-import control.ControllerManager;
-
-import gui.modal.StartupModalView;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
+import control.ControllerManager;
+import gui.modal.StartupModalView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -64,24 +61,37 @@ public class RootPane extends Application {
         primaryStage.setWidth(startingResolutionX);
         primaryStage.centerOnScreen();
 
+        // represents center of ui
+        rootCenterArea = new RootCenterArea(this, 0, true);
+        topLevelPane.setCenter(rootCenterArea);
         // represents file-view-help bar and button bars at top of gui.
         rootHeaderArea = new RootHeaderArea(this);
         topLevelPane.setTop(rootHeaderArea);
         // represents simple bar at bottom of gui.
         rootFooterArea = new RootFooterArea();
         topLevelPane.setBottom(rootFooterArea);
-        // represents center of ui
-        rootCenterArea = new RootCenterArea(this, 0, true);
-        topLevelPane.setCenter(rootCenterArea);
         // startup modal view.
         startupModalView = new StartupModalView(this);
         
         controllerManager = new ControllerManager(this);
 
+        startupMethod(primaryStage);
+    }
+
+    /**
+     * Specify the method to start up depending on the previously loaded project.
+     * @param primaryStage the main stage that is started
+     */
+    private void startupMethod(Stage primaryStage) {
         String recentProjectPath = readPathFromConfig();
         if (recentProjectPath != null) {
-            controllerManager.getFileMenuController().load(new File(recentProjectPath));
-            primaryStage.setTitle(controllerManager.getScriptingProject().getName());
+            File file = new File(recentProjectPath);
+            if (file.exists()) {
+                controllerManager.getProjectController().load(file);
+                primaryStage.setTitle(controllerManager.getScriptingProject().getName());
+            } else {
+                initStartupScreen(true);
+            }
         } else {
             initStartupScreen(false);
         }
@@ -105,20 +115,16 @@ public class RootPane extends Application {
      * @return the filepath if one is found, null otherwise
      */
     private String readPathFromConfig() {
-        BufferedReader reader = null;
+        Scanner reader = null;
         try {
-            reader = new BufferedReader(new FileReader(CONFIG_FILEPATH));
-            return reader.readLine();
+            reader = new Scanner(new File(CONFIG_FILEPATH), "UTF-8");
+            return reader.nextLine();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         } finally {
             if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                reader.close();
             }
         }
     }

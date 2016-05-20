@@ -1,5 +1,6 @@
 package gui.modal;
 
+import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import javafx.geometry.Insets;
@@ -20,20 +21,16 @@ public class StartupModalView extends ModalView {
     private static final int width = 550;
     private static final int height = 200;
 
-    // three main colors used throughout window. Experiment a little!
-    private static final Color mainColor = Color.rgb(255, 172, 70); // main bright color
-    private static final Color secondaryColor = Color.rgb(255, 140, 0); // darker color
-
     // variables for spacing
     private static final int topAreaHeight = 80;
     private static final int bottomAreaHeight = 60;
 
     // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: " + getStringFromColor(mainColor) + ";"
+    private String topStyle = "-fx-background-color: " + TweakingHelper.STRING_PRIMARY + ";"
             + "-fx-text-fill: white; -fx-font-size: 20;"
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: " + getStringFromColor(secondaryColor) + ";";
+            + "-fx-border-color: " + TweakingHelper.STRING_SECONDARY + ";";
 
     // variables for the buttons
     private int buttonWidth = 120;
@@ -92,14 +89,16 @@ public class StartupModalView extends ModalView {
      * Initialize the view of this modal.
      */
     private void initializeView() {
+       
+
+        // Create a new VBox for vertical layout
+        this.viewPane = new VBox();
+        
         // force minimum size
         getModalStage().setHeight(height);
         getModalStage().setWidth(width);
         getModalStage().setMinWidth(width);
         getModalStage().setMinHeight(height);
-
-        // Create a new VBox for vertical layout
-        this.viewPane = new VBox();
 
         // Add label at top
         initInformationLabel();
@@ -140,23 +139,9 @@ public class StartupModalView extends ModalView {
                 0, titlelabelOffsetFromLeft));
         this.viewPane.getChildren().add(content);
 
-        newButton = new StyledButton("New project");
-        newButton.setPrefWidth(buttonWidth);
-        newButton.setPrefHeight(buttonHeight);
-        newButton.setFillColor(Color.WHITE);
-        newButton.setBorderColor(mainColor);
-
-        loadButton = new StyledButton("Load project");
-        loadButton.setPrefWidth(buttonWidth);
-        loadButton.setPrefHeight(buttonHeight);
-        loadButton.setFillColor(Color.WHITE);
-        loadButton.setBorderColor(mainColor);
-
-        exitButton = new StyledButton("Exit");
-        exitButton.setPrefWidth(buttonWidth);
-        exitButton.setPrefHeight(buttonHeight);
-        exitButton.setFillColor(Color.WHITE);
-        exitButton.setBorderColor(mainColor);
+        newButton = createButton("New", true);
+        loadButton = createButton("Load", true);
+        exitButton = createButton("Exit", true);
 
         content.getChildren().addAll(newButton, loadButton, exitButton);
     }

@@ -3,10 +3,9 @@ package gui.root;
 import gui.headerarea.DetailView;
 import gui.headerarea.ToolView;
 import gui.misc.TweakingHelper;
-import javafx.scene.control.MenuItem;
-
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.HBox;
@@ -37,9 +36,6 @@ public class RootHeaderArea extends VBox {
      */
     public RootHeaderArea(RootPane rootPane) {
         this.rootPane = rootPane;
-
-        dropShadow = new DropShadow(BlurType.GAUSSIAN, Color.rgb(0,0,0,0.2), 20, 0.1, 0, 5);
-        this.setEffect(dropShadow);
 
         getChildren().add(initMenus());
         getChildren().add(initHeaderBar());
@@ -72,7 +68,7 @@ public class RootHeaderArea extends VBox {
         
         MenuItem editProjectItem = new MenuItem("Project");
         editProjectItem.setOnAction(e -> {
-                rootPane.getControllerManager().getEditMenuController().editProject();
+                rootPane.getControllerManager().getProjectController().editProject();
             });
         editMenu.getItems().add(editProjectItem);
         
@@ -92,6 +88,8 @@ public class RootHeaderArea extends VBox {
         Menu viewMenu = new Menu("View");
 
         MenuBar topMenuBar = new MenuBar();
+        topMenuBar.setStyle("-c-color-primary: "
+                + TweakingHelper.STRING_PRIMARY + ";");
         topMenuBar.setUseSystemMenuBar(true);
         topMenuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
         return topMenuBar;
@@ -104,34 +102,41 @@ public class RootHeaderArea extends VBox {
     private Menu initFileMenu() {
         MenuItem newItem = new MenuItem("New");
         newItem.setOnAction(e -> {
-                rootPane.getControllerManager().getFileMenuController().newProject();
+                rootPane.getControllerManager().getProjectController().newProject();
             });
 
         MenuItem saveItem = new MenuItem("Save");
         saveItem.setOnAction(e -> {
-                rootPane.getControllerManager().getFileMenuController().save();
+                rootPane.getControllerManager().getProjectController().save();
             });
 
         MenuItem saveAsItem = new MenuItem("Save as");
         saveAsItem.setOnAction(e -> {
-                rootPane.getControllerManager().getFileMenuController().saveAs();
+                rootPane.getControllerManager().getProjectController().saveAs();
             });
         
         MenuItem loadItem = new MenuItem("Load");
         loadItem.setOnAction(e -> {
-                rootPane.getControllerManager().getFileMenuController().load();
+                rootPane.getControllerManager().getProjectController().load();
+            });
+
+        MenuItem uploadItem = new MenuItem("Upload to webserver");
+        uploadItem.setOnAction(e -> {
+                rootPane.getControllerManager().getProjectController().uploadToWebserver();
             });
 
         MenuItem quit = new MenuItem("Quit");
         quit.setOnAction(e -> {
-                if (rootPane.getControllerManager().getScriptingProject() != null) {
-                    if (rootPane.getControllerManager().getScriptingProject().isChanged()) {
-                        rootPane.getControllerManager().initSaveModal();
-                    }
+                if (rootPane.getControllerManager().getScriptingProject() != null 
+                        && rootPane.getControllerManager()
+                                   .getScriptingProject().isChanged()) {
+                    rootPane.getControllerManager().initSaveModal();
+                } else {
+                    rootPane.getPrimaryStage().close();
                 }
             });
         Menu fileMenu = new Menu("File");
-        fileMenu.getItems().addAll(newItem, saveItem, saveAsItem, loadItem, quit);
+        fileMenu.getItems().addAll(newItem, saveItem, saveAsItem, loadItem, quit, uploadItem);
         return fileMenu;
     }
 

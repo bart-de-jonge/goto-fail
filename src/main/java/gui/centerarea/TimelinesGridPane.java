@@ -11,27 +11,18 @@ import javafx.geometry.Insets;
  */
 public class TimelinesGridPane extends ScrollableGridPane {
 
-    private ArrayList<SnappingPane> panes;
-    private int offsetFromLeft;
-
     /**
      * Constructor.
      * @param numberOfHorizontalGrids - number of horizontal grid lanes.
      * @param numberOfVerticalGrids - number of vertical grid lanes.
      * @param horizontalElementMinimumSize -  minimal size of horizontal grid lanes.
      * @param verticalElementSize -  size of vertical grid lanes.
-     * @param offsetFromLeft - how much offset from the left due to coverage by directortimeline.
      */
     public TimelinesGridPane(int numberOfHorizontalGrids, int numberOfVerticalGrids,
-                             int horizontalElementMinimumSize, int verticalElementSize,
-                             int offsetFromLeft) {
+                             int horizontalElementMinimumSize, int verticalElementSize) {
 
         super(numberOfHorizontalGrids, numberOfVerticalGrids,
                 horizontalElementMinimumSize, verticalElementSize);
-
-        // add padding to the left for overlapping sidebars
-        this.setPadding(new Insets(0,0,0,offsetFromLeft));
-        this.offsetFromLeft = offsetFromLeft;
 
         // add snapping panes
         addPanes();
@@ -60,14 +51,14 @@ public class TimelinesGridPane extends ScrollableGridPane {
      * Add snapping panes to grid. Also apply line separators to grid, once every few skips.
      */
     private void addPanes() {
-        panes = new ArrayList<>();
+        setPanes(new ArrayList<>());
         int c;
         for (int i = 0; i < getNumberOfHorizontalGrids(); i++) {
             c = 1;
             for (int j = 0; j < getNumberOfVerticalGrids(); j++) {
                 SnappingPane pane = new SnappingPane(j, i);
                 this.add(pane, i, j);
-                panes.add(pane);
+                getPanes().add(pane);
                 if (c > CountUtilities.NUMBER_OF_CELLS_PER_COUNT) {
                     pane.getStyleClass().add("timeline_Background_Lines");
                     c = 2;
@@ -79,36 +70,4 @@ public class TimelinesGridPane extends ScrollableGridPane {
         }
     }
 
-    /**
-     * Get the pane in which the scene coordinates lie.
-     * @param x - the x coordinate
-     * @param y - the y coordinate
-     * @return - the SnappingPane, null if none applicable
-     */
-    public SnappingPane getMyPane(double x, double y) {
-
-        // Correct for points outside grid
-        Bounds sceneBounds = this.localToScene(this.getLayoutBounds());
-        if (sceneBounds.getMinX() + offsetFromLeft > x) {
-            return getMyPane(sceneBounds.getMinX() + offsetFromLeft, y);
-        } else if (sceneBounds.getMaxX() < x) {
-            return getMyPane(sceneBounds.getMaxX(), y);
-        } else if (sceneBounds.getMinY() > y) {
-            return getMyPane(x, sceneBounds.getMinY());
-        } else if (sceneBounds.getMaxY() < y) {
-            return getMyPane(x, sceneBounds.getMaxY());
-        }
-        for (SnappingPane pane : panes) {
-            Bounds bounds = pane.localToScene(pane.getBoundsInLocal());
-            if (bounds.contains(x, y)) {
-                if (((y - bounds.getMinY()) * 2) > pane.getHeight()) {
-                    pane.setBottomHalf(true);
-                } else {
-                    pane.setBottomHalf(false);
-                }
-                return pane;
-            }
-        }
-        return null;
-    }
 }

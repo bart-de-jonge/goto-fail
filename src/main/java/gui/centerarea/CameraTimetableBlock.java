@@ -1,5 +1,6 @@
 package gui.centerarea;
 
+import gui.misc.TweakingHelper;
 import gui.root.RootCenterArea;
 
 /**
@@ -30,23 +31,17 @@ public class CameraTimetableBlock extends TimetableBlock {
     void initNormalPane() {
         // Add width/height properties, title label, count label and description label
         super.initNormalPane();
-
-        this.getContentPane().getStyleClass().add("block_Foreground_Normal");
-
     }
 
-    @Override
+    /**
+     * Initialize the dragpane with blur, title, count and description labels.
+     */
     void initDraggedPane() {
-        // Init the dragpane with blur, title, count and description labels
-        super.initDraggedPane();
-
-        this.getDraggedPane().getStyleClass().add("block_Background_Dragged");
-        this.getDraggedContentPane().getStyleClass().add("block_Foreground_Dragged");
+        super.initDraggedPane(getRootCenterArea().getMainTimeLineAnchorPane());
     }
 
-    @Override
     void initFeedbackPane() {
         // Init feedbackpane with blur and darken
-        super.initFeedbackPane();
+        super.initFeedbackPane(getRootCenterArea().getMainTimeLineGridPane());
     }
 }

@@ -22,6 +22,7 @@ public class CameraShotBlock extends ShotBlock {
 
     private double previousBeginCount;
     private double previousEndCount;
+    private int previousTimetableNumber;
 
     // The grid this camershotblock belongs to
     @Getter
@@ -58,8 +59,18 @@ public class CameraShotBlock extends ShotBlock {
 
         this.previousBeginCount = -1;
         this.previousEndCount = -1;
+        this.previousTimetableNumber = -1;
+
+        this.getShot().getBeginCountProperty().addListener((observable, oldValue, newValue) -> {
+                this.forceSetBeginCount(newValue.doubleValue());
+            });
+
+        this.getShot().getEndCountProperty().addListener(((observable, oldValue, newValue) -> {
+                this.forceSetEndCount(newValue.doubleValue());
+            }));
 
         this.getTimetableBlock().addEventHandler(ShotblockUpdatedEvent.SHOTBLOCK_UPDATED, e -> {
+                this.previousTimetableNumber = this.timetableNumber;
                 this.timetableNumber = TimelinesGridPane.getColumnIndex(
                     this.getTimetableBlock());
 
@@ -128,6 +139,7 @@ public class CameraShotBlock extends ShotBlock {
     public void restorePreviousPosition() {
         this.setBeginCount(this.previousBeginCount);
         this.setEndCount(this.previousEndCount);
+        this.setTimetableNumber(this.previousTimetableNumber);
         this.recompute();
     }
 }

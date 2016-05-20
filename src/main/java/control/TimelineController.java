@@ -25,6 +25,7 @@ public class TimelineController {
     
     private final int defaultAmountTimelines = 8;
 
+    @Setter
     private RootPane rootPane;
 
     // TODO: replace number of centerarea with xml data
@@ -39,6 +40,7 @@ public class TimelineController {
     private ArrayList<CameraShotBlock> cameraShotBlocks;
 
     // List of all currently colliding camerashotblocks
+    @Getter
     private ArrayList<CameraShotBlock> overlappingCameraShotBlocks;
 
     /**
@@ -81,9 +83,10 @@ public class TimelineController {
                               .getCameraTimelines()
                               .get(cameraIndex)
                               .addShot(newShot);
-        CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(), cameraIndex,
-                rootPane.getRootCenterArea(), newShot.getBeginCount(), newShot.getEndCount(),
-                newShot.getDescription(), newShot.getName(), this::shotChangedHandler, newShot);
+        CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(),
+                cameraIndex, rootPane.getRootCenterArea(), newShot.getBeginCount(),
+                newShot.getEndCount(), newShot.getDescription(), newShot.getName(),
+                this::shotChangedHandler, newShot);
 
         controllerManager.setActiveShotBlock(shotBlock);
         this.cameraShotBlocks.add(shotBlock);
@@ -110,6 +113,8 @@ public class TimelineController {
         cameraTimeline.removeShot(cameraShotBlock.getShot());
         controllerManager.getScriptingProject().changed();
 
+        this.decoupleShot(cameraShotBlock.getTimetableNumber(), cameraShotBlock.getShot());
+
         // Then remove the shot from the view
         cameraShotBlock.removeFromView();
     }
@@ -133,7 +138,7 @@ public class TimelineController {
      * @param event CameraShot's change event
      * @param changedBlock CameraShot to modify
      */
-    private void modifyCameraShot(CameraShotBlockUpdatedEvent event,
+    protected void modifyCameraShot(CameraShotBlockUpdatedEvent event,
                                   CameraShotBlock changedBlock) {
         controllerManager.getScriptingProject().changed();
         log.info("Shot moved to new TimeLine");
@@ -170,7 +175,7 @@ public class TimelineController {
      * @param timelineNumber - the timelinenumber where the camerashotblock is added
      * @param cameraShotBlock - the camerashotblock to check collisions with
      */
-    private void checkCollisions(int timelineNumber, CameraShotBlock cameraShotBlock) {
+    protected void checkCollisions(int timelineNumber, CameraShotBlock cameraShotBlock) {
         checkCollisions(timelineNumber, -1, cameraShotBlock);
     }
 
@@ -181,7 +186,7 @@ public class TimelineController {
      *                          anymore should be negative when adding new block
      * @param cameraShotBlock - the shotblock to check collisions with
      */
-    private void checkCollisions(int timelineNumber, int oldTimelineNumber,
+    protected void checkCollisions(int timelineNumber, int oldTimelineNumber,
                                  CameraShotBlock cameraShotBlock) {
         CameraTimeline timeline = controllerManager.getScriptingProject()
                                                    .getCameraTimelines()
@@ -228,7 +233,7 @@ public class TimelineController {
      * Removes the collisions from the counterpart in each collision as well
      * @param shotBlock - the shotblock to remove the collisions from
      */
-    private void removeCollisionFromCameraShotBlock(CameraShotBlock shotBlock) {
+    protected void removeCollisionFromCameraShotBlock(CameraShotBlock shotBlock) {
         ArrayList<Shot> toRemove = new ArrayList<>();
         for (Shot shot : shotBlock.getShot().getCollidesWith()) {
             toRemove.add(shot);
@@ -244,8 +249,8 @@ public class TimelineController {
      * @param event shot changed event.
      * @param shotBlock CameraShot for which to confirm changes.
      */
-    private void decoupleAndModify(CameraShotBlockUpdatedEvent event, CameraShotBlock shotBlock) {
-        if (shotBlock.getShot().getDirectorShot() != null) {
+    protected void decoupleAndModify(CameraShotBlockUpdatedEvent event, CameraShotBlock shotBlock) {
+        if (shotBlock.getShot().getDirectorShot() != null && this.shotBlockTimingModified(event)) {
             ShotDecouplingModalView decouplingModalView = new ShotDecouplingModalView(
                     this.rootPane, shotBlock.getShot());
 
@@ -274,7 +279,25 @@ public class TimelineController {
     void decoupleShot(int timelineIndex, CameraShot shot) {
         log.info("Decoupling shot.", shot);
         DirectorShot directorShot = shot.getDirectorShot();
-        directorShot.removeCameraShot(shot, timelineIndex);
-        shot.setDirectorShot(null);
+        if (directorShot != null) {
+            directorShot.removeCameraShot(shot, timelineIndex);
+            shot.setDirectorShot(null);
+        }
+    }
+
+    /**
+     * Checks whether or not a shot block's timing properties were altered.
+     * @param event Camera update event with possible changes
+     * @return Whether or not the timing properties changed
+     */
+    private boolean shotBlockTimingModified(CameraShotBlockUpdatedEvent event) {
+        CameraShotBlock shotBlock = event.getCameraShotBlock();
+        CameraShot shot = shotBlock.getShot();
+        if (shotBlock.getBeginCount() == shot.getBeginCount()
+                && shotBlock.getEndCount() == shot.getEndCount()
+                && event.getOldTimelineNumber() == shotBlock.getTimetableNumber()) {
+            return false;
+        }
+        return true;
     }
 }

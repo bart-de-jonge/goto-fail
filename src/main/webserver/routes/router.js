@@ -1,9 +1,12 @@
-/**
- * Created by Bart on 13/05/2016.
- */
-var index = require('./index');
 
+// Module used to attach all routes to the correct urls
 
-module.exports.addRoutes = function(app) {
-    app.use('/', index);
-}
+import index from "./index";
+import timeline from "./timeline";
+import uploadScp from "./upload-scp";
+
+module.exports.addRoutes = (app) => {
+    app.use("/", index);
+    app.use("/timeline", timeline);
+    app.use("/upload-scp", uploadScp);
+};

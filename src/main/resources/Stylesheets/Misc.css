@@ -12,69 +12,122 @@
   -fx-background-color: white;
 }
 
+/*
+ * Scrollpanes and scrollbars.
+ */
+
 .scroll-pane > .viewport {
     -fx-background-color: transparent;
 }
 
 .scroll-pane {
-   -fx-background-color: transparent;
+    -fx-background-color: transparent;
 }
 
-.block_Background_Normal {
-    -fx-background-color: -c-block-borders;
-    -fx-background-insets: 1 1 1 1;
+.scroll-bar: vertical {
+    -fx-skin: null;
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-border-width: 0 0 0 1px;
+    -fx-border-style: solid outside;
+    -fx-border-color: rgba(0,0,0,0.15);
+}
+
+.scroll-bar: horizontal {
+    -fx-skin: null;
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-border-width: 1px 0 0 0;
+    -fx-border-style: solid outside;
+    -fx-border-color: rgba(0,0,0,0.15);
+}
+
+.scroll-bar .decrement-arrow {
+    visibility: hidden;
+     -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow {
+     visibility: hidden;
+     -fx-padding: 0;
+}
+
+.scroll-bar .decrement-button {
+    visibility: hidden;
+     -fx-padding: 0;
+}
+
+.scroll-bar .increment-button {
+     visibility: hidden;
+     -fx-padding: 0;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .track-background {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-radius: 100;
+    -fx-background-color: rgba(0,0,0,0.35);
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-radius: 100;
+    -fx-background-color: rgba(0,0,0,0.55);
+}
+
+/*
+ * Timetable blocks.
+ */
+
+.block_Background {
+    -fx-background-insets: 0 0.5 0 0.5;
     -fx-border-style: solid inside;
-    -fx-border-color: -c-block-background;
     -fx-border-width: 0.5 0 0.5 0;
 }
 
-.block_Foreground_Normal {
+.block_Foreground {
     -fx-padding: 4 0 4 0;
     -fx-border-style: solid inside;
     -fx-border-insets: 4 0 4 0;
-    -fx-border-width: 2 0 0 0;
-    -fx-border-color: -c-block-highlight;
-    -fx-background-color: -c-block-background;
-    -fx-background-insets: 4 2 4 2;
-}
-
-.block_Background_Dragged {
-    -fx-background-color: -c-block-borders;
-    -fx-background-insets: 1 1 1 1;
-    -fx-background-radius: 3;
-}
-
-.block_Foreground_Dragged {
-    -fx-blend-mode: multiply;
-    -fx-opacity: 0.9;
-    -fx-padding: 4 0 4 0;
-    -fx-border-style: solid inside;
-    -fx-border-insets: 4 0 4 0;
-    -fx-border-width: 2 0 0 0;
-    -fx-border-color: -c-block-highlight;
-    -fx-background-color: -c-block-background;
+    -fx-border-width: 3 0 0 0;
     -fx-background-insets: 4 2 4 2;
 }
 
 .block_Text_Title {
-    -fx-text-fill: -c-block-highlight;
-    -fx-font-size: 13;
+    -fx-font-size: 16;
     -fx-padding: 0 0 0 5;
 }
 
 .block_Text_Normal {
-    -fx-text-fill: -c-block-text;
-    -fx-font-size: 12;
+    -fx-font-size: 14;
     -fx-padding: 0 5 5 5;
 }
 
+/*
+ * Timeline sub-gridding.
+ */
+
 .timeline_Background_Lines {
     -fx-border-color: gray;
-    -fx-border-width: 0.1px 1px 0px 1px;
+    -fx-border-width: 0.1px 0.5px 0px 0px;
 }
 
 .timeline_Background_Empty {
     -fx-border-color: gray;
-    -fx-border-width: 0px 1px 0px 1px;
+    -fx-border-width: 0px 0.5px 0px 0px;
 }
 
+.director_Background_Lines {
+    -fx-border-color: gray;
+    -fx-border-width: 0.1px 0px 0px 0px;
+}
+
+.director_Background_Empty {
+    -fx-border-color: gray;
+    -fx-border-width: 0px 0px 0px 0px;
+}

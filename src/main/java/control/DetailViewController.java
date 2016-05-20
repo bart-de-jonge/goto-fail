@@ -1,8 +1,8 @@
 package control;
 
 import gui.centerarea.CameraShotBlock;
+import gui.centerarea.DirectorShotBlock;
 import gui.headerarea.DetailView;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.input.KeyCode;
 
@@ -36,7 +36,8 @@ public class DetailViewController {
         detailView.getBeginCountField().focusedProperty()
                 .addListener(this::beginCountFocusListener);
 
-        detailView.getBeginCountField().setOnKeyPressed(event -> {
+        detailView.getBeginCountField().setOnKeyPressed(
+            event -> {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     this.beginCountUpdateHelper();
                 }
@@ -69,10 +70,7 @@ public class DetailViewController {
             double newVal = Double.parseDouble(newValue);
 
             manager.getActiveShotBlock().setBeginCount(newVal);
-            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
-                        .setBeginCount(newVal);
-            }
+            manager.getActiveShotBlock().getShot().setBeginCount(newVal);
         }
     }
 
@@ -85,7 +83,8 @@ public class DetailViewController {
         detailView.getEndCountField().focusedProperty()
                 .addListener(this::endCountFocusListener);
 
-        detailView.getEndCountField().setOnKeyPressed(event -> {
+        detailView.getEndCountField().setOnKeyPressed(
+            event -> {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     endCountUpdateHelper();
                 }
@@ -119,10 +118,7 @@ public class DetailViewController {
             detailView.getEndCountField().setText(newValue);
 
             manager.getActiveShotBlock().setEndCount(newVal);
-            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
-                        .setEndCount(newVal);
-            }
+            manager.getActiveShotBlock().getShot().setEndCount(newVal);
         }
     }
 
@@ -146,10 +142,7 @@ public class DetailViewController {
                                String oldValue, String newValue) {
         if (manager.getActiveShotBlock() != null) {
             manager.getActiveShotBlock().setDescription(newValue);
-            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveShotBlock()).getShot()
-                        .setDescription(newValue);
-            }
+            manager.getActiveShotBlock().getShot().setDescription(newValue);
         }
     }
 
@@ -173,10 +166,7 @@ public class DetailViewController {
                                         String oldValue, String newValue) {
         if (manager.getActiveShotBlock() != null) {
             manager.getActiveShotBlock().setName(newValue);
-            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                ((CameraShotBlock) manager.getActiveShotBlock())
-                        .getShot().setName(newValue);
-            }
+            manager.getActiveShotBlock().getShot().setName(newValue);
         }
     }
 
@@ -189,8 +179,10 @@ public class DetailViewController {
             detailView.setName(manager.getActiveShotBlock().getName());
             detailView.setBeginCount(manager.getActiveShotBlock().getBeginCount());
             detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
+            detailView.setVisible();
         } else {
             detailView.resetDetails();
+            detailView.setInvisible();
         }
     }
 }
