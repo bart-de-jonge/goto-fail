@@ -28,7 +28,7 @@ public class RootCenterArea extends VBox {
     @Getter @Setter
     private int numberOfTimelines = 8;
     @Getter @Setter
-    private int numberOfCounts = 400;
+    private int numberOfCounts = 200;
     @Getter
     private int countHeight = 10; // 10 works well, if you've changed this.
     @Getter

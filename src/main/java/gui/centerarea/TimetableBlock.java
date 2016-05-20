@@ -1,11 +1,10 @@
 package gui.centerarea;
 
-import static gui.centerarea.TimetableBlock.DraggingTypes.Move;
-
 import control.CountUtilities;
 
 import static gui.centerarea.TimetableBlock.DraggingTypes.Move;
 
+import gui.misc.BlurHelper;
 import gui.misc.TweakingHelper;
 import gui.root.RootCenterArea;
 import javafx.event.EventHandler;
@@ -80,13 +79,13 @@ public abstract class TimetableBlock extends Pane {
     private VBox contentPane; // content of this rootCenterArea
     @Getter
     private VBox draggedContentPane; // content of rootCenterArea shown when dragging
-    // for feedbackPane
-    @Getter
+
+    // for effects
     private WritableImage feedbackImage; // content of feedbackPane (is just an image, sneaky!)
-    @Getter
     private GaussianBlur gaussianBlur;
-    @Getter
     private ColorAdjust darken;
+    private ImageView image;
+    private BlurHelper blurHelper;
 
     @Getter
     private double dragXOffset;
@@ -98,15 +97,6 @@ public abstract class TimetableBlock extends Pane {
     private boolean dragging;
     @Getter
     private DraggingTypes draggingType;
-
-    @Getter
-    private double mouseCurrentXPosition;
-    @Getter
-    private double mouseCurrentYPosition;
-    @Getter
-    private double mouseCurrentXMovement;
-    @Getter
-    private double mouseCurrentYMovement;
 
     @Getter
     private ShotBlock parentBlock;
@@ -163,14 +153,12 @@ public abstract class TimetableBlock extends Pane {
 
         this.getStyleClass().add("block_Background");
         this.getContentPane().getStyleClass().add("block_Foreground");
-        this.setStyle("-fx-background-color: "
-                + TweakingHelper.STRING_PRIMARY + ";"
-                + "-fx-border-color: "
-                + TweakingHelper.STRING_SECONDARY + ";");
-        this.getContentPane().setStyle("-fx-background-color: "
-                + TweakingHelper.STRING_QUADRATORY + ";"
-                + "-fx-border-color: "
-                + TweakingHelper.STRING_TERTIARY + ";");
+        this.setStyle(
+                "-fx-background-color: "  + TweakingHelper.STRING_PRIMARY + ";"
+                + "-fx-border-color: " + TweakingHelper.STRING_SECONDARY + ";");
+        this.getContentPane().setStyle(
+                "-fx-background-color: " + TweakingHelper.STRING_QUADRATORY + ";"
+                + "-fx-border-color: " + TweakingHelper.STRING_TERTIARY + ";");
     }
 
     /**
@@ -181,6 +169,10 @@ public abstract class TimetableBlock extends Pane {
         // draggedPane itself
         draggedPane = new Pane();
         draggedPane.setVisible(false);
+
+        blurHelper = new BlurHelper(draggedPane);
+        blurHelper.setOffset(new Point2D(8,8));
+        addWithClipRegion(blurHelper.getImageView(), draggedPane);
 
         // dragged content rootCenterArea which mirrors
         // our content rootCenterArea, shown when dragging.
@@ -205,14 +197,13 @@ public abstract class TimetableBlock extends Pane {
 
         this.getDraggedPane().getStyleClass().add("block_Background");
         this.getDraggedContentPane().getStyleClass().add("block_Foreground");
-        this.getDraggedPane().setStyle("-fx-background-color: "
-                + TweakingHelper.STRING_PRIMARY + ";"
-                + "-fx-border-color: "
-                + TweakingHelper.STRING_SECONDARY + ";");
-        this.getDraggedContentPane().setStyle("-fx-background-color: "
-                + TweakingHelper.STRING_QUADRATORY + ";"
-                + "-fx-border-color: "
-                + TweakingHelper.STRING_TERTIARY + ";");
+        this.getDraggedPane().setStyle(
+                "-fx-background-color: " + TweakingHelper.STRING_PRIMARY + ";"
+                + "-fx-border-color: " + TweakingHelper.STRING_SECONDARY + ";");
+        this.getDraggedContentPane().setStyle(
+                "-fx-background-color: " + TweakingHelper.STRING_QUADRATORY + ";"
+                + "-fx-border-color: " + TweakingHelper.STRING_TERTIARY + ";"
+                + "-fx-blend-mode: multiply; -fx-opacity: 0.9;");
     }
 
     /**
@@ -224,6 +215,11 @@ public abstract class TimetableBlock extends Pane {
         feedbackPane.setVisible(false);
         gaussianBlur = new GaussianBlur(15.0);
         darken = new ColorAdjust(0, -0.4, -0.2, 0.2);
+        image = new ImageView();
+        image.fitHeightProperty().bind(feedbackPane.heightProperty());
+        darken.setInput(gaussianBlur);
+        image.setEffect(darken);
+        feedbackPane.getChildren().add(image);
         gridPane.add(feedbackPane, 0, 0);
     }
 
@@ -349,7 +345,8 @@ public abstract class TimetableBlock extends Pane {
             } else if (draggingType == DraggingTypes.Resize_Bottom) {
                 startingY = blockY;
             }
-            
+
+            blurHelper.processBlurUsingBounds();
         };
     }
 
@@ -359,7 +356,7 @@ public abstract class TimetableBlock extends Pane {
      */
     private void onPressedHandlerHelper(MouseEvent e) {
         // init correct object ordering
-        feedbackPane.toFront();
+        feedbackPane.toBack();
         draggedPane.toFront();
         this.toFront();
 
@@ -369,13 +366,10 @@ public abstract class TimetableBlock extends Pane {
         draggedPane.setLayoutY(getLayoutY());
 
         // Init feedbackpane
+        image.setImage(null);
+        feedbackImage = null;
         feedbackImage = this.snapshot(new SnapshotParameters(), null);
-        ImageView image = new ImageView(feedbackImage);
-        image.fitHeightProperty().bind(feedbackPane.heightProperty());
-        darken.setInput(gaussianBlur);
-        image.setEffect(darken);
-        feedbackPane.getChildren().add(image);
-        feedbackPane.toBack();
+        image.setImage(feedbackImage);
         feedbackPane.setVisible(true);
     }
 
@@ -401,6 +395,7 @@ public abstract class TimetableBlock extends Pane {
             }
 
             onMouseDraggedHelper(e, isCameraTimeline);
+            blurHelper.processBlurUsingBounds();
             e.consume();
         };
     }
@@ -420,7 +415,6 @@ public abstract class TimetableBlock extends Pane {
             }
 
             feedbackPane.setVisible(false);
-            feedbackPane.getChildren().remove(0);
             dragging = false;
 
             // Update ShotBlock
@@ -467,9 +461,6 @@ public abstract class TimetableBlock extends Pane {
             }
         }
 
-        mouseCurrentXMovement = x - mouseCurrentXPosition;
-        mouseCurrentYMovement = y - mouseCurrentYPosition;
-
         // determine what kind of dragging we're going to do, and handle it.
         if (draggingType == DraggingTypes.Resize_Bottom || draggingType == DraggingTypes.Resize_Top
                 || (draggingType == DraggingTypes.Move && !isCameraTimeline)) {
@@ -477,16 +468,9 @@ public abstract class TimetableBlock extends Pane {
         } else if (draggingType == Move) {
             onMouseDraggedHelperNormal(x, y, isCameraTimeline);
         }
-        // set feedbackpane
-        if (snapPane(feedbackPane, draggedPane, y, draggingType, isCameraTimeline)) {
-            feedbackPane.setVisible(true);
-        } else {
-            feedbackPane.setVisible(false);
-        }
 
-        // store current mouse position for next mouse movement calculation
-        mouseCurrentXPosition = x;
-        mouseCurrentYPosition = y;
+        // set feedbackpane
+        snapPane(feedbackPane, draggedPane, y, draggingType, isCameraTimeline);
     }
 
     /**
@@ -496,9 +480,8 @@ public abstract class TimetableBlock extends Pane {
      * @param y - the Y coordinate of the mouse during this snap
      * @param dragType - The type of drag used while snapping (move, resize)
      * @param isCameraTimeline true if the action is on the CameraTimeline
-     * @return - boolean that indicates if the snap was possible and completed
      */
-    private boolean snapPane(Region targetRegion, Region mappingPane,
+    private void snapPane(Region targetRegion, Region mappingPane,
                               double y, DraggingTypes dragType, boolean isCameraTimeline) {
         // set feedback rootCenterArea
         double yCoordinate;
@@ -506,12 +489,12 @@ public abstract class TimetableBlock extends Pane {
 
         if (dragType == Move) {
             yCoordinate = y - dragYOffset;
-            xCoordinate = mappingPane.localToScene(mappingPane.getBoundsInLocal()).getMinX()
-                    + mappingPane.getWidth() / 2;
         } else {
             yCoordinate = y;
-            xCoordinate = mappingPane.getLayoutX() + mappingPane.getWidth() / 2;
         }
+
+        xCoordinate = mappingPane.localToScene(mappingPane.getBoundsInLocal()).getMinX()
+                + mappingPane.getWidth() / 2;
 
         ScrollableGridPane gridPane;
         if (isCameraTimeline) {
@@ -535,9 +518,7 @@ public abstract class TimetableBlock extends Pane {
             }
             GridPane.setColumnIndex(targetRegion, myPane.getColumn());
             GridPane.setRowSpan(targetRegion, Math.max(numCounts, 1));
-            return true;
         }
-        return false;
     }
 
     /**

@@ -35,6 +35,7 @@ public class ScrollableGridPane extends GridPane {
      */
     public ScrollableGridPane(int numberOfHorizontalGrids, int numberOfVerticalGrids,
                               int horizontalElementMinimumSize, int verticalElementSize) {
+
         this.numberOfHorizontalGrids = numberOfHorizontalGrids;
         this.numberOfVerticalGrids = numberOfVerticalGrids;
         this.horizontalElementMinimumSize = horizontalElementMinimumSize;
@@ -81,7 +82,7 @@ public class ScrollableGridPane extends GridPane {
             return getMyPane(x, sceneBounds.getMinY());
         } else if (sceneBounds.getMaxY() < y) {
             return getMyPane(x, sceneBounds.getMaxY());
-        }
+        } 
 
         for (SnappingPane pane : panes) {
             Bounds bounds = pane.localToScene(pane.getBoundsInLocal());

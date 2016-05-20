@@ -1,5 +1,7 @@
 .root {
   -c-color-primary: rgb(0,0,0);
+  -c-color-white: rgb(255,255,255);
+  -c-color-grey: rgb(245,245,245);
 }
 
 .list-view {
@@ -17,12 +19,12 @@
 }
 
 .list-cell: even {
-    -fx-background-color: -c-color-primary;
+    -fx-background-color: -c-color-white;
     -fx-background-radius: 4;
 }
 
 .list-cell: odd {
-    -fx-background-color: -c-color-primary;
+    -fx-background-color: -c-color-grey;
     -fx-background-radius: 4;
 }
 
