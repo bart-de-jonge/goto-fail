@@ -14,7 +14,7 @@ public abstract class Timeline {
 
 
     // The project this timeline is currently in
-    @Getter @Setter
+    @Setter
     @XmlTransient
     private ScriptingProject project;
 
@@ -50,5 +50,10 @@ public abstract class Timeline {
             return true;
         }
         return false;
+    }
+
+    @XmlTransient
+    public ScriptingProject getProject() {
+        return project;
     }
 }
