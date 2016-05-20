@@ -8,5 +8,5 @@ import uploadScp from "./upload-scp";
 module.exports.addRoutes = (app) => {
     app.use("/", index);
     app.use("/timeline", timeline);
-    app.use("/upload-scp", upload_scp);
+    app.use("/upload-scp", uploadScp);
 };
