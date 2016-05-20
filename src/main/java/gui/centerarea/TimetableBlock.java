@@ -1,8 +1,8 @@
 package gui.centerarea;
 
-import static gui.centerarea.TimetableBlock.DraggingTypes.Move;
-
 import control.CountUtilities;
+
+import static gui.centerarea.TimetableBlock.DraggingTypes.Move;
 
 import gui.misc.TweakingHelper;
 import gui.root.RootCenterArea;
@@ -487,7 +487,6 @@ public abstract class TimetableBlock extends Pane {
             feedbackPane.setVisible(false);
         }
 
-        // store current mouse position for next mouse movement calculation
         mouseCurrentXPosition = x;
         mouseCurrentYPosition = y;
     }
