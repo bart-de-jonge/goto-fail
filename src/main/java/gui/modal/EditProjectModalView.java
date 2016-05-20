@@ -218,10 +218,6 @@ public class EditProjectModalView extends ModalView {
         nameField.setText(project.getName());
         descriptionField.setText(project.getDescription());
         secondsPerCountField.setText(Double.toString(project.getSecondsPerCount()));
-        log.error(directorTimelineDescriptionField);
-        log.error(project);
-        log.error(project.getDirectorTimeline());
-        log.error(project.getDirectorTimeline().getDescription());
         
         directorTimelineDescriptionField.setText(project.getDirectorTimeline().getDescription());
         initCameraTypeList(cameraTypeList);

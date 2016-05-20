@@ -152,7 +152,10 @@ public class RootCenterArea extends VBox {
         // labels for camera timelines
         for (int i = 0; i < numberOfTimelines; i++) {
             String name = getRootPane().getControllerManager()
-                    .getScriptingProject().getCameraTimelines().get(i).getName();
+                    .getScriptingProject()
+                    .getCameraTimelines()
+                    .get(i)
+                    .getName();
             Label label = new Label(name);
             
             label.setAlignment(Pos.CENTER);
