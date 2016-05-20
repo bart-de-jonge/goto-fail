@@ -1,6 +1,7 @@
 # Context project by goto fail;
-This is the Context project of the team 'goto fail;'. This project aims to improve the workflow and overall productivity of the scripting and production at 'Polycast'.
 [![Build Status](https://travis-ci.org/bartdejonge1996/goto-fail.png)](https://travis-ci.org/bartdejonge1996/goto-fail)
+
+This is the Context project of the team 'goto fail;'. This project aims to improve the workflow and overall productivity of the scripting and production at 'Polycast'.
 
 ## Lombok and annotation processing
 This project uses lombok, an annotation processor for java. This annotation processor needs to be enabled in your settings. This can be done using the following steps:
