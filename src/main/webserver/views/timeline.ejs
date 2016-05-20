@@ -52,19 +52,23 @@
                                                     <span><%= curShot[j].beginCount %> - <%= curShot[j].endCount %></span>
                                                 </div>
                                             </td>
-                                            <% curShotNumber[j]++;
+                                            <% curShotNumber[j]++
                                             if (curShotNumber[j] < cameraTimelines[j].getCameraShots().length) {
                                                 prevShot[j] = curShot[j];
                                                 curShot[j] = cameraTimelines[j].getCameraShots()[curShotNumber[j]];
                                             } else {
                                                 curShotNumber[j] = -1;
+                                                prevShot[j] = curShot[j];
+                                                curShot[j] = null;
                                             }
-                                        } else if (prevShot[j] === null || curShot[j].beginCount*4 > j && prevShot[j].endCount*4 < j) { %>
+                                        } else if (prevShot[j] === null || (curShot[j] !== null && curShot[j].beginCount*4 > i && prevShot[j].endCount*4 < i )
+                                                    || (curShot[j] === null &&  prevShot[j].endCount*4 < i)) { %>
                                             <td></td>
                                         <%
-                                        if(j === 3) {
+                                        if(j === 1) {
                                             console.log("acjalksdfj");
                                             console.log(curShot[j]);
+                                            console.log(prevShot[j]);
                                         }
                                         }
                                     } %>
