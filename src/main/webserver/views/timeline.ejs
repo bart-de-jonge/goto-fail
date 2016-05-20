@@ -2,7 +2,6 @@
 <html>
 <head>
     <link rel="stylesheet" href="/stylesheets/timeline.css">
-    <script src="/javascripts/jquery-offline.js"></script>
     <script src="/javascripts/timeline.js"></script>
 </head>
 
@@ -36,7 +35,6 @@
                                 curShotNumber[j] = 0;
                                 prevShot[j] = null;
                                 curShot[j] = cameraTimelines[j].getCameraShots()[0];
-                                console.log(curShot[j]);
                             }
 
                             // For all counts do
@@ -49,23 +47,24 @@
                                             %>-<%
                                         }%></td>
 
-                                    // For all timelines do
-                                    <% for(j = 0; j < cameraTimelines.length; j++) {
+                                    <% // For all timelines do
+                                    for(j = 0; j < cameraTimelines.length; j++) {
 
                                         // If curshot is not undefined, we are not done and the begincounts collide
                                         if (typeof curShot[j] !== "undefined" && curShotNumber[j] != -1
-                                            && curShot[j].beginCount*4 === i) { %>
-
+                                            && curShot[j].beginCount*4 === i) {
                                             // Insert td with correct rowspan
+                                            %>
+
                                             <td rowspan="<%= (curShot[j].endCount - curShot[j].beginCount) * 4 + 1 %>">
                                                 <div class="timeline-block">
                                                     <span><%= curShot[j].beginCount %> - <%= curShot[j].endCount %></span>
                                                 </div>
                                             </td>
 
-                                            // Update shotnumber and the current shot. If we are done set
+                                            <% // Update shotnumber and the current shot. If we are done set
                                             // curshot to null for checks later on
-                                            <% curShotNumber[j]++
+                                            curShotNumber[j]++
                                             if (curShotNumber[j] < cameraTimelines[j].getCameraShots().length) {
                                                 prevShot[j] = curShot[j];
                                                 curShot[j] = cameraTimelines[j].getCameraShots()[curShotNumber[j]];
