@@ -3,6 +3,7 @@ package data;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import lombok.Getter;
 import lombok.Setter;
 
 /**
@@ -16,7 +17,7 @@ public abstract class Timeline {
     @Setter
     @XmlTransient
     private ScriptingProject project;
-    
+
     /**
      * Default constructor.
      */
@@ -26,6 +27,7 @@ public abstract class Timeline {
 
     /**
      * Constructor.
+     *
      * @param project the project that contains this timeline
      */
     public Timeline(ScriptingProject project) {
@@ -35,8 +37,9 @@ public abstract class Timeline {
     /**
      * Checks overlap between two shots. If the two shots are colliding, the two shots will have
      * their colliding variables set to true.
-     * @param s1 the first Shot to check overlap
-     * @param s2 the other Shot to check overlap
+     *
+     * @param s1      the first Shot to check overlap
+     * @param s2      the other Shot to check overlap
      * @param seconds the seconds to use for the margin
      * @return true when the two shots are colliding, false if not
      */
@@ -48,7 +51,7 @@ public abstract class Timeline {
         }
         return false;
     }
-    
+
     @XmlTransient
     public ScriptingProject getProject() {
         return project;

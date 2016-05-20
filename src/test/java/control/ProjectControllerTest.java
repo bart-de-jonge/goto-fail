@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import data.DirectorTimeline;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -82,8 +83,10 @@ public class ProjectControllerTest extends ApplicationTest {
     @Test
     public void loadTest() {
         ArrayList<CameraTimeline> listMock = mock(ArrayList.class);
+        DirectorTimeline directorTimelineMock = mock(DirectorTimeline.class);
         when(listMock.size()).thenReturn(3);
         when(project.getCameraTimelines()).thenReturn(listMock);
+        when(project.getDirectorTimeline()).thenReturn(directorTimelineMock);
         File file = new File("src/test/files/general_test3.scp");
         TimelineController timelineController = mock(TimelineController.class);
         when(controllerManager.getTimelineControl()).thenReturn(timelineController);
