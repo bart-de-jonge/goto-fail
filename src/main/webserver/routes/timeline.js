@@ -13,11 +13,14 @@ router.get("/", (req, res) => {
     // Dummyfile Todo: replace with dynamic
     fs.readFile(`${__dirname}/../test_project.scp`, (err, data) => {
         parser.parseString(data, (err, result) => {
+            // Read timelines from xml
             const cameraTimelinesXML = result.scriptingProject["camera-centerarea"][0].cameraTimeline;
 
             const cameraTimelines = new Array();
             const flattenedCameraTimelines = new Array();
 
+            // Insert shots in timeline which is pushed to timelinesarray
+            // and push to flattenedArray
             cameraTimelinesXML.forEach(timeline => {
                 console.log(timeline);
                 const cameraTimeline = new CameraTimeline("dummy", "dymmy");
@@ -27,17 +30,13 @@ router.get("/", (req, res) => {
                         cameraTimeline.addCameraShot(cameraShot);
                         flattenedCameraTimelines.push(cameraShot);
                     });
-                } else {
-                    console.log("undefined bitch")
                 }
-
                 cameraTimelines.push(cameraTimeline);
             });
 
             // Calculate minimum and maximum counts
             let minCount = 0;
             let maxCount = 0;
-
             if (flattenedCameraTimelines.length > 0) {
                 minCount = Number(flattenedCameraTimelines[0].beginCount);
                 maxCount = Number(flattenedCameraTimelines[0].endCount);
@@ -51,6 +50,7 @@ router.get("/", (req, res) => {
                 });
             }
 
+            // Render the timeline.ejs file with the correct variables
             res.render("timeline", {
                 cameraTimelines,
                 minCount,

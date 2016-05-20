@@ -30,28 +30,41 @@
                             var curShotNumber = new Array();
                             var prevShot = new Array();
                             var curShot = new Array();
-                            console.log("\n STARTING \n");
-                            for (j = 0; j < cameraTimelines.length; j++) {
+
+                            // Initialize all timelines
+                            for (var j = 0; j < cameraTimelines.length; j++) {
                                 curShotNumber[j] = 0;
                                 prevShot[j] = null;
                                 curShot[j] = cameraTimelines[j].getCameraShots()[0];
                                 console.log(curShot[j]);
                             }
 
-                            for(i = minCount*4; i <= maxCount*4; i++) { %>
+                            // For all counts do
+                            for(var i = minCount*4; i <= maxCount*4; i++) { %>
                                 <tr>
-                                    <td><% if (i%4 === 0) {
+                                    <td><% // If 4th count insert label
+                                        if (i%4 === 0) {
                                             %><%=i/4%><%
                                         } else {
                                             %>-<%
                                         }%></td>
+
+                                    // For all timelines do
                                     <% for(j = 0; j < cameraTimelines.length; j++) {
-                                        if (typeof curShot[j] !== "undefined" && curShotNumber[j] != -1 && curShot[j].beginCount*4 === i) { %>
+
+                                        // If curshot is not undefined, we are not done and the begincounts collide
+                                        if (typeof curShot[j] !== "undefined" && curShotNumber[j] != -1
+                                            && curShot[j].beginCount*4 === i) { %>
+
+                                            // Insert td with correct rowspan
                                             <td rowspan="<%= (curShot[j].endCount - curShot[j].beginCount) * 4 + 1 %>">
                                                 <div class="timeline-block">
                                                     <span><%= curShot[j].beginCount %> - <%= curShot[j].endCount %></span>
                                                 </div>
                                             </td>
+
+                                            // Update shotnumber and the current shot. If we are done set
+                                            // curshot to null for checks later on
                                             <% curShotNumber[j]++
                                             if (curShotNumber[j] < cameraTimelines[j].getCameraShots().length) {
                                                 prevShot[j] = curShot[j];
@@ -61,16 +74,14 @@
                                                 prevShot[j] = curShot[j];
                                                 curShot[j] = null;
                                             }
-                                        } else if (prevShot[j] === null || (curShot[j] !== null && curShot[j].beginCount*4 > i && prevShot[j].endCount*4 < i )
+
+                                            // Skip td if we are in a block, otherwise insert.
+                                            // DONT TOUCH THESE TESTS, THEY BREAK VERY EASILY
+                                        } else if (prevShot[j] === null || (curShot[j] !== null && curShot[j].beginCount*4 > i
+                                                    && prevShot[j].endCount*4 < i )
                                                     || (curShot[j] === null &&  prevShot[j].endCount*4 < i)) { %>
                                             <td></td>
-                                        <%
-                                        if(j === 1) {
-                                            console.log("acjalksdfj");
-                                            console.log(curShot[j]);
-                                            console.log(prevShot[j]);
-                                        }
-                                        }
+                                        <% }
                                     } %>
                                 </tr>
                         <% }; %>
