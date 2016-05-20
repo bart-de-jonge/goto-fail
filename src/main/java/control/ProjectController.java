@@ -1,13 +1,15 @@
 package control;
 
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.sun.xml.internal.ws.encoding.xml.XMLMessage;
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -28,6 +30,16 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.extern.log4j.Log4j2;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 @Log4j2
 public class ProjectController {
@@ -38,6 +50,13 @@ public class ProjectController {
     private AddCameraModalView cameraModal;
     private AddCameraTypeModalView cameraTypeModal;
     private DeleteCameraTypeWarningModalView typeWarningModal;
+
+
+    // Upload veriables
+    private String url = "http://localhost:3000/upload-scp";
+    private String charset = "UTF-8";
+    private String boundary = Long.toHexString(System.currentTimeMillis());
+    private String CRLF = "\r\n";
     
     /**
      * Construct a new FileMenuController.
@@ -51,6 +70,43 @@ public class ProjectController {
                          .setOnMouseClicked(this::loadProject);
         controllerManager.getRootPane().getStartupModalView().getExitButton()
                          .setOnMouseClicked(this::exit);
+    }
+
+    public void uploadToWebserver() {
+        // Save the project
+        this.save();
+
+        // Make request
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost uploadFile = new HttpPost(url);
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.addBinaryBody("project", new File(controllerManager.getScriptingProject().getFilePath()), ContentType.APPLICATION_XML, "project.scp");
+        HttpEntity multipart = builder.build();
+        uploadFile.setEntity(multipart);
+        try {
+            // get response
+            CloseableHttpResponse response = httpClient.execute(uploadFile);
+            HttpEntity responseEntity = response.getEntity();
+            JSONObject resultJson = new JSONObject(EntityUtils.toString(responseEntity));
+            boolean result = resultJson.getBoolean("succes");
+
+            // Do something with response
+            if(result) {
+                // awesome, Todo: give feedback to user
+                System.out.println("Upload successful");
+            } else {
+                // damn, Todo: give feedback to user
+                System.out.println("Upload failed");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println("aslkdfjsakdj");
     }
     
     /**
