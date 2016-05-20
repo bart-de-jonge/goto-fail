@@ -2,10 +2,11 @@ import express from "express";
 const router = new express.Router();
 import fs from "fs";
 import multipart from "connect-multiparty";
-const multipartMiddleware = multipart;
+const multipartMiddleware = multipart();
 
 router.post("/", multipartMiddleware, (req, res) => {
-    const newPath = `${__dirname}/../project-scp-fies/project.scp`;
+    const newPath = `${__dirname}/../project-scp-files/project.scp`;
+
     if (req.files.project.name.endsWith(".scp")) {
         fs.rename(req.files.project.path, newPath, (err) => {
             if (err) {

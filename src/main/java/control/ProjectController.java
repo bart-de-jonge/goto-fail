@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -32,6 +31,16 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 @Log4j2
 public class ProjectController {
@@ -45,8 +54,11 @@ public class ProjectController {
     private AddCameraTypeModalView cameraTypeModal;
     @Setter
     private DeleteCameraTypeWarningModalView typeWarningModal;
-   
-    
+
+    // Upload variables
+    // Todo: replace with popup or something like that for user
+    private String url = "http://localhost:3000/upload-scp";
+
     public void setEditProjectModal(EditProjectModalView modal) {
         editProjectModal = modal;
     }
@@ -63,6 +75,45 @@ public class ProjectController {
                          .setOnMouseClicked(this::loadProject);
         controllerManager.getRootPane().getStartupModalView().getExitButton()
                          .setOnMouseClicked(this::exit);
+    }
+
+    /**
+     * Upload the current project to the webserver.
+     */
+    public void uploadToWebserver() {
+        // Save the project
+        this.save();
+
+        // Make request
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost uploadFile = new HttpPost(url);
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        builder.addBinaryBody("project", new File(
+                controllerManager.getScriptingProject().getFilePath()),
+                ContentType.APPLICATION_XML, "project.scp");
+        HttpEntity multipart = builder.build();
+        uploadFile.setEntity(multipart);
+        try {
+            // get response
+            CloseableHttpResponse response = httpClient.execute(uploadFile);
+            HttpEntity responseEntity = response.getEntity();
+            JSONObject resultJson = new JSONObject(EntityUtils.toString(responseEntity));
+            boolean result = resultJson.getBoolean("succes");
+
+            // Do something with response
+            if (result) {
+                // awesome, Todo: give feedback to user
+                System.out.println("Upload successful");
+            } else {
+                // damn, Todo: give feedback to user
+                System.out.println("Upload failed");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
     
     /**

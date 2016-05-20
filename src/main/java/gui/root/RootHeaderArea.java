@@ -120,6 +120,11 @@ public class RootHeaderArea extends VBox {
                 rootPane.getControllerManager().getProjectController().load();
             });
 
+        MenuItem uploadItem = new MenuItem("Upload to webserver");
+        uploadItem.setOnAction(e -> {
+                rootPane.getControllerManager().getProjectController().uploadToWebserver();
+            });
+
         MenuItem quit = new MenuItem("Quit");
         quit.setOnAction(e -> {
                 if (rootPane.getControllerManager().getScriptingProject() != null 
@@ -131,7 +136,7 @@ public class RootHeaderArea extends VBox {
                 }
             });
         Menu fileMenu = new Menu("File");
-        fileMenu.getItems().addAll(newItem, saveItem, saveAsItem, loadItem, quit);
+        fileMenu.getItems().addAll(newItem, saveItem, saveAsItem, loadItem, quit, uploadItem);
         return fileMenu;
     }
 
