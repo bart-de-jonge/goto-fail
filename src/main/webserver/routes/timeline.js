@@ -9,7 +9,7 @@ const parser = new xml2js.Parser();
 // Get timelines from xml
 const getTimelines = function getTimelines(callback) {
     // Dummyfile Todo: replace with dynamic
-    fs.readFile(`${__dirname}/../test_project.scp`, (err, data) => {
+    fs.readFile(`${__dirname}/../project-scp-files/project.scp`, (err, data) => {
         parser.parseString(data, (err, result) => {
             // Read timelines from xml
             const cameraTimelinesXML =
