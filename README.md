@@ -1,4 +1,6 @@
 # Context project by goto fail;
+[![Build Status](https://travis-ci.org/bartdejonge1996/goto-fail.png)](https://travis-ci.org/bartdejonge1996/goto-fail)
+
 This is the Context project of the team 'goto fail;'. This project aims to improve the workflow and overall productivity of the scripting and production at 'Polycast'.
 
 ## Lombok and annotation processing

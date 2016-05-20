@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<scriptingProject>
+    <cameraTypes>
+        <description>A camera that can be controlled over IP</description>
+        <movementMargin>2.5</movementMargin>
+        <name>IP Cam</name>
+    </cameraTypes>
+    <cameraTypes>
+        <description>A camera that has to be moved manually</description>
+        <movementMargin>5.0</movementMargin>
+        <name>Manual Cam</name>
+    </cameraTypes>
+    <cameraTypes>
+        <description>sdf</description>
+        <movementMargin>6.0</movementMargin>
+        <name>asdf</name>
+    </cameraTypes>
+    <name>General Testing Project</name>
+    <description>A project with legit cam names etc for testing</description>
+    <cameraList>
+        <camera>
+            <cameraType>
+                <description>A camera that has to be moved manually</description>
+                <movementMargin>5.0</movementMargin>
+                <name>Manual Cam</name>
+            </cameraType>
+            <description>Some camera that takes a global shot</description>
+            <movementMargin>5.0</movementMargin>
+            <name>Overall camera</name>
+        </camera>
+        <camera>
+            <cameraType>
+                <description>A camera that can be controlled over IP</description>
+                <movementMargin>2.5</movementMargin>
+                <name>IP Cam</name>
+            </cameraType>
+            <description>A camera for violin shots</description>
+            <movementMargin>2.5</movementMargin>
+            <name>Violin Cam</name>
+        </camera>
+        <camera>
+            <cameraType>
+                <description>A camera that can be controlled over IP</description>
+                <movementMargin>2.5</movementMargin>
+                <name>IP Cam</name>
+            </cameraType>
+            <description>A Camera for close ups</description>
+            <movementMargin>2.5</movementMargin>
+            <name>Close Up Camera</name>
+        </camera>
+    </cameraList>
+    <directorTimeline>
+        <shotList/>
+        <description>OpieOP</description>
+    </directorTimeline>
+    <camera-centerarea>
+        <cameraTimeline>
+            <shotList/>
+            <camera>
+                <cameraType>
+                    <description>A camera that has to be moved manually</description>
+                    <movementMargin>5.0</movementMargin>
+                    <name>Manual Cam</name>
+                </cameraType>
+                <description>Some camera that takes a global shot</description>
+                <movementMargin>5.0</movementMargin>
+                <name>Overall camera</name>
+            </camera>
+            <name>Overall camera</name>
+        </cameraTimeline>
+        <cameraTimeline>
+            <shotList/>
+            <camera>
+                <cameraType>
+                    <description>A camera that can be controlled over IP</description>
+                    <movementMargin>2.5</movementMargin>
+                    <name>IP Cam</name>
+                </cameraType>
+                <description>A camera for violin shots</description>
+                <movementMargin>2.5</movementMargin>
+                <name>Violin Cam</name>
+            </camera>
+            <name>Violin Cam</name>
+        </cameraTimeline>
+        <cameraTimeline>
+            <shotList/>
+            <camera>
+                <cameraType>
+                    <description>A camera that can be controlled over IP</description>
+                    <movementMargin>2.5</movementMargin>
+                    <name>IP Cam</name>
+                </cameraType>
+                <description>A Camera for close ups</description>
+                <movementMargin>2.5</movementMargin>
+                <name>Close Up Camera</name>
+            </camera>
+            <name>Close Up Camera</name>
+        </cameraTimeline>
+    </camera-centerarea>
+    <secondsPerCount>3.0</secondsPerCount>
+    <filePath>C:\Users\Menno\Desktop\general_test3.scp</filePath>
+    <changed>true</changed>
+</scriptingProject>

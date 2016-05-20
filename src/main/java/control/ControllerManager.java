@@ -61,16 +61,22 @@ public class ControllerManager {
      * @param timelineController   - the controller that controls the centerarea
      * @param detailViewController - the controller that controls the detailview
      * @param toolViewController   - the controller that controls the toolview
+     * @param directorTimelineController - the controller that controls the director timeline
+     * @param projectController    - the controller that manages the project
      */
     public ControllerManager(RootPane rootPane, TimelineController timelineController,
                              DetailViewController detailViewController,
-                             ToolViewController toolViewController) {
+                             ToolViewController toolViewController,
+                             DirectorTimelineController directorTimelineController,
+                             ProjectController projectController) {
         log.debug("Initializing new ControllerManager");
 
         this.rootPane = rootPane;
         this.timelineControl = timelineController;
         this.detailViewController = detailViewController;
         this.toolViewController = toolViewController;
+        this.directorTimelineControl = directorTimelineController;
+        this.projectController = projectController;
     }
 
     /**
