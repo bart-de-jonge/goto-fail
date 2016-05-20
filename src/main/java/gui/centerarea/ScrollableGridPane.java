@@ -25,6 +25,7 @@ public class ScrollableGridPane extends GridPane {
     private int verticalElementSize; // size of every vertical grid lane.
     @Getter @Setter
     private ArrayList<SnappingPane> panes;
+    protected int offsetFromLeft;
 
     /**
      * Constructor of class.
@@ -35,6 +36,7 @@ public class ScrollableGridPane extends GridPane {
      */
     public ScrollableGridPane(int numberOfHorizontalGrids, int numberOfVerticalGrids,
                               int horizontalElementMinimumSize, int verticalElementSize) {
+        this.offsetFromLeft = 0;
         this.numberOfHorizontalGrids = numberOfHorizontalGrids;
         this.numberOfVerticalGrids = numberOfVerticalGrids;
         this.horizontalElementMinimumSize = horizontalElementMinimumSize;
@@ -71,17 +73,19 @@ public class ScrollableGridPane extends GridPane {
      */
     public SnappingPane getMyPane(double x, double y) {
 
+        System.out.println(offsetFromLeft);
+
         // Correct for points outside grid
         Bounds sceneBounds = this.localToScene(this.getLayoutBounds());
-        if (sceneBounds.getMinX() > x) {
-            return getMyPane(sceneBounds.getMinX(), y);
+        if (sceneBounds.getMinX() + offsetFromLeft > x) {
+            return getMyPane(sceneBounds.getMinX() + offsetFromLeft, y);
         } else if (sceneBounds.getMaxX() < x) {
             return getMyPane(sceneBounds.getMaxX(), y);
         } else if (sceneBounds.getMinY() > y) {
             return getMyPane(x, sceneBounds.getMinY());
         } else if (sceneBounds.getMaxY() < y) {
             return getMyPane(x, sceneBounds.getMaxY());
-        }
+        } 
 
         for (SnappingPane pane : panes) {
             Bounds bounds = pane.localToScene(pane.getBoundsInLocal());
