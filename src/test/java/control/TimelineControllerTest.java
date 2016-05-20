@@ -45,7 +45,10 @@ public class TimelineControllerTest extends ApplicationTest {
         TimelineController timelineControllerMock = Mockito.mock(TimelineController.class);
         DetailViewController detailViewController = Mockito.mock(DetailViewController.class);
         ToolViewController toolViewController = Mockito.mock(ToolViewController.class);
-        manager = spy(new ControllerManager(rootPane, timelineControllerMock, detailViewController, toolViewController));
+        DirectorTimelineController directorTimelineController = Mockito.mock(DirectorTimelineController.class);
+        ProjectController projectController = Mockito.mock(ProjectController.class);
+        manager = spy(new ControllerManager(rootPane, timelineControllerMock, detailViewController, toolViewController,
+                                            directorTimelineController, projectController));
 
         project = spy(new ScriptingProject());
         project.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), "kek", null));
