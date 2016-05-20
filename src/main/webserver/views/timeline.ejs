@@ -26,9 +26,9 @@
                         </tr>
                         <%
                             // Setup vars
-                            var curShotNumber = new Array();
-                            var prevShot = new Array();
-                            var curShot = new Array();
+                            var curShotNumber = [];
+                            var prevShot = [];
+                            var curShot = [];
 
                             // Initialize all timelines
                             for (var j = 0; j < cameraTimelines.length; j++) {
@@ -38,7 +38,7 @@
                             }
 
                             // For all counts do
-                            for(var i = minCount*4; i <= maxCount*4; i++) { %>
+                            for(var i = minCount * 4; i <= maxCount * 4; i++) { %>
                                 <tr>
                                     <td><% // If 4th count insert label
                                         if (i%4 === 0) {
@@ -52,7 +52,7 @@
 
                                         // If curshot is not undefined, we are not done and the begincounts collide
                                         if (typeof curShot[j] !== "undefined" && curShotNumber[j] != -1
-                                            && curShot[j].beginCount*4 === i) {
+                                            && curShot[j].beginCount * 4 === i) {
                                             // Insert td with correct rowspan
                                             %>
 
@@ -76,9 +76,9 @@
 
                                             // Skip td if we are in a block, otherwise insert.
                                             // DONT TOUCH THESE TESTS, THEY BREAK VERY EASILY
-                                        } else if (prevShot[j] === null || (curShot[j] !== null && curShot[j].beginCount*4 > i
-                                                    && prevShot[j].endCount*4 < i )
-                                                    || (curShot[j] === null &&  prevShot[j].endCount*4 < i)) { %>
+                                        } else if (prevShot[j] === null || (curShot[j] !== null && curShot[j].beginCount * 4 > i
+                                                    && prevShot[j].endCount * 4 < i )
+                                                    || (curShot[j] === null &&  prevShot[j].endCount * 4 < i)) { %>
                                             <td></td>
                                         <% }
                                     } %>
