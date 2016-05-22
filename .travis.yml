@@ -6,8 +6,11 @@ jdk:
   - oraclejdk8
 addons:
  apt:
+   hosts:
+     - deb.nodesource.com/setup_6.x
    packages:
      - oracle-java8-installer
+     - nodejs
 notifications:
   slack: gotofail:rNibSSSvoPtDAS7wws1KtdXd
   email: false
@@ -18,6 +21,7 @@ env:
 
 before_script:
   - "export DISPLAY=:99.0"
+  - "npm install"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
 script:
