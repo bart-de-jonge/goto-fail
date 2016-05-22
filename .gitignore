@@ -18,3 +18,4 @@ src/main/webserver/.idea/
 src/main/webserver/npm-debug.log
 src/main/webserver/project-scp-files/
 **/*.swp
+**/.tern-project

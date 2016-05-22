@@ -3,15 +3,18 @@
  * Loads all necessary event and connection listeners.
  */
 import socketio from "socket.io";
+import log4js from "log4js";
+
+const logger = log4js.getLogger();
 
 const listen = (server) => {
     const io = socketio.listen(server);
 
-    console.log("Initialized socket.io connection.");
+    logger.debug("Initialized socket.io connection.");
     io.on("connection", (socket) => {
-        console.log("a user connected.");
+        logger.info("a user connected.");
         socket.on("disconnect", () => {
-            console.log("user disconnected.");
+            logger.info("user disconnected.");
         });
     });
 };
