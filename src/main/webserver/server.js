@@ -7,6 +7,7 @@
 import "babel-polyfill";
 import app from "./app";
 import http from "http";
+import io from "./routes/sockets/sockets.js";
 const debug = require("debug")("webserver:server");
 
 /**
@@ -21,6 +22,9 @@ app.set("port", port);
  */
 
 const server = http.createServer(app);
+
+// Add socket.io sockets
+io(server);
 
 /**
  * Listen on provided port, on all network interfaces.
