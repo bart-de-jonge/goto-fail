@@ -6,22 +6,20 @@ jdk:
   - oraclejdk8
 addons:
  apt:
-   hosts:
-     - deb.nodesource.com/setup_6.x
    packages:
      - oracle-java8-installer
-     - nodejs
 notifications:
   slack: gotofail:rNibSSSvoPtDAS7wws1KtdXd
   email: false
 before_install:
   - "[ \"$BUILD_PR_BRANCH\" = \"true\" ] && git checkout -b dummyBranch && git checkout develop && git merge dummyBranch; true"
+  - curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+  - sudo apt-get install -y nodejs
 env:
   - BUILD_PR_BRANCH=true
 
 before_script:
   - "export DISPLAY=:99.0"
-  - "npm install"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
 script:
