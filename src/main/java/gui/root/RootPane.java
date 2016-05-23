@@ -58,6 +58,7 @@ public class RootPane extends Application {
         // Create a BorderPane, a layout with 5 areas: top, bottom, left, right and center,
         // and add our views to it.
         topLevelPane = new BorderPane();
+        
         // Create scene and set the stage. This is where the window is basically
         // created. Also has some useful settings.
         Scene scene = new Scene(topLevelPane);
