@@ -52,11 +52,29 @@
     <directorTimeline>
         <shotList>
             <shot>
-                <beginCount>1.5</beginCount>
+                <beginCount>2.0</beginCount>
                 <colliding>false</colliding>
-                <description>asfasdf</description>
-                <endCount>6.75</endCount>
-                <name>Lel kek</name>
+                <description>sdfsdf</description>
+                <endCount>4.0</endCount>
+                <name>dfgsdfg</name>
+                <endShotPadding>0.0</endShotPadding>
+                <frontShotPadding>0.0</frontShotPadding>
+            </shot>
+            <shot>
+                <beginCount>6.0</beginCount>
+                <colliding>false</colliding>
+                <description>sdfsdf</description>
+                <endCount>8.0</endCount>
+                <name>dfgsdfg</name>
+                <endShotPadding>0.0</endShotPadding>
+                <frontShotPadding>0.0</frontShotPadding>
+            </shot>
+            <shot>
+                <beginCount>9.0</beginCount>
+                <colliding>false</colliding>
+                <description>sdfsdf</description>
+                <endCount>10.0</endCount>
+                <name>dfgsdfg</name>
                 <endShotPadding>0.0</endShotPadding>
                 <frontShotPadding>0.0</frontShotPadding>
             </shot>
@@ -65,24 +83,7 @@
     </directorTimeline>
     <camera-centerarea>
         <cameraTimeline>
-            <shotList>
-                <shot>
-                    <beginCount>1.5</beginCount>
-                    <colliding>false</colliding>
-                    <description>asfasdf</description>
-                    <endCount>6.75</endCount>
-                    <name>Lel kek</name>
-                    <directorShot>
-                        <beginCount>1.5</beginCount>
-                        <colliding>false</colliding>
-                        <description>asfasdf</description>
-                        <endCount>6.75</endCount>
-                        <name>Lel kek</name>
-                        <endShotPadding>0.0</endShotPadding>
-                        <frontShotPadding>0.0</frontShotPadding>
-                    </directorShot>
-                </shot>
-            </shotList>
+            <shotList/>
             <camera>
                 <cameraType>
                     <description>A camera that has to be moved manually</description>
@@ -96,15 +97,7 @@
             <name>Overall camera</name>
         </cameraTimeline>
         <cameraTimeline>
-            <shotList>
-                <shot>
-                    <beginCount>4.75</beginCount>
-                    <colliding>false</colliding>
-                    <description>asfasdf</description>
-                    <endCount>10.0</endCount>
-                    <name>Lel kek</name>
-                </shot>
-            </shotList>
+            <shotList/>
             <camera>
                 <cameraType>
                     <description>A camera that can be controlled over IP</description>
@@ -133,6 +126,6 @@
         </cameraTimeline>
     </camera-centerarea>
     <secondsPerCount>3.0</secondsPerCount>
-    <filePath>C:\Users\Menno\workspace\goto-fail\src\test\files\general_test3.scp</filePath>
-    <changed>false</changed>
+    <filePath>C:\Users\Menno\Desktop\general_test3.scp</filePath>
+    <changed>true</changed>
 </scriptingProject>
