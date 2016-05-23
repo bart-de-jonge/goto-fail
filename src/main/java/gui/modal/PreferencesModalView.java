@@ -138,20 +138,22 @@ public class PreferencesModalView extends ModalView {
         this.centerPane.setAlignment(Pos.CENTER_LEFT);
         this.viewPane.getChildren().add(centerPane);
 
-        // textlabel
-        Label colorLabel = new Label("Application color");
-
         // add list for colors
         this.colorList = new StyledListview();
         colorList.setPrefHeight(colorListHeight);
         for (int i = 0; i < TweakingHelper.getNumberOfColors(); i++) {
             HBox box = new HBox();
             box.getChildren().add(
-              new Label(TweakingHelper.getColorNames()[i]));
+                new Label(TweakingHelper.getColorNames()[i]));
             colorList.getItems().add(box);
         }
         this.colorList.getFocusModel().focus(TweakingHelper.getColorChoice());
         this.colorList.getSelectionModel().select(TweakingHelper.getColorChoice());
+
+        // textlabel
+        Label colorLabel = new Label("Application color");
+
+        // add everything together
         this.centerPane.getChildren().addAll(colorLabel, colorList);
     }
 

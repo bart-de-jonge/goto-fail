@@ -70,7 +70,12 @@ public class RootHeaderArea extends VBox {
         editProjectItem.setOnAction(e -> {
                 rootPane.getControllerManager().getProjectController().editProject();
             });
-        editMenu.getItems().add(editProjectItem);
+        MenuItem preferencesItem = new MenuItem("Preferences");
+        preferencesItem.setOnAction(e -> {
+                rootPane.getControllerManager().getPreferencesViewController()
+                        .showPreferencesWindow();
+            });
+        editMenu.getItems().addAll(editProjectItem, preferencesItem);
         
         Menu helpMenu = new Menu("Help");
         
@@ -124,15 +129,9 @@ public class RootHeaderArea extends VBox {
         uploadItem.setOnAction(e -> {
                 rootPane.getControllerManager().getProjectController().uploadToWebserver();
             });
-
-        MenuItem preferencesItem = new MenuItem("Preferences");
-        preferencesItem.setOnAction(e -> {
-            rootPane.getControllerManager().getPreferencesViewController().showPreferencesWindow();
-        });
-
         MenuItem quit = new MenuItem("Quit");
         quit.setOnAction(e -> {
-                if (rootPane.getControllerManager().getScriptingProject() != null 
+                if (rootPane.getControllerManager().getScriptingProject() != null
                         && rootPane.getControllerManager()
                                    .getScriptingProject().isChanged()) {
                     rootPane.getControllerManager().initSaveModal();
@@ -142,7 +141,7 @@ public class RootHeaderArea extends VBox {
             });
         Menu fileMenu = new Menu("File");
         fileMenu.getItems().addAll(newItem, saveItem, saveAsItem, loadItem, quit,
-                uploadItem, preferencesItem);
+                uploadItem);
         return fileMenu;
     }
 

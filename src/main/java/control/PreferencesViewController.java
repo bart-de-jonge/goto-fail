@@ -38,6 +38,9 @@ public class PreferencesViewController {
         preferencesModalView.getCancelButton().setOnMouseClicked(this::handleCancelButton);
     }
 
+    /**
+     * When triggered, initializes and displays modal view for reloading project.
+     */
     public void showReloadWindow() {
         reloadModalView = new ReloadModalView(
                 this.controllerManager.getRootPane());

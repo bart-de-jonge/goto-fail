@@ -55,10 +55,10 @@ public final class TweakingHelper {
 
     @Getter
     private static final String[] colorNames = {
-            "blue",
-            "orange",
-            "green",
-            "red"
+        "blue",
+        "orange",
+        "green",
+        "red"
     };
 
     /**
@@ -75,8 +75,9 @@ public final class TweakingHelper {
     @Getter
     private static Color backgroundColor = Color.WHITE; // main bg color
     @Getter
-    private static Color backgroundHighColor =
-            Color.rgb(245, 245, 245); // heightened bg color
+    private static Color backgroundHighColor = Color.rgb(245, 245, 245); // heightened bg color
+    @Getter
+    private static Color backgroundContrastColor = Color.WHITE; // Color.BLACK;
 
     /*
      * Getters
