@@ -10,7 +10,20 @@ import lombok.Setter;
  */
 public final class TweakingHelper {
 
-    private static final int colorChoice = 0;
+    @Getter @Setter
+    private static int colorChoice = 0;
+
+    /*
+     * Constants used throughout application.
+     */
+
+    public static final int GENERAL_SIZE = 10000;
+    public static final int GENERAL_SPACING = 10;
+    public static final int GENERAL_PADDING = 20;
+
+    /*
+     * Main colors of application. Has 4 presets right now.
+     */
 
     private static final Color[][] colors = {
             {
@@ -39,43 +52,89 @@ public final class TweakingHelper {
             }
     };
 
-    @Getter @Setter
-    private static Color primaryColor = colors[colorChoice][0]; // main (light) color
-    @Getter @Setter
-    public static Color secondaryColor = colors[colorChoice][1]; // dark color
-    @Getter @Setter
-    public static Color tertiaryColor = colors[colorChoice][2]; // very dark color
-    @Getter @Setter
-    public static Color quadratoryColor = colors[colorChoice][3]; // very light color
-
     /*
      * Some whites and grays used throughout the application.
      */
 
-    @Getter @Setter
+    @Getter
     private static Color backgroundColor = Color.WHITE; // main bg color
-    @Getter @Setter
+    @Getter
     private static Color backgroundHighColor =
             Color.rgb(245, 245, 245); // heightened bg color
 
-    // string versions of main colors
-    @Getter
-    private static String primaryString = getStringFromColor(primaryColor);
-    @Getter
-    private static String secondaryString = getStringFromColor(secondaryColor);
-    @Getter
-    private static String tertiaryString = getStringFromColor(tertiaryColor);
-    @Getter
-    private static String quadratoryString = getStringFromColor(quadratoryColor);
-    @Getter
-    private static String backgroundString = getStringFromColor(backgroundColor);
-    @Getter
-    private static String backgroundHighString = getStringFromColor(backgroundHighColor);
+    /*
+     * Getters
+     */
 
-    // general layout variables used throughout application.
-    public static final int GENERAL_SIZE = 10000;
-    public static final int GENERAL_SPACING = 10;
-    public static final int GENERAL_PADDING = 20;
+    /**
+     * @return primary color.
+     */
+    public static Color getPrimaryColor() {
+        return colors[colorChoice][0];
+    }
+
+    /**
+     * @return secondary color.
+     */
+    public static Color getSecondaryColor() {
+        return colors[colorChoice][1];
+    }
+
+    /**
+     * @return tertiary color.
+     */
+    public static Color getTertiaryColor() {
+        return colors[colorChoice][2];
+    }
+
+    /**
+     * @return quadratory color.
+     */
+    public static Color getQuadratoryColor() {
+        return colors[colorChoice][3];
+    }
+
+    /**
+     * @return primary color as string.
+     */
+    public static String getPrimaryString() {
+        return getStringFromColor(getPrimaryColor());
+    }
+
+    /**
+     * @return secondary color as string.
+     */
+    public static String getSecondaryString() {
+        return getStringFromColor(getSecondaryColor());
+    }
+
+    /**
+     * @return tertiary color as string.
+     */
+    public static String getTertiaryString() {
+        return getStringFromColor(getTertiaryColor());
+    }
+
+    /**
+     * @return quadratory color as string.
+     */
+    public static String getQuadratoryString() {
+        return getStringFromColor(getQuadratoryColor());
+    }
+
+    /**
+     * @return background color as string.
+     */
+    public static String getBackgroundString() {
+        return getStringFromColor(backgroundColor);
+    }
+
+    /**
+     * @return background heightened color as string.
+     */
+    public static String getBackgroundHighString() {
+        return getStringFromColor(backgroundHighColor);
+    }
 
     /**
      * Parses color from a Color object to javafx-css-compatible string.
