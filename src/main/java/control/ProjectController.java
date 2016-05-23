@@ -125,16 +125,27 @@ public class ProjectController {
         }
     }
     
+    /**
+     * Show the upload success modal.
+     */
     private void showSuccessModal() {
         successModal = new UploadSuccessModalView(controllerManager.getRootPane());
         successModal.getCloseButton().setOnMouseClicked(this::successModalClose);
         successModal.getGoToWebsiteButton().setOnMouseClicked(this::goToWebsite);
     }
     
+    /**
+     * Handler for the close button of the success modal.
+     * @param event the MouseEvent for this event
+     */
     private void successModalClose(MouseEvent event) {
         successModal.hideModal();
     }
     
+    /**
+     * Handler for the go to website button of the sucess modal.
+     * @param event the MouseEvent for this event
+     */
     private void goToWebsite(MouseEvent event) {
         try {
             Desktop.getDesktop().browse(URI.create("http://localhost:3000/timeline"));
@@ -143,12 +154,19 @@ public class ProjectController {
         }
     }
     
+    /**
+     * Show the upload error modal.
+     */
     private void showErrorModal() {
         errorModal = new ErrorWhileUploadingModalView(controllerManager.getRootPane());
-        errorModal.getOKButton().setOnMouseClicked(this::errorModalOK);
+        errorModal.getOKButton().setOnMouseClicked(this::errorModalOk);
     }
     
-    private void errorModalOK(MouseEvent event) {
+    /**
+     * Handler for the OK button for the error modal.
+     * @param event the MouseEvent for this event
+     */
+    private void errorModalOk(MouseEvent event) {
         errorModal.hideModal();
     }
     

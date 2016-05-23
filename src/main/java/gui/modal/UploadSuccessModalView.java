@@ -20,10 +20,20 @@ public class UploadSuccessModalView extends ModalView {
     
     private VBox viewPane;
     
+    /**
+     * Construct a new success modal with default size.
+     * @param rootPane the RootPane for this modal.
+     */
     public UploadSuccessModalView(RootPane rootPane) {
         this(rootPane, WIDTH, HEIGHT);
     }
     
+    /**
+     * Construct a new success modal with specific size.
+     * @param rootPane the RootPane for this modal.
+     * @param width the width of the modal.
+     * @param height the height of the modal.
+     */
     public UploadSuccessModalView(RootPane rootPane, int width, int height) {
         super(rootPane, width, height);
         initView();
@@ -31,6 +41,9 @@ public class UploadSuccessModalView extends ModalView {
         this.displayModal();
     }
     
+    /**
+     * Initialize the view of this modal.
+     */
     private void initView() {
         viewPane = new VBox(20);
         Label label = new Label("Upload successful!");
@@ -38,6 +51,9 @@ public class UploadSuccessModalView extends ModalView {
         initButtons();
     }
     
+    /**
+     * Initialize the buttons.
+     */
     private void initButtons() {
         closeButton = createButton("Close", false);
         goToWebsiteButton = createButton("Go to website", false);
