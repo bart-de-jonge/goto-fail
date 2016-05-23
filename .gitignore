@@ -19,3 +19,4 @@ src/main/webserver/npm-debug.log
 src/main/webserver/project-scp-files/
 **/*.swp
 **/.tern-project
+npm-debug.log
