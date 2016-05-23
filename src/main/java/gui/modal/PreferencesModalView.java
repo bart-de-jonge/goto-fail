@@ -22,7 +22,7 @@ public class PreferencesModalView extends ModalView {
 
     // width and height of screen. 680 and 350 work very, very well.
     private static final int width = 450;
-    private static final int height = 200;
+    private static final int height = 300;
 
     // variables for spacing
     protected static final int topAreaHeight = 50;
@@ -46,6 +46,7 @@ public class PreferencesModalView extends ModalView {
 
     // variables for the title label
     private static final int titlelabelOffsetFromLeft = 20;
+    private static final int colorListHeight = 100;
 
     /*
      * Other variables
@@ -127,17 +128,22 @@ public class PreferencesModalView extends ModalView {
      * Init center area and content.
      */
     private void initCenter() {
-        // add space for textfields and lists
+        // add space for content
         this.centerPane = new VBox(TweakingHelper.GENERAL_SPACING);
         this.centerPane.setAlignment(Pos.CENTER);
-        this.centerPane.setPadding(new Insets(0, 0, 0, 0));
+        this.centerPane.setPadding(new Insets(0, TweakingHelper.GENERAL_PADDING,
+                0, TweakingHelper.GENERAL_PADDING));
         this.centerPane.setPrefHeight(TweakingHelper.GENERAL_SIZE);
         this.centerPane.setStyle(centerStyle);
+        this.centerPane.setAlignment(Pos.CENTER_LEFT);
         this.viewPane.getChildren().add(centerPane);
+
+        // textlabel
+        Label colorLabel = new Label("Application color");
 
         // add list for colors
         this.colorList = new StyledListview();
-        colorList.setMinHeight(75);
+        colorList.setPrefHeight(colorListHeight);
         for (int i = 0; i < TweakingHelper.getNumberOfColors(); i++) {
             HBox box = new HBox();
             box.getChildren().add(
@@ -146,7 +152,7 @@ public class PreferencesModalView extends ModalView {
         }
         this.colorList.getFocusModel().focus(TweakingHelper.getColorChoice());
         this.colorList.getSelectionModel().select(TweakingHelper.getColorChoice());
-        this.centerPane.getChildren().add(colorList);
+        this.centerPane.getChildren().addAll(colorLabel, colorList);
     }
 
     /**
@@ -166,8 +172,8 @@ public class PreferencesModalView extends ModalView {
 
         // Add cancel button
         cancelButton = createButton("Cancel", false);
-        // Add creation button
-        saveButton = createButton("Save", false);
+        // Add apply button
+        saveButton = createButton("Apply", false);
 
         this.buttonPane.getChildren().addAll(saveButton, cancelButton);
     }

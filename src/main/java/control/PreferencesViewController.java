@@ -2,7 +2,7 @@ package control;
 
 import gui.misc.TweakingHelper;
 import gui.modal.PreferencesModalView;
-import gui.root.RootCenterArea;
+import gui.modal.ReloadModalView;
 import javafx.scene.input.MouseEvent;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +16,7 @@ public class PreferencesViewController {
 
     @Getter @Setter
     private PreferencesModalView preferencesModalView;
+    private ReloadModalView reloadModalView;
 
     /**
      * Class constructor.
@@ -33,27 +34,66 @@ public class PreferencesViewController {
         preferencesModalView = new PreferencesModalView(
                 this.controllerManager.getRootPane());
 
-        preferencesModalView.getSaveButton().setOnMouseClicked(this::handleSaveButton);
+        preferencesModalView.getSaveButton().setOnMouseClicked(this::handleApplyButton);
         preferencesModalView.getCancelButton().setOnMouseClicked(this::handleCancelButton);
     }
 
-    /**
-     * Handles save button event
-     * @param event the mouseEvent called.
-     */
-    public void handleSaveButton(MouseEvent event) {
-        TweakingHelper.setColorChoice(
-                preferencesModalView.getColorList().getSelectionModel().getSelectedIndex());
-        preferencesModalView.hideModal();
+    public void showReloadWindow() {
+        reloadModalView = new ReloadModalView(
+                this.controllerManager.getRootPane());
 
+        reloadModalView.getSaveButton().setOnMouseClicked(this::handleSavesaveButton);
+        reloadModalView.getDontSaveButton().setOnMouseClicked(this::handleNoSavesaveButton);
+        reloadModalView.getCancelButton().setOnMouseClicked(this::handleCancelsaveButton);
     }
 
     /**
-     * Handles cancel button event.
+     * Handles apply button event.
+     * @param event the mouseEvent called.
+     */
+    public void handleApplyButton(MouseEvent event) {
+        showReloadWindow();
+    }
+
+    /**
+     * Handles cancel button event to close the preferences view.
      * @param event the mouseEvent called.
      */
     public void handleCancelButton(MouseEvent event) {
         preferencesModalView.hideModal();
+    }
+
+    /**
+     * Handles save button event to close the reload view.
+     * @param event the mouseEvent called.
+     */
+    public void handleSavesaveButton(MouseEvent event) {
+        controllerManager.getProjectController().save();
+        handleNoSavesaveButton(event);
+    }
+
+    /**
+     * Handles no-save button event to close the reload view.
+     * @param event the mouseEvent called.
+     */
+    public void handleNoSavesaveButton(MouseEvent event) {
+        TweakingHelper.setColorChoice(
+                preferencesModalView.getColorList().getSelectionModel().getSelectedIndex());
+
+        controllerManager.getRootPane().getPrimaryStage().close();
+        controllerManager.getRootPane().showRootPane();
+
+        preferencesModalView.hideModal();
+        reloadModalView.hideModal();
+
+    }
+
+    /**
+     * Handles cancel button event to close the reload view.
+     * @param event the mouseEvent called.
+     */
+    public void handleCancelsaveButton(MouseEvent event) {
+        reloadModalView.hideModal();
     }
 
 }

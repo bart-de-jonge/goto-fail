@@ -47,6 +47,14 @@ public class RootPane extends Application {
     public void start(Stage primaryStage) throws Exception {
         log.info("Starting RootPane.");
         this.primaryStage = primaryStage;
+
+        showRootPane();
+    }
+
+    /**
+     * Puts together and shows all window elements for the Root Pane.
+     */
+    public void showRootPane() {
         // Create a BorderPane, a layout with 5 areas: top, bottom, left, right and center,
         // and add our views to it.
         topLevelPane = new BorderPane();
@@ -73,17 +81,16 @@ public class RootPane extends Application {
         topLevelPane.setBottom(rootFooterArea);
         // startup modal view.
         startupModalView = new StartupModalView(this);
-        
+
         controllerManager = new ControllerManager(this);
 
-        startupMethod(primaryStage);
+        startupMethod();
     }
 
     /**
      * Specify the method to start up depending on the previously loaded project.
-     * @param primaryStage the main stage that is started
      */
-    private void startupMethod(Stage primaryStage) {
+    private void startupMethod() {
         String recentProjectPath = readPathFromConfig();
         if (recentProjectPath != null) {
             File file = new File(recentProjectPath);
@@ -138,7 +145,6 @@ public class RootPane extends Application {
         topLevelPane.setCenter(area);
         rootCenterArea = area;
         primaryStage.show();
-        primaryStage.setAlwaysOnTop(true); // UX rekt lel
         // Forces main time line to scroll a tiny bit. Invisible to user.
         // Hacky solution to a scaling issue with timeline titles.
         Platform.runLater(new Runnable() {
