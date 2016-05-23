@@ -10,30 +10,36 @@ const parser = new xml2js.Parser();
 const getTimelines = function getTimelines(callback) {
     // Dummyfile Todo: replace with dynamic
     fs.readFile(`${__dirname}/../project-scp-files/project.scp`, (err, data) => {
-        parser.parseString(data, (err, result) => {
-            // Read timelines from xml
-            const cameraTimelinesXML =
-                result.scriptingProject["camera-centerarea"][0].cameraTimeline;
-
-            const cameraTimelines = [];
-            const flattenedCameraTimelines = [];
-
-            // Insert shots in timeline which is pushed to timelinesarray
-            // and push to flattenedArray
-            cameraTimelinesXML.forEach(timeline => {
-                const cameraTimeline = new CameraTimeline("dummy", "dymmy");
-                if (typeof timeline.shotList[0].shot !== "undefined") {
-                    timeline.shotList[0].shot.forEach(shot => {
-                        const cameraShot = new CameraShot(shot.beginCount[0],
-                            shot.endCount[0], shot.name[0], shot.description[0]);
-                        cameraTimeline.addCameraShot(cameraShot);
-                        flattenedCameraTimelines.push(cameraShot);
-                    });
-                }
-                cameraTimelines.push(cameraTimeline);
+        if (err) {
+            callback(null, {
+                message: "Project File Does Not Exist",
             });
-            callback([cameraTimelines, flattenedCameraTimelines]);
-        });
+        } else {
+            parser.parseString(data, (err, result) => {
+                // Read timelines from xml
+                const cameraTimelinesXML =
+                    result.scriptingProject["camera-centerarea"][0].cameraTimeline;
+
+                const cameraTimelines = [];
+                const flattenedCameraTimelines = [];
+
+                // Insert shots in timeline which is pushed to timelinesarray
+                // and push to flattenedArray
+                cameraTimelinesXML.forEach(timeline => {
+                    const cameraTimeline = new CameraTimeline("dummy", "dymmy");
+                    if (typeof timeline.shotList[0].shot !== "undefined") {
+                        timeline.shotList[0].shot.forEach(shot => {
+                            const cameraShot = new CameraShot(shot.beginCount[0],
+                                shot.endCount[0], shot.name[0], shot.description[0]);
+                            cameraTimeline.addCameraShot(cameraShot);
+                            flattenedCameraTimelines.push(cameraShot);
+                        });
+                    }
+                    cameraTimelines.push(cameraTimeline);
+                });
+                callback([cameraTimelines, flattenedCameraTimelines]);
+            });
+        }
     });
 };
 
@@ -62,7 +68,10 @@ const getMaxAndMinCount = function getMaxAndMinCount(flattenedCameraTimelines) {
 /* GET home page. */
 router.get("/", (req, res) => {
     // Get the timelines
-    getTimelines((timelines) => {
+    getTimelines((timelines, err) => {
+        if (err) {
+            res.send("Please Upload A Project File Before Editing!");
+        }
         const cameraTimelines = timelines[0];
         const counts = getMaxAndMinCount(timelines[1]);
         const minCount = counts[0];

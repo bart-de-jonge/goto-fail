@@ -7,7 +7,20 @@
 import "babel-polyfill";
 import app from "./app";
 import http from "http";
+import log4js from "log4js";
+import io from "./routes/sockets/sockets.js";
 const debug = require("debug")("webserver:server");
+
+// Logger configuration
+log4js.configure({
+    appenders: [
+        { type: "console" },
+    ],
+    replaceConsole: true,
+});
+
+const logger = log4js.getLogger();
+logger.setLevel("DEBUG");
 
 /**
  * Get port from environment and store in Express.
@@ -20,7 +33,11 @@ app.set("port", port);
  * Create HTTP server.
  */
 
+logger.info("Starting HTTP Server");
 const server = http.createServer(app);
+
+// Add socket.io sockets
+io(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -66,11 +83,11 @@ function onError(error) {
     // handle specific listen errors with friendly messages
     switch (error.code) {
     case "EACCES":
-        console.error(`${bind} requires elevated privileges`);
+        logger.error(`${bind} requires elevated privileges`);
         process.exit(1);
         break;
     case "EADDRINUSE":
-        console.error(`${bind} is already in use`);
+        logger.error(`${bind} is already in use`);
         process.exit(1);
         break;
     default:
