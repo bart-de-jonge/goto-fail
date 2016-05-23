@@ -3,6 +3,7 @@ package gui.modal;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
+import gui.styling.StyledListview;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -40,7 +41,6 @@ public class PreferencesModalView extends ModalView {
     protected String bottomStyle = "-fx-background-color: "
             + TweakingHelper.getPrimaryString() + ";";
 
-
     // variables for the buttons
     private int buttonSpacing = 20;
 
@@ -59,6 +59,8 @@ public class PreferencesModalView extends ModalView {
     private StyledButton saveButton;
     @Getter
     private StyledButton cancelButton;
+    @Getter
+    private StyledListview colorList;
 
     /**
      * Class constructtor.
@@ -96,12 +98,8 @@ public class PreferencesModalView extends ModalView {
         // add title area
         initTitleLabel();
 
-        // add space for textfields and lists
-        this.centerPane = new VBox(TweakingHelper.GENERAL_SPACING);
-        this.centerPane.setAlignment(Pos.CENTER);
-        this.centerPane.setPadding(new Insets(0, 0, 0, 0));
-        this.centerPane.setPrefHeight(TweakingHelper.GENERAL_SIZE);
-        this.viewPane.getChildren().add(centerPane);
+        // add center area
+        initCenter();
 
         // add button area
         initButtons();
@@ -113,7 +111,7 @@ public class PreferencesModalView extends ModalView {
     /**
      * Init the title label.
      */
-    protected void initTitleLabel() {
+    private void initTitleLabel() {
         titleLabel = new Label("Preferences");
         titleLabel.setStyle(topStyle);
         titleLabel.setAlignment(Pos.CENTER_LEFT);
@@ -123,6 +121,32 @@ public class PreferencesModalView extends ModalView {
         titleLabel.setPrefHeight(topAreaHeight);
         titleLabel.setMaxHeight(topAreaHeight);
         this.viewPane.getChildren().add(titleLabel);
+    }
+
+    /**
+     * Init center area and content.
+     */
+    private void initCenter() {
+        // add space for textfields and lists
+        this.centerPane = new VBox(TweakingHelper.GENERAL_SPACING);
+        this.centerPane.setAlignment(Pos.CENTER);
+        this.centerPane.setPadding(new Insets(0, 0, 0, 0));
+        this.centerPane.setPrefHeight(TweakingHelper.GENERAL_SIZE);
+        this.centerPane.setStyle(centerStyle);
+        this.viewPane.getChildren().add(centerPane);
+
+        // add list for colors
+        this.colorList = new StyledListview();
+        colorList.setMinHeight(75);
+        for (int i = 0; i < TweakingHelper.getNumberOfColors(); i++) {
+            HBox box = new HBox();
+            box.getChildren().add(
+              new Label(TweakingHelper.getColorNames()[i]));
+            colorList.getItems().add(box);
+        }
+        this.colorList.getFocusModel().focus(TweakingHelper.getColorChoice());
+        this.colorList.getSelectionModel().select(TweakingHelper.getColorChoice());
+        this.centerPane.getChildren().add(colorList);
     }
 
     /**

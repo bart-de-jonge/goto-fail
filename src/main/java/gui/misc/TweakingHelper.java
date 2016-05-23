@@ -25,6 +25,7 @@ public final class TweakingHelper {
      * Main colors of application. Has 4 presets right now.
      */
 
+    @Getter
     private static final Color[][] colors = {
             {
                     Color.rgb(69, 162, 217),
@@ -51,6 +52,21 @@ public final class TweakingHelper {
                     Color.rgb(255, 170, 152)
             }
     };
+
+    @Getter
+    private static final String[] colorNames = {
+            "blue",
+            "orange",
+            "green",
+            "red"
+    };
+
+    /**
+     * @return amount of colors currently defined.
+     */
+    public static int getNumberOfColors() {
+        return colors.length;
+    }
 
     /*
      * Some whites and grays used throughout the application.

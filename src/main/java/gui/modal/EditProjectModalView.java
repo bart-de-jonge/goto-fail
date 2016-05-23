@@ -1,8 +1,5 @@
 package gui.modal;
 
-
-import java.util.ArrayList;
-
 import data.Camera;
 import data.CameraTimeline;
 import data.CameraType;
@@ -13,6 +10,7 @@ import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledListview;
 import gui.styling.StyledTextfield;
+import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
