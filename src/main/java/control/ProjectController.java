@@ -1,9 +1,11 @@
 package control;
 
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +35,7 @@ import gui.modal.AddCameraTypeModalView;
 import gui.modal.DeleteCameraTypeWarningModalView;
 import gui.modal.EditProjectModalView;
 import gui.modal.ErrorWhileUploadingModalView;
+import gui.modal.UploadSuccessModalView;
 import gui.root.RootCenterArea;
 import gui.root.RootPane;
 import javafx.scene.control.Label;
@@ -58,6 +61,7 @@ public class ProjectController {
     @Setter
     private DeleteCameraTypeWarningModalView typeWarningModal;
     private ErrorWhileUploadingModalView errorModal;
+    private UploadSuccessModalView successModal;
 
     // Upload variables
     // Todo: replace with popup or something like that for user
@@ -106,7 +110,7 @@ public class ProjectController {
 
             // Do something with response
             if (result) {
-                // awesome, Todo: give feedback to user
+                showSuccessModal();
                 System.out.println("Upload successful");
             } else {
                 showErrorModal();
@@ -117,6 +121,24 @@ public class ProjectController {
             showErrorModal();
             e.printStackTrace();
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void showSuccessModal() {
+        successModal = new UploadSuccessModalView(controllerManager.getRootPane());
+        successModal.getCloseButton().setOnMouseClicked(this::successModalClose);
+        successModal.getGoToWebsiteButton().setOnMouseClicked(this::goToWebsite);
+    }
+    
+    private void successModalClose(MouseEvent event) {
+        successModal.hideModal();
+    }
+    
+    private void goToWebsite(MouseEvent event) {
+        try {
+            Desktop.getDesktop().browse(URI.create("http://localhost:3000/timeline"));
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

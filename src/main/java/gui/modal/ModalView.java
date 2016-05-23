@@ -26,7 +26,7 @@ public abstract class ModalView {
     private final int width;
     @Getter
     private final int height;
-    private final int buttonWidth = 90;
+    private final int buttonWidth = 140;
     private final int buttonHeight = 25;
 
     /**
