@@ -171,40 +171,30 @@ public class DirectorTimelineController {
         }
     }
 
+    /**
+     * Generate all linked CameraShots for DirectorShots which hadn't previously generated them.
+     */
     public void generateAllShots() {
         log.info("CALLED GENERATE ALL SHOTS");
         shotBlocks.forEach(directorShotBlock -> {
-            DirectorShot shot = directorShotBlock.getShot();
-            if (shot.getCameraShots().isEmpty()) {
-                // Camera shots need to take the director shot's padding into account when making a shot
-                double cameraStart = shot.getBeginCount() - shot.getFrontShotPadding();
-                double cameraEnd = shot.getEndCount() + shot.getEndShotPadding();
+                DirectorShot shot = directorShotBlock.getShot();
+                if (shot.getCameraShots().isEmpty()) {
+                    // Camera shots need to take the director shot's padding into account
+                    double cameraStart = shot.getBeginCount() - shot.getFrontShotPadding();
+                    double cameraEnd = shot.getEndCount() + shot.getEndShotPadding();
 
 
-                shot.getTimelineIndices().forEach(index -> {
-                    CameraShot subShot = new CameraShot(shot.getName(), shot.getDescription(),
-                                                        cameraStart, cameraEnd, shot);
-                    shot.addCameraShot(subShot);
-                    this.controllerManager.getTimelineControl().addCameraShot(index, subShot);
-                });
-            }
-        });
+                    shot.getTimelineIndices().forEach(index -> {
+                            CameraShot subShot = new CameraShot(shot.getName(),
+                                                                shot.getDescription(),
+                                                                cameraStart,
+                                                                cameraEnd,
+                                                                shot);
+                            shot.addCameraShot(subShot);
+                            this.controllerManager.getTimelineControl()
+                                    .addCameraShot(index, subShot);
+                        });
+                }
+            });
     }
-
-    /**
-     * Remove all collisions and from this shotblock.
-     * Removes the collisions from the counterpart in each collision as well
-     * @param shotBlock - the shotblock to remove the collisions from
-     */
-    private void removeCollisionFromCameraShotBlock(CameraShotBlock shotBlock) {
-        ArrayList<Shot> toRemove = new ArrayList<>();
-        for (Shot shot : shotBlock.getShot().getCollidesWith()) {
-            toRemove.add(shot);
-            if (shot.getCollidesWith().contains(shotBlock.getShot())) {
-                shot.getCollidesWith().remove(shotBlock.getShot());
-            }
-        }
-        shotBlock.getShot().getCollidesWith().removeAll(toRemove);
-    }
-
 }
