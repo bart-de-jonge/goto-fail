@@ -221,7 +221,7 @@ public class ProjectController {
             controllerManager.getRootPane().reInitRootCenterArea(area);
             if (editProjectModal.getProject() != null
                     && editProjectModal.getProject().getCameraTimelines().size()
-                    > project.getCameraTimelines().size()) {
+                    >= project.getCameraTimelines().size()) {
                 for (int i = 0; i < project.getCameraTimelines().size(); i++) {
                     CameraTimeline newLine = project.getCameraTimelines().get(i);
                     CameraTimeline oldLine = editProjectModal.getProject()
