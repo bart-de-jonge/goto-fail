@@ -89,7 +89,7 @@ public class RootHeaderArea extends VBox {
 
         MenuBar topMenuBar = new MenuBar();
         topMenuBar.setStyle("-c-color-primary: "
-                + TweakingHelper.STRING_PRIMARY + ";");
+                + TweakingHelper.getPrimaryString() + ";");
         topMenuBar.setUseSystemMenuBar(true);
         topMenuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
         return topMenuBar;
@@ -125,6 +125,11 @@ public class RootHeaderArea extends VBox {
                 rootPane.getControllerManager().getProjectController().uploadToWebserver();
             });
 
+        MenuItem preferencesItem = new MenuItem("Preferences");
+        preferencesItem.setOnAction(e -> {
+            rootPane.getControllerManager().getPreferencesViewController().showPreferencesWindow();
+        });
+
         MenuItem quit = new MenuItem("Quit");
         quit.setOnAction(e -> {
                 if (rootPane.getControllerManager().getScriptingProject() != null 
@@ -136,7 +141,8 @@ public class RootHeaderArea extends VBox {
                 }
             });
         Menu fileMenu = new Menu("File");
-        fileMenu.getItems().addAll(newItem, saveItem, saveAsItem, loadItem, quit, uploadItem);
+        fileMenu.getItems().addAll(newItem, saveItem, saveAsItem, loadItem, quit,
+                uploadItem, preferencesItem);
         return fileMenu;
     }
 

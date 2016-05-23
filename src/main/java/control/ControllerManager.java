@@ -31,6 +31,9 @@ public class ControllerManager {
     private DetailViewController detailViewController;
 
     @Getter
+    private PreferencesViewController preferencesViewController;
+
+    @Getter
     private ProjectController projectController;
 
     @Getter
@@ -86,6 +89,7 @@ public class ControllerManager {
         timelineControl = new TimelineController(this);
         directorTimelineControl = new DirectorTimelineController(this);
         detailViewController = new DetailViewController(this);
+        preferencesViewController = new PreferencesViewController(this);
         toolViewController = new ToolViewController(this);
         projectController = new ProjectController(this);
     }

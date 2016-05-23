@@ -32,7 +32,7 @@ public class AddCameraModalView extends CameraModificationModalView {
 
     // simple background styles of the three main areas.
     private String centerRightStyle = BACKGROUND_STYLE_STRING
-            + TweakingHelper.STRING_BACKGROUND + ";";
+            + TweakingHelper.getBackgroundString() + ";";
 
     /*
      * Other variables.

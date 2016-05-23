@@ -1,6 +1,9 @@
 package gui.misc;
 
+import com.sun.xml.internal.ws.developer.Serialization;
 import javafx.scene.paint.Color;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Statics to help with gui tweakability.
@@ -36,26 +39,38 @@ public final class TweakingHelper {
             }
     };
 
-    public static final Color COLOR_PRIMARY = colors[colorChoice][0]; // main (light) color
-    public static final Color COLOR_SECONDARY = colors[colorChoice][1]; // dark color
-    public static final Color COLOR_TERTIARY = colors[colorChoice][2]; // very dark color
-    public static final Color COLOR_QUADRATORY = colors[colorChoice][3]; // very light color
+    @Getter @Setter
+    private static Color primaryColor = colors[colorChoice][0]; // main (light) color
+    @Getter @Setter
+    public static Color secondaryColor = colors[colorChoice][1]; // dark color
+    @Getter @Setter
+    public static Color tertiaryColor = colors[colorChoice][2]; // very dark color
+    @Getter @Setter
+    public static Color quadratoryColor = colors[colorChoice][3]; // very light color
 
     /*
      * Some whites and grays used throughout the application.
      */
 
-    public static final Color COLOR_BACKGROUND = Color.WHITE; // main bg color
-    public static final Color COLOR_BACKGROUND_HIGH =
+    @Getter @Setter
+    private static Color backgroundColor = Color.WHITE; // main bg color
+    @Getter @Setter
+    private static Color backgroundHighColor =
             Color.rgb(245, 245, 245); // heightened bg color
 
     // string versions of main colors
-    public static final String STRING_PRIMARY = getStringFromColor(COLOR_PRIMARY);
-    public static final String STRING_SECONDARY = getStringFromColor(COLOR_SECONDARY);
-    public static final String STRING_TERTIARY = getStringFromColor(COLOR_TERTIARY);
-    public static final String STRING_QUADRATORY = getStringFromColor(COLOR_QUADRATORY);
-    public static final String STRING_BACKGROUND = getStringFromColor(COLOR_BACKGROUND);
-    public static final String STRING_BACKGROUND_HIGH = getStringFromColor(COLOR_BACKGROUND_HIGH);
+    @Getter
+    private static String primaryString = getStringFromColor(primaryColor);
+    @Getter
+    private static String secondaryString = getStringFromColor(secondaryColor);
+    @Getter
+    private static String tertiaryString = getStringFromColor(tertiaryColor);
+    @Getter
+    private static String quadratoryString = getStringFromColor(quadratoryColor);
+    @Getter
+    private static String backgroundString = getStringFromColor(backgroundColor);
+    @Getter
+    private static String backgroundHighString = getStringFromColor(backgroundHighColor);
 
     // general layout variables used throughout application.
     public static final int GENERAL_SIZE = 10000;

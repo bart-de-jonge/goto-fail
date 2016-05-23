@@ -33,15 +33,15 @@ public class StyledTextfield extends TextField {
 
     // colors
     @Getter
-    private Color borderColor = TweakingHelper.COLOR_PRIMARY;
+    private Color borderColor = TweakingHelper.getPrimaryColor();
     @Getter
     private Color fillColor = Color.WHITE;
     @Getter
-    private Color fillActiveColor = TweakingHelper.COLOR_BACKGROUND_HIGH;
+    private Color fillActiveColor = TweakingHelper.getBackgroundHighColor();
     @Getter
-    private Color textColor = TweakingHelper.COLOR_PRIMARY;
+    private Color textColor = TweakingHelper.getPrimaryColor();
     @Getter
-    private Color textActiveColor = TweakingHelper.COLOR_TERTIARY;
+    private Color textActiveColor = TweakingHelper.getTertiaryColor();
 
     // transitions
     private int transitionFocusTime = 50;

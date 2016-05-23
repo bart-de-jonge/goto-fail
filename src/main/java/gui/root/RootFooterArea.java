@@ -21,7 +21,7 @@ class RootFooterArea extends HBox {
      * RootFooterArea Constructor.
      */
     RootFooterArea() {
-        setStyle("-fx-background-color: " + TweakingHelper.STRING_SECONDARY + ";");
+        setStyle("-fx-background-color: " + TweakingHelper.getSecondaryString() + ";");
 
         this.setPrefHeight(FOOTER_AREA_HEIGHT);
     }

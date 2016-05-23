@@ -35,8 +35,8 @@ public class ToolButton {
         this.button.setPadding(new Insets(0,2,0,2));
         this.button.setPrefWidth(buttonWidth);
         this.button.setMinHeight(buttonHeight);
-        this.button.setBorderColor(TweakingHelper.COLOR_BACKGROUND);
-        this.button.setFillColor(TweakingHelper.COLOR_PRIMARY);
+        this.button.setBorderColor(TweakingHelper.getBackgroundColor());
+        this.button.setFillColor(TweakingHelper.getPrimaryColor());
     }
 
     /**
