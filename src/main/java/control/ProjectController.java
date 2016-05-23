@@ -159,7 +159,7 @@ public class ProjectController {
      */
     private void showErrorModal() {
         errorModal = new ErrorWhileUploadingModalView(controllerManager.getRootPane());
-        errorModal.getOKButton().setOnMouseClicked(this::errorModalOk);
+        errorModal.getOkButton().setOnMouseClicked(this::errorModalOk);
     }
     
     /**
