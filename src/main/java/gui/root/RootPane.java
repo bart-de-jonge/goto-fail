@@ -148,7 +148,6 @@ public class RootPane extends Application {
         topLevelPane.setCenter(area);
         rootCenterArea = area;
         primaryStage.show();
-
         // Forces main time line to scroll a tiny bit. Invisible to user.
         // Hacky solution to a scaling issue with timeline titles.
         Platform.runLater(new Runnable() {

@@ -132,7 +132,6 @@ public class EditProjectModalView extends ModalView {
     private boolean fillWithCurrentProjectInfo;
 
     
-    
     /**
      * Construct a new EditProjectModalView.
      * @param rootPane the rootPane for this modal.

@@ -1,20 +1,24 @@
 package data;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Class to store information about a camera timeline.
  */
 @XmlRootElement(name = "cameraTimeline")
+@XmlAccessorType(XmlAccessType.FIELD)   
 @ToString
 public class CameraTimeline extends Timeline implements Cloneable {
     
@@ -32,8 +36,9 @@ public class CameraTimeline extends Timeline implements Cloneable {
     // Collection of all Shot elements in this Timeline.
     @XmlElementWrapper(name = "shotList")
     @XmlElement(name = "shot")
-    @Getter
+    @Getter @Setter
     private LinkedList<CameraShot> shots;
+    
     
     /**
      * Default constructor.
