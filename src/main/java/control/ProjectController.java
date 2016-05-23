@@ -7,6 +7,18 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -20,6 +32,7 @@ import gui.modal.AddCameraModalView;
 import gui.modal.AddCameraTypeModalView;
 import gui.modal.DeleteCameraTypeWarningModalView;
 import gui.modal.EditProjectModalView;
+import gui.modal.ErrorWhileUploadingModalView;
 import gui.root.RootCenterArea;
 import gui.root.RootPane;
 import javafx.scene.control.Label;
@@ -31,16 +44,6 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 @Log4j2
 public class ProjectController {
@@ -54,6 +57,7 @@ public class ProjectController {
     private AddCameraTypeModalView cameraTypeModal;
     @Setter
     private DeleteCameraTypeWarningModalView typeWarningModal;
+    private ErrorWhileUploadingModalView errorModal;
 
     // Upload variables
     // Todo: replace with popup or something like that for user
@@ -105,16 +109,28 @@ public class ProjectController {
                 // awesome, Todo: give feedback to user
                 System.out.println("Upload successful");
             } else {
-                // damn, Todo: give feedback to user
+                showErrorModal();
                 System.out.println("Upload failed");
             }
 
         } catch (IOException e) {
+            showErrorModal();
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+    
+    private void showErrorModal() {
+        errorModal = new ErrorWhileUploadingModalView(controllerManager.getRootPane());
+        errorModal.getOKButton().setOnMouseClicked(this::errorModalOK);
+    }
+    
+    private void errorModalOK(MouseEvent event) {
+        errorModal.hideModal();
+    }
+    
+    
     
     /**
      * Save the current project state to file.
