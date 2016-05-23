@@ -7,6 +7,7 @@ import java.util.Scanner;
 import control.ControllerManager;
 import gui.modal.StartupModalView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -137,6 +138,16 @@ public class RootPane extends Application {
         topLevelPane.setCenter(area);
         rootCenterArea = area;
         primaryStage.show();
+        primaryStage.setAlwaysOnTop(true); // UX rekt lel
+        // Forces main time line to scroll a tiny bit. Invisible to user.
+        // Hacky solution to a scaling issue with timeline titles.
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                getRootCenterArea().getMainTimelineScrollpane().setVvalue(0.01);
+                getRootCenterArea().getMainTimelineScrollpane().setVvalue(0.0);
+            }
+        });
     }
 
     /**
