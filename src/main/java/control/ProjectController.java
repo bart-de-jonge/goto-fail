@@ -1,12 +1,26 @@
 package control;
 
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -20,6 +34,8 @@ import gui.modal.AddCameraModalView;
 import gui.modal.AddCameraTypeModalView;
 import gui.modal.DeleteCameraTypeWarningModalView;
 import gui.modal.EditProjectModalView;
+import gui.modal.ErrorWhileUploadingModalView;
+import gui.modal.UploadSuccessModalView;
 import gui.root.RootCenterArea;
 import gui.root.RootPane;
 import javafx.scene.control.Label;
@@ -31,16 +47,6 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 @Log4j2
 public class ProjectController {
@@ -54,6 +60,8 @@ public class ProjectController {
     private AddCameraTypeModalView cameraTypeModal;
     @Setter
     private DeleteCameraTypeWarningModalView typeWarningModal;
+    private ErrorWhileUploadingModalView errorModal;
+    private UploadSuccessModalView successModal;
 
     // Upload variables
     // Todo: replace with popup or something like that for user
@@ -102,19 +110,67 @@ public class ProjectController {
 
             // Do something with response
             if (result) {
-                // awesome, Todo: give feedback to user
+                showSuccessModal();
                 System.out.println("Upload successful");
             } else {
-                // damn, Todo: give feedback to user
+                showErrorModal();
                 System.out.println("Upload failed");
             }
 
         } catch (IOException e) {
+            showErrorModal();
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Show the upload success modal.
+     */
+    private void showSuccessModal() {
+        successModal = new UploadSuccessModalView(controllerManager.getRootPane());
+        successModal.getCloseButton().setOnMouseClicked(this::successModalClose);
+        successModal.getGoToWebsiteButton().setOnMouseClicked(this::goToWebsite);
+    }
+    
+    /**
+     * Handler for the close button of the success modal.
+     * @param event the MouseEvent for this event
+     */
+    private void successModalClose(MouseEvent event) {
+        successModal.hideModal();
+    }
+    
+    /**
+     * Handler for the go to website button of the sucess modal.
+     * @param event the MouseEvent for this event
+     */
+    private void goToWebsite(MouseEvent event) {
+        try {
+            Desktop.getDesktop().browse(URI.create("http://localhost:3000/timeline"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Show the upload error modal.
+     */
+    private void showErrorModal() {
+        errorModal = new ErrorWhileUploadingModalView(controllerManager.getRootPane());
+        errorModal.getOkButton().setOnMouseClicked(this::errorModalOk);
+    }
+    
+    /**
+     * Handler for the OK button for the error modal.
+     * @param event the MouseEvent for this event
+     */
+    private void errorModalOk(MouseEvent event) {
+        errorModal.hideModal();
+    }
+    
+    
     
     /**
      * Save the current project state to file.
@@ -165,7 +221,7 @@ public class ProjectController {
             controllerManager.getRootPane().reInitRootCenterArea(area);
             if (editProjectModal.getProject() != null
                     && editProjectModal.getProject().getCameraTimelines().size()
-                    > project.getCameraTimelines().size()) {
+                    >= project.getCameraTimelines().size()) {
                 for (int i = 0; i < project.getCameraTimelines().size(); i++) {
                     CameraTimeline newLine = project.getCameraTimelines().get(i);
                     CameraTimeline oldLine = editProjectModal.getProject()

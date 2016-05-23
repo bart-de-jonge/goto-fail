@@ -15,3 +15,4 @@ project_write_test.txt
 coverage-error.log
 **/*.swp
 **/.tern-project
+npm-debug.log
