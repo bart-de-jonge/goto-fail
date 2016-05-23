@@ -1,5 +1,6 @@
 package control;
 
+import data.CameraShot;
 import data.DirectorShot;
 import data.DirectorTimeline;
 import data.Shot;
@@ -170,6 +171,26 @@ public class DirectorTimelineController {
         }
     }
 
+    public void generateAllShots() {
+        log.info("CALLED GENERATE ALL SHOTS");
+        shotBlocks.forEach(directorShotBlock -> {
+            DirectorShot shot = directorShotBlock.getShot();
+            if (shot.getCameraShots().isEmpty()) {
+                // Camera shots need to take the director shot's padding into account when making a shot
+                double cameraStart = shot.getBeginCount() - shot.getFrontShotPadding();
+                double cameraEnd = shot.getEndCount() + shot.getEndShotPadding();
+
+
+                shot.getTimelineIndices().forEach(index -> {
+                    CameraShot subShot = new CameraShot(shot.getName(), shot.getDescription(),
+                                                        cameraStart, cameraEnd, shot);
+                    shot.addCameraShot(subShot);
+                    this.controllerManager.getTimelineControl().addCameraShot(index, subShot);
+                });
+            }
+        });
+    }
+
     /**
      * Remove all collisions and from this shotblock.
      * Removes the collisions from the counterpart in each collision as well
@@ -185,4 +206,5 @@ public class DirectorTimelineController {
         }
         shotBlock.getShot().getCollidesWith().removeAll(toRemove);
     }
+
 }
