@@ -45,8 +45,6 @@ public class PreferencesViewControllerTest extends ApplicationTest {
 
         when(controllerManager.getProjectController()).thenReturn(projectController);
         when(controllerManager.getRootPane()).thenReturn(rootPane);
-        //when(rootPane.getPrimaryStage()).thenReturn(stage);
-
         when(controllerManager.getScriptingProject()).thenReturn(scriptingProject);
 
         preferencesViewController = new PreferencesViewController(controllerManager);

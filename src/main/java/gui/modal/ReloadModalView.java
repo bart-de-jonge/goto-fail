@@ -15,16 +15,8 @@ public class ReloadModalView extends SaveModalView {
     public ReloadModalView(RootPane rootPane) {
         super(rootPane);
 
-        initializeView();
-    }
-
-    /**
-     * Initialize the view of this modal.
-     */
-    private void initializeView() {
         this.informationLabel.setText("This will cause the application to restart!\n"
-            + "Do you wish to save project changes?");
+                + "Do you wish to save project changes?");
     }
-
 
 }
