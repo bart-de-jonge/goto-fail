@@ -192,7 +192,35 @@ public class ProjectController {
             log.info("User did not select a file");
         }
     }
-    
+
+    /**
+     * This method reinitializes all the cameratimelines and the directortimeline. This method takes
+     * care of the removal and addition of cameratimelines.
+     * @param newProject the project that will be newly added to the scripting project with
+     *                   optionally changed number of timelines
+     */
+    private void reInitTimelines(ScriptingProject newProject) {
+        if (editProjectModal.getProject() != null
+                && editProjectModal.getProject().getCameraTimelines().size()
+                >= newProject.getCameraTimelines().size()) {
+            for (int i = 0; i < newProject.getCameraTimelines().size(); i++) {
+                CameraTimeline newLine = newProject.getCameraTimelines().get(i);
+                CameraTimeline oldLine = editProjectModal.getProject()
+                        .getCameraTimelines().get(i);
+                LinkedList<CameraShot> shots = new LinkedList<>();
+                oldLine.getShots().forEach(shots::add);
+                int j = i;
+                shots.forEach(shot -> {
+                        newLine.addShot(shot);
+                        controllerManager.getTimelineControl().addCameraShot(j, shot);
+                    });
+            }
+        }
+        editProjectModal.getProject().getDirectorTimeline().getShots()
+                .forEach(shot -> controllerManager
+                        .getDirectorTimelineControl().addDirectorShot(shot));
+    }
+
     /**
      * Handler for when the save button is clicked.
      * @param event the MouseEvent for this handler
@@ -221,35 +249,6 @@ public class ProjectController {
             controllerManager.getRootPane().reInitRootCenterArea(area);
             reInitTimelines(project);
         }
-    }
-
-    /**
-     * This method reinitializes all the cameratimelines and the directortimeline. This method takes
-     * care of the removal and addition of cameratimelines.
-     * @param newProject the project that will be newly added to the scripting project with
-     *                   optionally changed number of timelines
-     */
-    private void reInitTimelines(ScriptingProject newProject) {
-        if (editProjectModal.getProject() != null
-                && editProjectModal.getProject().getCameraTimelines().size()
-                >= newProject.getCameraTimelines().size()) {
-            for (int i = 0; i < newProject.getCameraTimelines().size(); i++) {
-                CameraTimeline newLine = newProject.getCameraTimelines().get(i);
-                CameraTimeline oldLine = editProjectModal.getProject()
-                        .getCameraTimelines().get(i);
-                LinkedList<CameraShot> shots = new LinkedList<>();
-                oldLine.getShots().forEach(shots::add);
-                int j = i;
-                shots.forEach(shot -> {
-                        newLine.addShot(shot);
-                        controllerManager.getTimelineControl().addCameraShot(j, shot);
-                    });
-            }
-        }
-        editProjectModal.getProject().getDirectorTimeline().getShots()
-                .forEach(shot -> {
-                    controllerManager.getDirectorTimelineControl().addDirectorShot(shot);
-                });
     }
 
     /**
