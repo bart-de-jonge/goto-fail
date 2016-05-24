@@ -90,7 +90,7 @@ public class RootPane extends Application {
         startupMethod();
 
         // TODO: Remove.
-        ButtonsOnlyModalView testModalView = new ButtonsOnlyModalView(this);
+        StartupModalView testModalView = new StartupModalView(this);
     }
 
     /**
