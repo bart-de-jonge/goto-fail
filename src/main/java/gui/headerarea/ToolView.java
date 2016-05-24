@@ -29,6 +29,8 @@ public class ToolView extends HBox {
     private ToolButton blockDeletionTool;
     @Getter
     private ToolButton shotGenerationTool;
+    @Getter
+    private ToolButton allShotGenerationTool;
 
     /**
      * Constructor.
@@ -45,6 +47,7 @@ public class ToolView extends HBox {
         this.cameraBlockCreationTool = this.addToolButton("Add camerashot");
         this.blockDeletionTool = this.addToolButton("Delete shot");
         this.shotGenerationTool = this.addToolButton("Generate CameraShots");
+        this.allShotGenerationTool = this.addToolButton("Generate All Shots");
     }
 
     /**
