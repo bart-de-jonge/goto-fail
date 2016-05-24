@@ -7,18 +7,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
-public class UploadSuccessModalView extends ModalView {
+public class UploadSuccessModalView extends ButtonsOnlyModalView {
     
     private static final int WIDTH = 300;
     private static final int HEIGHT = 300;
     
     @Getter
     private StyledButton closeButton;
-    
     @Getter
     private StyledButton goToWebsiteButton;
-    
-    private VBox viewPane;
     
     /**
      * Construct a new success modal with default size.
@@ -36,30 +33,22 @@ public class UploadSuccessModalView extends ModalView {
      */
     public UploadSuccessModalView(RootPane rootPane, int width, int height) {
         super(rootPane, width, height);
-        initView();
-        this.setModalView(viewPane);
-        this.displayModal();
+
+        initialize();
     }
-    
+
     /**
-     * Initialize the view of this modal.
+     * Adds content to modal view.
      */
-    private void initView() {
-        viewPane = new VBox(20);
-        Label label = new Label("Upload successful!");
-        viewPane.getChildren().add(label);
-        initButtons();
-    }
-    
-    /**
-     * Initialize the buttons.
-     */
-    private void initButtons() {
+    private void initialize() {
+        // Set title text
+        titleLabel.setText("Upload successful!");
+
+        // Add buttons
         closeButton = createButton("Close", false);
         goToWebsiteButton = createButton("Go to website", false);
-        HBox buttonBox = new HBox(10);
-        buttonBox.getChildren().addAll(closeButton, goToWebsiteButton);
-        viewPane.getChildren().add(buttonBox);
+        buttonPane.getChildren().addAll(closeButton, goToWebsiteButton);
     }
+
 
 }
