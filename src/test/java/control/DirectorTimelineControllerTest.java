@@ -97,6 +97,12 @@ public class DirectorTimelineControllerTest extends ApplicationTest {
         DirectorShotBlock shotBlockMock = Mockito.mock(DirectorShotBlock.class);
         when(controllerManager.getActiveShotBlock()).thenReturn(shotBlockMock);
 
+        DirectorShot shotMock = Mockito.mock(DirectorShot.class);
+        when(shotBlockMock.getShot()).thenReturn(shotMock);
+
+        TimelineController timelineControllerMock = Mockito.mock(TimelineController.class);
+        when(controllerManager.getTimelineControl()).thenReturn(timelineControllerMock);
+
         directorTimelineController.removeShot(shotBlockMock);
 
         verify(shotBlockMock).removeFromView();
