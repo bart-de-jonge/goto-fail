@@ -6,15 +6,13 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
-public class ErrorWhileUploadingModalView extends ModalView {
+public class ErrorWhileUploadingModalView extends ButtonsOnlyModalView {
     
     private static final int WIDTH = 400;
     private static final int HEIGHT = 150;
     
     @Getter
     private StyledButton okButton;
-    
-    private VBox viewPane;
     
     /**
      * Construct a new modal with default size.
@@ -32,19 +30,20 @@ public class ErrorWhileUploadingModalView extends ModalView {
      */
     public ErrorWhileUploadingModalView(RootPane rootPane, int width, int height) {
         super(rootPane, width, height);
-        initView();
-        this.setModalView(viewPane);
-        this.displayModal();
+
+        initialize();
     }
-    
+
     /**
-     * Initialize the view.
+     * Initializes content for this modal.
      */
-    private void initView() {
-        viewPane = new VBox(20);
-        okButton = this.createButton("OK", false);
-        Label label = new Label("Something went wrong while uploading your project file");
-        viewPane.getChildren().addAll(label, okButton);
+    private void initialize() {
+        // set title
+        titleLabel.setText("Something went wrong while uploading project files.");
+
+        // add buttons
+        okButton = this.createButton("Ok", true);
+        buttonPane.getChildren().add(okButton);
     }
 
 }
