@@ -1,17 +1,19 @@
 package data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import lombok.Getter;
 import lombok.Setter;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
 /**
  * This class extends the Shot class, this one is specific for the CameraTimeline.
  */
 @XmlRootElement(name = "cameraShot")
-@ToString
+@XmlAccessorType(XmlAccessType.FIELD)
 @Log4j2
 public class CameraShot extends Shot {
 
@@ -20,6 +22,7 @@ public class CameraShot extends Shot {
 
     @Getter
     @Setter
+    @XmlTransient
     private DirectorShot directorShot;
    
     /**

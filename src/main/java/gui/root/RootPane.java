@@ -2,6 +2,7 @@ package gui.root;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import control.ControllerManager;
@@ -129,11 +130,16 @@ public class RootPane extends Application {
         Scanner reader = null;
         try {
             reader = new Scanner(new File(CONFIG_FILEPATH), "UTF-8");
-            return reader.nextLine();
+            String line = reader.nextLine();
+            return line;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        } catch (NoSuchElementException e) {
+            return null;
+            
         } finally {
+        
             if (reader != null) {
                 reader.close();
             }
