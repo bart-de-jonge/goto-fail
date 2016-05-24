@@ -29,11 +29,11 @@ public class StyledCheckbox extends CheckBox {
      * so they might not do anything.
      */
     @Getter
-    private Color borderColor = TweakingHelper.getPrimaryColor();
+    private Color borderColor = TweakingHelper.getColor(0);
     @Getter
-    private Color markColor = TweakingHelper.getSecondaryColor();
+    private Color markColor = TweakingHelper.getColor(1);
     @Getter
-    private Color fillColor = TweakingHelper.getQuadratoryColor();
+    private Color fillColor = TweakingHelper.getColor(3);
 
     /*
      * Effect and transition tweaking.

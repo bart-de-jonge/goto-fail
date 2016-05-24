@@ -16,10 +16,10 @@ public class ToolView extends HBox {
     private List<ToolButton> buttonList;
 
     private String style = "-fx-background-color: "
-            + TweakingHelper.getPrimaryString() + ";"
+            + TweakingHelper.getColorString(0) + ";"
             + "-fx-border-width: 0 0 8 0;"
             + "-fx-border-color:"
-            + TweakingHelper.getSecondaryString() + ";";
+            + TweakingHelper.getColorString(1) + ";";
 
     @Getter
     private ToolButton directorBlockCreationTool;

@@ -29,9 +29,9 @@ public class StyledListview<T> extends ListView {
     private int transitionMouseoverTime = 100;
 
     private String style = "-fx-border-color:"
-            + TweakingHelper.getPrimaryString() + ";"
+            + TweakingHelper.getColorString(0) + ";"
             + "-c-color-primary: "
-            + TweakingHelper.getPrimaryString() + ";";
+            + TweakingHelper.getColorString(0) + ";";
 
     /*
      * Misc variables

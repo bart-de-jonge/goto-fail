@@ -40,18 +40,18 @@ public class EditProjectModalView extends ModalView {
 
     // simple background styles of the three main areas.
     private String topStyle = "-fx-background-color: "
-            + TweakingHelper.getPrimaryString() + ";"
+            + TweakingHelper.getColorString(0) + ";"
             + "-fx-text-fill: white; -fx-font-size: 26;"
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 10 0;"
             + "-fx-border-color: "
-            + TweakingHelper.getSecondaryString() + ";";
+            + TweakingHelper.getColorString(1) + ";";
     private String centerLeftStyle = "-fx-background-color: "
             + TweakingHelper.getBackgroundHighString() + ";";
     private String centerRightStyle = "-fx-background-color: "
             + TweakingHelper.getBackgroundString() + ";";
     private String bottomStyle = "-fx-background-color: "
-            + TweakingHelper.getPrimaryString() + ";";
+            + TweakingHelper.getColorString(0) + ";";
 
     // variables for the Create and Cancel buttons
     private static final int buttonWidth = 155;

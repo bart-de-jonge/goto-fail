@@ -52,6 +52,10 @@ public final class TweakingHelper {
             }
     };
 
+    /*
+     * Color names for the main colors. Used by settings menu, for example.
+     */
+
     @Getter
     private static final String[] colorNames = {
         "blue",
@@ -83,59 +87,21 @@ public final class TweakingHelper {
      */
 
     /**
-     * @return primary color.
+     * Returns a color of choice., specified by an index.
+     * @param i index of the color.
+     * @return the color of choice.
      */
-    public static Color getPrimaryColor() {
-        return colors[colorChoice][0];
+    public static Color getColor(int i) {
+        return colors[colorChoice][i < getNumberOfColors() ? i : 0];
     }
 
     /**
-     * @return secondary color.
+     * Returns string version of a color of choice, specified by index.
+     * @param i index of the color.
+     * @return the string version of the color of choice.
      */
-    public static Color getSecondaryColor() {
-        return colors[colorChoice][1];
-    }
-
-    /**
-     * @return tertiary color.
-     */
-    public static Color getTertiaryColor() {
-        return colors[colorChoice][2];
-    }
-
-    /**
-     * @return quadratory color.
-     */
-    public static Color getQuadratoryColor() {
-        return colors[colorChoice][3];
-    }
-
-    /**
-     * @return primary color as string.
-     */
-    public static String getPrimaryString() {
-        return getStringFromColor(getPrimaryColor());
-    }
-
-    /**
-     * @return secondary color as string.
-     */
-    public static String getSecondaryString() {
-        return getStringFromColor(getSecondaryColor());
-    }
-
-    /**
-     * @return tertiary color as string.
-     */
-    public static String getTertiaryString() {
-        return getStringFromColor(getTertiaryColor());
-    }
-
-    /**
-     * @return quadratory color as string.
-     */
-    public static String getQuadratoryString() {
-        return getStringFromColor(getQuadratoryColor());
+    public static String getColorString(int i) {
+        return getStringFromColor(getColor(i));
     }
 
     /**

@@ -154,11 +154,11 @@ public abstract class TimetableBlock extends Pane {
         this.getStyleClass().add("block_Background");
         this.getContentPane().getStyleClass().add("block_Foreground");
         this.setStyle(
-                "-fx-background-color: "  + TweakingHelper.getPrimaryString() + ";"
-                + "-fx-border-color: " + TweakingHelper.getSecondaryString() + ";");
+                "-fx-background-color: "  + TweakingHelper.getColorString(0) + ";"
+                + "-fx-border-color: " + TweakingHelper.getColorString(1) + ";");
         this.getContentPane().setStyle(
-                "-fx-background-color: " + TweakingHelper.getQuadratoryString() + ";"
-                + "-fx-border-color: " + TweakingHelper.getTertiaryString() + ";");
+                "-fx-background-color: " + TweakingHelper.getColorString(3) + ";"
+                + "-fx-border-color: " + TweakingHelper.getColorString(2) + ";");
     }
 
     /**
@@ -198,11 +198,11 @@ public abstract class TimetableBlock extends Pane {
         this.getDraggedPane().getStyleClass().add("block_Background");
         this.getDraggedContentPane().getStyleClass().add("block_Foreground");
         this.getDraggedPane().setStyle(
-                "-fx-background-color: " + TweakingHelper.getPrimaryString() + ";"
-                + "-fx-border-color: " + TweakingHelper.getSecondaryString() + ";");
+                "-fx-background-color: " + TweakingHelper.getColorString(0) + ";"
+                + "-fx-border-color: " + TweakingHelper.getColorString(1) + ";");
         this.getDraggedContentPane().setStyle(
-                "-fx-background-color: " + TweakingHelper.getQuadratoryString() + ";"
-                + "-fx-border-color: " + TweakingHelper.getTertiaryString() + ";"
+                "-fx-background-color: " + TweakingHelper.getColorString(3) + ";"
+                + "-fx-border-color: " + TweakingHelper.getColorString(2) + ";"
                 + "-fx-blend-mode: multiply; -fx-opacity: 0.9;");
     }
 
@@ -245,7 +245,7 @@ public abstract class TimetableBlock extends Pane {
         Label res = new Label(parentBlock.getName());
         res.maxWidthProperty().bind(this.widthProperty());
         res.getStyleClass().add("block_Text_Title");
-        res.setStyle("-fx-text-fill:" + TweakingHelper.getSecondaryString() + ";");
+        res.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(1) + ";");
         vbox.getChildren().add(res);
         return res;
     }
@@ -259,7 +259,7 @@ public abstract class TimetableBlock extends Pane {
         Label res = new Label(parentBlock.getDescription());
         res.maxWidthProperty().bind(this.widthProperty());
         res.getStyleClass().add("block_Text_Normal");
-        res.setStyle("-fx-text-fill:" + TweakingHelper.getTertiaryString() + ";");
+        res.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(2) + ";");
         vbox.getChildren().add(res);
         return res;
     }
@@ -274,7 +274,7 @@ public abstract class TimetableBlock extends Pane {
         Label res = new Label(labelText);
         res.maxWidthProperty().bind(this.widthProperty());
         res.getStyleClass().add("block_Text_Normal");
-        res.setStyle("-fx-text-fill:" + TweakingHelper.getTertiaryString() + ";");
+        res.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(2) + ";");
         vbox.getChildren().add(res);
         return res;
     }

@@ -26,11 +26,11 @@ public class StartupModalView extends ModalView {
     private static final int bottomAreaHeight = 60;
 
     // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: " + TweakingHelper.getPrimaryString() + ";"
+    private String topStyle = "-fx-background-color: " + TweakingHelper.getColorString(0) + ";"
             + "-fx-text-fill: white; -fx-font-size: 20;"
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: " + TweakingHelper.getSecondaryString() + ";";
+            + "-fx-border-color: " + TweakingHelper.getColorString(1) + ";";
 
     // variables for the buttons
     private int buttonWidth = 120;

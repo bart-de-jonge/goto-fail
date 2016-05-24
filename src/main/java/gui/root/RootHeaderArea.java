@@ -94,7 +94,7 @@ public class RootHeaderArea extends VBox {
 
         MenuBar topMenuBar = new MenuBar();
         topMenuBar.setStyle("-c-color-primary: "
-                + TweakingHelper.getPrimaryString() + ";");
+                + TweakingHelper.getColorString(0) + ";");
         topMenuBar.setUseSystemMenuBar(true);
         topMenuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
         return topMenuBar;
