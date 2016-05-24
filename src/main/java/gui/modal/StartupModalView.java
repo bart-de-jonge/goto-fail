@@ -21,13 +21,6 @@ public class StartupModalView extends ButtonsOnlyModalView {
     private static final int width = 550;
     private static final int height = 200;
 
-    // variables for spacing
-    private static final int topAreaHeight = 80;
-
-    // variables for the buttons
-    private int buttonWidth = 120;
-    private int buttonHeight = 25;
-
     /*
      * Other variables
      */
