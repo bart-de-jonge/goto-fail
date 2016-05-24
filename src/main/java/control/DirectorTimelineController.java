@@ -123,6 +123,11 @@ public class DirectorTimelineController {
         directorTimeline.removeShot(shotBlock.getShot());
         controllerManager.getScriptingProject().changed();
 
+        DirectorShot directorShot = shotBlock.getShot();
+        directorShot.getCameraShots().forEach(cameraShot -> {
+                this.controllerManager.getTimelineControl().removeCameraShot(cameraShot);
+            });
+
         // Then remove the shot from the view
         shotBlock.removeFromView();
     }
