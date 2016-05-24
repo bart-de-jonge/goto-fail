@@ -15,7 +15,7 @@ public class ReloadModalView extends SaveModalView {
     public ReloadModalView(RootPane rootPane) {
         super(rootPane);
 
-        this.informationLabel.setText("This will cause the application to restart!\n"
+        this.titleLabel.setText("This will cause the application to restart!\n"
                 + "Do you wish to save project changes?");
     }
 

@@ -45,8 +45,8 @@ public class UploadSuccessModalView extends ButtonsOnlyModalView {
         titleLabel.setText("Upload successful!");
 
         // Add buttons
-        closeButton = createButton("Close", false);
-        goToWebsiteButton = createButton("Go to website", false);
+        closeButton = createButton("Close", true);
+        goToWebsiteButton = createButton("Go to website", true);
         buttonPane.getChildren().addAll(closeButton, goToWebsiteButton);
     }
 

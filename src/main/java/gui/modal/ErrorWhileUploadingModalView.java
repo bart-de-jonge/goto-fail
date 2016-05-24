@@ -42,7 +42,7 @@ public class ErrorWhileUploadingModalView extends ButtonsOnlyModalView {
         titleLabel.setText("Something went wrong while uploading project files.");
 
         // add buttons
-        okButton = this.createButton("Ok", false);
+        okButton = this.createButton("Ok", true);
         buttonPane.getChildren().add(okButton);
     }
 

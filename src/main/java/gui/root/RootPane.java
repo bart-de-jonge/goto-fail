@@ -88,9 +88,6 @@ public class RootPane extends Application {
         controllerManager = new ControllerManager(this);
 
         startupMethod();
-
-        // TODO: Remove.
-        StartupModalView testModalView = new StartupModalView(this);
     }
 
     /**
