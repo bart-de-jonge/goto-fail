@@ -34,10 +34,10 @@ public class StyledButton extends Button {
 
     // colors
     // Color of normal borders and text. Becomes fillColor on click.
-    private Color borderColor = TweakingHelper.COLOR_PRIMARY;
+    private Color borderColor = TweakingHelper.getColor(0);
     // Color of (blank) background. Becomes borderColor on click.
     // Can be set transparent?
-    private Color fillColor = TweakingHelper.COLOR_BACKGROUND;
+    private Color fillColor = TweakingHelper.getBackgroundColor();
 
     /*
      * Misc variables

@@ -14,7 +14,7 @@ import lombok.Getter;
 public class DetailView extends HBox {
 
     private String style = "-fx-background-color: "
-            + TweakingHelper.STRING_BACKGROUND_HIGH + ";"
+            + TweakingHelper.getBackgroundHighString() + ";"
             + "-fx-min-height: 40;"
             + "-fx-border-width: 0 0 1px 0;"
             + "-fx-border-color: rgba(0,0,0,0.40);";

@@ -60,8 +60,6 @@ public class ProjectControllerTest extends ApplicationTest {
         when(controllerManager.getScriptingProject()).thenReturn(project);
         when(controllerManager.getRootPane()).thenReturn(rootPane);
         when(rootPane.getControllerManager()).thenReturn(controllerManager);
-        
-        
     }
 
     @Test
