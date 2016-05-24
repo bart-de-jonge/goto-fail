@@ -101,22 +101,22 @@ public abstract class ShotBlock {
 
         if (colliding) {
             this.timetableBlock.setStyle("-fx-background-color: "
-                    + TweakingHelper.STRING_PRIMARY + ";"
+                    + TweakingHelper.getColorString(0) + ";"
                     + "-fx-border-color: red;"
                     + "-fx-border-width: 3;");
             this.timetableBlock.getContentPane().setStyle("-fx-background-color: "
-                    + TweakingHelper.STRING_QUADRATORY + ";"
+                    + TweakingHelper.getColorString(3) + ";"
                     + "-fx-border-color: "
-                    + TweakingHelper.STRING_TERTIARY + ";");
+                    + TweakingHelper.getColorString(2) + ";");
         } else {
             this.timetableBlock.setStyle("-fx-background-color: "
-                    + TweakingHelper.STRING_PRIMARY + ";"
+                    + TweakingHelper.getColorString(0) + ";"
                     + "-fx-border-color: "
-                    + TweakingHelper.STRING_SECONDARY + ";");
+                    + TweakingHelper.getColorString(1) + ";");
             this.timetableBlock.getContentPane().setStyle("-fx-background-color: "
-                    + TweakingHelper.STRING_QUADRATORY + ";"
+                    + TweakingHelper.getColorString(3) + ";"
                     + "-fx-border-color: "
-                    + TweakingHelper.STRING_TERTIARY + ";");
+                    + TweakingHelper.getColorString(2) + ";");
         }
     }
 

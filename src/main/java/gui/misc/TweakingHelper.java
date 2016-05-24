@@ -1,14 +1,30 @@
 package gui.misc;
 
 import javafx.scene.paint.Color;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Statics to help with gui tweakability.
  */
 public final class TweakingHelper {
 
-    private static final int colorChoice = 0;
+    @Getter @Setter
+    private static int colorChoice = 0;
 
+    /*
+     * Constants used throughout application.
+     */
+
+    public static final int GENERAL_SIZE = 10000;
+    public static final int GENERAL_SPACING = 10;
+    public static final int GENERAL_PADDING = 20;
+
+    /*
+     * Main colors of application. Has 4 presets right now.
+     */
+
+    @Getter
     private static final Color[][] colors = {
             {
                     Color.rgb(69, 162, 217),
@@ -36,31 +52,71 @@ public final class TweakingHelper {
             }
     };
 
-    public static final Color COLOR_PRIMARY = colors[colorChoice][0]; // main (light) color
-    public static final Color COLOR_SECONDARY = colors[colorChoice][1]; // dark color
-    public static final Color COLOR_TERTIARY = colors[colorChoice][2]; // very dark color
-    public static final Color COLOR_QUADRATORY = colors[colorChoice][3]; // very light color
+    /*
+     * Color names for the main colors. Used by settings menu, for example.
+     */
+
+    @Getter
+    private static final String[] colorNames = {
+        "blue",
+        "orange",
+        "green",
+        "red"
+    };
+
+    /**
+     * @return amount of colors currently defined.
+     */
+    public static int getNumberOfColors() {
+        return colors.length;
+    }
 
     /*
      * Some whites and grays used throughout the application.
      */
 
-    public static final Color COLOR_BACKGROUND = Color.WHITE; // main bg color
-    public static final Color COLOR_BACKGROUND_HIGH =
-            Color.rgb(245, 245, 245); // heightened bg color
+    @Getter
+    private static Color backgroundColor = Color.WHITE; // main bg color
+    @Getter
+    private static Color backgroundHighColor = Color.rgb(245, 245, 245); // heightened bg color
+    @Getter
+    private static Color backgroundContrastColor = Color.WHITE; // Color.BLACK;
 
-    // string versions of main colors
-    public static final String STRING_PRIMARY = getStringFromColor(COLOR_PRIMARY);
-    public static final String STRING_SECONDARY = getStringFromColor(COLOR_SECONDARY);
-    public static final String STRING_TERTIARY = getStringFromColor(COLOR_TERTIARY);
-    public static final String STRING_QUADRATORY = getStringFromColor(COLOR_QUADRATORY);
-    public static final String STRING_BACKGROUND = getStringFromColor(COLOR_BACKGROUND);
-    public static final String STRING_BACKGROUND_HIGH = getStringFromColor(COLOR_BACKGROUND_HIGH);
+    /*
+     * Getters
+     */
 
-    // general layout variables used throughout application.
-    public static final int GENERAL_SIZE = 10000;
-    public static final int GENERAL_SPACING = 10;
-    public static final int GENERAL_PADDING = 20;
+    /**
+     * Returns a color of choice., specified by an index.
+     * @param i index of the color.
+     * @return the color of choice.
+     */
+    public static Color getColor(int i) {
+        return colors[colorChoice][i < getNumberOfColors() ? i : 0];
+    }
+
+    /**
+     * Returns string version of a color of choice, specified by index.
+     * @param i index of the color.
+     * @return the string version of the color of choice.
+     */
+    public static String getColorString(int i) {
+        return getStringFromColor(getColor(i));
+    }
+
+    /**
+     * @return background color as string.
+     */
+    public static String getBackgroundString() {
+        return getStringFromColor(backgroundColor);
+    }
+
+    /**
+     * @return background heightened color as string.
+     */
+    public static String getBackgroundHighString() {
+        return getStringFromColor(backgroundHighColor);
+    }
 
     /**
      * Parses color from a Color object to javafx-css-compatible string.

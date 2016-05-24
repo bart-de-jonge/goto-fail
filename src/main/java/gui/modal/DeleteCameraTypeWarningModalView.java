@@ -30,13 +30,13 @@ public class DeleteCameraTypeWarningModalView extends ModalView {
     private static final int bottomAreaHeight = 60;
 
     // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: " + TweakingHelper.STRING_PRIMARY + ";"
+    private String topStyle = "-fx-background-color: " + TweakingHelper.getColorString(0) + ";"
             + "-fx-text-fill: white; -fx-font-size: 20;"
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: " + TweakingHelper.STRING_SECONDARY + ";";
+            + "-fx-border-color: " + TweakingHelper.getColorString(1) + ";";
     private String bottomStyle = "-fx-background-color: "
-            + TweakingHelper.STRING_PRIMARY + ";";
+            + TweakingHelper.getColorString(0) + ";";
 
     // variables for the buttons
     private int buttonSpacing = 20;

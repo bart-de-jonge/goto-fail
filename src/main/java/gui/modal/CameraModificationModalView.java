@@ -18,16 +18,16 @@ public class CameraModificationModalView extends ModalView {
     protected static final int bottomAreaHeight = 60;
     
     protected String topStyle = "-fx-background-color: "
-            + TweakingHelper.STRING_PRIMARY + ";"
+            + TweakingHelper.getColorString(0) + ";"
             + "-fx-text-fill: white; -fx-font-size: 22;"
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 10 0;"
             + "-fx-border-color: "
-            + TweakingHelper.STRING_SECONDARY + ";";
+            + TweakingHelper.getColorString(1) + ";";
     protected String centerStyle = "-fx-background-color: "
-            + TweakingHelper.STRING_BACKGROUND + ";";
+            + TweakingHelper.getBackgroundString() + ";";
     protected String bottomStyle = "-fx-background-color: "
-            + TweakingHelper.STRING_PRIMARY + ";";
+            + TweakingHelper.getColorString(0) + ";";
     
     protected static final int buttonWidth = 90;
     protected static final int buttonHeight = 25;

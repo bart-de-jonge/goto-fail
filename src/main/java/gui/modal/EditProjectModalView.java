@@ -1,8 +1,5 @@
 package gui.modal;
 
-
-import java.util.ArrayList;
-
 import data.Camera;
 import data.CameraTimeline;
 import data.CameraType;
@@ -13,6 +10,7 @@ import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledListview;
 import gui.styling.StyledTextfield;
+import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -42,18 +40,18 @@ public class EditProjectModalView extends ModalView {
 
     // simple background styles of the three main areas.
     private String topStyle = "-fx-background-color: "
-            + TweakingHelper.STRING_PRIMARY + ";"
+            + TweakingHelper.getColorString(0) + ";"
             + "-fx-text-fill: white; -fx-font-size: 26;"
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 10 0;"
             + "-fx-border-color: "
-            + TweakingHelper.STRING_SECONDARY + ";";
+            + TweakingHelper.getColorString(1) + ";";
     private String centerLeftStyle = "-fx-background-color: "
-            + TweakingHelper.STRING_BACKGROUND_HIGH + ";";
+            + TweakingHelper.getBackgroundHighString() + ";";
     private String centerRightStyle = "-fx-background-color: "
-            + TweakingHelper.STRING_BACKGROUND + ";";
+            + TweakingHelper.getBackgroundString() + ";";
     private String bottomStyle = "-fx-background-color: "
-            + TweakingHelper.STRING_PRIMARY + ";";
+            + TweakingHelper.getColorString(0) + ";";
 
     // variables for the Create and Cancel buttons
     private static final int buttonWidth = 155;
