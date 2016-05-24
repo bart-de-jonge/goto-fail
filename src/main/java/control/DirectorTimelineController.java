@@ -183,7 +183,6 @@ public class DirectorTimelineController {
                     double cameraStart = shot.getBeginCount() - shot.getFrontShotPadding();
                     double cameraEnd = shot.getEndCount() + shot.getEndShotPadding();
 
-
                     shot.getTimelineIndices().forEach(index -> {
                             CameraShot subShot = new CameraShot(shot.getName(),
                                                                 shot.getDescription(),
