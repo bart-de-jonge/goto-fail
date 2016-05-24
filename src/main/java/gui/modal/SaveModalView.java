@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
-public class SaveModalView extends ModalView {
+public class SaveModalView extends ButtonsOnlyModalView {
 
     /*
      * Tweakable styling variables.
@@ -22,33 +22,17 @@ public class SaveModalView extends ModalView {
 
     // variables for spacing
     private static final int topAreaHeight = 80;
-    private static final int bottomAreaHeight = 60;
-
-    // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: " + TweakingHelper.getColorString(0) + ";"
-            + "-fx-text-fill: white; -fx-font-size: 20;"
-            + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
-            + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: " + TweakingHelper.getColorString(1) + ";";
-
-    // variables for the buttons
-    private int buttonSpacing = 20;
-
-    // variables for the title label
-    private static final int titlelabelOffsetFromLeft = 20;
 
     /*
      * Other variables
      */
 
-    protected Label informationLabel;
     @Getter
     private StyledButton saveButton;
     @Getter
     private StyledButton dontSaveButton;
     @Getter
     private StyledButton cancelButton;
-    private VBox viewPane;
 
     /**
      * Constructor of class.
@@ -66,65 +50,21 @@ public class SaveModalView extends ModalView {
      */
     public SaveModalView(RootPane rootPane, int width, int height) {
         super(rootPane, width, height);
-        initializeView();
-    }
-    
-    /**
-     * Initialize the view of this modal.
-     */
-    private void initializeView() {
-        // force minimum size
-        getModalStage().setHeight(height);
-        getModalStage().setWidth(width);
-        getModalStage().setMinWidth(width);
-        getModalStage().setMinHeight(height);
-
-        // Create a new VBox for vertical layout
-        this.viewPane = new VBox();
-
-        // Add label at top
-        initInformationLabel();
-
-        // add buttons at bottom.
-        initButtons();
-        
-        super.setModalView(this.viewPane);
-        super.displayModal();
+        initialize();
     }
 
     /**
-     * Initialize title label.
+     * Initializes all content for this modal.
      */
-    private void initInformationLabel() {
-        informationLabel = new Label("There are unsaved changes\nDo you want to save them?");
-        informationLabel.setStyle(topStyle);
-        informationLabel.setAlignment(Pos.CENTER);
-        informationLabel.setPadding(new Insets(0, titlelabelOffsetFromLeft,
-                0, titlelabelOffsetFromLeft));
-        informationLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        informationLabel.setMinHeight(topAreaHeight);
-        informationLabel.setPrefHeight(topAreaHeight);
-        informationLabel.setMaxHeight(topAreaHeight);
-        this.viewPane.getChildren().add(informationLabel);
-    }
+    private void initialize() {
+        // Set title text.
+        titleLabel.setText("There are unsaved changes\nDo you want to save them?");
 
-    /**
-     * Initialize the buttons.
-     */
-    private void initButtons() {
-        HBox content = new HBox(TweakingHelper.GENERAL_SPACING);
-        content.setSpacing(buttonSpacing);
-        content.setAlignment(Pos.CENTER);
-        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
-        content.setPadding(new Insets(0, titlelabelOffsetFromLeft,
-                0, titlelabelOffsetFromLeft));
-        this.viewPane.getChildren().add(content);
-
+        // Add buttons.
         saveButton = createButton("Save", true);
         dontSaveButton = createButton("Don't save", true);
         cancelButton = createButton("Cancel", true);
-
-        content.getChildren().addAll(saveButton, dontSaveButton, cancelButton);
+        buttonPane.getChildren().addAll(saveButton, dontSaveButton, cancelButton);
     }
 
 }
