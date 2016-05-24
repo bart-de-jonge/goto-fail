@@ -163,7 +163,7 @@ public class TimelineControllerTest extends ApplicationTest {
     }
 
     @Test
-    public void removeCameraShot() throws InterruptedException {
+    public void removeCameraShotBlockTest() throws InterruptedException {
         CameraShot shot = new CameraShot("name", "description", 2.0, 3.0);
         initRootPaneForCameraShotAdding();
 
@@ -173,6 +173,26 @@ public class TimelineControllerTest extends ApplicationTest {
             timelineController.addCameraShot(0, shot);
             CameraShotBlock shotBlock = timelineController.getCameraShotBlocks().get(timelineController.getCameraShotBlocks().size() - 1);
             timelineController.removeCameraShot(shotBlock);
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        // Do verifications
+        assertNull(manager.getActiveShotBlock());
+        Mockito.verify(project, times(2)).changed();
+        assertFalse(manager.getScriptingProject().getCameraTimelines().get(0).getShots().contains(shot));
+    }
+
+    @Test
+    public void removeCameraShotTest() throws InterruptedException {
+        CameraShot shot = new CameraShot("name", "description", 2.0, 3.0);
+        initRootPaneForCameraShotAdding();
+
+        // Call method under test
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        Platform.runLater(() -> {
+            timelineController.addCameraShot(0, shot);
+            timelineController.removeCameraShot(shot);
             latch[0].countDown();
         });
         latch[0].await();
