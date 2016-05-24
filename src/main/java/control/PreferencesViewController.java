@@ -14,8 +14,9 @@ public class PreferencesViewController {
 
     private ControllerManager controllerManager;
 
-    @Getter @Setter
+    @Getter
     private PreferencesModalView preferencesModalView;
+    @Getter
     private ReloadModalView reloadModalView;
 
     /**
