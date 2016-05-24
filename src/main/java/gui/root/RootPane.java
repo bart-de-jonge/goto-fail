@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import control.ControllerManager;
+import gui.modal.ButtonsOnlyModalView;
 import gui.modal.StartupModalView;
+import gui.modal.UploadSuccessModalView;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -86,6 +88,9 @@ public class RootPane extends Application {
         controllerManager = new ControllerManager(this);
 
         startupMethod();
+
+        // TODO: Remove.
+        ButtonsOnlyModalView testModalView = new ButtonsOnlyModalView(this);
     }
 
     /**
