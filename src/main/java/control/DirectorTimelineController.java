@@ -48,7 +48,7 @@ public class DirectorTimelineController {
     }
 
     /**
-     * Add a director shot to the corresponding timeline.
+     * Add a director shot to the directorTimeline.
      * @param name Name of the shot
      * @param description Shot description
      * @param startCount Start count
@@ -61,16 +61,23 @@ public class DirectorTimelineController {
                                 double startCount, double endCount,
                                 double frontPadding, double endPadding,
                                 List<Integer> cameras) {
+        addDirectorShot(new DirectorShot(name, description, startCount, endCount,
+                frontPadding, endPadding, cameras));
+    }
+
+    /**
+     * Add a directorShot to the directortimeline.
+     * @param shot the shot to add
+     */
+    public void addDirectorShot(DirectorShot shot) {
         log.info("Adding DirectorShot to DirectorTimeline");
 
-        DirectorShot newShot = new DirectorShot(name, description, startCount, endCount,
-                frontPadding, endPadding, cameras);
         this.controllerManager.getScriptingProject()
                 .getDirectorTimeline()
-                .addShot(newShot);
-        DirectorShotBlock shotBlock = new DirectorShotBlock(newShot.getInstance(),
-                rootPane.getRootCenterArea(), startCount, endCount,
-                description, name, this::shotChangedHandler, newShot);
+                .addShot(shot);
+        DirectorShotBlock shotBlock = new DirectorShotBlock(shot.getInstance(),
+                rootPane.getRootCenterArea(), shot.getBeginCount(), shot.getEndCount(),
+                shot.getDescription(), shot.getName(), this::shotChangedHandler, shot);
 
         controllerManager.setActiveShotBlock(shotBlock);
         this.shotBlocks.add(shotBlock);
