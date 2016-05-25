@@ -214,6 +214,8 @@ public class ProjectController {
                         newLine.addShot(shot);
                         controllerManager.getTimelineControl().addCameraShot(j, shot);
                     });
+                controllerManager.getScriptingProject().getCameraTimelines()
+                .get(i).setShots(shots);
             }
         }
         editProjectModal.getProject().getDirectorTimeline().getShots()
@@ -222,13 +224,22 @@ public class ProjectController {
     }
 
     /**
+     * Set some data for project.
+     * @param project the project to set it for
+     */
+    private void setData(ScriptingProject project) {
+        project.setCameraTypes(editProjectModal.getCameraTypes());
+        project.setCameras(editProjectModal.getCameras());
+        project.setCameraTimelines(editProjectModal.getTimelines());
+    }
+    
+    /**
      * Handler for when the save button is clicked.
      * @param event the MouseEvent for this handler
      */
     private void save(MouseEvent event) {
         if (validateProjectData()) {
             editProjectModal.hideModal();
-
             String name = editProjectModal.getNameField().getText();
             String description = editProjectModal.getDescriptionField().getText();
             String directorTimelineDescription = editProjectModal
@@ -237,9 +248,7 @@ public class ProjectController {
                     editProjectModal.getSecondsPerCountField().getText());
             ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
             project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
-            project.setCameraTypes(editProjectModal.getCameraTypes());
-            project.setCameras(editProjectModal.getCameras());
-            project.setCameraTimelines(editProjectModal.getTimelines());
+            setData(project);
             project.getDirectorTimeline().setProject(project);
             project.getCameraTimelines().forEach(c -> c.setProject(project));
             controllerManager.setScriptingProject(project);
@@ -250,6 +259,7 @@ public class ProjectController {
             reInitTimelines(project);
         }
     }
+
 
     /**
      * Save the current project.

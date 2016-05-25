@@ -46,11 +46,6 @@ public class CameraShotTest {
         cameraShot.setDescription("a");
         assertEquals("a", cameraShot.getDescription());
     }
-    
-    @Test
-    public void toStringTest() {
-        assertEquals("CameraShot(directorShot=null)", cameraShot.toString());
-    }
 
     @Test
     public void getUnitializedDirectorShotTest() {
