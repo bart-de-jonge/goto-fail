@@ -297,10 +297,6 @@ public class ProjectController {
                             controllerManager.getScriptingProject()
                                     .getCameraTimelines()
                                     .size(), false));
-//            controllerManager.getTimelineControl()
-//                    .setNumTimelines(controllerManager.getScriptingProject()
-//                            .getCameraTimelines()
-//                            .size());
             addLoadedCameraShotBlocks(controllerManager.getScriptingProject());
             addLoadedDirectorShotBlocks(controllerManager.getScriptingProject());
             changeConfigFile(temp);
