@@ -89,10 +89,20 @@ public class TimelineController {
                               .getCameraTimelines()
                               .get(cameraIndex)
                               .addShot(newShot);
+        initShotBlock(cameraIndex, newShot);
+    }
+
+    /**
+     * Display an existing (and linked) CameraShot in the view.
+     * @param cameraIndex Index of the camera timeline
+     * @param newShot CameraShot to display
+     */
+    protected void initShotBlock(int cameraIndex,
+                               CameraShot newShot) {
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(),
-                cameraIndex, rootPane.getRootCenterArea(), newShot.getBeginCount(),
-                newShot.getEndCount(), newShot.getDescription(), newShot.getName(),
-                this::shotChangedHandler, newShot);
+            cameraIndex, rootPane.getRootCenterArea(), newShot.getBeginCount(),
+            newShot.getEndCount(), newShot.getDescription(), newShot.getName(),
+            this::shotChangedHandler, newShot);
 
         controllerManager.setActiveShotBlock(shotBlock);
         this.cameraShotBlocks.add(shotBlock);
@@ -302,7 +312,13 @@ public class TimelineController {
         DirectorShot directorShot = shot.getDirectorShot();
         if (directorShot != null) {
             directorShot.removeCameraShot(shot, timelineIndex);
-            shot.setDirectorShot(null);
+
+            // Delete the director shot if it's the last remaining camera shot
+            if (directorShot.getCameraShots().isEmpty()) {
+                controllerManager.getDirectorTimelineControl().removeShotNoCascade(directorShot);
+            } else {
+                shot.setDirectorShot(null);
+            }
         }
     }
 
