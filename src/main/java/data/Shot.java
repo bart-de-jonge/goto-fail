@@ -24,9 +24,7 @@ public abstract class Shot {
     @Getter @Setter
     private String description;
 
-    // The instancenumber of the Shot.
-    @Getter
-    private int instance;
+    
 
     // The start count of the Shot.
     private DoubleProperty beginCount;
@@ -47,7 +45,6 @@ public abstract class Shot {
     public Shot() {
         name = "";
         description = "";
-        instance = 0;
         beginCount = new SimpleDoubleProperty(0);
         endCount = new SimpleDoubleProperty(0);
         collidesWith = new ArrayList<>();
@@ -62,15 +59,14 @@ public abstract class Shot {
      * @param beginCount the start count of the Shot
      * @param endCount the end count of the Shot
      */
-    public Shot(int instance, String name, String description, double beginCount, double endCount) {
-        log.debug("Adding Shot(instance={}, name={}, description={}, beginCount={}, endCount={})",
-                instance, name, description, beginCount, endCount);
+    public Shot(String name, String description, double beginCount, double endCount) {
+        log.debug("Adding Shot(name={}, description={}, beginCount={}, endCount={})",
+                 name, description, beginCount, endCount);
 
         assert (beginCount <= endCount);
 
         this.name = name;
         this.description = description;
-        this.instance = instance;
         this.beginCount = new SimpleDoubleProperty(beginCount);
         this.endCount = new SimpleDoubleProperty(endCount);
         this.collidesWith = new ArrayList<>();

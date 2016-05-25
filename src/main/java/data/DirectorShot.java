@@ -37,6 +37,10 @@ public class DirectorShot extends Shot {
     @Getter
     @Setter
     private double endShotPadding = 0.0;
+    
+ // The instancenumber of the Shot.
+    @Getter
+    private int instance;
 
     /**
      * Default Constructor.
@@ -57,7 +61,7 @@ public class DirectorShot extends Shot {
      */
     public DirectorShot(String name, String description, double startCount, double endCount,
                         double frontShotPadding, double endShotPadding, List<Integer> cameras) {
-        super(instanceCounter, name, description, startCount, endCount);
+        super(name, description, startCount, endCount);
         this.frontShotPadding = frontShotPadding;
         this.endShotPadding = endShotPadding;
         this.timelineIndices = ConcurrentHashMap.newKeySet();
