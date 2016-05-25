@@ -34,6 +34,7 @@ public class CameraShot extends Shot {
      */
     public CameraShot() {
         super();
+        this.instance = instanceCounter;
         CameraShot.incrementCounter();
     }
 
@@ -50,6 +51,7 @@ public class CameraShot extends Shot {
         super(name, description, startCount, endCount);
         log.debug("Created new CameraShot");
         this.directorShot = directorShot;
+        this.instance = instanceCounter;
         CameraShot.incrementCounter();
     }
 
@@ -66,5 +68,14 @@ public class CameraShot extends Shot {
      */
     public static void incrementCounter() {
         instanceCounter++;
+    }
+    
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof CameraShot) {
+            CameraShot that = (CameraShot) other;
+            return instance == that.instance;
+        }
+        return false;
     }
 }

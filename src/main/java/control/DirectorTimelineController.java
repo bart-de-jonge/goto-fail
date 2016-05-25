@@ -82,12 +82,13 @@ public class DirectorTimelineController {
     /**
      * Display an existing DirectorShot in the view.
      * @param shot DirectorShot to display
+     * @return a list of camera shot instance numbers that were linked in this shot and added to the gui
      */
     protected void initShotBlock(DirectorShot shot) {
         DirectorShotBlock shotBlock = new DirectorShotBlock(shot.getInstance(),
             rootPane.getRootCenterArea(), shot.getBeginCount(), shot.getEndCount(),
             shot.getDescription(), shot.getName(), this::shotChangedHandler, shot);
-
+        
 
         controllerManager.setActiveShotBlock(shotBlock);
         this.directorShotBlockMap.put(shot, shotBlock);

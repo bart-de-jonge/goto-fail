@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -340,9 +341,10 @@ public class ProjectController {
                     .reInitRootCenterArea(new RootCenterArea(
                             controllerManager.getRootPane(),
                             controllerManager.getScriptingProject()
-                                    .getCameras().size(), false));
-            addLoadedCameraShotBlocks(controllerManager.getScriptingProject());
-            addLoadedDirectorShotBlocks(controllerManager.getScriptingProject());
+                                    .getCameraTimelines()
+                                    .size(), false));
+            List<Integer> addedBlocks = addLoadedDirectorShotBlocks(controllerManager.getScriptingProject());
+            addLoadedCameraShotBlocks(controllerManager.getScriptingProject(), addedBlocks);
             changeConfigFile(temp);
         }
     }
@@ -409,13 +411,19 @@ public class ProjectController {
      * Add the loaded camera shotblocks that were loaded from file to the UI.
      * @param project the project that was loaded
      */
-    public void addLoadedCameraShotBlocks(ScriptingProject project) {
+    public void addLoadedCameraShotBlocks(ScriptingProject project, List<Integer> addedBlocks) {
         log.info("Adding loaded CameraShotBlocks");
         for (int i = 0; i < project.getCameraTimelines().size();i++) {
             CameraTimeline timeline = project.getCameraTimelines().get(i);
             int amountShots = timeline.getShots().size();
             for (int j = 0; j < amountShots;j++) {
-                addCameraShotForLoad(i, timeline.getShots().get(j));
+                CameraShot shot = timeline.getShots().get(j);
+                if (!addedBlocks.contains(shot.getInstance())) {
+                    addCameraShotForLoad(i, shot);
+                    log.error("Added camera shot with instance {}", shot.getInstance());
+                } else {
+                    log.error("Shot with instance {} was already loaded", shot.getInstance());
+                }
             }
         }
     }
@@ -424,12 +432,34 @@ public class ProjectController {
      * Add the loaded director shotblocks that were loaded from the file to the UI.
      * @param project the project that was loaded
      */
-    private void addLoadedDirectorShotBlocks(ScriptingProject project) {
+    private List<Integer> addLoadedDirectorShotBlocks(ScriptingProject project) {
         log.info("Adding loaded DirectorShotBlocks");
         DirectorTimeline timeline = project.getDirectorTimeline();
+        List<Integer> addedCameraBlocks = new ArrayList<Integer>();
+        
         for (int i = 0; i < timeline.getShots().size(); i++) {
+            DirectorShot shot = timeline.getShots().get(i);
+            // add instance numbers to the list
+            shot.getCameraShots().forEach(e -> {
+                int timelineNumber = -1;
+                addedCameraBlocks.add(e.getInstance());
+                for (int j=0;j<project.getCameraTimelines().size();j++) {
+                    if (project.getCameraTimelines().get(j).getShots().contains(e)) {
+                        timelineNumber = j;
+                        break;
+                    }
+                }
+                if (timelineNumber != -1) {
+                    log.error("Added camera shot with instance {}", e.getInstance());
+                    addCameraShotForLoad(timelineNumber, e);
+                } else {
+                    log.error("Something went terribly wrong");
+                }
+            });
+            
             addDirectorShotForLoad(timeline.getShots().get(i));
         }
+        return addedCameraBlocks;
     }
 
     /**

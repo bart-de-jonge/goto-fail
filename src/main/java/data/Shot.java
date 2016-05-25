@@ -23,6 +23,10 @@ public abstract class Shot {
     // The description provides additional information for the director.
     @Getter @Setter
     private String description;
+    
+ // The instancenumber of the Shot.
+    @Getter
+    private int instance;
 
     
 
