@@ -96,9 +96,7 @@ public class RootPane extends Application {
         String recentProjectPath = readPathFromConfig();
         if (recentProjectPath != null) {
             File file = new File(recentProjectPath);
-            System.out.println("dada bitches");
             if (file.exists()) {
-                System.out.println("sup bitches");
                 controllerManager.getProjectController().load(file);
             } else {
                 controllerManager.getProjectController().emptyConfigFile();
@@ -133,13 +131,10 @@ public class RootPane extends Application {
             String line = reader.nextLine();
             return line;
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         } catch (NoSuchElementException e) {
             return null;
-            
         } finally {
-        
             if (reader != null) {
                 reader.close();
             }
