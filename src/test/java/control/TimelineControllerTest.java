@@ -38,6 +38,7 @@ public class TimelineControllerTest extends ApplicationTest {
     private ScriptingProject project;
     private CameraShot shot;
     private CameraShotBlock shotBlock;
+    private DirectorTimelineController directorTimelineController;
 
     @Before
     public void initialize() {
@@ -45,7 +46,7 @@ public class TimelineControllerTest extends ApplicationTest {
         TimelineController timelineControllerMock = Mockito.mock(TimelineController.class);
         DetailViewController detailViewController = Mockito.mock(DetailViewController.class);
         ToolViewController toolViewController = Mockito.mock(ToolViewController.class);
-        DirectorTimelineController directorTimelineController = Mockito.mock(DirectorTimelineController.class);
+        directorTimelineController = Mockito.mock(DirectorTimelineController.class);
         ProjectController projectController = Mockito.mock(ProjectController.class);
         manager = spy(new ControllerManager(rootPane, timelineControllerMock, detailViewController, toolViewController,
                                             directorTimelineController, projectController));
@@ -105,7 +106,7 @@ public class TimelineControllerTest extends ApplicationTest {
 
         timelineController.decoupleShot(0, shotSpy);
         verify(directorShotSpy).removeCameraShot(shotSpy, 0);
-        verify(shotSpy).setDirectorShot(null);
+        verify(directorTimelineController).removeShotNoCascade(directorShotSpy);
     }
 
     private void initRootPaneForCameraShotAdding() {
