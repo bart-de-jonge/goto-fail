@@ -6,9 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import control.ControllerManager;
-import gui.modal.ButtonsOnlyModalView;
 import gui.modal.StartupModalView;
-import gui.modal.UploadSuccessModalView;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -100,12 +98,12 @@ public class RootPane extends Application {
             File file = new File(recentProjectPath);
             if (file.exists()) {
                 controllerManager.getProjectController().load(file);
-                primaryStage.setTitle(controllerManager.getScriptingProject().getName());
             } else {
-                initStartupScreen(true);
+                controllerManager.getProjectController().emptyConfigFile();
+                showStartupScreen(true);
             }
         } else {
-            initStartupScreen(false);
+            showStartupScreen(false);
         }
     }
 
@@ -133,13 +131,10 @@ public class RootPane extends Application {
             String line = reader.nextLine();
             return line;
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         } catch (NoSuchElementException e) {
             return null;
-            
         } finally {
-        
             if (reader != null) {
                 reader.close();
             }
@@ -169,7 +164,7 @@ public class RootPane extends Application {
      * Forces load of startup screen.
      * @param loadFailed whether to display a load failure message or not.
      */
-    public void initStartupScreen(boolean loadFailed) {
+    public void showStartupScreen(boolean loadFailed) {
         if (loadFailed) {
             startupModalView.setLoadFailed();
         }

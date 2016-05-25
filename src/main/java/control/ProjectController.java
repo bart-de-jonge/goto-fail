@@ -28,8 +28,6 @@ import data.CameraType;
 import data.DirectorShot;
 import data.DirectorTimeline;
 import data.ScriptingProject;
-import gui.centerarea.CameraShotBlock;
-import gui.centerarea.DirectorShotBlock;
 import gui.modal.AddCameraModalView;
 import gui.modal.AddCameraTypeModalView;
 import gui.modal.DeleteCameraTypeWarningModalView;
@@ -287,7 +285,7 @@ public class ProjectController {
         }
         if (temp == null) {
             controllerManager.getRootPane().getPrimaryStage().close();
-            controllerManager.getRootPane().initStartupScreen(true);
+            controllerManager.getRootPane().showStartupScreen(true);
         } else {
             controllerManager.getRootPane().closeStartupScreen();
             controllerManager.setScriptingProject(temp);
@@ -333,12 +331,30 @@ public class ProjectController {
             writer.write(project.getFilePath());
             writer.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } finally {
             if (writer != null) {
                 writer.close();
                 controllerManager.updateWindowTitle();
+            }
+        }
+    }
+
+    /**
+     * Remove most recent project path in config file.
+     * Used, for example, if the file cannot be found.
+     */
+    public void emptyConfigFile() {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(new File(RootPane.getCONFIG_FILEPATH()), "UTF-8");
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (writer != null) {
+                writer.close();
             }
         }
     }
