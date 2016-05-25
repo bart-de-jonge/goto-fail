@@ -297,12 +297,12 @@ public class ProjectController {
                             controllerManager.getScriptingProject()
                                     .getCameraTimelines()
                                     .size(), false));
+//            controllerManager.getTimelineControl()
+//                    .setNumTimelines(controllerManager.getScriptingProject()
+//                            .getCameraTimelines()
+//                            .size());
             addLoadedCameraShotBlocks(controllerManager.getScriptingProject());
             addLoadedDirectorShotBlocks(controllerManager.getScriptingProject());
-            controllerManager.getTimelineControl()
-                    .setNumTimelines(controllerManager.getScriptingProject()
-                            .getCameraTimelines()
-                            .size());
             changeConfigFile(temp);
         }
     }
@@ -380,12 +380,13 @@ public class ProjectController {
      * @param shot the shot to add
      */
     private void addCameraShotForLoad(int cameraIndex, CameraShot shot) {
-        CameraShotBlock shotBlock = new CameraShotBlock(shot,
-                cameraIndex,
-                controllerManager.getRootPane().getRootCenterArea(),
-                controllerManager.getTimelineControl()::shotChangedHandler);
-        controllerManager.getTimelineControl().getCameraShotBlocks().add(shotBlock);
-        controllerManager.setActiveShotBlock(shotBlock);
+//        CameraShotBlock shotBlock = new CameraShotBlock(shot,
+//                cameraIndex,
+//                controllerManager.getRootPane().getRootCenterArea(),
+//                controllerManager.getTimelineControl()::shotChangedHandler);
+//        controllerManager.getTimelineControl().getCameraShotBlocks().add(shotBlock);
+//        controllerManager.setActiveShotBlock(shotBlock);
+        controllerManager.getTimelineControl().initShotBlock(cameraIndex, shot);
     }
 
     /**
@@ -393,11 +394,12 @@ public class ProjectController {
      * @param shot the shot to add
      */
     private void addDirectorShotForLoad(DirectorShot shot) {
-        DirectorShotBlock shotBlock = new DirectorShotBlock(shot,
-                controllerManager.getRootPane().getRootCenterArea(),
-                controllerManager.getDirectorTimelineControl()::shotChangedHandler);
-        controllerManager.getDirectorTimelineControl().getShotBlocks().add(shotBlock);
-        controllerManager.setActiveShotBlock(shotBlock);
+//        DirectorShotBlock shotBlock = new DirectorShotBlock(shot,
+//                controllerManager.getRootPane().getRootCenterArea(),
+//                controllerManager.getDirectorTimelineControl()::shotChangedHandler);
+//        controllerManager.getDirectorTimelineControl().getShotBlocks().add(shotBlock);
+        controllerManager.getDirectorTimelineControl().initShotBlock(shot);
+//        controllerManager.setActiveShotBlock(shotBlock);
     }
 
    

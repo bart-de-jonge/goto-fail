@@ -9,7 +9,9 @@ import gui.centerarea.DirectorShotBlock;
 import gui.events.DirectorShotBlockUpdatedEvent;
 import gui.root.RootPane;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import lombok.Getter;
@@ -34,6 +36,8 @@ public class DirectorTimelineController {
     // List of all currently colliding DirectorShotBlocks
     private ArrayList<DirectorShotBlock> overlappingShotBlocks;
 
+    private Map<DirectorShot, DirectorShotBlock> directorShotBlockMap;
+
     /**
      * Constructor.
      * @param controllerManager Root controller
@@ -45,6 +49,7 @@ public class DirectorTimelineController {
         this.rootPane = controllerManager.getRootPane();
         this.shotBlocks = new ArrayList<>();
         this.overlappingShotBlocks = new ArrayList<>();
+        this.directorShotBlockMap = new HashMap<>();
     }
 
     /**
@@ -75,12 +80,22 @@ public class DirectorTimelineController {
         this.controllerManager.getScriptingProject()
                 .getDirectorTimeline()
                 .addShot(shot);
+        initShotBlock(shot);
+    }
+
+    /**
+     * Display an existing DirectorShot in the view.
+     * @param shot DirectorShot to display
+     */
+    protected void initShotBlock(DirectorShot shot) {
         DirectorShotBlock shotBlock = new DirectorShotBlock(shot.getInstance(),
-                rootPane.getRootCenterArea(), shot.getBeginCount(), shot.getEndCount(),
-                shot.getDescription(), shot.getName(), this::shotChangedHandler, shot);
+            rootPane.getRootCenterArea(), shot.getBeginCount(), shot.getEndCount(),
+            shot.getDescription(), shot.getName(), this::shotChangedHandler, shot);
+
 
         controllerManager.setActiveShotBlock(shotBlock);
         this.shotBlocks.add(shotBlock);
+        this.directorShotBlockMap.put(shot, shotBlock);
         controllerManager.getScriptingProject().changed();
 
         // Check for collisions
@@ -119,24 +134,38 @@ public class DirectorTimelineController {
      * @param shotBlock DirectorShotBlock to be removed
      */
     public void removeShot(DirectorShotBlock shotBlock) {
-        // If we are removing the active shot, then this must be updated accordingly
-        if (this.controllerManager.getActiveShotBlock().equals(shotBlock)) {
-            this.controllerManager.setActiveShotBlock(null);
-        }
-
-        // Remove the shot from the model
-        DirectorTimeline directorTimeline = this.controllerManager.getScriptingProject()
-                .getDirectorTimeline();
-        directorTimeline.removeShot(shotBlock.getShot());
-        controllerManager.getScriptingProject().changed();
-
         DirectorShot directorShot = shotBlock.getShot();
+        this.removeShotNoCascade(directorShot);
+
         directorShot.getCameraShots().forEach(cameraShot -> {
                 this.controllerManager.getTimelineControl().removeCameraShot(cameraShot);
             });
+    }
 
-        // Then remove the shot from the view
-        shotBlock.removeFromView();
+    /**
+     * Removes a director shot from the display and timeline WITHOUT cascade to camera shots.
+     * @param shot DirectorShot to be removed
+     */
+    public void removeShotNoCascade(DirectorShot shot) {
+        // Remove the shot from the model
+        DirectorTimeline directorTimeline = this.controllerManager.getScriptingProject()
+               .getDirectorTimeline();
+        directorTimeline.removeShot(shot);
+        controllerManager.getScriptingProject().changed();
+
+        DirectorShotBlock shotBlock = directorShotBlockMap.get(shot);
+
+        if (shotBlock != null) {
+            // If we are removing the active shot then this must be updated
+            if (shotBlock.equals(controllerManager.getActiveShotBlock())) {
+                controllerManager.setActiveShotBlock(null);
+            }
+
+            // Remove this shotBlock from view to reflect the model
+            shotBlock.removeFromView();
+        }
+
+        directorShotBlockMap.remove(shot);
     }
 
     /**
