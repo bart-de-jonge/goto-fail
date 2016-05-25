@@ -99,6 +99,7 @@ public class TimelineController {
      */
     protected void initShotBlock(int cameraIndex,
                                CameraShot newShot) {
+        log.error("Initializing shotblock with instance {}", newShot.getInstance());
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(),
             cameraIndex, rootPane.getRootCenterArea(), newShot.getBeginCount(),
             newShot.getEndCount(), newShot.getDescription(), newShot.getName(),
@@ -219,6 +220,7 @@ public class TimelineController {
      */
     protected void checkCollisions(int timelineNumber, int oldTimelineNumber,
                                  CameraShotBlock cameraShotBlock) {
+        log.error("Checking collissions for camera shot block with instance {}", cameraShotBlock.getShot().getInstance());
         CameraTimeline timeline = controllerManager.getScriptingProject()
                                                    .getCameraTimelines()
                                                    .get(timelineNumber);
@@ -254,6 +256,7 @@ public class TimelineController {
                         });
             // Make camerashotblocks red
             for (CameraShotBlock shotBlock : overlappingShotBlocks) {
+                log.error("Collides: instance {}", shotBlock.getShot().getInstance());
                 shotBlock.setColliding(true);
             }
         }

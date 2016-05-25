@@ -343,10 +343,31 @@ public class ProjectController {
                             controllerManager.getScriptingProject()
                                     .getCameraTimelines()
                                     .size(), false));
+            removeRedundantCameraBlocks(controllerManager.getScriptingProject());
             List<Integer> addedBlocks = addLoadedDirectorShotBlocks(controllerManager.getScriptingProject());
             addLoadedCameraShotBlocks(controllerManager.getScriptingProject(), addedBlocks);
             changeConfigFile(temp);
         }
+    }
+    
+    private void removeRedundantCameraBlocks(ScriptingProject project) {
+        for (int i=0;i<project.getDirectorTimeline().getShots().size();i++) {
+            DirectorShot dShot = project.getDirectorTimeline().getShots().get(i);
+            dShot.getCameraShots().forEach(cameraShot -> {
+                for (int j=0;j<project.getCameraTimelines().size();j++) {
+                    CameraTimeline timeline = project.getCameraTimelines().get(j);
+                    timeline.getShots().forEach(shot -> {
+                        if (cameraShot.getInstance() == shot.getInstance()) {
+                            log.error("Removing shot with instance {}", shot.getInstance());
+                            //timeline.removeShot(shot);
+                            shot.setBeginCount(Integer.MAX_VALUE);
+                            shot.setEndCount(Integer.MAX_VALUE);
+                        }
+                    });
+                }
+            });
+        }
+        
     }
 
     /**
@@ -452,7 +473,7 @@ public class ProjectController {
                 if (timelineNumber != -1) {
                     log.error("Added camera shot with instance {}", e.getInstance());
                     e.setDirectorShot(shot);
-                    addCameraShotForLoad(timelineNumber, e);
+                    controllerManager.getTimelineControl().addCameraShot(timelineNumber, e);
                 } else {
                     log.error("Something went terribly wrong");
                 }
