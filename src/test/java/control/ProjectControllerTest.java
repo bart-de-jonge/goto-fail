@@ -1,8 +1,10 @@
 package control;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.BufferedReader;
@@ -136,8 +138,7 @@ public class ProjectControllerTest extends ApplicationTest {
             }
         }
 
-        Mockito.verify(timelineController).setNumTimelines(3);
-        
+        verify(project, atLeastOnce()).getCameraTimelines();
     }
     
     @Test

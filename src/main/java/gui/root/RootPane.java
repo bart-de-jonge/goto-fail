@@ -2,12 +2,11 @@ package gui.root;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import control.ControllerManager;
-import gui.modal.ButtonsOnlyModalView;
 import gui.modal.StartupModalView;
-import gui.modal.UploadSuccessModalView;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -97,14 +96,16 @@ public class RootPane extends Application {
         String recentProjectPath = readPathFromConfig();
         if (recentProjectPath != null) {
             File file = new File(recentProjectPath);
+            System.out.println("dada bitches");
             if (file.exists()) {
+                System.out.println("sup bitches");
                 controllerManager.getProjectController().load(file);
-                primaryStage.setTitle(controllerManager.getScriptingProject().getName());
             } else {
-                initStartupScreen(true);
+                controllerManager.getProjectController().emptyConfigFile();
+                showStartupScreen(true);
             }
         } else {
-            initStartupScreen(false);
+            showStartupScreen(false);
         }
     }
 
@@ -129,11 +130,16 @@ public class RootPane extends Application {
         Scanner reader = null;
         try {
             reader = new Scanner(new File(CONFIG_FILEPATH), "UTF-8");
-            return reader.nextLine();
+            String line = reader.nextLine();
+            return line;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        } catch (NoSuchElementException e) {
+            return null;
+            
         } finally {
+        
             if (reader != null) {
                 reader.close();
             }
@@ -148,7 +154,6 @@ public class RootPane extends Application {
         topLevelPane.setCenter(area);
         rootCenterArea = area;
         primaryStage.show();
-
         // Forces main time line to scroll a tiny bit. Invisible to user.
         // Hacky solution to a scaling issue with timeline titles.
         Platform.runLater(new Runnable() {
@@ -164,7 +169,7 @@ public class RootPane extends Application {
      * Forces load of startup screen.
      * @param loadFailed whether to display a load failure message or not.
      */
-    public void initStartupScreen(boolean loadFailed) {
+    public void showStartupScreen(boolean loadFailed) {
         if (loadFailed) {
             startupModalView.setLoadFailed();
         }

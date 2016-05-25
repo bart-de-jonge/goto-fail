@@ -28,8 +28,6 @@ import data.CameraType;
 import data.DirectorShot;
 import data.DirectorTimeline;
 import data.ScriptingProject;
-import gui.centerarea.CameraShotBlock;
-import gui.centerarea.DirectorShotBlock;
 import gui.modal.AddCameraModalView;
 import gui.modal.AddCameraTypeModalView;
 import gui.modal.DeleteCameraTypeWarningModalView;
@@ -214,6 +212,8 @@ public class ProjectController {
                         newLine.addShot(shot);
                         controllerManager.getTimelineControl().addCameraShot(j, shot);
                     });
+                controllerManager.getScriptingProject().getCameraTimelines()
+                .get(i).setShots(shots);
             }
         }
         editProjectModal.getProject().getDirectorTimeline().getShots()
@@ -222,13 +222,22 @@ public class ProjectController {
     }
 
     /**
+     * Set some data for project.
+     * @param project the project to set it for
+     */
+    private void setData(ScriptingProject project) {
+        project.setCameraTypes(editProjectModal.getCameraTypes());
+        project.setCameras(editProjectModal.getCameras());
+        project.setCameraTimelines(editProjectModal.getTimelines());
+    }
+    
+    /**
      * Handler for when the save button is clicked.
      * @param event the MouseEvent for this handler
      */
     private void save(MouseEvent event) {
         if (validateProjectData()) {
             editProjectModal.hideModal();
-
             String name = editProjectModal.getNameField().getText();
             String description = editProjectModal.getDescriptionField().getText();
             String directorTimelineDescription = editProjectModal
@@ -237,9 +246,7 @@ public class ProjectController {
                     editProjectModal.getSecondsPerCountField().getText());
             ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
             project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
-            project.setCameraTypes(editProjectModal.getCameraTypes());
-            project.setCameras(editProjectModal.getCameras());
-            project.setCameraTimelines(editProjectModal.getTimelines());
+            setData(project);
             project.getDirectorTimeline().setProject(project);
             project.getCameraTimelines().forEach(c -> c.setProject(project));
             controllerManager.setScriptingProject(project);
@@ -250,6 +257,7 @@ public class ProjectController {
             reInitTimelines(project);
         }
     }
+
 
     /**
      * Save the current project.
@@ -277,7 +285,7 @@ public class ProjectController {
         }
         if (temp == null) {
             controllerManager.getRootPane().getPrimaryStage().close();
-            controllerManager.getRootPane().initStartupScreen(true);
+            controllerManager.getRootPane().showStartupScreen(true);
         } else {
             controllerManager.getRootPane().closeStartupScreen();
             controllerManager.setScriptingProject(temp);
@@ -289,10 +297,6 @@ public class ProjectController {
                                     .size(), false));
             addLoadedCameraShotBlocks(controllerManager.getScriptingProject());
             addLoadedDirectorShotBlocks(controllerManager.getScriptingProject());
-            controllerManager.getTimelineControl()
-                    .setNumTimelines(controllerManager.getScriptingProject()
-                            .getCameraTimelines()
-                            .size());
             changeConfigFile(temp);
         }
     }
@@ -327,12 +331,30 @@ public class ProjectController {
             writer.write(project.getFilePath());
             writer.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } finally {
             if (writer != null) {
                 writer.close();
                 controllerManager.updateWindowTitle();
+            }
+        }
+    }
+
+    /**
+     * Remove most recent project path in config file.
+     * Used, for example, if the file cannot be found.
+     */
+    public void emptyConfigFile() {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(new File(RootPane.getCONFIG_FILEPATH()), "UTF-8");
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (writer != null) {
+                writer.close();
             }
         }
     }
@@ -370,12 +392,7 @@ public class ProjectController {
      * @param shot the shot to add
      */
     private void addCameraShotForLoad(int cameraIndex, CameraShot shot) {
-        CameraShotBlock shotBlock = new CameraShotBlock(shot,
-                cameraIndex,
-                controllerManager.getRootPane().getRootCenterArea(),
-                controllerManager.getTimelineControl()::shotChangedHandler);
-        controllerManager.getTimelineControl().getCameraShotBlocks().add(shotBlock);
-        controllerManager.setActiveShotBlock(shotBlock);
+        controllerManager.getTimelineControl().initShotBlock(cameraIndex, shot);
     }
 
     /**
@@ -383,11 +400,7 @@ public class ProjectController {
      * @param shot the shot to add
      */
     private void addDirectorShotForLoad(DirectorShot shot) {
-        DirectorShotBlock shotBlock = new DirectorShotBlock(shot,
-                controllerManager.getRootPane().getRootCenterArea(),
-                controllerManager.getDirectorTimelineControl()::shotChangedHandler);
-        controllerManager.getDirectorTimelineControl().getShotBlocks().add(shotBlock);
-        controllerManager.setActiveShotBlock(shotBlock);
+        controllerManager.getDirectorTimelineControl().initShotBlock(shot);
     }
 
    

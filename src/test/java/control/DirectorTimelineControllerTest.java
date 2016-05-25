@@ -14,19 +14,22 @@ import javafx.stage.Stage;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@PrepareForTest(DirectorTimelineController.class)
+@PrepareForTest({DirectorTimelineController.class,ShotBlock.class,DirectorShotBlock.class})
 public class DirectorTimelineControllerTest extends ApplicationTest {
     ControllerManager controllerManager;
     DirectorTimelineController directorTimelineController;
@@ -90,7 +93,7 @@ public class DirectorTimelineControllerTest extends ApplicationTest {
     }
 
     @Test
-    public void removeShotTest() {
+    public void removeShotTest() throws Exception {
         ScriptingProject scriptSpy = Mockito.spy(new ScriptingProject("Project", "", 2));
         when(controllerManager.getScriptingProject()).thenReturn(scriptSpy);
 
@@ -100,23 +103,23 @@ public class DirectorTimelineControllerTest extends ApplicationTest {
         DirectorShot shotMock = Mockito.mock(DirectorShot.class);
         when(shotBlockMock.getShot()).thenReturn(shotMock);
 
+        CameraShot cameraShotMock = Mockito.mock(CameraShot.class);
+        Set<CameraShot> cameraShots = new HashSet<>();
+        cameraShots.add(cameraShotMock);
+        when(shotMock.getCameraShots()).thenReturn(cameraShots);
+
         TimelineController timelineControllerMock = Mockito.mock(TimelineController.class);
         when(controllerManager.getTimelineControl()).thenReturn(timelineControllerMock);
 
         directorTimelineController.removeShot(shotBlockMock);
 
-        verify(shotBlockMock).removeFromView();
-        verify(controllerManager).setActiveShotBlock(null);
+        verify(shotMock).getCameraShots();
+        verify(timelineControllerMock).removeCameraShot(cameraShotMock);
     }
 
     @Test
     public void getControllerManagerTest() {
         assertEquals(controllerManager, directorTimelineController.getControllerManager());
-    }
-
-    @Test
-    public void getShotBlocksTest() {
-        assertEquals(Collections.emptyList(), directorTimelineController.getShotBlocks());
     }
 
     @Test
