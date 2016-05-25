@@ -316,9 +316,8 @@ public class TimelineController {
             // Delete the director shot if it's the last remaining camera shot
             if (directorShot.getCameraShots().isEmpty()) {
                 controllerManager.getDirectorTimelineControl().removeShotNoCascade(directorShot);
-            } else {
-                shot.setDirectorShot(null);
-            }
+            } 
+            shot.setDirectorShot(null);
         }
     }
 
