@@ -29,13 +29,10 @@ public class DirectorTimelineController {
     @Getter
     private final ControllerManager controllerManager;
 
-    @Getter
-    // List of all DirectorShotBlocks in this timeline
-    private ArrayList<DirectorShotBlock> shotBlocks;
-
     // List of all currently colliding DirectorShotBlocks
     private ArrayList<DirectorShotBlock> overlappingShotBlocks;
 
+    // Map of DirectorShots to their corresponding shot blocks
     private Map<DirectorShot, DirectorShotBlock> directorShotBlockMap;
 
     /**
@@ -47,7 +44,6 @@ public class DirectorTimelineController {
 
         this.controllerManager = controllerManager;
         this.rootPane = controllerManager.getRootPane();
-        this.shotBlocks = new ArrayList<>();
         this.overlappingShotBlocks = new ArrayList<>();
         this.directorShotBlockMap = new HashMap<>();
     }
@@ -94,7 +90,6 @@ public class DirectorTimelineController {
 
 
         controllerManager.setActiveShotBlock(shotBlock);
-        this.shotBlocks.add(shotBlock);
         this.directorShotBlockMap.put(shot, shotBlock);
         controllerManager.getScriptingProject().changed();
 
@@ -197,7 +192,7 @@ public class DirectorTimelineController {
             ArrayList<Integer> instances = overlappingShots.stream().map(Shot::getInstance)
                     .collect(Collectors.toCollection(supplier));
             // Get CameraShotBlock
-            this.shotBlocks.stream().filter(
+            this.directorShotBlockMap.values().stream().filter(
                 shotBlock -> instances.contains(shotBlock.getShotId()))
                 .forEach(shotBlock -> {
                         overlappingShotBlocks.add(shotBlock);
@@ -217,8 +212,7 @@ public class DirectorTimelineController {
      */
     public void generateAllShots() {
         log.info("CALLED GENERATE ALL SHOTS");
-        shotBlocks.forEach(directorShotBlock -> {
-                DirectorShot shot = directorShotBlock.getShot();
+        directorShotBlockMap.keySet().forEach(shot -> {
                 if (shot.getCameraShots().isEmpty()) {
                     // Camera shots need to take the director shot's padding into account
                     double cameraStart = shot.getBeginCount() - shot.getFrontShotPadding();
