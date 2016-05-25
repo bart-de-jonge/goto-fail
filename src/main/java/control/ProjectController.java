@@ -451,6 +451,7 @@ public class ProjectController {
                 }
                 if (timelineNumber != -1) {
                     log.error("Added camera shot with instance {}", e.getInstance());
+                    e.setDirectorShot(shot);
                     addCameraShotForLoad(timelineNumber, e);
                 } else {
                     log.error("Something went terribly wrong");
