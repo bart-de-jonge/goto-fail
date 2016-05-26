@@ -100,11 +100,6 @@ public class CameraTest {
     }
 
     @Test
-    public void testHashCodeTest() {
-        assertEquals(948557672, camera.hashCode());
-    }
-
-    @Test
     public void canEqualTest() {
         CameraType type2 = new CameraType("cameratype-1", "A test cameratype", 3.00);
         Camera camera2 = new Camera("camera-1", "A test camera", type2);
