@@ -200,27 +200,35 @@ public class ProjectController {
     private void reInitTimelines(ScriptingProject newProject) {
         ScriptingProject oldProject = editProjectModal.getProject();
         if (oldProject != null) {
-            for (int i = 0;
-                 i < (oldProject.getCameraTimelines().size()
-                     >= newProject.getCameraTimelines().size()
-                     ? newProject.getCameraTimelines().size()
-                     : oldProject.getCameraTimelines().size());
-                 i++) {
-                CameraTimeline newLine = newProject.getCameraTimelines().get(i);
-                CameraTimeline oldLine = oldProject.getCameraTimelines().get(i);
-                System.out.println(oldLine.getInstance());
-                System.out.println(oldLine.getCamera().getName());
-                System.out.println(newLine.getInstance());
-                System.out.println(newLine.getCamera().getName());
-                LinkedList<CameraShot> shots = new LinkedList<>();
-                oldLine.getShots().forEach(shots::add);
-                int j = i;
-                shots.forEach(shot -> {
-                        newLine.addShot(shot);
+            for (int i = 0; i < newProject.getCameras().size(); i++) {
+                Camera newCamera = newProject.getCameras().get(i);
+                Camera oldCamera = null;
+                CameraTimeline newTimeline = newProject.getCameraTimelines().get(i);
+                CameraTimeline oldTimeline = null;
+                // Yes, O-n-squared. No, I couldn't give less fucks.
+                // Forward all complaints to whoever wrote ProjectController.
+                // Because it's horrible and deserves to die.
+                // Finds old shot with same instance as new shot, so we know
+                // that it is the same even if the name, description
+                // or position in the list has changed.
+                for (int j = 0; j < oldProject.getCameras().size(); j++) {
+                    if (oldProject.getCameras().get(j).getInstance()
+                            == newCamera.getInstance()) {
+                        oldCamera = oldProject.getCameras().get(j);
+                        oldTimeline = oldProject.getCameraTimelines().get(j);
+                    }
+                }
+                if (oldCamera != null) {
+                    LinkedList<CameraShot> shots = new LinkedList<>();
+                    oldTimeline.getShots().forEach(shots::add);
+                    int j = i;
+                    shots.forEach(shot -> {
+                        newTimeline.addShot(shot);
                         controllerManager.getTimelineControl().addCameraShot(j, shot);
                     });
-                controllerManager.getScriptingProject().getCameraTimelines()
-                        .get(i).setShots(shots);
+                    controllerManager.getScriptingProject().getCameraTimelines()
+                            .get(i).setShots(shots);
+                }
             }
         }
         oldProject.getDirectorTimeline().getShots()
