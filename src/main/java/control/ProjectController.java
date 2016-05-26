@@ -205,12 +205,12 @@ public class ProjectController {
                 Camera oldCamera = null;
                 CameraTimeline newTimeline = newProject.getCameraTimelines().get(i);
                 CameraTimeline oldTimeline = null;
-                // Yes, O-n-squared. No, I couldn't give less fucks.
-                // Forward all complaints to whoever wrote ProjectController.
-                // Because it's horrible and deserves to die.
-                // Finds old shot with same instance as new shot, so we know
-                // that it is the same even if the name, description
-                // or position in the list has changed.
+                /*
+                    Yes, O-n-squared. No, I couldn't care less.
+                    Finds old shot with same instance as new shot, so we know
+                    that it is the same even if the name, description
+                    or position in the list has changed.
+                */
                 for (int j = 0; j < oldProject.getCameras().size(); j++) {
                     if (oldProject.getCameras().get(j).getInstance()
                             == newCamera.getInstance()) {
