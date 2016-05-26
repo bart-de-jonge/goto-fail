@@ -216,6 +216,15 @@ public class TimelineController {
     protected void checkCollisions(int timelineNumber, CameraShotBlock cameraShotBlock) {
         checkCollisions(timelineNumber, -1, cameraShotBlock);
     }
+    
+    public CameraShotBlock getShotBlockForShot(CameraShot shot) {
+        for (int i=0;i<this.cameraShotBlocks.size();i++) {
+            if (cameraShotBlocks.get(i).getShot().getInstance() == shot.getInstance()) {
+                return cameraShotBlocks.get(i);
+            }
+        }
+        return null;
+    }
 
     /**
      * Check for collisions (added and removed).
@@ -226,7 +235,7 @@ public class TimelineController {
      */
     protected void checkCollisions(int timelineNumber, int oldTimelineNumber,
                                  CameraShotBlock cameraShotBlock) {
-        log.error("Checking collissions for camera shot block with instance {}", cameraShotBlock.getShot().getInstance());
+        log.error("Checking collissions for camera shot block with name {}", cameraShotBlock.getShot().getName());
         CameraTimeline timeline = controllerManager.getScriptingProject()
                                                    .getCameraTimelines()
                                                    .get(timelineNumber);
@@ -262,9 +271,19 @@ public class TimelineController {
                         });
             // Make camerashotblocks red
             for (CameraShotBlock shotBlock : overlappingShotBlocks) {
-                log.error("Collides: instance {}", shotBlock.getShot().getInstance());
+                log.error("Collides: name {}", shotBlock.getShot().getName());
                 shotBlock.setColliding(true);
             }
+            
+           
+        } else {
+            log.error("IT DOES THIS RIGHT?");
+            cameraShotBlock.setColliding(false);
+            cameraShotBlock.getShot().setColliding(false);
+            cameraShotBlock.getShot().getCollidesWith().forEach(e -> {
+                this.checkCollisions(this.getShotBlockForShot((CameraShot) e).getTimetableNumber(), this.getShotBlockForShot((CameraShot) e));
+            });
+            removeCollisionFromCameraShotBlock(cameraShotBlock);
         }
     }
 

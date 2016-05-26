@@ -225,7 +225,7 @@ public class ProjectController {
                     int j = i;
                     shots.forEach(shot -> {
                             newTimeline.addShot(shot);
-                            if (!(shot.getBeginCount() == Integer.MAX_VALUE)) {
+                            if (!(shot.getBeginCount() == 400000)) {
                                 controllerManager.getTimelineControl().addCameraShot(j, shot);
                             }
                         });
@@ -366,8 +366,8 @@ public class ProjectController {
                         if (cameraShot.getInstance() == shot.getInstance()) {
                             log.error("Removing shot with instance {}", shot.getInstance());
                             //timeline.removeShot(shot);
-                            shot.setBeginCount(Integer.MAX_VALUE);
-                            shot.setEndCount(Integer.MAX_VALUE);
+                            shot.setBeginCount(400000);
+                            shot.setEndCount(400000);
                         }
                     });
                 }
@@ -496,7 +496,7 @@ public class ProjectController {
      * @param shot the shot to add
      */
     private void addCameraShotForLoad(int cameraIndex, CameraShot shot) {
-        if (!(shot.getBeginCount() == Integer.MAX_VALUE)) {
+        if (!(shot.getBeginCount() == 400000)) {
             controllerManager.getTimelineControl().initShotBlock(cameraIndex, shot);
         }
     }
