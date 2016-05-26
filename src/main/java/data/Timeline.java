@@ -48,6 +48,9 @@ public abstract class Timeline {
             s1.setColliding(true);
             s2.setColliding(true);
             return true;
+        } else {
+            s1.setColliding(false);
+            s2.setColliding(false);
         }
         return false;
     }

@@ -85,6 +85,7 @@ public class DirectorTimelineController {
      * @return a list of camera shot instance numbers that were linked in this shot and added to the gui
      */
     protected void initShotBlock(DirectorShot shot) {
+        log.error("INIT SHOTBLOCK???");
         DirectorShotBlock shotBlock = new DirectorShotBlock(shot.getInstance(),
             rootPane.getRootCenterArea(), shot.getBeginCount(), shot.getEndCount(),
             shot.getDescription(), shot.getName(), this::shotChangedHandler, shot);
@@ -111,6 +112,12 @@ public class DirectorTimelineController {
         log.info("Shot moved");
 
         DirectorShotBlock changedBlock = event.getDirectorShotBlock();
+        
+        controllerManager.getTimelineControl().getCameraShotBlocks().forEach(shotBlock -> {
+            log.error("DIRECTOR SHOT HANDLER KEK");
+            controllerManager.getTimelineControl().checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
+
+        });
 
         controllerManager.setActiveShotBlock(changedBlock);
 

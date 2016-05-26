@@ -349,6 +349,10 @@ public class ProjectController {
             List<Integer> addedBlocks = addLoadedDirectorShotBlocks(controllerManager.getScriptingProject());
             addLoadedCameraShotBlocks(controllerManager.getScriptingProject(), addedBlocks);
             changeConfigFile(temp);
+            int maxInstance = temp.getMaxInstance();
+            log.error("MAX INSTANCE FOUND {}", maxInstance);
+            CameraShot.setInstanceCounter(maxInstance + 1);
+            DirectorShot.setInstanceCounter(maxInstance + 1);
         }
     }
     
@@ -492,7 +496,9 @@ public class ProjectController {
      * @param shot the shot to add
      */
     private void addCameraShotForLoad(int cameraIndex, CameraShot shot) {
-        controllerManager.getTimelineControl().initShotBlock(cameraIndex, shot);
+        if (!(shot.getBeginCount() == Integer.MAX_VALUE)) {
+            controllerManager.getTimelineControl().initShotBlock(cameraIndex, shot);
+        }
     }
 
     /**

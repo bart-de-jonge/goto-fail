@@ -18,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
 public class CameraShot extends Shot {
 
     // Counter that ensures no shots with duplicate numbers will be created. 
+    @Setter
     private static int instanceCounter = 0;
 
     @Getter
@@ -67,6 +68,7 @@ public class CameraShot extends Shot {
      * Static method to increment the instance counter.
      */
     public static void incrementCounter() {
+        log.error("GAVE INSTANCE {}",instanceCounter);
         instanceCounter++;
     }
     
