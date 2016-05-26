@@ -38,7 +38,8 @@ public class CameraTest {
     
     @Test
     public void toStringTest() {
-        assertEquals("Camera(name=camera-1, description=A test camera, cameraType=CameraType(name=cameratype-1, description=A test cameratype, movementMargin=2.0), movementMargin=2.0)", camera.toString());
+        camera.setInstance(15);
+        assertEquals("Camera(name=camera-1, description=A test camera, cameraType=CameraType(name=cameratype-1, description=A test cameratype, movementMargin=2.0), movementMargin=2.0, instance=15)", camera.toString());
     }
 
     @Test
@@ -94,12 +95,13 @@ public class CameraTest {
         Camera camera2 = new Camera("camera-1", "A test camera", type2);
         CameraType type3 = new CameraType("cameratype-1", "A test cameratype", 2.00);
         Camera camera3 = new Camera("camera-1", "A test camera", type3);
+        camera3.setInstance(camera.getInstance());
         assertEquals(camera3, camera);
     }
 
     @Test
     public void testHashCodeTest() {
-        assertEquals(88873304, camera.hashCode());
+        assertEquals(948557672, camera.hashCode());
     }
 
     @Test

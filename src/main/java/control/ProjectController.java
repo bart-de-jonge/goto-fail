@@ -223,9 +223,9 @@ public class ProjectController {
                     oldTimeline.getShots().forEach(shots::add);
                     int j = i;
                     shots.forEach(shot -> {
-                        newTimeline.addShot(shot);
-                        controllerManager.getTimelineControl().addCameraShot(j, shot);
-                    });
+                            newTimeline.addShot(shot);
+                            controllerManager.getTimelineControl().addCameraShot(j, shot);
+                        });
                     controllerManager.getScriptingProject().getCameraTimelines()
                             .get(i).setShots(shots);
                 }
@@ -340,8 +340,7 @@ public class ProjectController {
                     .reInitRootCenterArea(new RootCenterArea(
                             controllerManager.getRootPane(),
                             controllerManager.getScriptingProject()
-                                    .getCameraTimelines()
-                                    .size(), false));
+                                    .getCameras().size(), false));
             addLoadedCameraShotBlocks(controllerManager.getScriptingProject());
             addLoadedDirectorShotBlocks(controllerManager.getScriptingProject());
             changeConfigFile(temp);
@@ -486,14 +485,16 @@ public class ProjectController {
      */
     private void confirmTypeDelete(MouseEvent event, List<Camera> toBeDeleted, int selectedIndex) {
         typeWarningModal.hideModal();
-        editProjectModal.getCameraTypes().remove(selectedIndex);
-        editProjectModal.getCameraTypeList().getItems().remove(selectedIndex);
-        toBeDeleted.forEach(e -> {
-                int index = editProjectModal.getCameras().indexOf(e);
-                editProjectModal.getCameras().remove(index);
-                editProjectModal.getTimelines().remove(index);
-                editProjectModal.getCameraList().getItems().remove(index);
-            });
+        if (selectedIndex < editProjectModal.getCameraTypes().size()) {
+            editProjectModal.getCameraTypes().remove(selectedIndex);
+            editProjectModal.getCameraTypeList().getItems().remove(selectedIndex);
+            toBeDeleted.forEach(e -> {
+                    int index = editProjectModal.getCameras().indexOf(e);
+                    editProjectModal.getCameras().remove(index);
+                    editProjectModal.getTimelines().remove(index);
+                    editProjectModal.getCameraList().getItems().remove(index);
+                });
+        }
     }
     
     /**

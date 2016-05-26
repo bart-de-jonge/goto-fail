@@ -22,10 +22,10 @@ public class CameraTimelineTest {
     public void getCameraTest() {
         CameraType type = new CameraType("cameratype-1", "A test cameratype", 2.00);
         Camera camera = new Camera("camera-1", "A test camera", type);
+        camera.setInstance(timeline.getCamera().getInstance());
         assertEquals(camera, timeline.getCamera());
     }
 
-    
     @Test
     public void constructorWithNoArgumentsTest() {
         CameraTimeline timeline = new CameraTimeline();
@@ -38,11 +38,6 @@ public class CameraTimelineTest {
         Camera camera = new Camera("camera-1", "A test camera", type);
         CameraTimeline timeline = new CameraTimeline(camera, new ScriptingProject());
         assertEquals(camera, timeline.getCamera());
-    }
-    
-    @Test
-    public void toStringTest() {
-        assertEquals("CameraTimeline(description=A test cameratimeline, name=null, camera=Camera(name=camera-1, description=A test camera, cameraType=CameraType(name=cameratype-1, description=A test cameratype, movementMargin=2.0), movementMargin=2.0), shots=[])", timeline.toString());
     }
 
     @Test
