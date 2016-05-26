@@ -225,7 +225,9 @@ public class ProjectController {
                     int j = i;
                     shots.forEach(shot -> {
                             newTimeline.addShot(shot);
-                            controllerManager.getTimelineControl().addCameraShot(j, shot);
+                            if (!(shot.getBeginCount() == Integer.MAX_VALUE)) {
+                                controllerManager.getTimelineControl().addCameraShot(j, shot);
+                            }
                         });
                     controllerManager.getScriptingProject().getCameraTimelines()
                             .get(i).setShots(shots);

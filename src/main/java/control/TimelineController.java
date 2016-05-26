@@ -160,6 +160,10 @@ public class TimelineController {
      */
     public void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
         CameraShotBlock changedBlock = event.getCameraShotBlock();
+        cameraShotBlocks.forEach(shotBlock -> {
+            log.error("Recomputing shot block with instance {}", shotBlock.getShot().getInstance());
+            this.checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
+        });
 
         // If coupled to DirectorShot, confirm separation
         this.decoupleAndModify(event, changedBlock);
@@ -172,6 +176,7 @@ public class TimelineController {
      */
     protected void modifyCameraShot(CameraShotBlockUpdatedEvent event,
                                   CameraShotBlock changedBlock) {
+        log.error("Modify camera block");
         controllerManager.getScriptingProject().changed();
         log.info("Shot moved to new TimeLine");
 
