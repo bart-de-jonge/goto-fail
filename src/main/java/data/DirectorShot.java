@@ -22,6 +22,7 @@ import lombok.extern.log4j.Log4j2;
 public class DirectorShot extends Shot {
 
     // Counter that ensures no shots with duplicate numbers will be created.
+    @Setter
     private static int instanceCounter = 0;
 
     @Getter @Setter

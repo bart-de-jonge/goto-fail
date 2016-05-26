@@ -159,6 +159,7 @@ public class TimelineController {
      * @param event Camera shot change event.
      */
     public void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
+        log.error("SHOT CHANGED DO YOU EVEN");
         CameraShotBlock changedBlock = event.getCameraShotBlock();
         cameraShotBlocks.forEach(shotBlock -> {
             log.error("Recomputing shot block with instance {}", shotBlock.getShot().getInstance());
