@@ -113,19 +113,30 @@ public class DirectorTimelineController {
 
         DirectorShotBlock changedBlock = event.getDirectorShotBlock();
         
+        DirectorShot shot = changedBlock.getShot();
+
+        
+     // Adjust model
+        shot.setBeginCount(changedBlock.getBeginCount());
+        shot.setEndCount(changedBlock.getEndCount());
+        
+//        changedBlock.getShot().getCameraShots().forEach(e -> {
+//            CameraShotBlock shotBlock = controllerManager.getTimelineControl().getShotBlockForShot(e);
+//            controllerManager.getTimelineControl().checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
+//            shotBlock.recompute();
+//        });
+        
         controllerManager.getTimelineControl().getCameraShotBlocks().forEach(shotBlock -> {
             log.error("DIRECTOR SHOT HANDLER KEK");
             controllerManager.getTimelineControl().checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
-
+            shotBlock.recompute();
         });
 
         controllerManager.setActiveShotBlock(changedBlock);
 
-        DirectorShot shot = changedBlock.getShot();
-
-        // Adjust model
-        shot.setBeginCount(changedBlock.getBeginCount());
-        shot.setEndCount(changedBlock.getEndCount());
+        
+        
+        
 
         // check for collisions
         checkCollisions(changedBlock);
