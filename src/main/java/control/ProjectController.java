@@ -198,13 +198,20 @@ public class ProjectController {
      *                   optionally changed number of timelines
      */
     private void reInitTimelines(ScriptingProject newProject) {
-        if (editProjectModal.getProject() != null
-                && editProjectModal.getProject().getCameraTimelines().size()
-                >= newProject.getCameraTimelines().size()) {
-            for (int i = 0; i < newProject.getCameraTimelines().size(); i++) {
+        ScriptingProject oldProject = editProjectModal.getProject();
+        if (oldProject != null) {
+            for (int i = 0;
+                 i < (oldProject.getCameraTimelines().size()
+                     >= newProject.getCameraTimelines().size()
+                     ? newProject.getCameraTimelines().size()
+                     : oldProject.getCameraTimelines().size());
+                 i++) {
                 CameraTimeline newLine = newProject.getCameraTimelines().get(i);
-                CameraTimeline oldLine = editProjectModal.getProject()
-                        .getCameraTimelines().get(i);
+                CameraTimeline oldLine = oldProject.getCameraTimelines().get(i);
+                System.out.println(oldLine.getInstance());
+                System.out.println(oldLine.getCamera().getName());
+                System.out.println(newLine.getInstance());
+                System.out.println(newLine.getCamera().getName());
                 LinkedList<CameraShot> shots = new LinkedList<>();
                 oldLine.getShots().forEach(shots::add);
                 int j = i;
@@ -213,10 +220,10 @@ public class ProjectController {
                         controllerManager.getTimelineControl().addCameraShot(j, shot);
                     });
                 controllerManager.getScriptingProject().getCameraTimelines()
-                .get(i).setShots(shots);
+                        .get(i).setShots(shots);
             }
         }
-        editProjectModal.getProject().getDirectorTimeline().getShots()
+        oldProject.getDirectorTimeline().getShots()
                 .forEach(shot -> controllerManager
                         .getDirectorTimelineControl().addDirectorShot(shot));
     }
@@ -563,7 +570,8 @@ public class ProjectController {
             cameraModal.hideModal();
             String name = cameraModal.getNameField().getText();
             String description = cameraModal.getDescriptionField().getText();
-            CameraType type = editProjectModal.getCameraTypes().get(selectedIndex);
+            int index = cameraModal.getCameraTypes().getSelectionModel().getSelectedIndex();
+            CameraType type = editProjectModal.getCameraTypes().get(index);
             editProjectModal.getCameras().get(selectedIndex).setName(name);
             editProjectModal.getCameras().get(selectedIndex).setDescription(description);
             editProjectModal.getCameras().get(selectedIndex).setCameraType(type);
@@ -679,7 +687,7 @@ public class ProjectController {
             box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
             editProjectModal.getCameraList().getItems().add(box);
             // add timeline
-            CameraTimeline timeline = new CameraTimeline(name, camera, description, null);
+            CameraTimeline timeline = new CameraTimeline(camera, null);
             editProjectModal.getTimelines().add(timeline);
         }
     }

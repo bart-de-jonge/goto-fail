@@ -15,15 +15,10 @@ public class TimelineTest {
 
     @Before
     public void initialize() {
-        timeline = new CameraTimeline(new Camera("", "", new CameraType("", "", 0.0)), "Timeline",
+        timeline = new CameraTimeline(new Camera("", "", new CameraType("", "", 0.0)),
                 new ScriptingProject("test", "", 1));
         timeline.addShot("", "", 1, 3);
         timeline.addShot("", "", 2, 4);
-    }
-
-    @Test
-    public void getDescriptionTest() {
-        assertEquals("Timeline", timeline.getDescription());
     }
 
     @Test
@@ -59,7 +54,7 @@ public class TimelineTest {
     
     @Test
     public void toStringTest() {
-        Timeline timeline = new CameraTimeline(new Camera("", "", new CameraType("", "", 0.0)), "Timeline",
+        Timeline timeline = new CameraTimeline(new Camera("", "", new CameraType("", "", 0.0)),
                 new ScriptingProject("", "test", 1));
         assertEquals("CameraTimeline(description=Timeline, name=null, camera=Camera(name=, description=, cameraType=CameraType(name=, description=, movementMargin=0.0), movementMargin=0.0), shots=[])", timeline.toString());
     }

@@ -15,7 +15,7 @@ public class CameraTimelineTest {
     public void initialize() {
         CameraType type = new CameraType("cameratype-1", "A test cameratype", 2.00);
         Camera camera = new Camera("camera-1", "A test camera", type);
-        timeline = new CameraTimeline(camera, "A test cameratimeline", new ScriptingProject("test", "", 1));
+        timeline = new CameraTimeline(camera, new ScriptingProject("test", "", 1));
     }
 
     @Test
@@ -24,24 +24,19 @@ public class CameraTimelineTest {
         Camera camera = new Camera("camera-1", "A test camera", type);
         assertEquals(camera, timeline.getCamera());
     }
-    
-    @Test
-    public void setNameTest() {
-        timeline.setName("Hai");
-        assertEquals("Hai", timeline.getName());
-    }
+
     
     @Test
     public void constructorWithNoArgumentsTest() {
         CameraTimeline timeline = new CameraTimeline();
-        assertEquals(null, timeline.getDescription());
+        assertEquals(null, timeline.getCamera());
     }
     
     @Test
     public void constructorWithFourArgumentsTest() {
         CameraType type = new CameraType("cameratype-1", "A test cameratype", 2.00);
         Camera camera = new Camera("camera-1", "A test camera", type);
-        CameraTimeline timeline = new CameraTimeline("Name", camera, "Description", new ScriptingProject());
+        CameraTimeline timeline = new CameraTimeline(camera, new ScriptingProject());
         assertEquals(camera, timeline.getCamera());
     }
     

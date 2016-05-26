@@ -121,7 +121,6 @@ public class ProjectControllerTest extends ApplicationTest {
         Mockito.doNothing().when(rootPane).reInitRootCenterArea(Mockito.any());
         CameraTimeline timelineMock = mock(CameraTimeline.class);
         when(listMock.get(Mockito.anyInt())).thenReturn(timelineMock);
-        when(timelineMock.getName()).thenReturn("A name");
         
         projectController.load(file);
         
