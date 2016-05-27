@@ -353,7 +353,6 @@ public class ProjectController {
             addLoadedCameraShotBlocks(controllerManager.getScriptingProject(), addedBlocks);
             changeConfigFile(temp);
             int maxInstance = temp.getMaxInstance();
-            log.error("MAX INSTANCE FOUND {}", maxInstance);
             CameraShot.setInstanceCounter(maxInstance + 1);
             DirectorShot.setInstanceCounter(maxInstance + 1);
         }
@@ -390,7 +389,6 @@ public class ProjectController {
                         CameraTimeline timeline = project.getCameraTimelines().get(j);
                         timeline.getShots().forEach(shot -> {
                                 if (cameraShot.getInstance() == shot.getInstance()) {
-                                    log.error("Removing shot with instance {}", shot.getInstance());
                                     //timeline.removeShot(shot);
                                     shot.setBeginCount(UNUSED_BLOCK_OFFSET);
                                     shot.setEndCount(UNUSED_BLOCK_OFFSET);
@@ -457,9 +455,8 @@ public class ProjectController {
                 CameraShot shot = timeline.getShots().get(j);
                 if (!addedBlocks.contains(shot.getInstance())) {
                     addCameraShotForLoad(i, shot);
-                    log.error("Added camera shot with instance {}", shot.getInstance());
                 } else {
-                    log.error("Shot with instance {} was already loaded", shot.getInstance());
+                    log.info("Shot with instance {} was already loaded", shot.getInstance());
                 }
             }
         }
@@ -488,11 +485,10 @@ public class ProjectController {
                         }
                     }
                     if (timelineNumber != -1) {
-                        log.error("Added camera shot with instance {}", e.getInstance());
                         e.setDirectorShot(shot);
                         controllerManager.getTimelineControl().addCameraShot(timelineNumber, e);
                     } else {
-                        log.error("Something went terribly wrong");
+                        log.error("Mistake while finding timeline number");
                     }
                 });
             
