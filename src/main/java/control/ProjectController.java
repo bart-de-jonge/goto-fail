@@ -62,6 +62,8 @@ public class ProjectController {
     private ErrorWhileUploadingModalView errorModal;
     private UploadSuccessModalView successModal;
 
+    private static final int UNUSED_BLOCK_OFFSET = 400000;
+    
     // Upload variables
     // Todo: replace with popup or something like that for user
     private String url = "http://localhost:3000/upload-scp";
@@ -225,7 +227,7 @@ public class ProjectController {
                     int j = i;
                     shots.forEach(shot -> {
                             newTimeline.addShot(shot);
-                            if (!(shot.getBeginCount() == 400000)) {
+                            if (!(shot.getBeginCount() == UNUSED_BLOCK_OFFSET)) {
                                 controllerManager.getTimelineControl().addCameraShot(j, shot);
                             }
                         });
@@ -346,7 +348,8 @@ public class ProjectController {
                                     .getCameraTimelines()
                                     .size(), false));
             removeRedundantCameraBlocks(controllerManager.getScriptingProject());
-            List<Integer> addedBlocks = addLoadedDirectorShotBlocks(controllerManager.getScriptingProject());
+            List<Integer> addedBlocks = addLoadedDirectorShotBlocks(
+                    controllerManager.getScriptingProject());
             addLoadedCameraShotBlocks(controllerManager.getScriptingProject(), addedBlocks);
             changeConfigFile(temp);
             int maxInstance = temp.getMaxInstance();
@@ -356,26 +359,6 @@ public class ProjectController {
         }
     }
     
-    private void removeRedundantCameraBlocks(ScriptingProject project) {
-        for (int i=0;i<project.getDirectorTimeline().getShots().size();i++) {
-            DirectorShot dShot = project.getDirectorTimeline().getShots().get(i);
-            dShot.getCameraShots().forEach(cameraShot -> {
-                for (int j=0;j<project.getCameraTimelines().size();j++) {
-                    CameraTimeline timeline = project.getCameraTimelines().get(j);
-                    timeline.getShots().forEach(shot -> {
-                        if (cameraShot.getInstance() == shot.getInstance()) {
-                            log.error("Removing shot with instance {}", shot.getInstance());
-                            //timeline.removeShot(shot);
-                            shot.setBeginCount(400000);
-                            shot.setEndCount(400000);
-                        }
-                    });
-                }
-            });
-        }
-        
-    }
-
     /**
      * Load a project from file.
      * A file chooser window will be opened to select the file.
@@ -394,6 +377,32 @@ public class ProjectController {
             log.info("User did not select a file");
         }
     }
+    
+    /**
+     * Removes redundant camera blocks from the view.
+     * @param project the project to do this for
+     */
+    private void removeRedundantCameraBlocks(ScriptingProject project) {
+        for (int i = 0;i < project.getDirectorTimeline().getShots().size();i++) {
+            DirectorShot dShot = project.getDirectorTimeline().getShots().get(i);
+            dShot.getCameraShots().forEach(cameraShot -> {
+                    for (int j = 0;j < project.getCameraTimelines().size();j++) {
+                        CameraTimeline timeline = project.getCameraTimelines().get(j);
+                        timeline.getShots().forEach(shot -> {
+                                if (cameraShot.getInstance() == shot.getInstance()) {
+                                    log.error("Removing shot with instance {}", shot.getInstance());
+                                    //timeline.removeShot(shot);
+                                    shot.setBeginCount(UNUSED_BLOCK_OFFSET);
+                                    shot.setEndCount(UNUSED_BLOCK_OFFSET);
+                                }
+                            });
+                    }
+                });
+        }
+        
+    }
+
+    
 
     /**
      * Overwrite most recent project path in config file.
@@ -437,6 +446,7 @@ public class ProjectController {
     /**
      * Add the loaded camera shotblocks that were loaded from file to the UI.
      * @param project the project that was loaded
+     * @param addedBlocks the blocks that were already added
      */
     public void addLoadedCameraShotBlocks(ScriptingProject project, List<Integer> addedBlocks) {
         log.info("Adding loaded CameraShotBlocks");
@@ -458,6 +468,7 @@ public class ProjectController {
     /**
      * Add the loaded director shotblocks that were loaded from the file to the UI.
      * @param project the project that was loaded
+     * @return A list of camera shot blocks that were already added
      */
     private List<Integer> addLoadedDirectorShotBlocks(ScriptingProject project) {
         log.info("Adding loaded DirectorShotBlocks");
@@ -468,22 +479,22 @@ public class ProjectController {
             DirectorShot shot = timeline.getShots().get(i);
             // add instance numbers to the list
             shot.getCameraShots().forEach(e -> {
-                int timelineNumber = -1;
-                addedCameraBlocks.add(e.getInstance());
-                for (int j=0;j<project.getCameraTimelines().size();j++) {
-                    if (project.getCameraTimelines().get(j).getShots().contains(e)) {
-                        timelineNumber = j;
-                        break;
+                    int timelineNumber = -1;
+                    addedCameraBlocks.add(e.getInstance());
+                    for (int j = 0;j < project.getCameraTimelines().size();j++) {
+                        if (project.getCameraTimelines().get(j).getShots().contains(e)) {
+                            timelineNumber = j;
+                            break;
+                        }
                     }
-                }
-                if (timelineNumber != -1) {
-                    log.error("Added camera shot with instance {}", e.getInstance());
-                    e.setDirectorShot(shot);
-                    controllerManager.getTimelineControl().addCameraShot(timelineNumber, e);
-                } else {
-                    log.error("Something went terribly wrong");
-                }
-            });
+                    if (timelineNumber != -1) {
+                        log.error("Added camera shot with instance {}", e.getInstance());
+                        e.setDirectorShot(shot);
+                        controllerManager.getTimelineControl().addCameraShot(timelineNumber, e);
+                    } else {
+                        log.error("Something went terribly wrong");
+                    }
+                });
             
             addDirectorShotForLoad(timeline.getShots().get(i));
         }
@@ -496,7 +507,7 @@ public class ProjectController {
      * @param shot the shot to add
      */
     private void addCameraShotForLoad(int cameraIndex, CameraShot shot) {
-        if (!(shot.getBeginCount() == 400000)) {
+        if (!(shot.getBeginCount() == UNUSED_BLOCK_OFFSET)) {
             controllerManager.getTimelineControl().initShotBlock(cameraIndex, shot);
         }
     }

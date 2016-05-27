@@ -57,7 +57,6 @@ public abstract class Shot {
     /**
      * The constructor for the Shot.
      *
-     * @param instance the instance number of the Shot
      * @param name the name of the Shot
      * @param description the description of the Shot
      * @param beginCount the start count of the Shot
