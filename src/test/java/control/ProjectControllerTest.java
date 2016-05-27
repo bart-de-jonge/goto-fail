@@ -1,16 +1,19 @@
 package control;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-import data.DirectorTimeline;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -20,6 +23,7 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import data.Camera;
 import data.CameraTimeline;
+import data.DirectorTimeline;
 import data.ScriptingProject;
 import gui.modal.DeleteCameraTypeWarningModalView;
 import gui.modal.EditProjectModalView;
@@ -54,8 +58,6 @@ public class ProjectControllerTest extends ApplicationTest {
         when(controllerManager.getScriptingProject()).thenReturn(project);
         when(controllerManager.getRootPane()).thenReturn(rootPane);
         when(rootPane.getControllerManager()).thenReturn(controllerManager);
-        
-        
     }
 
     @Test
@@ -82,6 +84,28 @@ public class ProjectControllerTest extends ApplicationTest {
     
     @Test
     public void loadTest() {
+        String oldConfigIni = "";
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("config.ini"));
+            oldConfigIni = reader.readLine();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            if (reader!=null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        
         ArrayList<CameraTimeline> listMock = mock(ArrayList.class);
         DirectorTimeline directorTimelineMock = mock(DirectorTimeline.class);
         when(listMock.size()).thenReturn(3);
@@ -93,12 +117,23 @@ public class ProjectControllerTest extends ApplicationTest {
         Mockito.doNothing().when(rootPane).reInitRootCenterArea(Mockito.any());
         CameraTimeline timelineMock = mock(CameraTimeline.class);
         when(listMock.get(Mockito.anyInt())).thenReturn(timelineMock);
-        when(timelineMock.getName()).thenReturn("A name");
         
         projectController.load(file);
-
-        Mockito.verify(timelineController).setNumTimelines(3);
         
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(new FileWriter("config.ini"));
+            writer.println(oldConfigIni);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            if (writer!=null) {
+                writer.close();
+            }
+        }
+
+        verify(project, atLeastOnce()).getCameraTimelines();
     }
     
     @Test
@@ -107,7 +142,7 @@ public class ProjectControllerTest extends ApplicationTest {
         Stage stage = mock(Stage.class);
         when(rootPane.getPrimaryStage()).thenReturn(stage);
         projectController.load(file);
-        Mockito.verify(stage).close();
+        Mockito.verify(stage, times(1)).close();
     }
     
     @Test

@@ -7,9 +7,9 @@ import lombok.extern.log4j.Log4j2;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The DirectorShot class has more elaborate information for the Director, like the description.
@@ -22,10 +22,10 @@ public class DirectorShot extends Shot {
     // Counter that ensures no shots with duplicate numbers will be created.
     private static int instanceCounter = 0;
 
-    @Getter
+    @Getter @Setter
     private Set<Integer> timelineIndices;
 
-    @Getter
+    @Getter @Setter
     private Set<CameraShot> cameraShots;
 
     // Additional time to film before the real shot starts
@@ -60,8 +60,9 @@ public class DirectorShot extends Shot {
         super(instanceCounter, name, description, startCount, endCount);
         this.frontShotPadding = frontShotPadding;
         this.endShotPadding = endShotPadding;
-        this.timelineIndices = new HashSet<>(cameras);
-        this.cameraShots = new HashSet<>();
+        this.timelineIndices = ConcurrentHashMap.newKeySet();
+        this.timelineIndices.addAll(cameras);
+        this.cameraShots = ConcurrentHashMap.newKeySet();
         log.debug("Created new DirectorShot");
         DirectorShot.incrementCounter();
     }

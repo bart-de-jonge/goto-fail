@@ -1,29 +1,26 @@
 package data;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Class to store information about a camera timeline.
  */
 @XmlRootElement(name = "cameraTimeline")
+@XmlAccessorType(XmlAccessType.FIELD)   
 @ToString
 public class CameraTimeline extends Timeline implements Cloneable {
-    
-    @Getter @Setter
-    private String description;
-    
-    // Name of this timeline
-    @Getter @Setter
-    private String name;
 
     // The camera that is associated with this timeline.
     @Getter @Setter
@@ -32,15 +29,22 @@ public class CameraTimeline extends Timeline implements Cloneable {
     // Collection of all Shot elements in this Timeline.
     @XmlElementWrapper(name = "shotList")
     @XmlElement(name = "shot")
-    @Getter
+    @Getter @Setter
     private LinkedList<CameraShot> shots;
+
+    // Counter that ensures no timelines with duplicate numbers will be created.
+    @Getter
+    private static int instanceCounter = 0;
+
+    // The instancenumber of the timeline.
+    @Getter
+    private int instance;
     
     /**
      * Default constructor.
      */
     public CameraTimeline() {
         super(null);
-        description = null;
         camera = null;
         shots = null;
     }
@@ -49,33 +53,19 @@ public class CameraTimeline extends Timeline implements Cloneable {
      * Constructor.
      *
      * @param camera the camera belonging to this timeline
-     * @param description the description of this timeline
      * @param project the project that contains this timeline
      */
-    public CameraTimeline(Camera camera, String description, ScriptingProject project) {
+    public CameraTimeline(Camera camera, ScriptingProject project) {
         super(project);
-        this.description = description;
         this.camera = camera;
+        this.instance = CameraTimeline.getInstanceCounter();
+        CameraTimeline.incrementCounter();
         shots = new LinkedList<>();
-    }
-    
-    /**
-     * Constructor with name variable.
-     * @param name the name of the timeline
-     * @param camera the camera of this timeline
-     * @param description the description of the timeline
-     * @param project the project this timeline is a part of
-     */
-    public CameraTimeline(String name, Camera camera,
-            String description, ScriptingProject project) {
-        this(camera, description, project);
-        this.name = name;
     }
     
     @Override
     public CameraTimeline clone() {
-        CameraTimeline timeline = new CameraTimeline(
-                name, camera.clone(), description, getProject()); 
+        CameraTimeline timeline = new CameraTimeline(camera.clone(), getProject());
         timeline.shots = (LinkedList) shots.clone();
         return timeline;
     }
@@ -156,5 +146,12 @@ public class CameraTimeline extends Timeline implements Cloneable {
      */
     public void removeShot(CameraShot shot) {
         shots.remove(shot);
+    }
+
+    /**
+     * Static method to increment the instance counter.
+     */
+    public static void incrementCounter() {
+        instanceCounter++;
     }
 }

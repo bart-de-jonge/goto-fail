@@ -26,7 +26,7 @@ public abstract class ModalView {
     private final int width;
     @Getter
     private final int height;
-    private final int buttonWidth = 90;
+    private final int buttonWidth = 140;
     private final int buttonHeight = 25;
 
     /**
@@ -83,8 +83,8 @@ public abstract class ModalView {
      */
     protected StyledButton createButton(String title, boolean reversed) {
         StyledButton button = new StyledButton(title);
-        button.setFillColor(reversed ? Color.WHITE : TweakingHelper.COLOR_PRIMARY);
-        button.setBorderColor(reversed ? TweakingHelper.COLOR_PRIMARY : Color.WHITE);
+        button.setFillColor(reversed ? Color.WHITE : TweakingHelper.getColor(0));
+        button.setBorderColor(reversed ? TweakingHelper.getColor(0) : Color.WHITE);
         button.setPrefWidth(buttonWidth);
         button.setPrefHeight(buttonHeight);
         return button;

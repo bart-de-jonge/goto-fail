@@ -16,10 +16,10 @@ public class ToolView extends HBox {
     private List<ToolButton> buttonList;
 
     private String style = "-fx-background-color: "
-            + TweakingHelper.STRING_PRIMARY + ";"
+            + TweakingHelper.getColorString(0) + ";"
             + "-fx-border-width: 0 0 8 0;"
             + "-fx-border-color:"
-            + TweakingHelper.STRING_SECONDARY + ";";
+            + TweakingHelper.getColorString(1) + ";";
 
     @Getter
     private ToolButton directorBlockCreationTool;
@@ -29,6 +29,8 @@ public class ToolView extends HBox {
     private ToolButton blockDeletionTool;
     @Getter
     private ToolButton shotGenerationTool;
+    @Getter
+    private ToolButton allShotGenerationTool;
 
     /**
      * Constructor.
@@ -45,6 +47,7 @@ public class ToolView extends HBox {
         this.cameraBlockCreationTool = this.addToolButton("Add camerashot");
         this.blockDeletionTool = this.addToolButton("Delete shot");
         this.shotGenerationTool = this.addToolButton("Generate CameraShots");
+        this.allShotGenerationTool = this.addToolButton("Generate All Shots");
     }
 
     /**

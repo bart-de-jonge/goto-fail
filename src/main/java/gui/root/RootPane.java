@@ -2,11 +2,13 @@ package gui.root;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import control.ControllerManager;
 import gui.modal.StartupModalView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -46,9 +48,18 @@ public class RootPane extends Application {
     public void start(Stage primaryStage) throws Exception {
         log.info("Starting RootPane.");
         this.primaryStage = primaryStage;
+
+        showRootPane();
+    }
+
+    /**
+     * Puts together and shows all window elements for the Root Pane.
+     */
+    public void showRootPane() {
         // Create a BorderPane, a layout with 5 areas: top, bottom, left, right and center,
         // and add our views to it.
         topLevelPane = new BorderPane();
+        
         // Create scene and set the stage. This is where the window is basically
         // created. Also has some useful settings.
         Scene scene = new Scene(topLevelPane);
@@ -72,28 +83,27 @@ public class RootPane extends Application {
         topLevelPane.setBottom(rootFooterArea);
         // startup modal view.
         startupModalView = new StartupModalView(this);
-        
+
         controllerManager = new ControllerManager(this);
 
-        startupMethod(primaryStage);
+        startupMethod();
     }
 
     /**
      * Specify the method to start up depending on the previously loaded project.
-     * @param primaryStage the main stage that is started
      */
-    private void startupMethod(Stage primaryStage) {
+    private void startupMethod() {
         String recentProjectPath = readPathFromConfig();
         if (recentProjectPath != null) {
             File file = new File(recentProjectPath);
             if (file.exists()) {
                 controllerManager.getProjectController().load(file);
-                primaryStage.setTitle(controllerManager.getScriptingProject().getName());
             } else {
-                initStartupScreen(true);
+                controllerManager.getProjectController().emptyConfigFile();
+                showStartupScreen(true);
             }
         } else {
-            initStartupScreen(false);
+            showStartupScreen(false);
         }
     }
 
@@ -118,9 +128,11 @@ public class RootPane extends Application {
         Scanner reader = null;
         try {
             reader = new Scanner(new File(CONFIG_FILEPATH), "UTF-8");
-            return reader.nextLine();
+            String line = reader.nextLine();
+            return line;
         } catch (IOException e) {
-            e.printStackTrace();
+            return null;
+        } catch (NoSuchElementException e) {
             return null;
         } finally {
             if (reader != null) {
@@ -137,13 +149,22 @@ public class RootPane extends Application {
         topLevelPane.setCenter(area);
         rootCenterArea = area;
         primaryStage.show();
+        // Forces main time line to scroll a tiny bit. Invisible to user.
+        // Hacky solution to a scaling issue with timeline titles.
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                getRootCenterArea().getMainTimelineScrollpane().setVvalue(0.01);
+                getRootCenterArea().getMainTimelineScrollpane().setVvalue(0.0);
+            }
+        });
     }
 
     /**
      * Forces load of startup screen.
      * @param loadFailed whether to display a load failure message or not.
      */
-    public void initStartupScreen(boolean loadFailed) {
+    public void showStartupScreen(boolean loadFailed) {
         if (loadFailed) {
             startupModalView.setLoadFailed();
         }

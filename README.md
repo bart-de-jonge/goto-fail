@@ -3,6 +3,15 @@
 
 This is the Context project of the team 'goto fail;'. This project aims to improve the workflow and overall productivity of the scripting and production at 'Polycast'.
 
+## Other repository
+This repository contains the scripting application of the project, the webserver/webapp part can be found at `https://github.com/bartdejonge1996/goto-fail-webserver`.
+
+## Tests, checkstyle and coverage
+Our tests can be run using the maven command `mvn test`. Checkstyle can be run using the maven command `mvn validate`. For now we don't have any automatic coverage generation, but we will fix this in the future. Coverage can be calculated using EclEmma or the built-in coverage tool in IntelliJ
+
+## Starting the application
+The application can be started by running the `MainClass.java`.
+
 ## Lombok and annotation processing
 This project uses lombok, an annotation processor for java. This annotation processor needs to be enabled in your settings. This can be done using the following steps:
 

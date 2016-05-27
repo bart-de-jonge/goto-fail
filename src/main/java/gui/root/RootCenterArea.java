@@ -4,11 +4,16 @@ import gui.centerarea.CounterGridPane;
 import gui.centerarea.DirectorGridPane;
 import gui.centerarea.TimelinesGridPane;
 import gui.misc.TweakingHelper;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -45,6 +50,10 @@ public class RootCenterArea extends VBox {
     private HBox timelinesPane; // stores the three timelines next to each other
     @Getter
     private HBox topPane; // stores the window above the timelines
+    @Getter
+    private ScrollPane topScrollPane; // stores scrollable part of window above timelines
+    @Getter
+    private HBox topScrollPaneContent; // stores content of scrollable part above timelines
     @Getter
     private Button newButton;
     @Getter
@@ -101,6 +110,8 @@ public class RootCenterArea extends VBox {
             this.rootPane = rootPane;
             this.numberOfTimelines = numberOfTimelines;
             this.topPane = new HBox();
+            this.topScrollPane = new ScrollPane();
+            this.topScrollPaneContent = new HBox();
             this.timelinesPane = new HBox();
             this.getChildren().addAll(topPane, timelinesPane);
 
@@ -108,11 +119,7 @@ public class RootCenterArea extends VBox {
             initDirectorPane();
             initMainTimeLinePane();
             initTopPane();
-
-            counterScrollpane.vvalueProperty().bindBidirectional(
-                    mainTimelineScrollpane.vvalueProperty());
-            directorScrollpane.vvalueProperty().bindBidirectional(
-                    mainTimelineScrollpane.vvalueProperty());
+            initScrollbinding();
 
             this.setOnMousePressed(
                 event -> {
@@ -127,6 +134,20 @@ public class RootCenterArea extends VBox {
      */
     public RootCenterArea(RootPane rootPane) {
         this(rootPane, DEFAULT_TIMELINES, false);
+    }
+
+    /**
+     * Binds pane scrolling together bidirectionally,
+     * so all the major scrollpanes (top, and the timelines, and the counter)
+     * can be scrolled as one huge area.
+     */
+    private void initScrollbinding() {
+        counterScrollpane.vvalueProperty().bindBidirectional(
+                mainTimelineScrollpane.vvalueProperty());
+        directorScrollpane.vvalueProperty().bindBidirectional(
+                mainTimelineScrollpane.vvalueProperty());
+        topScrollPane.hvalueProperty().bindBidirectional(
+                mainTimelineScrollpane.hvalueProperty());
     }
 
     /**
@@ -148,20 +169,48 @@ public class RootCenterArea extends VBox {
         directorLabel.setAlignment(Pos.CENTER);
         directorLabel.setPadding(new Insets(topBarHeight / 2.0, 0,
                 topBarHeight / 2.0, 0));
-        this.topPane.getChildren().add(directorLabel);
+
+        // initialize scrollable part of toppane.
+        initTopScrollablePane();
+
+        // add everything together.
+        this.topPane.getChildren().addAll(directorLabel, topScrollPane);
+    }
+
+    /**
+     * Adds content to scrollable part of top pane.
+     */
+    private void initTopScrollablePane() {
+        // scrollable pane
+        this.topScrollPaneContent.minWidthProperty().bind(mainTimeLineAnchorPane.widthProperty());
+        this.topScrollPaneContent.prefWidthProperty().bind(mainTimeLineAnchorPane.widthProperty());
+        this.topScrollPaneContent.maxWidthProperty().bind(mainTimeLineAnchorPane.widthProperty());
+        this.topScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        this.topScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
         // labels for camera timelines
         for (int i = 0; i < numberOfTimelines; i++) {
             String name = getRootPane().getControllerManager().getScriptingProject()
-                    .getCameraTimelines().get(i).getName();
+                    .getCameras().get(i).getName();
             Label label = new Label(name);
-            
             label.setAlignment(Pos.CENTER);
             label.setPrefWidth(TweakingHelper.GENERAL_SIZE);
             label.setPadding(new Insets(topBarHeight / 2.0, 0,
-
                     topBarHeight / 2.0, 0));
-            this.topPane.getChildren().add(label);
+
+            this.topScrollPaneContent.getChildren().add(label);
         }
+
+        // Consume vertical scrolling event, which basically disables vertical scrolling.
+        this.topScrollPane.addEventFilter(ScrollEvent.SCROLL,
+            e -> {
+                if (e.getDeltaY() != 0) {
+                    e.consume();
+                }
+            });
+
+        // add everything together
+        this.topScrollPane.setContent(topScrollPaneContent);
     }
 
     /**

@@ -2,6 +2,9 @@ package control;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -37,11 +40,13 @@ public class TimelineController {
 
     @Getter
     // List of all camerashotblocks in this timelinecontroller
-    private ArrayList<CameraShotBlock> cameraShotBlocks;
+    private List<CameraShotBlock> cameraShotBlocks;
 
     // List of all currently colliding camerashotblocks
     @Getter
-    private ArrayList<CameraShotBlock> overlappingCameraShotBlocks;
+    private List<CameraShotBlock> overlappingCameraShotBlocks;
+
+    private Map<CameraShot, CameraShotBlock> cameraShotBlockMap;
 
     /**
      * Constructor.
@@ -54,6 +59,7 @@ public class TimelineController {
         this.rootPane = controllerManager.getRootPane();
         this.cameraShotBlocks = new ArrayList<>();
         this.overlappingCameraShotBlocks = new ArrayList<>();
+        this.cameraShotBlockMap = new HashMap<>();
     }
 
     /**
@@ -83,13 +89,24 @@ public class TimelineController {
                               .getCameraTimelines()
                               .get(cameraIndex)
                               .addShot(newShot);
+        initShotBlock(cameraIndex, newShot);
+    }
+
+    /**
+     * Display an existing (and linked) CameraShot in the view.
+     * @param cameraIndex Index of the camera timeline
+     * @param newShot CameraShot to display
+     */
+    protected void initShotBlock(int cameraIndex,
+                               CameraShot newShot) {
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(),
-                cameraIndex, rootPane.getRootCenterArea(), newShot.getBeginCount(),
-                newShot.getEndCount(), newShot.getDescription(), newShot.getName(),
-                this::shotChangedHandler, newShot);
+            cameraIndex, rootPane.getRootCenterArea(), newShot.getBeginCount(),
+            newShot.getEndCount(), newShot.getDescription(), newShot.getName(),
+            this::shotChangedHandler, newShot);
 
         controllerManager.setActiveShotBlock(shotBlock);
         this.cameraShotBlocks.add(shotBlock);
+        this.cameraShotBlockMap.put(newShot, shotBlock);
         controllerManager.getScriptingProject().changed();
 
         // Check for collisions
@@ -102,7 +119,7 @@ public class TimelineController {
      */
     public void removeCameraShot(CameraShotBlock cameraShotBlock) {
         // If we are removing the active shot, then this must be updated accordingly
-        if (this.controllerManager.getActiveShotBlock().equals(cameraShotBlock)) {
+        if (cameraShotBlock.equals(this.controllerManager.getActiveShotBlock())) {
             this.controllerManager.setActiveShotBlock(null);
         }
 
@@ -115,8 +132,22 @@ public class TimelineController {
 
         this.decoupleShot(cameraShotBlock.getTimetableNumber(), cameraShotBlock.getShot());
 
+        this.cameraShotBlockMap.remove(cameraShotBlock.getShot());
+
         // Then remove the shot from the view
         cameraShotBlock.removeFromView();
+    }
+
+    /**
+     * Works like {@link TimelineController#removeCameraShot(CameraShotBlock)}.
+     * @param shot Camera Shot to be removed
+     */
+    public void removeCameraShot(CameraShot shot) {
+        CameraShotBlock shotBlock = cameraShotBlockMap.get(shot);
+
+        if (shotBlock != null) {
+            this.removeCameraShot(shotBlock);
+        }
     }
 
     /**
@@ -281,7 +312,13 @@ public class TimelineController {
         DirectorShot directorShot = shot.getDirectorShot();
         if (directorShot != null) {
             directorShot.removeCameraShot(shot, timelineIndex);
-            shot.setDirectorShot(null);
+
+            // Delete the director shot if it's the last remaining camera shot
+            if (directorShot.getCameraShots().isEmpty()) {
+                controllerManager.getDirectorTimelineControl().removeShotNoCascade(directorShot);
+            } else {
+                shot.setDirectorShot(null);
+            }
         }
     }
 

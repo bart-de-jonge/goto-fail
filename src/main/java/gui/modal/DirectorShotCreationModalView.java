@@ -1,12 +1,12 @@
 package gui.modal;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import data.CameraTimeline;
 import gui.headerarea.DoubleTextField;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledCheckbox;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -34,7 +34,7 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
      * Other variables
      */
 
-    private int numberOfCameras;
+    private List<CameraTimeline> cameraTimelines;
 
     // General panes used
     @Getter
@@ -45,23 +45,23 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
     /**
      * Constructor with default modal size.
      * @param rootPane Pane to display modal on top of
-     * @param numberOfCamerasInTimeline Amount of cameras in timeline
+     * @param cameraTimelines Cameras in timeline
      */
-    public DirectorShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline) {
-        this(rootPane, numberOfCamerasInTimeline, width, height);
+    public DirectorShotCreationModalView(RootPane rootPane, List<CameraTimeline> cameraTimelines) {
+        this(rootPane, cameraTimelines, width, height);
     }
 
     /**
      * Constructor.
      * @param rootPane Pane to display modal on top of
-     * @param numberOfCamerasInTimeline Amount of cameras in timeline
+     * @param cameraTimelines Cameras in timeline
      * @param modalWidth Modal display width
      * @param modalHeight Modal display height
      */
-    public DirectorShotCreationModalView(RootPane rootPane, int numberOfCamerasInTimeline,
+    public DirectorShotCreationModalView(RootPane rootPane, List<CameraTimeline> cameraTimelines,
                                  int modalWidth, int modalHeight) {
         super(rootPane, modalWidth, modalHeight);
-        this.numberOfCameras = numberOfCamerasInTimeline;
+        this.cameraTimelines = cameraTimelines;
         initializeCreationView();
     }
 
@@ -149,8 +149,8 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
         styleCamCheckBoxes();
 
         cameraCheckboxes = new ArrayList<>();
-        for (int i = 0; i < numberOfCameras; i++) {
-            String checkBoxString = "Camera " + (i + 1);
+        for (int i = 0; i < cameraTimelines.size(); i++) {
+            String checkBoxString = this.cameraTimelines.get(i).getCamera().getName();
             StyledCheckbox checkBox = new StyledCheckbox(checkBoxString);
             cameraCheckboxes.add(checkBox);
         }

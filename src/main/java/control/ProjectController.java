@@ -1,12 +1,26 @@
 package control;
 
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -14,12 +28,12 @@ import data.CameraType;
 import data.DirectorShot;
 import data.DirectorTimeline;
 import data.ScriptingProject;
-import gui.centerarea.CameraShotBlock;
-import gui.centerarea.DirectorShotBlock;
 import gui.modal.AddCameraModalView;
 import gui.modal.AddCameraTypeModalView;
 import gui.modal.DeleteCameraTypeWarningModalView;
 import gui.modal.EditProjectModalView;
+import gui.modal.ErrorWhileUploadingModalView;
+import gui.modal.UploadSuccessModalView;
 import gui.root.RootCenterArea;
 import gui.root.RootPane;
 import javafx.scene.control.Label;
@@ -31,16 +45,6 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 @Log4j2
 public class ProjectController {
@@ -54,6 +58,8 @@ public class ProjectController {
     private AddCameraTypeModalView cameraTypeModal;
     @Setter
     private DeleteCameraTypeWarningModalView typeWarningModal;
+    private ErrorWhileUploadingModalView errorModal;
+    private UploadSuccessModalView successModal;
 
     // Upload variables
     // Todo: replace with popup or something like that for user
@@ -102,19 +108,67 @@ public class ProjectController {
 
             // Do something with response
             if (result) {
-                // awesome, Todo: give feedback to user
+                showSuccessModal();
                 System.out.println("Upload successful");
             } else {
-                // damn, Todo: give feedback to user
+                showErrorModal();
                 System.out.println("Upload failed");
             }
 
         } catch (IOException e) {
+            showErrorModal();
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Show the upload success modal.
+     */
+    private void showSuccessModal() {
+        successModal = new UploadSuccessModalView(controllerManager.getRootPane());
+        successModal.getCloseButton().setOnMouseClicked(this::successModalClose);
+        successModal.getGoToWebsiteButton().setOnMouseClicked(this::goToWebsite);
+    }
+    
+    /**
+     * Handler for the close button of the success modal.
+     * @param event the MouseEvent for this event
+     */
+    private void successModalClose(MouseEvent event) {
+        successModal.hideModal();
+    }
+    
+    /**
+     * Handler for the go to website button of the sucess modal.
+     * @param event the MouseEvent for this event
+     */
+    private void goToWebsite(MouseEvent event) {
+        try {
+            Desktop.getDesktop().browse(URI.create("http://localhost:3000/timeline"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Show the upload error modal.
+     */
+    private void showErrorModal() {
+        errorModal = new ErrorWhileUploadingModalView(controllerManager.getRootPane());
+        errorModal.getOkButton().setOnMouseClicked(this::errorModalOk);
+    }
+    
+    /**
+     * Handler for the OK button for the error modal.
+     * @param event the MouseEvent for this event
+     */
+    private void errorModalOk(MouseEvent event) {
+        errorModal.hideModal();
+    }
+    
+    
     
     /**
      * Save the current project state to file.
@@ -136,15 +190,101 @@ public class ProjectController {
             log.info("User did not select a file");
         }
     }
+
+    /**
+     * This method reinitializes all the cameratimelines and the directortimeline. This method takes
+     * care of the removal and addition of cameratimelines.
+     * @param newProject the project that will be newly added to the scripting project with
+     *                   optionally changed number of timelines
+     */
+    private void reInitTimelines(ScriptingProject newProject) {
+        ScriptingProject oldProject = editProjectModal.getProject();
+        if (oldProject != null) {
+            for (int i = 0; i < newProject.getCameras().size(); i++) {
+                Camera newCamera = newProject.getCameras().get(i);
+                Camera oldCamera = null;
+                CameraTimeline newTimeline = newProject.getCameraTimelines().get(i);
+                CameraTimeline oldTimeline = null;
+                /*
+                    Yes, O-n-squared. No, I couldn't care less.
+                    Finds old shot with same instance as new shot, so we know
+                    that it is the same even if the name, description
+                    or position in the list has changed.
+                */
+                for (int j = 0; j < oldProject.getCameras().size(); j++) {
+                    if (oldProject.getCameras().get(j).getInstance()
+                            == newCamera.getInstance()) {
+                        oldCamera = oldProject.getCameras().get(j);
+                        oldTimeline = oldProject.getCameraTimelines().get(j);
+                    }
+                }
+                if (oldCamera != null) {
+                    LinkedList<CameraShot> shots = new LinkedList<>();
+                    oldTimeline.getShots().forEach(shots::add);
+                    int j = i;
+                    shots.forEach(shot -> {
+                            newTimeline.addShot(shot);
+                            controllerManager.getTimelineControl().addCameraShot(j, shot);
+                        });
+                    controllerManager.getScriptingProject().getCameraTimelines()
+                            .get(i).setShots(shots);
+                }
+            }
+        }
+        oldProject.getDirectorTimeline().getShots()
+                .forEach(shot -> controllerManager
+                        .getDirectorTimelineControl().addDirectorShot(shot));
+    }
+
+    /**
+     * Set some data for project.
+     * @param project the project to set it for
+     */
+    private void setData(ScriptingProject project) {
+        project.setCameraTypes(editProjectModal.getCameraTypes());
+        project.setCameras(editProjectModal.getCameras());
+        project.setCameraTimelines(editProjectModal.getTimelines());
+    }
     
     /**
-     * Handler for when the save button is clicked.
+     * Handler for when the apply button is clicked for existing project.
+     * Differs from when the apply button is clicked for new project, obviously.
      * @param event the MouseEvent for this handler
      */
-    private void save(MouseEvent event) {
+    private void applyEdit(MouseEvent event) {
         if (validateProjectData()) {
             editProjectModal.hideModal();
+            String name = editProjectModal.getNameField().getText();
+            String description = editProjectModal.getDescriptionField().getText();
+            String directorTimelineDescription = editProjectModal
+                    .getDirectorTimelineDescriptionField().getText();
+            double secondsPerCount = Double.parseDouble(
+                    editProjectModal.getSecondsPerCountField().getText());
+            ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
+            if (controllerManager.getScriptingProject() != null) {
+                project.setFilePath(controllerManager.getScriptingProject().getFilePath());
+            }
+            project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
+            setData(project);
+            project.getDirectorTimeline().setProject(project);
+            project.getCameraTimelines().forEach(c -> c.setProject(project));
+            controllerManager.setScriptingProject(project);
+            controllerManager.updateWindowTitle();
+            RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),
+                    editProjectModal.getTimelines().size(), false);
+            controllerManager.getRootPane().reInitRootCenterArea(area);
+            reInitTimelines(project);
+        }
+    }
 
+    /**
+     * Handler for when the apply button is clicked for new project.
+     * Differs from when the apply button is clicked for edit project, obviously.
+     * @param event the MouseEvent for this handler
+     */
+    private void applyNew(MouseEvent event) {
+        if (validateProjectData()) {
+            editProjectModal.hideModal();
             String name = editProjectModal.getNameField().getText();
             String description = editProjectModal.getDescriptionField().getText();
             String directorTimelineDescription = editProjectModal
@@ -153,9 +293,7 @@ public class ProjectController {
                     editProjectModal.getSecondsPerCountField().getText());
             ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
             project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
-            project.setCameraTypes(editProjectModal.getCameraTypes());
-            project.setCameras(editProjectModal.getCameras());
-            project.setCameraTimelines(editProjectModal.getTimelines());
+            setData(project);
             project.getDirectorTimeline().setProject(project);
             project.getCameraTimelines().forEach(c -> c.setProject(project));
             controllerManager.setScriptingProject(project);
@@ -163,25 +301,11 @@ public class ProjectController {
             RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),
                     editProjectModal.getTimelines().size(), false);
             controllerManager.getRootPane().reInitRootCenterArea(area);
-            if (editProjectModal.getProject() != null
-                    && editProjectModal.getProject().getCameraTimelines().size()
-                    > project.getCameraTimelines().size()) {
-                for (int i = 0; i < project.getCameraTimelines().size(); i++) {
-                    CameraTimeline newLine = project.getCameraTimelines().get(i);
-                    CameraTimeline oldLine = editProjectModal.getProject()
-                            .getCameraTimelines().get(i);
-                    LinkedList<CameraShot> shots = new LinkedList<>();
-                    oldLine.getShots().forEach(shots::add);
-                    int j = i;
-                    shots.forEach(shot -> {
-                            newLine.addShot(shot);
-                            controllerManager.getTimelineControl().addCameraShot(j, shot);
-                        });
-                }
-            }
+            reInitTimelines(project);
         }
     }
-    
+
+
     /**
      * Save the current project.
      If the file path of this project is already known, write to that file
@@ -208,7 +332,7 @@ public class ProjectController {
         }
         if (temp == null) {
             controllerManager.getRootPane().getPrimaryStage().close();
-            controllerManager.getRootPane().initStartupScreen(true);
+            controllerManager.getRootPane().showStartupScreen(true);
         } else {
             controllerManager.getRootPane().closeStartupScreen();
             controllerManager.setScriptingProject(temp);
@@ -216,14 +340,9 @@ public class ProjectController {
                     .reInitRootCenterArea(new RootCenterArea(
                             controllerManager.getRootPane(),
                             controllerManager.getScriptingProject()
-                                    .getCameraTimelines()
-                                    .size(), false));
+                                    .getCameras().size(), false));
             addLoadedCameraShotBlocks(controllerManager.getScriptingProject());
             addLoadedDirectorShotBlocks(controllerManager.getScriptingProject());
-            controllerManager.getTimelineControl()
-                    .setNumTimelines(controllerManager.getScriptingProject()
-                            .getCameraTimelines()
-                            .size());
             changeConfigFile(temp);
         }
     }
@@ -258,12 +377,30 @@ public class ProjectController {
             writer.write(project.getFilePath());
             writer.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } finally {
             if (writer != null) {
                 writer.close();
                 controllerManager.updateWindowTitle();
+            }
+        }
+    }
+
+    /**
+     * Remove most recent project path in config file.
+     * Used, for example, if the file cannot be found.
+     */
+    public void emptyConfigFile() {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(new File(RootPane.getCONFIG_FILEPATH()), "UTF-8");
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (writer != null) {
+                writer.close();
             }
         }
     }
@@ -301,12 +438,7 @@ public class ProjectController {
      * @param shot the shot to add
      */
     private void addCameraShotForLoad(int cameraIndex, CameraShot shot) {
-        CameraShotBlock shotBlock = new CameraShotBlock(shot,
-                cameraIndex,
-                controllerManager.getRootPane().getRootCenterArea(),
-                controllerManager.getTimelineControl()::shotChangedHandler);
-        controllerManager.getTimelineControl().getCameraShotBlocks().add(shotBlock);
-        controllerManager.setActiveShotBlock(shotBlock);
+        controllerManager.getTimelineControl().initShotBlock(cameraIndex, shot);
     }
 
     /**
@@ -314,11 +446,7 @@ public class ProjectController {
      * @param shot the shot to add
      */
     private void addDirectorShotForLoad(DirectorShot shot) {
-        DirectorShotBlock shotBlock = new DirectorShotBlock(shot,
-                controllerManager.getRootPane().getRootCenterArea(),
-                controllerManager.getDirectorTimelineControl()::shotChangedHandler);
-        controllerManager.getDirectorTimelineControl().getShotBlocks().add(shotBlock);
-        controllerManager.setActiveShotBlock(shotBlock);
+        controllerManager.getDirectorTimelineControl().initShotBlock(shot);
     }
 
    
@@ -357,14 +485,16 @@ public class ProjectController {
      */
     private void confirmTypeDelete(MouseEvent event, List<Camera> toBeDeleted, int selectedIndex) {
         typeWarningModal.hideModal();
-        editProjectModal.getCameraTypes().remove(selectedIndex);
-        editProjectModal.getCameraTypeList().getItems().remove(selectedIndex);
-        toBeDeleted.forEach(e -> {
-                int index = editProjectModal.getCameras().indexOf(e);
-                editProjectModal.getCameras().remove(index);
-                editProjectModal.getTimelines().remove(index);
-                editProjectModal.getCameraList().getItems().remove(index);
-            });
+        if (selectedIndex < editProjectModal.getCameraTypes().size()) {
+            editProjectModal.getCameraTypes().remove(selectedIndex);
+            editProjectModal.getCameraTypeList().getItems().remove(selectedIndex);
+            toBeDeleted.forEach(e -> {
+                    int index = editProjectModal.getCameras().indexOf(e);
+                    editProjectModal.getCameras().remove(index);
+                    editProjectModal.getTimelines().remove(index);
+                    editProjectModal.getCameraList().getItems().remove(index);
+                });
+        }
     }
     
     /**
@@ -416,7 +546,7 @@ public class ProjectController {
      */
     public void newProject() {
         editProjectModal = new EditProjectModalView(controllerManager.getRootPane(), false);
-        initHandlersForEditProjectModal();
+        initHandlersForNewProjectModal();
     }
     
     /**
@@ -448,7 +578,21 @@ public class ProjectController {
         editProjectModal.getEditCameraTypeButton().setOnMouseClicked(this::editCameraType);
         editProjectModal.getDeleteCameraTypeButton().setOnMouseClicked(this::deleteCameraType);
         editProjectModal.getCancelButton().setOnMouseClicked(this::cancel);
-        editProjectModal.getApplyButton().setOnMouseClicked(this::save);
+        editProjectModal.getApplyButton().setOnMouseClicked(this::applyEdit);
+    }
+
+    /**
+     * Init the button handlers for the new project modal.
+     */
+    private void initHandlersForNewProjectModal() {
+        editProjectModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
+        editProjectModal.getEditCameraButton().setOnMouseClicked(this::editCamera);
+        editProjectModal.getDeleteCameraButton().setOnMouseClicked(this::deleteCamera);
+        editProjectModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);
+        editProjectModal.getEditCameraTypeButton().setOnMouseClicked(this::editCameraType);
+        editProjectModal.getDeleteCameraTypeButton().setOnMouseClicked(this::deleteCameraType);
+        editProjectModal.getCancelButton().setOnMouseClicked(this::cancel);
+        editProjectModal.getApplyButton().setOnMouseClicked(this::applyNew);
     }
     
     /**
@@ -472,7 +616,7 @@ public class ProjectController {
     }
     
     /**
-     * Event handler for when the save button in the camera edit modal is clicked.
+     * Event handler for when the applyEdit button in the camera edit modal is clicked.
      * @param event the MouseEvent for this event
      * @param selectedIndex the index of the camera to change
      */
@@ -481,7 +625,8 @@ public class ProjectController {
             cameraModal.hideModal();
             String name = cameraModal.getNameField().getText();
             String description = cameraModal.getDescriptionField().getText();
-            CameraType type = editProjectModal.getCameraTypes().get(selectedIndex);
+            int index = cameraModal.getCameraTypes().getSelectionModel().getSelectedIndex();
+            CameraType type = editProjectModal.getCameraTypes().get(index);
             editProjectModal.getCameras().get(selectedIndex).setName(name);
             editProjectModal.getCameras().get(selectedIndex).setDescription(description);
             editProjectModal.getCameras().get(selectedIndex).setCameraType(type);
@@ -520,7 +665,7 @@ public class ProjectController {
     }
     
     /**
-     * Event handler for when the save button in the edit camera type modal is clicked.
+     * Event handler for when the apply button in the edit camera type modal is clicked.
      * @param event the MouseEvent for this event.
      * @param selectedIndex the index of the camera type to edit.
      */
@@ -597,7 +742,7 @@ public class ProjectController {
             box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
             editProjectModal.getCameraList().getItems().add(box);
             // add timeline
-            CameraTimeline timeline = new CameraTimeline(name, camera, description, null);
+            CameraTimeline timeline = new CameraTimeline(camera, null);
             editProjectModal.getTimelines().add(timeline);
         }
     }

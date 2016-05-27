@@ -38,6 +38,7 @@ public class TimelineControllerTest extends ApplicationTest {
     private ScriptingProject project;
     private CameraShot shot;
     private CameraShotBlock shotBlock;
+    private DirectorTimelineController directorTimelineController;
 
     @Before
     public void initialize() {
@@ -45,14 +46,14 @@ public class TimelineControllerTest extends ApplicationTest {
         TimelineController timelineControllerMock = Mockito.mock(TimelineController.class);
         DetailViewController detailViewController = Mockito.mock(DetailViewController.class);
         ToolViewController toolViewController = Mockito.mock(ToolViewController.class);
-        DirectorTimelineController directorTimelineController = Mockito.mock(DirectorTimelineController.class);
+        directorTimelineController = Mockito.mock(DirectorTimelineController.class);
         ProjectController projectController = Mockito.mock(ProjectController.class);
         manager = spy(new ControllerManager(rootPane, timelineControllerMock, detailViewController, toolViewController,
                                             directorTimelineController, projectController));
 
         project = spy(new ScriptingProject());
-        project.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), "kek", null));
-        project.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), "kek", null));
+        project.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), null));
+        project.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), null));
 
         timelineController = spy(new TimelineController(manager));
         timelineController.getControllerManager().setScriptingProject(project);
@@ -105,7 +106,7 @@ public class TimelineControllerTest extends ApplicationTest {
 
         timelineController.decoupleShot(0, shotSpy);
         verify(directorShotSpy).removeCameraShot(shotSpy, 0);
-        verify(shotSpy).setDirectorShot(null);
+        verify(directorTimelineController).removeShotNoCascade(directorShotSpy);
     }
 
     private void initRootPaneForCameraShotAdding() {
@@ -163,7 +164,7 @@ public class TimelineControllerTest extends ApplicationTest {
     }
 
     @Test
-    public void removeCameraShot() throws InterruptedException {
+    public void removeCameraShotBlockTest() throws InterruptedException {
         CameraShot shot = new CameraShot("name", "description", 2.0, 3.0);
         initRootPaneForCameraShotAdding();
 
@@ -173,6 +174,26 @@ public class TimelineControllerTest extends ApplicationTest {
             timelineController.addCameraShot(0, shot);
             CameraShotBlock shotBlock = timelineController.getCameraShotBlocks().get(timelineController.getCameraShotBlocks().size() - 1);
             timelineController.removeCameraShot(shotBlock);
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        // Do verifications
+        assertNull(manager.getActiveShotBlock());
+        Mockito.verify(project, times(2)).changed();
+        assertFalse(manager.getScriptingProject().getCameraTimelines().get(0).getShots().contains(shot));
+    }
+
+    @Test
+    public void removeCameraShotTest() throws InterruptedException {
+        CameraShot shot = new CameraShot("name", "description", 2.0, 3.0);
+        initRootPaneForCameraShotAdding();
+
+        // Call method under test
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        Platform.runLater(() -> {
+            timelineController.addCameraShot(0, shot);
+            timelineController.removeCameraShot(shot);
             latch[0].countDown();
         });
         latch[0].await();

@@ -23,7 +23,7 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
 
     // width and height of screen. 680 and 290 work very, very well.
     private static final int width = 680;
-    private static final int height = 370;
+    private static final int height = 460;
 
     /*
      * Other variables.
@@ -109,9 +109,7 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
 
         // add checkboxes
         cameraCheckboxes = new ArrayList<>();
-        int j = 0;
         for (int i = 0; i < this.cameraTimelines.size(); i++) {
-            j = (j > 4) ? 0 : j + 1;
             String checkBoxString = this.cameraTimelines.get(i).getCamera().getName();
             StyledCheckbox checkBox = new StyledCheckbox(checkBoxString);
             cameraCheckboxes.add(checkBox);
