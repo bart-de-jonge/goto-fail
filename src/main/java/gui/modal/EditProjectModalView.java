@@ -340,7 +340,6 @@ public class EditProjectModalView extends ModalView {
         deleteCameraButton.setPrefWidth(buttonWidth);
         HBox cameraContent = new HBox(TweakingHelper.GENERAL_SPACING);
         cameraContent.getChildren().addAll(addCameraButton, editCameraButton, deleteCameraButton);
-        //cameraList = initCameraList();
         cameraList = new StyledListview<>();
         content.getChildren().addAll(cameraContent, cameraList);
 

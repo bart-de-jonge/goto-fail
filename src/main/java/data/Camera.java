@@ -33,6 +33,14 @@ public class Camera implements Cloneable {
     // Defined in seconds
     @Setter
     private double movementMargin;
+
+    // Counter that ensures no timelines with duplicate numbers will be created.
+    @Getter
+    private static int instanceCounter = 0;
+
+    // The instancenumber of the timeline.
+    @Getter @Setter
+    private int instance;
     
     /**
      * Default constructor.
@@ -52,6 +60,8 @@ public class Camera implements Cloneable {
         this.description = description;
         this.cameraType = cameraType;
         this.movementMargin = -1;
+        this.instance = Camera.getInstanceCounter();
+        Camera.incrementCounter();
         log.debug("Created new Camera(name={}, description={}, cameraType={}",
                 name, description, cameraType);
     }
@@ -59,6 +69,7 @@ public class Camera implements Cloneable {
     @Override
     public Camera clone() {
         Camera camera = new Camera(name, description, cameraType.clone());
+        camera.setInstance(this.getInstance());
         return camera;
     }
     
@@ -81,5 +92,12 @@ public class Camera implements Cloneable {
      */
     public void resetMovementMargin() {
         this.setMovementMargin(-1);
+    }
+
+    /**
+     * Static method to increment the instance counter.
+     */
+    public static void incrementCounter() {
+        instanceCounter++;
     }
 }

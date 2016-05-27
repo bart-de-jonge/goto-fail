@@ -198,25 +198,40 @@ public class ProjectController {
      *                   optionally changed number of timelines
      */
     private void reInitTimelines(ScriptingProject newProject) {
-        if (editProjectModal.getProject() != null
-                && editProjectModal.getProject().getCameraTimelines().size()
-                >= newProject.getCameraTimelines().size()) {
-            for (int i = 0; i < newProject.getCameraTimelines().size(); i++) {
-                CameraTimeline newLine = newProject.getCameraTimelines().get(i);
-                CameraTimeline oldLine = editProjectModal.getProject()
-                        .getCameraTimelines().get(i);
-                LinkedList<CameraShot> shots = new LinkedList<>();
-                oldLine.getShots().forEach(shots::add);
-                int j = i;
-                shots.forEach(shot -> {
-                        newLine.addShot(shot);
-                        controllerManager.getTimelineControl().addCameraShot(j, shot);
-                    });
-                controllerManager.getScriptingProject().getCameraTimelines()
-                .get(i).setShots(shots);
+        ScriptingProject oldProject = editProjectModal.getProject();
+        if (oldProject != null) {
+            for (int i = 0; i < newProject.getCameras().size(); i++) {
+                Camera newCamera = newProject.getCameras().get(i);
+                Camera oldCamera = null;
+                CameraTimeline newTimeline = newProject.getCameraTimelines().get(i);
+                CameraTimeline oldTimeline = null;
+                /*
+                    Yes, O-n-squared. No, I couldn't care less.
+                    Finds old shot with same instance as new shot, so we know
+                    that it is the same even if the name, description
+                    or position in the list has changed.
+                */
+                for (int j = 0; j < oldProject.getCameras().size(); j++) {
+                    if (oldProject.getCameras().get(j).getInstance()
+                            == newCamera.getInstance()) {
+                        oldCamera = oldProject.getCameras().get(j);
+                        oldTimeline = oldProject.getCameraTimelines().get(j);
+                    }
+                }
+                if (oldCamera != null) {
+                    LinkedList<CameraShot> shots = new LinkedList<>();
+                    oldTimeline.getShots().forEach(shots::add);
+                    int j = i;
+                    shots.forEach(shot -> {
+                            newTimeline.addShot(shot);
+                            controllerManager.getTimelineControl().addCameraShot(j, shot);
+                        });
+                    controllerManager.getScriptingProject().getCameraTimelines()
+                            .get(i).setShots(shots);
+                }
             }
         }
-        editProjectModal.getProject().getDirectorTimeline().getShots()
+        oldProject.getDirectorTimeline().getShots()
                 .forEach(shot -> controllerManager
                         .getDirectorTimelineControl().addDirectorShot(shot));
     }
@@ -232,10 +247,42 @@ public class ProjectController {
     }
     
     /**
-     * Handler for when the save button is clicked.
+     * Handler for when the apply button is clicked for existing project.
+     * Differs from when the apply button is clicked for new project, obviously.
      * @param event the MouseEvent for this handler
      */
-    private void save(MouseEvent event) {
+    private void applyEdit(MouseEvent event) {
+        if (validateProjectData()) {
+            editProjectModal.hideModal();
+            String name = editProjectModal.getNameField().getText();
+            String description = editProjectModal.getDescriptionField().getText();
+            String directorTimelineDescription = editProjectModal
+                    .getDirectorTimelineDescriptionField().getText();
+            double secondsPerCount = Double.parseDouble(
+                    editProjectModal.getSecondsPerCountField().getText());
+            ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
+            if (controllerManager.getScriptingProject() != null) {
+                project.setFilePath(controllerManager.getScriptingProject().getFilePath());
+            }
+            project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
+            setData(project);
+            project.getDirectorTimeline().setProject(project);
+            project.getCameraTimelines().forEach(c -> c.setProject(project));
+            controllerManager.setScriptingProject(project);
+            controllerManager.updateWindowTitle();
+            RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),
+                    editProjectModal.getTimelines().size(), false);
+            controllerManager.getRootPane().reInitRootCenterArea(area);
+            reInitTimelines(project);
+        }
+    }
+
+    /**
+     * Handler for when the apply button is clicked for new project.
+     * Differs from when the apply button is clicked for edit project, obviously.
+     * @param event the MouseEvent for this handler
+     */
+    private void applyNew(MouseEvent event) {
         if (validateProjectData()) {
             editProjectModal.hideModal();
             String name = editProjectModal.getNameField().getText();
@@ -293,8 +340,7 @@ public class ProjectController {
                     .reInitRootCenterArea(new RootCenterArea(
                             controllerManager.getRootPane(),
                             controllerManager.getScriptingProject()
-                                    .getCameraTimelines()
-                                    .size(), false));
+                                    .getCameras().size(), false));
             addLoadedCameraShotBlocks(controllerManager.getScriptingProject());
             addLoadedDirectorShotBlocks(controllerManager.getScriptingProject());
             changeConfigFile(temp);
@@ -439,14 +485,16 @@ public class ProjectController {
      */
     private void confirmTypeDelete(MouseEvent event, List<Camera> toBeDeleted, int selectedIndex) {
         typeWarningModal.hideModal();
-        editProjectModal.getCameraTypes().remove(selectedIndex);
-        editProjectModal.getCameraTypeList().getItems().remove(selectedIndex);
-        toBeDeleted.forEach(e -> {
-                int index = editProjectModal.getCameras().indexOf(e);
-                editProjectModal.getCameras().remove(index);
-                editProjectModal.getTimelines().remove(index);
-                editProjectModal.getCameraList().getItems().remove(index);
-            });
+        if (selectedIndex < editProjectModal.getCameraTypes().size()) {
+            editProjectModal.getCameraTypes().remove(selectedIndex);
+            editProjectModal.getCameraTypeList().getItems().remove(selectedIndex);
+            toBeDeleted.forEach(e -> {
+                    int index = editProjectModal.getCameras().indexOf(e);
+                    editProjectModal.getCameras().remove(index);
+                    editProjectModal.getTimelines().remove(index);
+                    editProjectModal.getCameraList().getItems().remove(index);
+                });
+        }
     }
     
     /**
@@ -498,7 +546,7 @@ public class ProjectController {
      */
     public void newProject() {
         editProjectModal = new EditProjectModalView(controllerManager.getRootPane(), false);
-        initHandlersForEditProjectModal();
+        initHandlersForNewProjectModal();
     }
     
     /**
@@ -530,7 +578,21 @@ public class ProjectController {
         editProjectModal.getEditCameraTypeButton().setOnMouseClicked(this::editCameraType);
         editProjectModal.getDeleteCameraTypeButton().setOnMouseClicked(this::deleteCameraType);
         editProjectModal.getCancelButton().setOnMouseClicked(this::cancel);
-        editProjectModal.getApplyButton().setOnMouseClicked(this::save);
+        editProjectModal.getApplyButton().setOnMouseClicked(this::applyEdit);
+    }
+
+    /**
+     * Init the button handlers for the new project modal.
+     */
+    private void initHandlersForNewProjectModal() {
+        editProjectModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
+        editProjectModal.getEditCameraButton().setOnMouseClicked(this::editCamera);
+        editProjectModal.getDeleteCameraButton().setOnMouseClicked(this::deleteCamera);
+        editProjectModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);
+        editProjectModal.getEditCameraTypeButton().setOnMouseClicked(this::editCameraType);
+        editProjectModal.getDeleteCameraTypeButton().setOnMouseClicked(this::deleteCameraType);
+        editProjectModal.getCancelButton().setOnMouseClicked(this::cancel);
+        editProjectModal.getApplyButton().setOnMouseClicked(this::applyNew);
     }
     
     /**
@@ -554,7 +616,7 @@ public class ProjectController {
     }
     
     /**
-     * Event handler for when the save button in the camera edit modal is clicked.
+     * Event handler for when the applyEdit button in the camera edit modal is clicked.
      * @param event the MouseEvent for this event
      * @param selectedIndex the index of the camera to change
      */
@@ -563,7 +625,8 @@ public class ProjectController {
             cameraModal.hideModal();
             String name = cameraModal.getNameField().getText();
             String description = cameraModal.getDescriptionField().getText();
-            CameraType type = editProjectModal.getCameraTypes().get(selectedIndex);
+            int index = cameraModal.getCameraTypes().getSelectionModel().getSelectedIndex();
+            CameraType type = editProjectModal.getCameraTypes().get(index);
             editProjectModal.getCameras().get(selectedIndex).setName(name);
             editProjectModal.getCameras().get(selectedIndex).setDescription(description);
             editProjectModal.getCameras().get(selectedIndex).setCameraType(type);
@@ -602,7 +665,7 @@ public class ProjectController {
     }
     
     /**
-     * Event handler for when the save button in the edit camera type modal is clicked.
+     * Event handler for when the apply button in the edit camera type modal is clicked.
      * @param event the MouseEvent for this event.
      * @param selectedIndex the index of the camera type to edit.
      */
@@ -679,7 +742,7 @@ public class ProjectController {
             box.getChildren().addAll(new Label(name), new Label(" - "), new Label(description));
             editProjectModal.getCameraList().getItems().add(box);
             // add timeline
-            CameraTimeline timeline = new CameraTimeline(name, camera, description, null);
+            CameraTimeline timeline = new CameraTimeline(camera, null);
             editProjectModal.getTimelines().add(timeline);
         }
     }

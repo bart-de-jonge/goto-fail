@@ -159,7 +159,6 @@ public class RootCenterArea extends VBox {
         // filler for the counter timeline.
         this.topPane.getChildren().add(new Rectangle(counterWidth,
                 topBarHeight, Color.WHITE));
-
         // label for director timeline: white with gray border again. Simple.
         Label directorLabel = new Label("Director");
         directorLabel.setStyle("-fx-border-width: 0 1px 0 0; -fx-border-color: rgba(0,0,0,0.40);");
@@ -192,8 +191,7 @@ public class RootCenterArea extends VBox {
         // labels for camera timelines
         for (int i = 0; i < numberOfTimelines; i++) {
             String name = getRootPane().getControllerManager().getScriptingProject()
-                    .getCameraTimelines().get(i).getName();
-
+                    .getCameras().get(i).getName();
             Label label = new Label(name);
             label.setAlignment(Pos.CENTER);
             label.setPrefWidth(TweakingHelper.GENERAL_SIZE);
