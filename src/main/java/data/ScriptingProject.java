@@ -109,6 +109,30 @@ public class ScriptingProject {
     }
     
    
+   
+    
+    /**
+     * Get the maximum instance used so far.
+     * @return the maximum instance used so far
+     */
+    public int getMaxInstance() {
+        int res = Integer.MIN_VALUE;
+        for (int i = 0;i < directorTimeline.getShots().size();i++) {
+            if (directorTimeline.getShots().get(i).getInstance() > res) {
+                res = directorTimeline.getShots().get(i).getInstance();
+            }
+        }
+        for (int i = 0;i < cameraTimelines.size();i++) {
+            CameraTimeline timeline = cameraTimelines.get(i);
+            for (int j = 0;j < timeline.getShots().size();j++) {
+                if (timeline.getShots().get(j).getInstance() > res) {
+                    res = timeline.getShots().get(j).getInstance();
+                }
+            }
+        }
+        return res;
+    }
+    
     /**
      * Method to write the current project to a file.
      * @param fileName  - the file to write the project to
@@ -121,24 +145,6 @@ public class ScriptingProject {
     
     public boolean write() {
         return write(new File(filePath));
-    }
-    
-    public int getMaxInstance() {
-        int res = Integer.MIN_VALUE;
-        for (int i=0;i<directorTimeline.getShots().size();i++) {
-            if (directorTimeline.getShots().get(i).getInstance() > res) {
-                res = directorTimeline.getShots().get(i).getInstance();
-            }
-        }
-        for (int i=0;i<cameraTimelines.size();i++) {
-            CameraTimeline timeline = cameraTimelines.get(i);
-            for (int j=0;j<timeline.getShots().size();j++) {
-                if(timeline.getShots().get(j).getInstance() > res) {
-                    res = timeline.getShots().get(j).getInstance();
-                }
-            }
-        }
-        return res;
     }
     
     /**

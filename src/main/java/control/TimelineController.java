@@ -162,9 +162,10 @@ public class TimelineController {
         log.error("SHOT CHANGED DO YOU EVEN");
         CameraShotBlock changedBlock = event.getCameraShotBlock();
         cameraShotBlocks.forEach(shotBlock -> {
-            log.error("Recomputing shot block with instance {}", shotBlock.getShot().getInstance());
-            this.checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
-        });
+                log.error("Recomputing shot block with instance {}",
+                        shotBlock.getShot().getInstance());
+                this.checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
+            });
 
         // If coupled to DirectorShot, confirm separation
         this.decoupleAndModify(event, changedBlock);
@@ -208,6 +209,22 @@ public class TimelineController {
                         event.getOldTimelineNumber(), changedBlock);
     }
 
+    
+    /**
+     * Get the shot block corresponding to the shot.
+     * @param shot the shot to search for
+     * @return the shot block with shot as shot.
+     */
+    public CameraShotBlock getShotBlockForShot(CameraShot shot) {
+        for (int i = 0;i < this.cameraShotBlocks.size();i++) {
+            if (cameraShotBlocks.get(i).getShot().getInstance() == shot.getInstance()) {
+                return cameraShotBlocks.get(i);
+            }
+        }
+        return null;
+    }
+    
+
     /**
      * Check collisions for new camerablock.
      * @param timelineNumber - the timelinenumber where the camerashotblock is added
@@ -215,15 +232,6 @@ public class TimelineController {
      */
     protected void checkCollisions(int timelineNumber, CameraShotBlock cameraShotBlock) {
         checkCollisions(timelineNumber, -1, cameraShotBlock);
-    }
-    
-    public CameraShotBlock getShotBlockForShot(CameraShot shot) {
-        for (int i=0;i<this.cameraShotBlocks.size();i++) {
-            if (cameraShotBlocks.get(i).getShot().getInstance() == shot.getInstance()) {
-                return cameraShotBlocks.get(i);
-            }
-        }
-        return null;
     }
 
     /**
@@ -235,14 +243,12 @@ public class TimelineController {
      */
     protected void checkCollisions(int timelineNumber, int oldTimelineNumber,
                                  CameraShotBlock cameraShotBlock) {
-        log.error("Checking collissions for camera shot block with name {}", cameraShotBlock.getShot().getName());
+       
         CameraTimeline timeline = controllerManager.getScriptingProject()
                                                    .getCameraTimelines()
                                                    .get(timelineNumber);
-        // Remove collisions from shot if added to new timeline
         if (oldTimelineNumber >= 0) {
             removeCollisionFromCameraShotBlock(cameraShotBlock);
-            // Remove overlaps for non-colliding shotblocks
             ArrayList<CameraShotBlock> toRemove = new ArrayList<>();
             this.overlappingCameraShotBlocks.stream()
                     .filter(shotBlock ->
@@ -252,16 +258,13 @@ public class TimelineController {
                             });
             this.overlappingCameraShotBlocks.removeAll(toRemove);
         }
-        // Check for collisions
         ArrayList<CameraShot> overlappingShots = timeline
                 .getOverlappingShots(cameraShotBlock.getShot());
         if (overlappingShots.size() > 1) {
-            // Collision detected
             ArrayList<CameraShotBlock> overlappingShotBlocks = new ArrayList<>();
             Supplier<ArrayList<Integer>> supplier = ArrayList::new;
             ArrayList<Integer> myInts = overlappingShots.stream().map(Shot::getInstance)
                     .collect(Collectors.toCollection(supplier));
-            // Get CameraShotBlock
             this.cameraShotBlocks.stream().filter(shotBlock ->
                     myInts.contains(shotBlock.getShotId())).forEach(shotBlock -> {
                             overlappingShotBlocks.add(shotBlock);
@@ -269,22 +272,28 @@ public class TimelineController {
                                 this.overlappingCameraShotBlocks.add(shotBlock);
                             }
                         });
-            // Make camerashotblocks red
             for (CameraShotBlock shotBlock : overlappingShotBlocks) {
-                log.error("Collides: name {}", shotBlock.getShot().getName());
                 shotBlock.setColliding(true);
             }
-            
-           
         } else {
-            log.error("IT DOES THIS RIGHT?");
-            cameraShotBlock.setColliding(false);
-            cameraShotBlock.getShot().setColliding(false);
-            cameraShotBlock.getShot().getCollidesWith().forEach(e -> {
-                this.checkCollisions(this.getShotBlockForShot((CameraShot) e).getTimetableNumber(), this.getShotBlockForShot((CameraShot) e));
-            });
-            removeCollisionFromCameraShotBlock(cameraShotBlock);
+            resetColliding(cameraShotBlock);
         }
+    }
+    
+    /**
+     * Reset colliding status on camera shot block.
+     * @param cameraShotBlock the shot block to do that on
+     */
+    private void resetColliding(CameraShotBlock cameraShotBlock) {
+        cameraShotBlock.setColliding(false);
+        cameraShotBlock.getShot().setColliding(false);
+        cameraShotBlock.getShot().getCollidesWith().forEach(e -> {
+                this.checkCollisions(
+                    this.getShotBlockForShot((CameraShot) e)
+                    .getTimetableNumber(),
+                    this.getShotBlockForShot((CameraShot) e));
+            });
+        removeCollisionFromCameraShotBlock(cameraShotBlock);
     }
 
     /**

@@ -262,7 +262,7 @@ public class TimelineControllerTest extends ApplicationTest {
 
         // Do verifications
         assertTrue(timelineController.getOverlappingCameraShotBlocks().isEmpty());
-        Mockito.verify(shotBlock, times(1)).setColliding(false);
+        Mockito.verify(shotBlock, times(2)).setColliding(false);
     }
 
     @Test

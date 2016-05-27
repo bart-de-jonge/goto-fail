@@ -70,6 +70,7 @@ public class DirectorShot extends Shot {
         this.timelineIndices = ConcurrentHashMap.newKeySet();
         this.timelineIndices.addAll(cameras);
         this.cameraShots = ConcurrentHashMap.newKeySet();
+        this.instance = instanceCounter;
         log.debug("Created new DirectorShot");
         DirectorShot.incrementCounter();
     }
