@@ -17,19 +17,25 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class CameraShot extends Shot {
 
-    // Counter that ensures no shots with duplicate numbers will be created.
+    // Counter that ensures no shots with duplicate numbers will be created. 
+    @Setter
     private static int instanceCounter = 0;
 
     @Getter
     @Setter
     @XmlTransient
     private DirectorShot directorShot;
+    
+ // The instancenumber of the Shot.
+    @Getter
+    private int instance;
    
     /**
      * Default constructor.
      */
     public CameraShot() {
         super();
+        this.instance = instanceCounter;
         CameraShot.incrementCounter();
     }
 
@@ -43,9 +49,10 @@ public class CameraShot extends Shot {
      */
     public CameraShot(String name, String description,
                       double startCount, double endCount, DirectorShot directorShot) {
-        super(instanceCounter, name, description, startCount, endCount);
+        super(name, description, startCount, endCount);
         log.debug("Created new CameraShot");
         this.directorShot = directorShot;
+        this.instance = instanceCounter;
         CameraShot.incrementCounter();
     }
 
@@ -61,6 +68,16 @@ public class CameraShot extends Shot {
      * Static method to increment the instance counter.
      */
     public static void incrementCounter() {
+        log.error("GAVE INSTANCE {}",instanceCounter);
         instanceCounter++;
+    }
+    
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof CameraShot) {
+            CameraShot that = (CameraShot) other;
+            return instance == that.instance;
+        }
+        return false;
     }
 }

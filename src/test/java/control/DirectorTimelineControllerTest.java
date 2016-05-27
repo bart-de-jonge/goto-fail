@@ -1,9 +1,26 @@
 package control;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.testfx.framework.junit.ApplicationTest;
+
 import data.CameraShot;
 import data.DirectorShot;
 import data.DirectorTimeline;
 import data.ScriptingProject;
+import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
 import gui.centerarea.ShotBlock;
 import gui.events.DirectorShotBlockUpdatedEvent;
@@ -11,23 +28,6 @@ import gui.root.RootCenterArea;
 import gui.root.RootPane;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.testfx.framework.junit.ApplicationTest;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CountDownLatch;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @PrepareForTest({DirectorTimelineController.class,ShotBlock.class,DirectorShotBlock.class})
 public class DirectorTimelineControllerTest extends ApplicationTest {
@@ -85,6 +85,10 @@ public class DirectorTimelineControllerTest extends ApplicationTest {
 
         DirectorTimeline timeline = Mockito.mock(DirectorTimeline.class);
         when(scriptMock.getDirectorTimeline()).thenReturn(timeline);
+        TimelineController timelineMock = Mockito.mock(TimelineController.class);
+        when(controllerManager.getTimelineControl()).thenReturn(timelineMock);
+        ArrayList<CameraShotBlock> emptyShotBlockList = new ArrayList<CameraShotBlock>();
+        when(timelineMock.getCameraShotBlocks()).thenReturn(emptyShotBlockList);
 
         directorTimelineController.shotChangedHandler(event);
 
