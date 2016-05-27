@@ -99,7 +99,6 @@ public class TimelineController {
      */
     protected void initShotBlock(int cameraIndex,
                                CameraShot newShot) {
-        log.error("Initializing shotblock with instance {}", newShot.getInstance());
         CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(),
             cameraIndex, rootPane.getRootCenterArea(), newShot.getBeginCount(),
             newShot.getEndCount(), newShot.getDescription(), newShot.getName(),
@@ -159,11 +158,9 @@ public class TimelineController {
      * @param event Camera shot change event.
      */
     public void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
-        log.error("SHOT CHANGED DO YOU EVEN");
         CameraShotBlock changedBlock = event.getCameraShotBlock();
         cameraShotBlocks.forEach(shotBlock -> {
-                log.error("Recomputing shot block with instance {}",
-                        shotBlock.getShot().getInstance());
+                
                 this.checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
             });
 
@@ -178,7 +175,6 @@ public class TimelineController {
      */
     protected void modifyCameraShot(CameraShotBlockUpdatedEvent event,
                                   CameraShotBlock changedBlock) {
-        log.error("Modify camera block");
         controllerManager.getScriptingProject().changed();
         log.info("Shot moved to new TimeLine");
 

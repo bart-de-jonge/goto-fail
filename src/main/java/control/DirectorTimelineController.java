@@ -84,7 +84,6 @@ public class DirectorTimelineController {
      * @param shot DirectorShot to display
      */
     protected void initShotBlock(DirectorShot shot) {
-        log.error("INIT SHOTBLOCK???");
         DirectorShotBlock shotBlock = new DirectorShotBlock(shot.getInstance(),
             rootPane.getRootCenterArea(), shot.getBeginCount(), shot.getEndCount(),
             shot.getDescription(), shot.getName(), this::shotChangedHandler, shot);
@@ -120,7 +119,6 @@ public class DirectorTimelineController {
         shot.setEndCount(changedBlock.getEndCount());
         
         controllerManager.getTimelineControl().getCameraShotBlocks().forEach(shotBlock -> {
-                log.error("DIRECTOR SHOT HANDLER KEK");
                 controllerManager.getTimelineControl()
                     .checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
                 shotBlock.recompute();
