@@ -47,7 +47,7 @@ public class ScriptingProjectTest {
     public void addAndGetCameraTimelineTest() {
         CameraType type = new CameraType("cameratype-1", "A test cameratype", 2.00);
         Camera camera = new Camera("camera-1", "A test camera", type);
-        CameraTimeline timeline = new CameraTimeline(camera, "A test cameratimeline",
+        CameraTimeline timeline = new CameraTimeline(camera,
                 new ScriptingProject("", "test", 1));
         project.addCameraTimeline(timeline);
         assertEquals(1, project.getCameraTimelines().size());
@@ -102,7 +102,7 @@ public class ScriptingProjectTest {
     public void setCameraTimelinesTest() {
         CameraType type = new CameraType("cameratype-1", "A test cameratype", 2.00);
         Camera camera = new Camera("camera-1", "A test camera", type);
-        CameraTimeline timeline = new CameraTimeline(camera, "A test cameratimeline",
+        CameraTimeline timeline = new CameraTimeline(camera,
                 new ScriptingProject("", "test", 1));
         ArrayList<CameraTimeline> timelines = new ArrayList<CameraTimeline>();
         timelines.add(timeline);

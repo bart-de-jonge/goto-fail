@@ -130,7 +130,6 @@ public class EditProjectModalView extends ModalView {
     private ArrayList<CameraTimeline> timelines;
 
     private boolean fillWithCurrentProjectInfo;
-
     
     /**
      * Construct a new EditProjectModalView.
@@ -225,7 +224,9 @@ public class EditProjectModalView extends ModalView {
      * Initialize title label.
      */
     private void initTitleLabel() {
-        titleLabel = new Label("Edit the current project...");
+        titleLabel = new Label("");
+        titleLabel.setText( fillWithCurrentProjectInfo
+                ? "Edit the current project..." : "Create a new project...");
         titleLabel.setStyle(topStyle);
         titleLabel.setAlignment(Pos.CENTER_LEFT);
         titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
@@ -339,7 +340,6 @@ public class EditProjectModalView extends ModalView {
         deleteCameraButton.setPrefWidth(buttonWidth);
         HBox cameraContent = new HBox(TweakingHelper.GENERAL_SPACING);
         cameraContent.getChildren().addAll(addCameraButton, editCameraButton, deleteCameraButton);
-        //cameraList = initCameraList();
         cameraList = new StyledListview<>();
         content.getChildren().addAll(cameraContent, cameraList);
 

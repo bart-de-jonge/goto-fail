@@ -1,11 +1,7 @@
 package control;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -121,7 +117,6 @@ public class ProjectControllerTest extends ApplicationTest {
         Mockito.doNothing().when(rootPane).reInitRootCenterArea(Mockito.any());
         CameraTimeline timelineMock = mock(CameraTimeline.class);
         when(listMock.get(Mockito.anyInt())).thenReturn(timelineMock);
-        when(timelineMock.getName()).thenReturn("A name");
         
         projectController.load(file);
         
@@ -147,7 +142,7 @@ public class ProjectControllerTest extends ApplicationTest {
         Stage stage = mock(Stage.class);
         when(rootPane.getPrimaryStage()).thenReturn(stage);
         projectController.load(file);
-        Mockito.verify(stage).close();
+        Mockito.verify(stage, times(1)).close();
     }
     
     @Test

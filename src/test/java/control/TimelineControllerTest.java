@@ -52,8 +52,8 @@ public class TimelineControllerTest extends ApplicationTest {
                                             directorTimelineController, projectController));
 
         project = spy(new ScriptingProject());
-        project.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), "kek", null));
-        project.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), "kek", null));
+        project.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), null));
+        project.addCameraTimeline(new CameraTimeline(new Camera("a", "b", new CameraType()), null));
 
         timelineController = spy(new TimelineController(manager));
         timelineController.getControllerManager().setScriptingProject(project);
