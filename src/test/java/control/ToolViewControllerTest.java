@@ -8,6 +8,8 @@ import gui.headerarea.ToolButton;
 import gui.headerarea.ToolView;
 import gui.root.RootHeaderArea;
 import gui.root.RootPane;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,10 +33,6 @@ public class ToolViewControllerTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) throws Exception {
-    }
-
-    @Before
-    public void initialize() {
         controllerManager = Mockito.mock(ControllerManager.class);
         RootPane rootPane = Mockito.mock(RootPane.class);
         RootHeaderArea rootHeaderArea = Mockito.mock(RootHeaderArea.class);
@@ -44,9 +42,13 @@ public class ToolViewControllerTest extends ApplicationTest {
         when(rootPane.getRootHeaderArea()).thenReturn(rootHeaderArea);
         when(rootHeaderArea.getToolView()).thenReturn(toolView);
 
+        when(rootPane.getPrimaryStage()).thenReturn(stage);
+
+        Scene sceneMock = Mockito.mock(Scene.class);
+        stage.setScene(sceneMock);
+
         toolViewController = new ToolViewController(controllerManager);
     }
-
 
     @Test
     public void noActiveBlockDeletionTest() {
