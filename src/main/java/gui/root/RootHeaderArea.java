@@ -106,29 +106,9 @@ public class RootHeaderArea extends VBox {
      * @return the initialized file Menu
      */
     private Menu initFileMenu() {
-        MenuItem newItem = new MenuItem("New");
-        newItem.setOnAction(e -> {
-                rootPane.getControllerManager().getProjectController().newProject();
-            });
-        newItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN));
+        Menu fileMenu = new Menu("File");
 
-        MenuItem saveItem = new MenuItem("Save");
-        saveItem.setOnAction(e -> {
-                rootPane.getControllerManager().getProjectController().save();
-            });
-        saveItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN));
-
-        MenuItem saveAsItem = new MenuItem("Save as");
-        saveAsItem.setOnAction(e -> {
-                rootPane.getControllerManager().getProjectController().saveAs();
-            });
-        saveAsItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN));
-
-        MenuItem loadItem = new MenuItem("Load");
-        loadItem.setOnAction(e -> {
-                rootPane.getControllerManager().getProjectController().load();
-            });
-        loadItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN));
+        initializeLocalFileItems(fileMenu);
 
         MenuItem uploadItem = new MenuItem("Upload to webserver");
         uploadItem.setOnAction(e -> {
@@ -144,10 +124,42 @@ public class RootHeaderArea extends VBox {
                     rootPane.getPrimaryStage().close();
                 }
             });
-        Menu fileMenu = new Menu("File");
-        fileMenu.getItems().addAll(newItem, saveItem, saveAsItem, loadItem, quit,
-                uploadItem);
+        fileMenu.getItems().addAll(quit, uploadItem);
         return fileMenu;
+    }
+
+    /**
+     * Initializes MenuItems for local file handling.
+     * @param fileMenu Menu to add items to.
+     */
+    private void initializeLocalFileItems(Menu fileMenu) {
+        MenuItem newItem = new MenuItem("New");
+        newItem.setOnAction(e -> {
+                rootPane.getControllerManager().getProjectController().newProject();
+            });
+        newItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN,
+                                                      KeyCombination.ALT_DOWN));
+
+        MenuItem saveItem = new MenuItem("Save");
+        saveItem.setOnAction(e -> {
+                rootPane.getControllerManager().getProjectController().save();
+            });
+        saveItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN));
+
+        MenuItem saveAsItem = new MenuItem("Save as");
+        saveAsItem.setOnAction(e -> {
+                rootPane.getControllerManager().getProjectController().saveAs();
+            });
+        saveAsItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN,
+                                                         KeyCombination.SHIFT_DOWN));
+
+        MenuItem loadItem = new MenuItem("Load");
+        loadItem.setOnAction(e -> {
+                rootPane.getControllerManager().getProjectController().load();
+            });
+        loadItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN));
+
+        fileMenu.getItems().addAll(newItem, saveItem, saveAsItem, loadItem);
     }
 
     /**
