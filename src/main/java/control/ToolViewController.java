@@ -9,7 +9,6 @@ import gui.headerarea.ToolView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-
 /**
  * Controller that manages the tool menu (e.g. shot creation menu).
  */
