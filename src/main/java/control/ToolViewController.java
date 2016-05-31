@@ -6,6 +6,9 @@ import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
 import gui.centerarea.ShotBlock;
 import gui.headerarea.ToolView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
 
 /**
  * Controller that manages the tool menu (e.g. shot creation menu).
@@ -49,6 +52,14 @@ public class ToolViewController {
             toolView.getBlockDeletionTool().disableButton();
             toolView.getShotGenerationTool().disableButton();
         }
+        // Add Delete Key Event Listener for deleting active shot
+        this.controllerManager.getRootPane().getPrimaryStage()
+                .getScene().addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+                        if (event.getCode() == KeyCode.DELETE) {
+                            deleteActiveCameraShot();
+                            event.consume();
+                        }
+                    });
     }
 
     /**
