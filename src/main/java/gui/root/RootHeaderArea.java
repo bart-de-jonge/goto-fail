@@ -6,11 +6,12 @@ import gui.misc.TweakingHelper;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import lombok.Getter;
 
 /**
@@ -109,21 +110,25 @@ public class RootHeaderArea extends VBox {
         newItem.setOnAction(e -> {
                 rootPane.getControllerManager().getProjectController().newProject();
             });
+        newItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN));
 
         MenuItem saveItem = new MenuItem("Save");
         saveItem.setOnAction(e -> {
                 rootPane.getControllerManager().getProjectController().save();
             });
+        saveItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN));
 
         MenuItem saveAsItem = new MenuItem("Save as");
         saveAsItem.setOnAction(e -> {
                 rootPane.getControllerManager().getProjectController().saveAs();
             });
-        
+        saveAsItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN));
+
         MenuItem loadItem = new MenuItem("Load");
         loadItem.setOnAction(e -> {
                 rootPane.getControllerManager().getProjectController().load();
             });
+        loadItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN));
 
         MenuItem uploadItem = new MenuItem("Upload to webserver");
         uploadItem.setOnAction(e -> {
