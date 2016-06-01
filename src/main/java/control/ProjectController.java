@@ -235,10 +235,11 @@ public class ProjectController {
                             .get(i).setShots(shots);
                 }
             }
+            oldProject.getDirectorTimeline().getShots()
+            .forEach(shot -> controllerManager
+                    .getDirectorTimelineControl().addDirectorShot(shot));
         }
-        oldProject.getDirectorTimeline().getShots()
-                .forEach(shot -> controllerManager
-                        .getDirectorTimelineControl().addDirectorShot(shot));
+        
     }
 
     /**

@@ -65,6 +65,12 @@ public class CameraTimeline extends Timeline implements Cloneable {
     
     @Override
     public CameraTimeline clone() {
+        try {
+            super.clone();
+        } catch (CloneNotSupportedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         CameraTimeline timeline = new CameraTimeline(camera.clone(), getProject());
         timeline.shots = (LinkedList) shots.clone();
         return timeline;

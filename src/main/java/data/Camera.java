@@ -68,6 +68,12 @@ public class Camera implements Cloneable {
     
     @Override
     public Camera clone() {
+        try {
+            super.clone();
+        } catch (CloneNotSupportedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         Camera camera = new Camera(name, description, cameraType.clone());
         camera.setInstance(this.getInstance());
         return camera;

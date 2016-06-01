@@ -29,8 +29,6 @@ public class RootHeaderArea extends VBox {
     @Getter
     private ToolView toolView;
 
-    private DropShadow dropShadow;
-
     /**
      * RootHeaderArea Constructor.
      * @param rootPane the root pane this pane itself is located in.

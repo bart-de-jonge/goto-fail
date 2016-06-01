@@ -1,5 +1,7 @@
 package gui.misc;
 
+import java.util.Arrays;
+
 import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
@@ -85,6 +87,20 @@ public final class TweakingHelper {
     /*
      * Getters
      */
+    
+    public static String[] getColorNames() {
+        String[] result;
+        result = Arrays.copyOf(colorNames, colorNames.length);
+        return result;
+    }
+    
+    public static Color[][] getColors() {
+        Color[][] result = new Color[colors.length][colors[0].length];
+        for (int i=0;i<colors.length;i++) {
+            result[i] = Arrays.copyOf(colors[i], colors[i].length);
+        }
+        return result;
+    }
 
     /**
      * Returns a color of choice., specified by an index.

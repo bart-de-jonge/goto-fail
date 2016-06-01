@@ -46,7 +46,6 @@ public abstract class TimetableBlock extends Pane {
 
     private double verticalBorderSize = 6.0;
     private double margin = 5.0;
-    private double blurRadius = 20.0;
 
     /**
      *  Content variables.

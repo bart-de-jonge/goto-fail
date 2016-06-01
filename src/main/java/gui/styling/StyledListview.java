@@ -39,7 +39,6 @@ public class StyledListview<T> extends ListView {
 
     private InnerShadow innerShadow;
     private TransitionHelper transitionHelper;
-    private StyledListview<T> self;
 
     /**
      * Constructor of class.
