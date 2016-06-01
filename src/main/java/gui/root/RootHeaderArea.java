@@ -59,7 +59,7 @@ public class RootHeaderArea extends VBox {
     
     public void reInitHeaderBar(DetailView detailView) {
         headerBar.getChildren().clear();
-        headerBar.getChildren().add(initButtons());
+        headerBar.getChildren().add(toolView);
         headerBar.getChildren().add(detailView);
     }
 

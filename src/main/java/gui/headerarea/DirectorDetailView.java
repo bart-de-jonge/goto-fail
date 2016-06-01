@@ -35,6 +35,14 @@ public class DirectorDetailView extends DetailView {
         
     }
     
+    public void setBeforePadding(double padding) {
+        this.paddingBeforeField.setText(formatDouble(padding));
+    }
+    
+    public void setAfterPadding(double padding) {
+        this.paddingAfterField.setText(formatDouble(padding));
+    }
+    
     private void initPaddingBefore() {
         paddingBeforeField = new StyledTextfield("");
         paddingBeforeField.setAlignment(Pos.CENTER);

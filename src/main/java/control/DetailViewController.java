@@ -29,6 +29,66 @@ public class DetailViewController {
         initBeginCount();
         initEndCount();
     }
+    
+    public void reInitForCameraBlock() {
+        initDescription();
+        initName();
+        initBeginCount();
+        initEndCount();
+    }
+    
+    public void reInitForDirectorBlock() {
+        reInitForCameraBlock();
+        initBeginPadding();
+        initEndPadding();
+        initCamerasDropDown();
+    }
+    
+    private void initBeginPadding() {
+        ((DirectorDetailView) detailView).setBeforePadding(0);
+        
+        ((DirectorDetailView) detailView).getPaddingBeforeField().focusedProperty().addListener(this::beforePaddingFocusListener);
+        
+        ((DirectorDetailView) detailView).getPaddingBeforeField().setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                this.beforePaddingUpdateHelper();
+            }
+        });
+    }
+    
+    private void beforePaddingFocusListener(ObservableValue<? extends Boolean> observable,
+                                 Boolean oldValue, Boolean newValue) {
+        if (!newValue) {
+            this.beforePaddingUpdateHelper();
+        }
+    }
+    
+    private void beforePaddingUpdateHelper() {
+//        if (manager.getActiveShotBlock() != null) {
+//            String newValue = CountUtilities.parseCountNumber(
+//                    detailView.getBeginCountField().getText());
+//            detailView.getBeginCountField().setText(newValue);
+//            double newVal = Double.parseDouble(newValue);
+//
+//            manager.getActiveShotBlock().setBeginCount(newVal);
+//            manager.getActiveShotBlock().getShot().setBeginCount(newVal);
+//        }
+        if (manager.getActiveShotBlock() != null) {
+            String newValue = CountUtilities.parseCountNumber(((DirectorDetailView) detailView).getPaddingBeforeField().getText());
+            ((DirectorDetailView) detailView).getPaddingBeforeField().setText(newValue);
+            double newVal = Double.parseDouble(newValue);
+            
+            
+        }
+    }
+    
+    private void initEndPadding() {
+        
+    }
+    
+    private void initCamerasDropDown() {
+        
+    }
 
     /**
      * Init the begincount handlers.
