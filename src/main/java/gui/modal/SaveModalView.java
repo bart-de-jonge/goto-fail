@@ -1,13 +1,7 @@
 package gui.modal;
 
-import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 public class SaveModalView extends ButtonsOnlyModalView {

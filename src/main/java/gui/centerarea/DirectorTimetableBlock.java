@@ -1,6 +1,5 @@
 package gui.centerarea;
 
-import gui.misc.TweakingHelper;
 import gui.root.RootCenterArea;
 
 /**
@@ -37,7 +36,7 @@ public class DirectorTimetableBlock extends TimetableBlock {
      * Init the dragpane with blur, title, count and description labels.
      */
     private void initDraggedPane() {
-        super.initDraggedPane(getRootCenterArea().getDirectorAnchorPane());;
+        super.initDraggedPane(getRootCenterArea().getDirectorAnchorPane());
     }
 
     /**

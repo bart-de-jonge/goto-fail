@@ -1,13 +1,7 @@
 package gui.root;
 
 import gui.misc.TweakingHelper;
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import lombok.Getter;
 
 /**
  * Class that represents the whole of bottom-level elements in the gui.
