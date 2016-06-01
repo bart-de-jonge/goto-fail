@@ -1,6 +1,7 @@
 package gui.root;
 
 import gui.headerarea.DetailView;
+import gui.headerarea.DirectorDetailView;
 import gui.headerarea.ToolView;
 import gui.misc.TweakingHelper;
 import javafx.scene.control.Menu;
@@ -50,7 +51,7 @@ public class RootHeaderArea extends VBox {
 
         headerBar.getChildren().add(initButtons());
 
-        detailView = new DetailView();
+        detailView = new DirectorDetailView();
         headerBar.getChildren().add(detailView);
 
         return headerBar;

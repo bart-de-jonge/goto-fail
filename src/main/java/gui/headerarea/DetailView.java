@@ -19,15 +19,21 @@ public class DetailView extends HBox {
             + "-fx-border-width: 0 0 1px 0;"
             + "-fx-border-color: rgba(0,0,0,0.40);";
 
-    private static final String defaultEmptyString = "";
-    private static final String defaultEmptyNumber = "0";
+    protected static final String defaultEmptyString = "";
+    protected static final String defaultEmptyNumber = "0";
 
+    
     private boolean visible = false;
 
+    @Getter
     Label invisibleLabel;
+    @Getter
     HBox nameBox;
+    @Getter
     HBox descriptionBox;
+    @Getter
     HBox beginCountBox;
+    @Getter
     HBox endCountBox;
 
     @Getter
@@ -52,6 +58,14 @@ public class DetailView extends HBox {
         initBeginCount();
         initEndCount();
         initInvisible();
+    }
+    
+    public boolean getVisible() {
+        return visible;
+    }
+    
+    public void setVisibleForView(boolean visible) {
+        this.visible = visible;
     }
 
     /**
@@ -102,7 +116,7 @@ public class DetailView extends HBox {
     /**
      * Init the begincount part of the detailview.
      */
-    private  void initBeginCount() {
+    private void initBeginCount() {
         beginCountField = new DoubleTextField("123");
         beginCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("Start Count:");
@@ -114,7 +128,7 @@ public class DetailView extends HBox {
     /**
      * Init the endcount part of the detailview.
      */
-    private  void initEndCount() {
+    private void initEndCount() {
         endCountField = new DoubleTextField("123");
         endCountField.setAlignment(Pos.CENTER);
         endCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
