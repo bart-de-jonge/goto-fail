@@ -1,6 +1,9 @@
 package control;
 
+import gui.centerarea.CameraShotBlock;
+import gui.centerarea.DirectorShotBlock;
 import gui.headerarea.DetailView;
+import gui.headerarea.DirectorDetailView;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.input.KeyCode;
 
@@ -173,11 +176,31 @@ public class DetailViewController {
      */
     public void activeBlockChanged() {
         if (manager.getActiveShotBlock() != null) {
-            detailView.setDescription(manager.getActiveShotBlock().getDescription());
-            detailView.setName(manager.getActiveShotBlock().getName());
-            detailView.setBeginCount(manager.getActiveShotBlock().getBeginCount());
-            detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
-            detailView.setVisible();
+            System.out.println("PASSED NULL CHECK");
+            if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
+                System.out.println("IS CAMERA SHOT BLOCK");
+                detailView = new DetailView();
+                detailView.setDescription(manager.getActiveShotBlock().getDescription());
+                detailView.setName(manager.getActiveShotBlock().getName());
+                detailView.setBeginCount(manager.getActiveShotBlock().getBeginCount());
+                detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
+                detailView.setVisible();
+                detailView.setVisible(true);
+                manager.getRootPane().getRootHeaderArea().setDetailView(detailView);  
+                manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
+            } else {
+                System.out.println("IS DIRECTOR SHOT BLOCK");
+                DirectorShotBlock shotBlock = (DirectorShotBlock) manager.getActiveShotBlock();
+                detailView = new DirectorDetailView();
+                detailView.setDescription(shotBlock.getDescription());
+                detailView.setName(shotBlock.getName());
+                detailView.setBeginCount(shotBlock.getBeginCount());
+                detailView.setEndCount(shotBlock.getEndCount());
+                detailView.setVisible();
+                detailView.setVisible(true);
+                manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
+
+            }
         } else {
             detailView.resetDetails();
             detailView.setInvisible();
