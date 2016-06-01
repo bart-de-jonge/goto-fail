@@ -115,6 +115,6 @@ public class DirectorShotTest {
     
     @Test
     public void toStringTest() {
-        assertEquals("DirectorShot(timelineIndices=[], cameraShots=[], frontShotPadding=0.0, endShotPadding=0.0)", shot.toString());
+        assertEquals("DirectorShot(timelineIndices=[], cameraShots=[], frontShotPadding=0.0, endShotPadding=0.0, instance=" + shot.getInstance() + ")", shot.toString());
     }
 }
