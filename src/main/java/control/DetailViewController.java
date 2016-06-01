@@ -2,6 +2,7 @@ package control;
 
 import java.util.Set;
 
+import data.DirectorShot;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
 import gui.headerarea.DetailView;
@@ -78,6 +79,13 @@ public class DetailViewController {
             ((DirectorDetailView) detailView).getPaddingBeforeField().setText(newValue);
             double newVal = Double.parseDouble(newValue);
             
+            ((DirectorShotBlock) manager.getActiveShotBlock()).setPaddingBefore(newVal);
+            ((DirectorShot) manager.getActiveShotBlock().getShot()).setFrontShotPadding(newVal);
+            ((DirectorShot) manager.getActiveShotBlock().getShot()).getCameraShots().forEach(e -> {
+                System.out.println("Should update");
+                CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
+                shotBlock.setBeginCount(((DirectorShot) manager.getActiveShotBlock().getShot()).getBeginCount() + newVal, true);
+            });
             
         }
     }
@@ -250,6 +258,7 @@ public class DetailViewController {
                 detailView.setVisible(true);
                 manager.getRootPane().getRootHeaderArea().setDetailView(detailView);  
                 manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
+                this.reInitForCameraBlock();
             } else {
                 System.out.println("IS DIRECTOR SHOT BLOCK");
                 DirectorShotBlock shotBlock = (DirectorShotBlock) manager.getActiveShotBlock();
@@ -264,6 +273,7 @@ public class DetailViewController {
                 detailView.setVisible();
                 detailView.setVisible(true);
                 manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
+                this.reInitForDirectorBlock();
 
             }
         } else {

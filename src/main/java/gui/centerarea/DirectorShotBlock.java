@@ -7,8 +7,8 @@ import gui.events.DirectorShotBlockUpdatedEvent;
 import gui.events.ShotblockUpdatedEvent;
 import gui.root.RootCenterArea;
 import javafx.event.EventHandler;
-import javafx.scene.layout.HBox;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Class that represents a shotblock for the director.
@@ -19,13 +19,13 @@ public class DirectorShotBlock extends ShotBlock {
     @Getter
     private int shotId;
     
-    @Getter
+    @Getter @Setter
     private double paddingBefore;
     
-    @Getter
+    @Getter @Setter
     private double paddingAfter;
     
-    @Getter
+    @Getter @Setter
     private Set<Integer> timelineIndices;
 
     // The directorGridpane the shot is in
