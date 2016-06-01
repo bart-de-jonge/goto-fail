@@ -91,7 +91,4 @@ public class CameraShot extends Shot {
         }
         return false;
     }
-    
-    
-    
 }
