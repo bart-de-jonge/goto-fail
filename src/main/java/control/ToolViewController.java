@@ -63,7 +63,9 @@ public class ToolViewController {
         // Add Delete Key Event Listener for deleting active shot
         this.controllerManager.getRootPane().getPrimaryStage()
                 .getScene().addEventFilter(KeyEvent.KEY_RELEASED, event -> {
-                        if (event.getCode() == KeyCode.DELETE) {
+                        if ((event.getCode() == KeyCode.DELETE)
+                                || (event.getCode() == KeyCode.BACK_SPACE
+                                    && event.isShortcutDown())) {
                             deleteActiveCameraShot();
                             event.consume();
                         }

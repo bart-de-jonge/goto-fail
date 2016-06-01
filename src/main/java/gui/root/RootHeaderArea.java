@@ -64,19 +64,22 @@ public class RootHeaderArea extends VBox {
      * @return MenuBar containing menus.
      */
     private MenuBar initMenus() {
-       
         Menu editMenu = new Menu("Edit");
         
         MenuItem editProjectItem = new MenuItem("Project");
         editProjectItem.setOnAction(e -> {
                 rootPane.getControllerManager().getProjectController().editProject();
             });
+        editMenu.getItems().add(editProjectItem);
+
         MenuItem preferencesItem = new MenuItem("Preferences");
         preferencesItem.setOnAction(e -> {
                 rootPane.getControllerManager().getPreferencesViewController()
                         .showPreferencesWindow();
             });
-        editMenu.getItems().addAll(editProjectItem, preferencesItem);
+        preferencesItem.setAccelerator(new KeyCodeCombination(KeyCode.COMMA,
+                                                              KeyCombination.SHORTCUT_DOWN));
+        editMenu.getItems().add(preferencesItem);
         
         Menu helpMenu = new Menu("Help");
         
@@ -114,6 +117,8 @@ public class RootHeaderArea extends VBox {
         uploadItem.setOnAction(e -> {
                 rootPane.getControllerManager().getProjectController().uploadToWebserver();
             });
+        uploadItem.setAccelerator(new KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN));
+
         MenuItem quit = new MenuItem("Quit");
         quit.setOnAction(e -> {
                 if (rootPane.getControllerManager().getScriptingProject() != null
