@@ -390,7 +390,6 @@ public class ProjectController {
                         CameraTimeline timeline = project.getCameraTimelines().get(j);
                         timeline.getShots().forEach(shot -> {
                                 if (cameraShot.getInstance() == shot.getInstance()) {
-                                    //timeline.removeShot(shot);
                                     shot.setBeginCount(UNUSED_BLOCK_OFFSET);
                                     shot.setEndCount(UNUSED_BLOCK_OFFSET);
                                 }
@@ -398,7 +397,6 @@ public class ProjectController {
                     }
                 });
         }
-        
     }
 
     

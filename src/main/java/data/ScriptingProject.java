@@ -109,8 +109,8 @@ public class ScriptingProject {
         this.changed = false;
     }
     
-   
-   
+    @Setter @Getter
+    private static int res = Integer.MIN_VALUE;
     
     /**
      * Get the maximum instance used so far.
@@ -118,11 +118,11 @@ public class ScriptingProject {
      */
     public int getMaxInstance() {
         int res = Integer.MIN_VALUE;
-        for (int i = 0;i < directorTimeline.getShots().size();i++) {
-            if (directorTimeline.getShots().get(i).getInstance() > res) {
-                res = directorTimeline.getShots().get(i).getInstance();
+        directorTimeline.getShots().forEach(shot -> {
+            if (shot.getInstance() > getRes()) {
+                setRes(shot.getInstance());
             }
-        }
+        });
         for (int i = 0;i < cameraTimelines.size();i++) {
             CameraTimeline timeline = cameraTimelines.get(i);
             for (int j = 0;j < timeline.getShots().size();j++) {

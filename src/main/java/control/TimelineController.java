@@ -159,8 +159,7 @@ public class TimelineController {
      */
     public void shotChangedHandler(CameraShotBlockUpdatedEvent event) {
         CameraShotBlock changedBlock = event.getCameraShotBlock();
-        cameraShotBlocks.forEach(shotBlock -> {
-                
+        cameraShotBlocks.forEach(shotBlock -> {  
                 this.checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
             });
 
