@@ -68,7 +68,6 @@ public class CameraShot extends Shot {
      * Static method to increment the instance counter.
      */
     public static void incrementCounter() {
-        log.error("GAVE INSTANCE {}",instanceCounter);
         instanceCounter++;
     }
     

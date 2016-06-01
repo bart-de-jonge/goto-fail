@@ -222,6 +222,10 @@ public class ScriptingProject {
         return result;
     }
     
+    /**
+     * Removes the offsetted camera blocks from this project
+     Needed because of loading functionality. 
+     */
     public void removeOffsettedCameraBlocks() {
         for (CameraTimeline timeline : cameraTimelines) {
             Iterator<CameraShot> iterator = timeline.getShots().iterator();
@@ -232,7 +236,6 @@ public class ScriptingProject {
                 }
             }
         }
-        
     }
 
     /**
