@@ -7,6 +7,7 @@ import gui.events.DirectorShotBlockUpdatedEvent;
 import gui.events.ShotblockUpdatedEvent;
 import gui.root.RootCenterArea;
 import javafx.event.EventHandler;
+import javafx.scene.layout.HBox;
 import lombok.Getter;
 
 /**
@@ -30,6 +31,7 @@ public class DirectorShotBlock extends ShotBlock {
     // The directorGridpane the shot is in
     @Getter
     private DirectorGridPane grid;
+    
     
     
 
