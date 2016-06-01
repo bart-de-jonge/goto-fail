@@ -215,9 +215,11 @@ public class DetailViewController {
     private void initDropDown(DirectorShotBlock shotBlock) {
         Set<Integer> indices = shotBlock.getTimelineIndices();
         ((DirectorDetailView) detailView).getSelectCamerasDropDown().getItems().clear();
+        manager.getScriptingProject().getCameras().forEach(camera -> {
+            ((DirectorDetailView) detailView).getSelectCamerasDropDown().getItems().add(camera.getName());
+        });
         indices.forEach(e -> {
-            String name = manager.getScriptingProject().getCameras().get(e).getName();
-            ((DirectorDetailView) detailView).getSelectCamerasDropDown().getItems().add(name);
+            ((DirectorDetailView) detailView).getSelectCamerasDropDown().getCheckModel().check(e);
         });
     }
 }
