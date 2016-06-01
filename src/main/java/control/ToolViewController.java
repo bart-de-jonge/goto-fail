@@ -7,6 +7,8 @@ import gui.centerarea.DirectorShotBlock;
 import gui.centerarea.ShotBlock;
 import gui.headerarea.ToolView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 
 /**
@@ -51,6 +53,13 @@ public class ToolViewController {
             toolView.getBlockDeletionTool().disableButton();
             toolView.getShotGenerationTool().disableButton();
         }
+        initializeKeyBindings();
+    }
+
+    /**
+     * Initializes the keyboard bindings for certain tools.
+     */
+    private void initializeKeyBindings() {
         // Add Delete Key Event Listener for deleting active shot
         this.controllerManager.getRootPane().getPrimaryStage()
                 .getScene().addEventFilter(KeyEvent.KEY_RELEASED, event -> {
@@ -59,6 +68,28 @@ public class ToolViewController {
                             event.consume();
                         }
                     });
+        // Add New Director Shot Key Binding
+        this.controllerManager.getRootPane().getPrimaryStage()
+                .getScene().getAccelerators()
+                .put(new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN),
+                    creationModalViewController::showDirectorCreationWindow);
+        // Add New Camera Shot Key Binding
+        this.controllerManager.getRootPane().getPrimaryStage()
+                .getScene().getAccelerators()
+                .put(new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN,
+                                            KeyCombination.SHIFT_DOWN),
+                    creationModalViewController::showCameraCreationWindow);
+        // Add Generate Shots Key Binding
+        this.controllerManager.getRootPane().getPrimaryStage()
+                .getScene().getAccelerators()
+                .put(new KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN),
+                    this::generateCameraShots);
+        // Add Generate All Shots Key Binding
+        this.controllerManager.getRootPane().getPrimaryStage()
+                .getScene().getAccelerators()
+                .put(new KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN,
+                                            KeyCombination.SHIFT_DOWN),
+                    controllerManager.getDirectorTimelineControl()::generateAllShots);
     }
 
     /**
