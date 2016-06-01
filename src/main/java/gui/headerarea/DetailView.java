@@ -89,7 +89,7 @@ public class DetailView extends HBox {
      * @param d - the double to format
      * @return - a formatted string containng the double
      */
-    private String formatDouble(double d) {
+    public String formatDouble(double d) {
         if (d == (long) d) {
             return String.format("%d", (long) d);
         } else {

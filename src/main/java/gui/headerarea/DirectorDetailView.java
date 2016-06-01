@@ -8,13 +8,15 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import lombok.Getter;
 
 public class DirectorDetailView extends DetailView {
     
+    @Getter
     private StyledTextfield paddingBeforeField;
-    
+    @Getter
     private StyledTextfield paddingAfterField;
-    
+    @Getter
     private CheckComboBox<String> selectCamerasDropDown;
     
     private HBox paddingBeforeBox;

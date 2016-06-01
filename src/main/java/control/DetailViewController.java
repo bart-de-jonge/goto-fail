@@ -1,5 +1,7 @@
 package control;
 
+import java.util.Set;
+
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
 import gui.headerarea.DetailView;
@@ -196,6 +198,9 @@ public class DetailViewController {
                 detailView.setName(shotBlock.getName());
                 detailView.setBeginCount(shotBlock.getBeginCount());
                 detailView.setEndCount(shotBlock.getEndCount());
+                ((DirectorDetailView) detailView).getPaddingBeforeField().setText(detailView.formatDouble(shotBlock.getPaddingBefore()));
+                ((DirectorDetailView) detailView).getPaddingAfterField().setText(detailView.formatDouble(shotBlock.getPaddingAfter()));
+                initDropDown(shotBlock);
                 detailView.setVisible();
                 detailView.setVisible(true);
                 manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
@@ -205,5 +210,14 @@ public class DetailViewController {
             detailView.resetDetails();
             detailView.setInvisible();
         }
+    }
+    
+    private void initDropDown(DirectorShotBlock shotBlock) {
+        Set<Integer> indices = shotBlock.getTimelineIndices();
+        ((DirectorDetailView) detailView).getSelectCamerasDropDown().getItems().clear();
+        indices.forEach(e -> {
+            String name = manager.getScriptingProject().getCameras().get(e).getName();
+            ((DirectorDetailView) detailView).getSelectCamerasDropDown().getItems().add(name);
+        });
     }
 }
