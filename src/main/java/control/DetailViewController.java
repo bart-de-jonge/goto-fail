@@ -1,7 +1,5 @@
 package control;
 
-import gui.centerarea.CameraShotBlock;
-import gui.centerarea.DirectorShotBlock;
 import gui.headerarea.DetailView;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.input.KeyCode;

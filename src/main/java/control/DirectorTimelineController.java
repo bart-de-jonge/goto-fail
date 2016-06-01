@@ -1,19 +1,19 @@
 package control;
 
-import data.CameraShot;
-import data.DirectorShot;
-import data.DirectorTimeline;
-import data.Shot;
-import gui.centerarea.CameraShotBlock;
-import gui.centerarea.DirectorShotBlock;
-import gui.events.DirectorShotBlockUpdatedEvent;
-import gui.root.RootPane;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import data.CameraShot;
+import data.DirectorShot;
+import data.DirectorTimeline;
+import data.Shot;
+import gui.centerarea.DirectorShotBlock;
+import gui.events.DirectorShotBlockUpdatedEvent;
+import gui.root.RootPane;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 

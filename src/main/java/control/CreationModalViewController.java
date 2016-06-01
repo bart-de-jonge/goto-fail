@@ -1,7 +1,5 @@
 package control;
 
-import java.util.List;
-
 import gui.modal.CameraShotCreationModalView;
 import gui.modal.DirectorShotCreationModalView;
 import javafx.beans.value.ObservableValue;

@@ -3,7 +3,6 @@ package data;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import lombok.Getter;
 import lombok.Setter;
 
 /**

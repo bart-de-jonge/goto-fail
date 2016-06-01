@@ -88,15 +88,23 @@ public final class TweakingHelper {
      * Getters
      */
     
+    /**
+     * Get the color names.
+     * @return the color names
+     */
     public static String[] getColorNames() {
         String[] result;
         result = Arrays.copyOf(colorNames, colorNames.length);
         return result;
     }
     
+    /**
+     * Get the colors.
+     * @return the colors
+     */
     public static Color[][] getColors() {
         Color[][] result = new Color[colors.length][colors[0].length];
-        for (int i=0;i<colors.length;i++) {
+        for (int i = 0;i < colors.length;i++) {
             result[i] = Arrays.copyOf(colors[i], colors[i].length);
         }
         return result;

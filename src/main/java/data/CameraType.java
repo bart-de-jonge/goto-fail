@@ -52,6 +52,10 @@ public class CameraType implements Cloneable {
             name, description, movementMargin);
     }
     
+    /**
+     * Clone this camera type.
+     * @return A clone of this camera type
+     */
     public CameraType clone() {
         try {
             super.clone();

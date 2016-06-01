@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.EqualsAndHashCode;
 import lombok.extern.log4j.Log4j2;
 
 /**

@@ -5,7 +5,6 @@ import gui.modal.PreferencesModalView;
 import gui.modal.ReloadModalView;
 import javafx.scene.input.MouseEvent;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Controller for the PreferencesModalView.
