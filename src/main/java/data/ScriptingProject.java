@@ -119,10 +119,10 @@ public class ScriptingProject {
     public int getMaxInstance() {
         int res = Integer.MIN_VALUE;
         directorTimeline.getShots().forEach(shot -> {
-            if (shot.getInstance() > getRes()) {
-                setRes(shot.getInstance());
-            }
-        });
+                if (shot.getInstance() > getRes()) {
+                    setRes(shot.getInstance());
+                }
+            });
         for (int i = 0;i < cameraTimelines.size();i++) {
             CameraTimeline timeline = cameraTimelines.get(i);
             for (int j = 0;j < timeline.getShots().size();j++) {
