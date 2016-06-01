@@ -62,7 +62,7 @@ public class ProjectController {
     private ErrorWhileUploadingModalView errorModal;
     private UploadSuccessModalView successModal;
 
-    private static final int UNUSED_BLOCK_OFFSET = 400000;
+    public static final int UNUSED_BLOCK_OFFSET = 4000000;
     
     // Upload variables
     // Todo: replace with popup or something like that for user
@@ -355,6 +355,7 @@ public class ProjectController {
             int maxInstance = temp.getMaxInstance();
             CameraShot.setInstanceCounter(maxInstance + 1);
             DirectorShot.setInstanceCounter(maxInstance + 1);
+            controllerManager.getScriptingProject().removeOffsettedCameraBlocks();
         }
     }
     

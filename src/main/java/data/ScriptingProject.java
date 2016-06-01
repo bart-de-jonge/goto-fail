@@ -1,9 +1,9 @@
 package data;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import control.ProjectController;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -219,6 +220,19 @@ public class ScriptingProject {
         }
         
         return result;
+    }
+    
+    public void removeOffsettedCameraBlocks() {
+        for (CameraTimeline timeline : cameraTimelines) {
+            Iterator<CameraShot> iterator = timeline.getShots().iterator();
+            while (iterator.hasNext()) {
+                CameraShot shot = iterator.next();
+                if (shot.getBeginCount() == ProjectController.UNUSED_BLOCK_OFFSET) {
+                    iterator.remove();
+                }
+            }
+        }
+        
     }
 
     /**
