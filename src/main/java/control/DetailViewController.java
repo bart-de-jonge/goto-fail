@@ -46,7 +46,7 @@ public class DetailViewController {
     }
     
     private void initBeginPadding() {
-        ((DirectorDetailView) detailView).setBeforePadding(0);
+        //((DirectorDetailView) detailView).setBeforePadding(0);
         
         ((DirectorDetailView) detailView).getPaddingBeforeField().focusedProperty().addListener(this::beforePaddingFocusListener);
         
@@ -65,15 +65,6 @@ public class DetailViewController {
     }
     
     private void beforePaddingUpdateHelper() {
-//        if (manager.getActiveShotBlock() != null) {
-//            String newValue = CountUtilities.parseCountNumber(
-//                    detailView.getBeginCountField().getText());
-//            detailView.getBeginCountField().setText(newValue);
-//            double newVal = Double.parseDouble(newValue);
-//
-//            manager.getActiveShotBlock().setBeginCount(newVal);
-//            manager.getActiveShotBlock().getShot().setBeginCount(newVal);
-//        }
         if (manager.getActiveShotBlock() != null) {
             String newValue = CountUtilities.parseCountNumber(((DirectorDetailView) detailView).getPaddingBeforeField().getText());
             ((DirectorDetailView) detailView).getPaddingBeforeField().setText(newValue);
@@ -84,14 +75,41 @@ public class DetailViewController {
             ((DirectorShot) manager.getActiveShotBlock().getShot()).getCameraShots().forEach(e -> {
                 System.out.println("Should update");
                 CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
-                shotBlock.setBeginCount(((DirectorShot) manager.getActiveShotBlock().getShot()).getBeginCount() + newVal, true);
+                shotBlock.setBeginCount(((DirectorShot) manager.getActiveShotBlock().getShot()).getBeginCount() - newVal, true);
             });
             
         }
     }
     
     private void initEndPadding() {
-        
+        ((DirectorDetailView) detailView).getPaddingAfterField().focusedProperty().addListener(this::afterPaddingFocusListener);
+        ((DirectorDetailView) detailView).getPaddingAfterField().setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                this.afterPaddingUpdateHelper();
+            }
+        });
+    }
+    
+    private void afterPaddingFocusListener(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+        if (!newValue) {
+            this.afterPaddingUpdateHelper();
+        }
+    }
+    
+    private void afterPaddingUpdateHelper() {
+        System.out.println("AFTER UPDATE HELPER");
+        if (manager.getActiveShotBlock() != null) {
+            String newValue = CountUtilities.parseCountNumber(((DirectorDetailView) detailView).getPaddingAfterField().getText());
+            ((DirectorDetailView) detailView).getPaddingAfterField().setText(newValue);
+            double newVal = Double.parseDouble(newValue);
+            
+            ((DirectorShotBlock) manager.getActiveShotBlock()).setPaddingAfter(newVal);
+            ((DirectorShot) manager.getActiveShotBlock().getShot()).setEndShotPadding(newVal);
+            ((DirectorShot) manager.getActiveShotBlock().getShot()).getCameraShots().forEach(e -> {
+                CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
+                shotBlock.setEndCount(((DirectorShot) manager.getActiveShotBlock().getShot()).getEndCount() + newVal, true);
+            });
+        }
     }
     
     private void initCamerasDropDown() {
@@ -102,7 +120,7 @@ public class DetailViewController {
      * Init the begincount handlers.
      */
     private void initBeginCount() {
-        detailView.setBeginCount(0);
+        //detailView.setBeginCount(0);
 
         detailView.getBeginCountField().focusedProperty()
                 .addListener(this::beginCountFocusListener);
@@ -149,7 +167,7 @@ public class DetailViewController {
      * Init the endcuont handlers.
      */
     private void initEndCount() {
-        detailView.setEndCount(0);
+        //detailView.setEndCount(0);
 
         detailView.getEndCountField().focusedProperty()
                 .addListener(this::endCountFocusListener);
@@ -197,7 +215,7 @@ public class DetailViewController {
      * Init the description handlers.
      */
     private void initDescription() {
-        detailView.setDescription("");
+        //detailView.setDescription("");
 
         detailView.getDescriptionField().textProperty()
                 .addListener(this::descriptionTextChangedListener);
@@ -221,7 +239,7 @@ public class DetailViewController {
      * Init the name handler.
      */
     private void initName() {
-        detailView.setName("");
+        //detailView.setName("");
 
         detailView.getNameField().textProperty()
                 .addListener(this::nameTextChangedListener);
