@@ -2,6 +2,7 @@ package data;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -17,6 +18,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import control.ProjectController;
+import data.User.Role;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -57,6 +59,11 @@ public class ScriptingProject {
     @XmlElementWrapper(name = "camera-centerarea")
     @XmlElement(name = "cameraTimeline")
     private ArrayList<CameraTimeline> cameraTimelines;
+    
+    @Getter @Setter
+    @XmlElementWrapper(name = "users")
+    @XmlElement(name = "user")
+    private ArrayList<User> users;
 
     // The number of seconds per count;
     @Getter @Setter
@@ -92,8 +99,18 @@ public class ScriptingProject {
         this.cameraTimelines = new ArrayList<CameraTimeline>();
         this.directorTimeline = new DirectorTimeline(description, this);
         this.cameraTypes = new ArrayList<CameraType>();
+        this.users = new ArrayList<User>();
         this.changed = true;
     }
+    
+    /**
+     * Add a user.
+     * @param user the user to add
+     */
+    public void addUser(User user) {
+        this.users.add(user);
+    }
+    
     
     /**
      * Project changed -> set changed variable to true.
