@@ -1,13 +1,16 @@
 package control;
 
+import java.util.Iterator;
 import java.util.Set;
 
+import data.CameraShot;
 import data.DirectorShot;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
 import gui.headerarea.DetailView;
 import gui.headerarea.DirectorDetailView;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.scene.input.KeyCode;
 
 /**
@@ -73,7 +76,6 @@ public class DetailViewController {
             ((DirectorShotBlock) manager.getActiveShotBlock()).setPaddingBefore(newVal);
             ((DirectorShot) manager.getActiveShotBlock().getShot()).setFrontShotPadding(newVal);
             ((DirectorShot) manager.getActiveShotBlock().getShot()).getCameraShots().forEach(e -> {
-                System.out.println("Should update");
                 CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
                 shotBlock.setBeginCount(((DirectorShot) manager.getActiveShotBlock().getShot()).getBeginCount() - newVal, true);
             });
@@ -97,7 +99,6 @@ public class DetailViewController {
     }
     
     private void afterPaddingUpdateHelper() {
-        System.out.println("AFTER UPDATE HELPER");
         if (manager.getActiveShotBlock() != null) {
             String newValue = CountUtilities.parseCountNumber(((DirectorDetailView) detailView).getPaddingAfterField().getText());
             ((DirectorDetailView) detailView).getPaddingAfterField().setText(newValue);
@@ -113,7 +114,66 @@ public class DetailViewController {
     }
     
     private void initCamerasDropDown() {
+        ((DirectorDetailView) detailView).getSelectCamerasDropDown().getCheckModel().getCheckedIndices().addListener(this::camerasDropdownChangeListener);
+    }
+    
+    private void camerasDropdownChangeListener(ListChangeListener.Change c) {
+        System.out.println("CHANGE LISTENER");
+        DirectorShot shot = ((DirectorShot) manager.getActiveShotBlock().getShot());
+        c.next();
+        if (c.wasAdded()) {
+            cameraAddedInDropdown((int) c.getAddedSubList().get(0));
+        } else {
+            cameraDeletedInDropdown((int) c.getRemoved().get(0));
+        }
+        //camerasDropdownUpdateHelper();
+    }
+    
+    private void cameraDeletedInDropdown(int index) {
         
+    }
+    
+    private void cameraAddedInDropdown(int index) {
+        CameraShot shot = new CameraShot();
+        DirectorShot dShot = ((DirectorShot) manager.getActiveShotBlock().getShot());
+        shot.setName(dShot.getName());
+        shot.setDescription(dShot.getDescription());
+        shot.setBeginCount(dShot.getBeginCount() - dShot.getFrontShotPadding());
+        shot.setEndCount(dShot.getEndCount() + dShot.getEndShotPadding());
+        shot.setDirectorShot(dShot);
+        dShot.getCameraShots().add(shot);
+        manager.getScriptingProject().getCameraTimelines().get(index).addShot(shot);
+        manager.getTimelineControl().initShotBlock(index, shot);
+        
+    }
+    
+    
+    
+    private void camerasDropdownUpdateHelper() {
+        if (manager.getActiveShotBlock() != null) {
+            DirectorShotBlock directorShotBlock = (DirectorShotBlock) manager.getActiveShotBlock();
+            directorShotBlock.getTimelineIndices().clear();
+            Iterator<CameraShot> cameraShotIterator = directorShotBlock.getShot().getCameraShots().iterator();
+            directorShotBlock.getShot().getCameraShots().forEach(shot -> {
+                manager.getTimelineControl().removeCameraShot(shot);
+            });
+//            while (cameraShotIterator.hasNext()) {
+//                CameraShot shot = cameraShotIterator.next();
+//                manager.getTimelineControl().getShotBlockForShot(shot).removeFromView();
+//                manager.getTimelineControl().getCameraShotBlocks().remove(manager.getTimelineControl().getShotBlockForShot(shot));
+//                cameraShotIterator.remove();
+//            }
+//            directorShotBlock.getShot().getCameraShots().forEach(shot -> {
+//                manager.getTimelineControl().getShotBlockForShot(shot).removeFromView();
+//                manager.getTimelineControl().getCameraShotBlocks().remove(manager.getTimelineControl().getShotBlockForShot(shot));
+//            });
+            
+            
+            directorShotBlock.getShot().getCameraShots().clear();
+//            ((DirectorDetailView) detailView).getSelectCamerasDropDown().getCheckModel().getCheckedIndices().forEach(directorShotBlock.getTimelineIndices()::add);
+//            manager.getToolViewController().generateCameraShots(directorShotBlock);
+//            System.out.println("THE STUFF HAS BEEN DONE");
+        }
     }
 
     /**
