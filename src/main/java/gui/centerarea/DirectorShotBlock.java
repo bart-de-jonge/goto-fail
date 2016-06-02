@@ -66,8 +66,6 @@ public class DirectorShotBlock extends ShotBlock {
         this.paddingBefore = paddingBefore;
         this.paddingAfter = paddingAfter;
         this.timelineIndices = timelineIndices;
-        
-        
     }
 
     /**

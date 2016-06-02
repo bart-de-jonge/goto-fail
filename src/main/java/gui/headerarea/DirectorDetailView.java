@@ -34,8 +34,7 @@ public class DirectorDetailView extends DetailView {
         initPaddingBefore();
         initPaddingAfter();
         initSelectCameras();
-        this.getChildren().add(directorItemsBox);
-        
+        this.getChildren().add(directorItemsBox);  
     }
     
     /**

@@ -102,7 +102,6 @@ public class DetailViewController {
                     shotBlock.setBeginCount(((DirectorShot) manager.getActiveShotBlock()
                             .getShot()).getBeginCount() - newVal, true);
                 });
-            
         }
     }
     
@@ -175,7 +174,6 @@ public class DetailViewController {
         } else {
             cameraDeletedInDropdown((int) c.getRemoved().get(0));
         }
-        //camerasDropdownUpdateHelper();
     }
     
     /**
@@ -193,7 +191,6 @@ public class DetailViewController {
                     .getShotBlockForShot(shot).getTimetableNumber() == index) {
                 toRemove = shot;
                 break;
-                
             }
         }
         manager.getTimelineControl().removeCameraShot(toRemove);
@@ -208,11 +205,15 @@ public class DetailViewController {
     private void cameraAddedInDropdown(int index) {
         CameraShot shot = new CameraShot();
         DirectorShot dShot = ((DirectorShot) manager.getActiveShotBlock().getShot());
+        
+        // Set shot variables
         shot.setName(dShot.getName());
         shot.setDescription(dShot.getDescription());
         shot.setBeginCount(dShot.getBeginCount() - dShot.getFrontShotPadding());
         shot.setEndCount(dShot.getEndCount() + dShot.getEndShotPadding());
         shot.setDirectorShot(dShot);
+        
+        // Add shot where needed
         dShot.getCameraShots().add(shot);
         dShot.getTimelineIndices().add(index);
         DirectorShotBlock dShotBlock = ((DirectorShotBlock) manager.getActiveShotBlock());
@@ -225,8 +226,6 @@ public class DetailViewController {
      * Init the begincount handlers.
      */
     private void initBeginCount() {
-        //detailView.setBeginCount(0);
-
         detailView.getBeginCountField().focusedProperty()
                 .addListener(this::beginCountFocusListener);
 
@@ -272,8 +271,6 @@ public class DetailViewController {
      * Init the endcuont handlers.
      */
     private void initEndCount() {
-        //detailView.setEndCount(0);
-
         detailView.getEndCountField().focusedProperty()
                 .addListener(this::endCountFocusListener);
 
@@ -320,8 +317,6 @@ public class DetailViewController {
      * Init the description handlers.
      */
     private void initDescription() {
-        //detailView.setDescription("");
-
         detailView.getDescriptionField().textProperty()
                 .addListener(this::descriptionTextChangedListener);
     }
@@ -344,8 +339,6 @@ public class DetailViewController {
      * Init the name handler.
      */
     private void initName() {
-        //detailView.setName("");
-
         detailView.getNameField().textProperty()
                 .addListener(this::nameTextChangedListener);
     }
@@ -371,18 +364,24 @@ public class DetailViewController {
         if (manager.getActiveShotBlock() != null) {
             if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
                 detailView = new DetailView();
+                
+                // set detail view variables
                 detailView.setDescription(manager.getActiveShotBlock().getDescription());
                 detailView.setName(manager.getActiveShotBlock().getName());
                 detailView.setBeginCount(manager.getActiveShotBlock().getBeginCount());
                 detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
                 detailView.setVisible();
                 detailView.setVisible(true);
+                
+                // Re-init the detail view with new data
                 manager.getRootPane().getRootHeaderArea().setDetailView(detailView);  
                 manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
                 this.reInitForCameraBlock();
             } else {
                 DirectorShotBlock shotBlock = (DirectorShotBlock) manager.getActiveShotBlock();
                 detailView = new DirectorDetailView();
+                
+                // Set detail view variables
                 detailView.setDescription(shotBlock.getDescription());
                 detailView.setName(shotBlock.getName());
                 detailView.setBeginCount(shotBlock.getBeginCount());
@@ -394,6 +393,8 @@ public class DetailViewController {
                 initDropDown(shotBlock);
                 detailView.setVisible();
                 detailView.setVisible(true);
+                
+                // Re-init the detail view with new data
                 manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
                 this.reInitForDirectorBlock();
 
