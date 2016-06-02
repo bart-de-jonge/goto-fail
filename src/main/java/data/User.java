@@ -19,6 +19,31 @@ import lombok.Setter;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User {
     
+    /**
+     * Enum for all the roles a user can have.
+     */
+    public static enum Role {
+        CAMERA_OPERATOR(0), SHOT_CALLER(1), DIRECTOR(2), NONE(-1);
+        
+        private int value;
+        
+        /**
+         * Role constructor.
+         * @param value the value of the role
+         */
+        private Role(int value) {
+            this.value = value;
+        }
+        
+        /**
+         * Get the value.
+         * @return the value
+         */
+        public int getValue() {
+            return value;
+        }
+    }
+    
     @Getter @Setter
     private String name;
     
@@ -57,31 +82,6 @@ public class User {
     }
     
     /**
-     * Enum for all the roles a user can have.
-     */
-    public static enum Role {
-        CAMERA_OPERATOR(0), SHOT_CALLER(1), DIRECTOR(2), NONE(-1);
-        
-        private int value;
-        
-        /**
-         * Role constructor.
-         * @param value the value of the role
-         */
-        private Role(int value) {
-            this.value = value;
-        }
-        
-        /**
-         * Get the value.
-         * @return the value
-         */
-        public int getValue() {
-            return value;
-        }
-    }
-    
-    /**
      * Setter for role. Seperate because role value needs update as well.
      * @param role the role to set
      */
@@ -89,5 +89,4 @@ public class User {
         this.role = role;
         this.roleValue = role.getValue();
     }
-
 }
