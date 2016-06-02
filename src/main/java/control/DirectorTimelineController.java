@@ -86,8 +86,10 @@ public class DirectorTimelineController {
     protected void initShotBlock(DirectorShot shot) {
         DirectorShotBlock shotBlock = new DirectorShotBlock(shot.getInstance(),
             rootPane.getRootCenterArea(), shot.getBeginCount(), shot.getEndCount(),
-            shot.getDescription(), shot.getName(), this::shotChangedHandler, shot);
-        
+            shot.getDescription(), shot.getFrontShotPadding(),
+            shot.getEndShotPadding(), shot.getTimelineIndices(), 
+            this::shotChangedHandler, shot);
+       
 
         controllerManager.setActiveShotBlock(shotBlock);
         this.directorShotBlockMap.put(shot, shotBlock);

@@ -130,7 +130,7 @@ public class ToolViewController {
                 });
         }
     }
-
+   
     /**
      * Called when the active shot selection changed.
      * ToolViewController then updates the buttons accordingly.

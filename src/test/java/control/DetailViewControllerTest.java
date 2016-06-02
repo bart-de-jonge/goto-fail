@@ -74,26 +74,6 @@ public class DetailViewControllerTest extends ApplicationTest {
     }
 
     @Test
-    public void initDescription() {
-        verify(detailView, times(1)).setDescription(anyString());
-    }
-
-    @Test
-    public void initName() {
-        verify(detailView, times(1)).setName(anyString());
-    }
-
-    @Test
-    public void initBeginCount() {
-        verify(detailView, times(1)).setBeginCount(anyDouble());
-    }
-
-    @Test
-    public void initEndCount() {
-        verify(detailView, times(1)).setEndCount(anyDouble());
-    }
-
-    @Test
     public void beginCountUpdateHelper() {
         CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
         CameraShot shot = Mockito.mock(CameraShot.class);
@@ -123,23 +103,7 @@ public class DetailViewControllerTest extends ApplicationTest {
         verify(shot, times(1)).setEndCount(0);
     }
 
-    @Test
-    public void activeBlockChangedActiveBlockNotNull() {
-        CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
-        when(block.getDescription()).thenReturn("test description");
-        when(block.getName()).thenReturn("test name");
-        when(block.getBeginCount()).thenReturn(2.0);
-        when(block.getEndCount()).thenReturn(4.0);
-        when(manager.getActiveShotBlock()).thenReturn(block);
-
-        detailViewController.activeBlockChanged();
-
-        verify(detailView, times(1)).setDescription("test description");
-        verify(detailView, times(1)).setName("test name");
-        verify(detailView, times(1)).setBeginCount(2.0);
-        verify(detailView, times(1)).setEndCount(4.0);
-    }
-
+    
     @Test
     public void activeBlockChangedActiveBlockNull() {
         detailViewController.activeBlockChanged();

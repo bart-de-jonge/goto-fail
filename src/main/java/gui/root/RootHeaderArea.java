@@ -12,6 +12,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Class that represents the whole of top-level elements in the gui.
@@ -22,7 +23,7 @@ public class RootHeaderArea extends VBox {
     private RootPane rootPane;
     private VBox headerBar;
 
-    @Getter
+    @Getter @Setter
     private DetailView detailView;
 
     @Getter
@@ -54,6 +55,17 @@ public class RootHeaderArea extends VBox {
         headerBar.getChildren().add(detailView);
 
         return headerBar;
+    }
+    
+    /**
+     * Re-init the header bar.
+     * @param detailView the detail view to re-init.
+     */
+    public void reInitHeaderBar(DetailView detailView) {
+        headerBar.getChildren().clear();
+        headerBar.getChildren().add(toolView);
+        this.detailView = detailView;
+        headerBar.getChildren().add(detailView);
     }
 
     /**
