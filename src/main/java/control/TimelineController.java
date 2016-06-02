@@ -241,8 +241,6 @@ public class TimelineController {
      */
     protected void checkCollisions(int timelineNumber, int oldTimelineNumber,
                                  CameraShotBlock cameraShotBlock) {
-        log.error("Checking collissions for shot block with name {}",
-                cameraShotBlock.getShot().getName());
        
         CameraTimeline timeline = controllerManager.getScriptingProject()
                                                    .getCameraTimelines()
@@ -273,7 +271,6 @@ public class TimelineController {
                             }
                         });
             for (CameraShotBlock shotBlock : overlappingShotBlocks) {
-                log.error("Found collission with shot {}", shotBlock.getShot().getName());
                 shotBlock.setColliding(true);
             }
         } else {
