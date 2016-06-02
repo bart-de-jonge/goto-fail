@@ -364,7 +364,6 @@ public class DetailViewController {
         if (manager.getActiveShotBlock() != null) {
             if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
                 detailView = new DetailView();
-                
                 // set detail view variables
                 detailView.setDescription(manager.getActiveShotBlock().getDescription());
                 detailView.setName(manager.getActiveShotBlock().getName());
@@ -372,7 +371,6 @@ public class DetailViewController {
                 detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
                 detailView.setVisible();
                 detailView.setVisible(true);
-                
                 // Re-init the detail view with new data
                 manager.getRootPane().getRootHeaderArea().setDetailView(detailView);  
                 manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
@@ -380,7 +378,6 @@ public class DetailViewController {
             } else {
                 DirectorShotBlock shotBlock = (DirectorShotBlock) manager.getActiveShotBlock();
                 detailView = new DirectorDetailView();
-                
                 // Set detail view variables
                 detailView.setDescription(shotBlock.getDescription());
                 detailView.setName(shotBlock.getName());
@@ -393,7 +390,6 @@ public class DetailViewController {
                 initDropDown(shotBlock);
                 detailView.setVisible();
                 detailView.setVisible(true);
-                
                 // Re-init the detail view with new data
                 manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
                 this.reInitForDirectorBlock();
