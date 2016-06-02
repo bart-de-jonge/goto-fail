@@ -12,10 +12,12 @@ import gui.headerarea.DirectorDetailView;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.scene.input.KeyCode;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Controller for the DetailView.
  */
+@Log4j2
 public class DetailViewController {
 
     private DetailView detailView;
@@ -130,7 +132,23 @@ public class DetailViewController {
     }
     
     private void cameraDeletedInDropdown(int index) {
+        DirectorShotBlock dShotBlock = ((DirectorShotBlock) manager.getActiveShotBlock());
+        DirectorShot dShot = ((DirectorShot) manager.getActiveShotBlock().getShot());
+        Iterator<CameraShot> iterator = dShot.getCameraShots().iterator();
+        CameraShot toRemove = null;
+        while (iterator.hasNext()) {
+            CameraShot shot = iterator.next();
+            if (manager.getTimelineControl().getShotBlockForShot(shot).getTimetableNumber() == index) {
+                toRemove = shot;
+                break;
+                
+            }
+        }
+        manager.getTimelineControl().removeCameraShot(toRemove);
+        dShot.getCameraShots().remove(toRemove);
+        dShot.getTimelineIndices().remove(index);
         
+
     }
     
     private void cameraAddedInDropdown(int index) {
@@ -142,6 +160,7 @@ public class DetailViewController {
         shot.setEndCount(dShot.getEndCount() + dShot.getEndShotPadding());
         shot.setDirectorShot(dShot);
         dShot.getCameraShots().add(shot);
+        dShot.getTimelineIndices().add(index);
         manager.getScriptingProject().getCameraTimelines().get(index).addShot(shot);
         manager.getTimelineControl().initShotBlock(index, shot);
         

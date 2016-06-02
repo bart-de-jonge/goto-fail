@@ -118,6 +118,7 @@ public class TimelineController {
      * @param cameraShotBlock CameraShotBlock to be removed
      */
     public void removeCameraShot(CameraShotBlock cameraShotBlock) {
+        log.error("REMOVING SOME SHOT BLOCK KEK {}", cameraShotBlock.getShot().getName());
         // If we are removing the active shot, then this must be updated accordingly
         if (cameraShotBlock.equals(this.controllerManager.getActiveShotBlock())) {
             this.controllerManager.setActiveShotBlock(null);
@@ -133,6 +134,7 @@ public class TimelineController {
         this.decoupleShot(cameraShotBlock.getTimetableNumber(), cameraShotBlock.getShot());
 
         this.cameraShotBlockMap.remove(cameraShotBlock.getShot());
+        this.cameraShotBlocks.remove(cameraShotBlock);
 
         // Then remove the shot from the view
         cameraShotBlock.removeFromView();
@@ -143,6 +145,7 @@ public class TimelineController {
      * @param shot Camera Shot to be removed
      */
     public void removeCameraShot(CameraShot shot) {
+        log.error("REMOVING SOME SHOT EZ {} " + shot.getName());
         CameraShotBlock shotBlock = cameraShotBlockMap.get(shot);
 
         if (shotBlock != null) {
@@ -238,6 +241,7 @@ public class TimelineController {
      */
     protected void checkCollisions(int timelineNumber, int oldTimelineNumber,
                                  CameraShotBlock cameraShotBlock) {
+        log.error("Checking collissions for shot block with name {}", cameraShotBlock.getShot().getName());
        
         CameraTimeline timeline = controllerManager.getScriptingProject()
                                                    .getCameraTimelines()
@@ -268,6 +272,7 @@ public class TimelineController {
                             }
                         });
             for (CameraShotBlock shotBlock : overlappingShotBlocks) {
+                log.error("Found collission with shot {}", shotBlock.getShot().getName());
                 shotBlock.setColliding(true);
             }
         } else {
