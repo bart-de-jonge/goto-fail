@@ -36,6 +36,9 @@ public class DetailViewController {
         initEndCount();
     }
     
+    /**
+     * Re-init the tool view for when a camera block is selected.
+     */
     public void reInitForCameraBlock() {
         initDescription();
         initName();
@@ -43,6 +46,9 @@ public class DetailViewController {
         initEndCount();
     }
     
+    /**
+     * Re-init the tool view for when a director block is selected.
+     */
     public void reInitForDirectorBlock() {
         reInitForCameraBlock();
         initBeginPadding();
@@ -50,18 +56,28 @@ public class DetailViewController {
         initCamerasDropDown();
     }
     
+    /**
+     * Initialize the handlers for the begin padding field.
+     */
     private void initBeginPadding() {
         //((DirectorDetailView) detailView).setBeforePadding(0);
         
-        ((DirectorDetailView) detailView).getPaddingBeforeField().focusedProperty().addListener(this::beforePaddingFocusListener);
+        ((DirectorDetailView) detailView).getPaddingBeforeField()
+        .focusedProperty().addListener(this::beforePaddingFocusListener);
         
         ((DirectorDetailView) detailView).getPaddingBeforeField().setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.ENTER)) {
-                this.beforePaddingUpdateHelper();
-            }
-        });
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    this.beforePaddingUpdateHelper();
+                }
+            });
     }
     
+    /**
+     * Listener for focus change on before padding field.
+     * @param observable the observable value
+     * @param oldValue If there was an old value
+     * @param newValue If there was a new value
+     */
     private void beforePaddingFocusListener(ObservableValue<? extends Boolean> observable,
                                  Boolean oldValue, Boolean newValue) {
         if (!newValue) {
@@ -69,56 +85,87 @@ public class DetailViewController {
         }
     }
     
+    /**
+     * Update method for the before padding field.
+     */
     private void beforePaddingUpdateHelper() {
         if (manager.getActiveShotBlock() != null) {
-            String newValue = CountUtilities.parseCountNumber(((DirectorDetailView) detailView).getPaddingBeforeField().getText());
+            String newValue = CountUtilities.parseCountNumber(
+                    ((DirectorDetailView) detailView).getPaddingBeforeField().getText());
             ((DirectorDetailView) detailView).getPaddingBeforeField().setText(newValue);
             double newVal = Double.parseDouble(newValue);
             
             ((DirectorShotBlock) manager.getActiveShotBlock()).setPaddingBefore(newVal);
             ((DirectorShot) manager.getActiveShotBlock().getShot()).setFrontShotPadding(newVal);
             ((DirectorShot) manager.getActiveShotBlock().getShot()).getCameraShots().forEach(e -> {
-                CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
-                shotBlock.setBeginCount(((DirectorShot) manager.getActiveShotBlock().getShot()).getBeginCount() - newVal, true);
-            });
+                    CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
+                    shotBlock.setBeginCount(((DirectorShot) manager.getActiveShotBlock()
+                            .getShot()).getBeginCount() - newVal, true);
+                });
             
         }
     }
     
+    /**
+     * Initialize the handlers for end padding field.
+     */
     private void initEndPadding() {
-        ((DirectorDetailView) detailView).getPaddingAfterField().focusedProperty().addListener(this::afterPaddingFocusListener);
+        ((DirectorDetailView) detailView).getPaddingAfterField().focusedProperty()
+        .addListener(this::afterPaddingFocusListener);
         ((DirectorDetailView) detailView).getPaddingAfterField().setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.ENTER)) {
-                this.afterPaddingUpdateHelper();
-            }
-        });
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    this.afterPaddingUpdateHelper();
+                }
+            });
     }
     
-    private void afterPaddingFocusListener(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+    /**
+     * Listener for focus change on end padding field.
+     * @param observable the observable value
+     * @param oldValue if there is an old value
+     * @param newValue if there is a new value
+     */
+    private void afterPaddingFocusListener(ObservableValue<? extends Boolean> observable,
+            Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             this.afterPaddingUpdateHelper();
         }
     }
     
+    /**
+     * Update method for the after padding.
+     */
     private void afterPaddingUpdateHelper() {
         if (manager.getActiveShotBlock() != null) {
-            String newValue = CountUtilities.parseCountNumber(((DirectorDetailView) detailView).getPaddingAfterField().getText());
+            String newValue = CountUtilities.parseCountNumber(
+                    ((DirectorDetailView) detailView).getPaddingAfterField().getText());
             ((DirectorDetailView) detailView).getPaddingAfterField().setText(newValue);
             double newVal = Double.parseDouble(newValue);
             
             ((DirectorShotBlock) manager.getActiveShotBlock()).setPaddingAfter(newVal);
             ((DirectorShot) manager.getActiveShotBlock().getShot()).setEndShotPadding(newVal);
             ((DirectorShot) manager.getActiveShotBlock().getShot()).getCameraShots().forEach(e -> {
-                CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
-                shotBlock.setEndCount(((DirectorShot) manager.getActiveShotBlock().getShot()).getEndCount() + newVal, true);
-            });
+                    CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
+                    shotBlock.setEndCount(((DirectorShot) manager.getActiveShotBlock().getShot())
+                            .getEndCount() + newVal, true);
+                });
         }
     }
     
+    /**
+     * Init the handlers for the camera selection drop down menu.
+     */
     private void initCamerasDropDown() {
-        ((DirectorDetailView) detailView).getSelectCamerasDropDown().getCheckModel().getCheckedIndices().addListener(this::camerasDropdownChangeListener);
+        ((DirectorDetailView) detailView).getSelectCamerasDropDown()
+                                         .getCheckModel()
+                                         .getCheckedIndices()
+                                         .addListener(this::camerasDropdownChangeListener);
     }
     
+    /**
+     * Change listener for the dropdown. Fires whenever a box is selected or deselected.
+     * @param c The Change with information about what changed.
+     */
     private void camerasDropdownChangeListener(ListChangeListener.Change c) {
         System.out.println("CHANGE LISTENER");
         DirectorShot shot = ((DirectorShot) manager.getActiveShotBlock().getShot());
@@ -131,6 +178,10 @@ public class DetailViewController {
         //camerasDropdownUpdateHelper();
     }
     
+    /**
+     * Method for handling a deselect in the drop down.
+     * @param index the index of the deselected camera.
+     */
     private void cameraDeletedInDropdown(int index) {
         DirectorShotBlock dShotBlock = ((DirectorShotBlock) manager.getActiveShotBlock());
         DirectorShot dShot = ((DirectorShot) manager.getActiveShotBlock().getShot());
@@ -138,7 +189,8 @@ public class DetailViewController {
         CameraShot toRemove = null;
         while (iterator.hasNext()) {
             CameraShot shot = iterator.next();
-            if (manager.getTimelineControl().getShotBlockForShot(shot).getTimetableNumber() == index) {
+            if (manager.getTimelineControl()
+                    .getShotBlockForShot(shot).getTimetableNumber() == index) {
                 toRemove = shot;
                 break;
                 
@@ -147,10 +199,12 @@ public class DetailViewController {
         manager.getTimelineControl().removeCameraShot(toRemove);
         dShot.getCameraShots().remove(toRemove);
         dShot.getTimelineIndices().remove(index);
-        
-
     }
     
+    /**
+     * Method for handling a select in the dropdown.
+     * @param index the index of the camera that was selected.
+     */
     private void cameraAddedInDropdown(int index) {
         CameraShot shot = new CameraShot();
         DirectorShot dShot = ((DirectorShot) manager.getActiveShotBlock().getShot());
@@ -161,38 +215,10 @@ public class DetailViewController {
         shot.setDirectorShot(dShot);
         dShot.getCameraShots().add(shot);
         dShot.getTimelineIndices().add(index);
+        DirectorShotBlock dShotBlock = ((DirectorShotBlock) manager.getActiveShotBlock());
         manager.getScriptingProject().getCameraTimelines().get(index).addShot(shot);
         manager.getTimelineControl().initShotBlock(index, shot);
-        
-    }
-    
-    
-    
-    private void camerasDropdownUpdateHelper() {
-        if (manager.getActiveShotBlock() != null) {
-            DirectorShotBlock directorShotBlock = (DirectorShotBlock) manager.getActiveShotBlock();
-            directorShotBlock.getTimelineIndices().clear();
-            Iterator<CameraShot> cameraShotIterator = directorShotBlock.getShot().getCameraShots().iterator();
-            directorShotBlock.getShot().getCameraShots().forEach(shot -> {
-                manager.getTimelineControl().removeCameraShot(shot);
-            });
-//            while (cameraShotIterator.hasNext()) {
-//                CameraShot shot = cameraShotIterator.next();
-//                manager.getTimelineControl().getShotBlockForShot(shot).removeFromView();
-//                manager.getTimelineControl().getCameraShotBlocks().remove(manager.getTimelineControl().getShotBlockForShot(shot));
-//                cameraShotIterator.remove();
-//            }
-//            directorShotBlock.getShot().getCameraShots().forEach(shot -> {
-//                manager.getTimelineControl().getShotBlockForShot(shot).removeFromView();
-//                manager.getTimelineControl().getCameraShotBlocks().remove(manager.getTimelineControl().getShotBlockForShot(shot));
-//            });
-            
-            
-            directorShotBlock.getShot().getCameraShots().clear();
-//            ((DirectorDetailView) detailView).getSelectCamerasDropDown().getCheckModel().getCheckedIndices().forEach(directorShotBlock.getTimelineIndices()::add);
-//            manager.getToolViewController().generateCameraShots(directorShotBlock);
-//            System.out.println("THE STUFF HAS BEEN DONE");
-        }
+        manager.setActiveShotBlock(dShotBlock);
     }
 
     /**
@@ -343,9 +369,7 @@ public class DetailViewController {
      */
     public void activeBlockChanged() {
         if (manager.getActiveShotBlock() != null) {
-            System.out.println("PASSED NULL CHECK");
             if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                System.out.println("IS CAMERA SHOT BLOCK");
                 detailView = new DetailView();
                 detailView.setDescription(manager.getActiveShotBlock().getDescription());
                 detailView.setName(manager.getActiveShotBlock().getName());
@@ -357,15 +381,16 @@ public class DetailViewController {
                 manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
                 this.reInitForCameraBlock();
             } else {
-                System.out.println("IS DIRECTOR SHOT BLOCK");
                 DirectorShotBlock shotBlock = (DirectorShotBlock) manager.getActiveShotBlock();
                 detailView = new DirectorDetailView();
                 detailView.setDescription(shotBlock.getDescription());
                 detailView.setName(shotBlock.getName());
                 detailView.setBeginCount(shotBlock.getBeginCount());
                 detailView.setEndCount(shotBlock.getEndCount());
-                ((DirectorDetailView) detailView).getPaddingBeforeField().setText(detailView.formatDouble(shotBlock.getPaddingBefore()));
-                ((DirectorDetailView) detailView).getPaddingAfterField().setText(detailView.formatDouble(shotBlock.getPaddingAfter()));
+                ((DirectorDetailView) detailView).getPaddingBeforeField()
+                    .setText(detailView.formatDouble(shotBlock.getPaddingBefore()));
+                ((DirectorDetailView) detailView).getPaddingAfterField()
+                    .setText(detailView.formatDouble(shotBlock.getPaddingAfter()));
                 initDropDown(shotBlock);
                 detailView.setVisible();
                 detailView.setVisible(true);
@@ -379,14 +404,20 @@ public class DetailViewController {
         }
     }
     
+    /**
+     * Initialize the drop down menu.
+     * @param shotBlock the shotBlock to do that for
+     */
     private void initDropDown(DirectorShotBlock shotBlock) {
         Set<Integer> indices = shotBlock.getTimelineIndices();
         ((DirectorDetailView) detailView).getSelectCamerasDropDown().getItems().clear();
         manager.getScriptingProject().getCameras().forEach(camera -> {
-            ((DirectorDetailView) detailView).getSelectCamerasDropDown().getItems().add(camera.getName());
-        });
+                ((DirectorDetailView) detailView).getSelectCamerasDropDown()
+                    .getItems().add(camera.getName());
+            });
         indices.forEach(e -> {
-            ((DirectorDetailView) detailView).getSelectCamerasDropDown().getCheckModel().check(e);
-        });
+                ((DirectorDetailView) detailView).getSelectCamerasDropDown()
+                    .getCheckModel().check(e);
+            });
     }
 }

@@ -41,12 +41,28 @@ public class DirectorShotBlock extends ShotBlock {
                 shot.getEndCount(), shot.getDescription(), shot.getName(), handler, shot);
     }
     
+    /**
+     * Construct a new DirectorShotBlock.
+     * @param shotId the id of this shot block
+     * @param rootCenterArea the RootCenterArea that contains this shot block
+     * @param beginCount the begin count of the shot
+     * @param endCount the end count of the shot
+     * @param description the description of the shot
+     * @param paddingBefore the padding before the shot
+     * @param paddingAfter the padding after the shot
+     * @param timelineIndices the timeline indices for this shot
+     * @param handler the changed handler for this shot
+     * @param shot the shot
+     */
     public DirectorShotBlock(int shotId, RootCenterArea rootCenterArea,
-                             double beginCount, double endCount, String description, String name,
-                             double paddingBefore, double paddingAfter, Set<Integer> timelineIndices,
+                             double beginCount, double endCount, String description, 
+                             double paddingBefore, double paddingAfter, 
+                             Set<Integer> timelineIndices,
                              EventHandler<DirectorShotBlockUpdatedEvent> handler,
                              DirectorShot shot) {
-        this(shotId, rootCenterArea, beginCount, endCount, description, name, handler, shot);
+        this(shotId, rootCenterArea, beginCount, endCount, description,
+                shot.getName(), handler, shot);
+        
         this.paddingBefore = paddingBefore;
         this.paddingAfter = paddingAfter;
         this.timelineIndices = timelineIndices;

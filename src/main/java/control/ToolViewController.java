@@ -117,24 +117,20 @@ public class ToolViewController {
         if (this.controllerManager.getActiveShotBlock() instanceof DirectorShotBlock) {
             DirectorShotBlock directorShotBlock = (DirectorShotBlock)
                     this.controllerManager.getActiveShotBlock();
-            generateCameraShots(directorShotBlock);
+            DirectorShot shot = directorShotBlock.getShot();
+            // Camera shots need to take the director shot's padding into account when making a shot
+            double cameraStart = shot.getBeginCount() - shot.getFrontShotPadding();
+            double cameraEnd = shot.getEndCount() + shot.getEndShotPadding();
+
+            shot.getTimelineIndices().forEach(index -> {
+                    CameraShot subShot = new CameraShot(shot.getName(), shot.getDescription(),
+                                                    cameraStart, cameraEnd, shot);
+                    shot.addCameraShot(subShot);
+                    this.controllerManager.getTimelineControl().addCameraShot(index, subShot);
+                });
         }
     }
-    
-    public void generateCameraShots(DirectorShotBlock directorShotBlock) {
-        DirectorShot shot = directorShotBlock.getShot();
-        // Camera shots need to take the director shot's padding into account when making a shot
-        double cameraStart = shot.getBeginCount() - shot.getFrontShotPadding();
-        double cameraEnd = shot.getEndCount() + shot.getEndShotPadding();
-
-        shot.getTimelineIndices().forEach(index -> {
-                CameraShot subShot = new CameraShot(shot.getName(), shot.getDescription(),
-                                                cameraStart, cameraEnd, shot);
-                shot.addCameraShot(subShot);
-                this.controllerManager.getTimelineControl().addCameraShot(index, subShot);
-            });
-    }
-
+   
     /**
      * Called when the active shot selection changed.
      * ToolViewController then updates the buttons accordingly.

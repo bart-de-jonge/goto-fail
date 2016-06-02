@@ -24,6 +24,9 @@ public class DirectorDetailView extends DetailView {
     
     private HBox directorItemsBox;
     
+    /**
+     * Construct a new DirectorDetailView.
+     */
     public DirectorDetailView() {
         super();
         directorItemsBox = new HBox();
@@ -35,14 +38,25 @@ public class DirectorDetailView extends DetailView {
         
     }
     
+    /**
+     * Set the before padding field.
+     * @param padding the padding to set it with
+     */
     public void setBeforePadding(double padding) {
         this.paddingBeforeField.setText(formatDouble(padding));
     }
     
+    /**
+     * Set the after padding field.
+     * @param padding the padding to set it with
+     */
     public void setAfterPadding(double padding) {
         this.paddingAfterField.setText(formatDouble(padding));
     }
     
+    /**
+     * Init the padding before field.
+     */
     private void initPaddingBefore() {
         paddingBeforeField = new StyledTextfield("");
         paddingBeforeField.setAlignment(Pos.CENTER);
@@ -53,6 +67,9 @@ public class DirectorDetailView extends DetailView {
         directorItemsBox.getChildren().add(paddingBeforeBox);
     }
     
+    /**
+     * Init the padding after field.
+     */
     private void initPaddingAfter() {
         paddingAfterField = new StyledTextfield("");
         paddingAfterField.setAlignment(Pos.CENTER);
@@ -63,6 +80,9 @@ public class DirectorDetailView extends DetailView {
         directorItemsBox.getChildren().add(paddingAfterBox);
     }
     
+    /**
+     * Init the dropdown menu to select cameras.
+     */
     private void initSelectCameras() {
         selectCamerasDropDown = new CheckComboBox<>();
         selectCamerasDropDown.getItems().add("Test");
@@ -76,9 +96,11 @@ public class DirectorDetailView extends DetailView {
             this.setPadding(new Insets(0, 0, 0, TweakingHelper.GENERAL_PADDING));
             this.setSpacing(TweakingHelper.GENERAL_SPACING * 2);
             this.getItemBox().getChildren().clear();
-            this.getItemBox().getChildren().addAll(getNameBox(), getDescriptionBox(), getBeginCountBox(), getEndCountBox());
+            this.getItemBox().getChildren().addAll(getNameBox(), getDescriptionBox(),
+                    getBeginCountBox(), getEndCountBox());
             directorItemsBox.getChildren().clear();
-            directorItemsBox.getChildren().addAll(paddingBeforeBox, paddingAfterBox, selectCamerasDropDown);
+            directorItemsBox.getChildren().addAll(paddingBeforeBox, paddingAfterBox,
+                    selectCamerasDropDown);
             this.setVisibleForView(true);
         }
     }
