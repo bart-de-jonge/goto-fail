@@ -43,7 +43,7 @@ public class DirectorTimetableBlock extends TimetableBlock {
     }
     
     private Label initFrontPaddingLabel(VBox vbox) {
-        Label res = new Label(Double.toString((((DirectorShotBlock) this.getParentBlock()).getPaddingBefore())));
+        Label res = new Label("Front P: " + Double.toString((((DirectorShotBlock) this.getParentBlock()).getPaddingBefore())));
         res.maxWidthProperty().bind(super.widthProperty());
         res.getStyleClass().add("block_Text_Normal");
         res.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(2) + ";");
@@ -52,7 +52,7 @@ public class DirectorTimetableBlock extends TimetableBlock {
     }
     
     private Label initEndPaddingLabel(VBox vbox) {
-        Label res = new Label(Double.toString((((DirectorShotBlock) this.getParentBlock()).getPaddingAfter())));
+        Label res = new Label("Back P: " + Double.toString((((DirectorShotBlock) this.getParentBlock()).getPaddingAfter())));
         res.maxWidthProperty().bind(super.widthProperty());
         res.getStyleClass().add("block_Text_Normal");
         res.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(2) + ";");
