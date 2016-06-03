@@ -26,10 +26,15 @@ public class DirectorGridPane extends ScrollableGridPane {
      * @param block to add to the grid
      */
     public void addDirectorShotBlock(DirectorShotBlock block) {
+        System.out.println("ADDING KEK LEL");
         this.add(block.getTimetableBlock(), 0,
             (int) Math.round(block.getBeginCount() * CountUtilities.NUMBER_OF_CELLS_PER_COUNT),
                 1, (int) Math.round(block.getEndCount() - block.getBeginCount())
                     * CountUtilities.NUMBER_OF_CELLS_PER_COUNT);
+        System.out.println("Padding before is " + block.getPaddingBefore());
+        ((DirectorTimetableBlock) block.getTimetableBlock()).getPaddingBeforeLabel().setText(Double.toString(block.getPaddingBefore()));
+        ((DirectorTimetableBlock) block.getTimetableBlock()).getPaddingAfterLabel().setText(Double.toString(block.getPaddingAfter()));
+        
     }
 
     public void removeDirectorShotBlock(DirectorShotBlock block) {

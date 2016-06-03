@@ -19,10 +19,10 @@ public class DirectorShotBlock extends ShotBlock {
     @Getter
     private int shotId;
     
-    @Getter @Setter
+    @Getter
     private double paddingBefore;
     
-    @Getter @Setter
+    @Getter
     private double paddingAfter;
     
     @Getter @Setter
@@ -31,14 +31,7 @@ public class DirectorShotBlock extends ShotBlock {
     // The directorGridpane the shot is in
     @Getter
     private DirectorGridPane grid;
-    
-    private double previousBeginCount;
-    
-    private double previousEndCount;
-    
-    
-    
-
+ 
     public DirectorShotBlock(DirectorShot shot, RootCenterArea rootCenterArea,
                              EventHandler<DirectorShotBlockUpdatedEvent> handler) {
         this(shot.getInstance(), rootCenterArea, shot.getBeginCount(),
@@ -91,8 +84,10 @@ public class DirectorShotBlock extends ShotBlock {
         super(rootCenterArea, beginCount, endCount, description,
                 name, shot, DirectorTimetableBlock.class);
         
-        this.previousBeginCount = -1;
-        this.previousEndCount = -1;
+        this.paddingBefore = shot.getFrontShotPadding();
+        this.paddingAfter = shot.getEndShotPadding();
+        this.timelineIndices = shot.getTimelineIndices();
+        
 
         this.shotId = shotId;
         this.grid = rootCenterArea.getDirectorGridPane();
@@ -117,13 +112,21 @@ public class DirectorShotBlock extends ShotBlock {
     
     @Override
     public void setBeginCount(double count, boolean recompute) {
-        this.previousBeginCount = this.getBeginCount();
         super.setBeginCount(count, recompute);
+    }
+    
+    public void setPaddingBefore(double padding) {
+        this.paddingBefore = padding;
+        ((DirectorTimetableBlock) this.getTimetableBlock()).getPaddingBeforeLabel().setText(Double.toString(padding));
+    }
+    
+    public void setPaddingAfter(double padding) {
+        this.paddingAfter = padding;
+        ((DirectorTimetableBlock) this.getTimetableBlock()).getPaddingAfterLabel().setText(Double.toString(padding));
     }
     
     @Override
     public void setEndCount(double count, boolean recompute) {
-        this.previousEndCount = this.getEndCount();
         super.setEndCount(count, recompute);
     }
 
