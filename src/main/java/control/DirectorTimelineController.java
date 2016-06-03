@@ -112,36 +112,36 @@ public class DirectorTimelineController {
         log.error("Padding is {}", event.getDirectorShotBlock().getPaddingBefore());
         if (event.getDirectorShotBlock().getBeginCount() - event.getDirectorShotBlock().getPaddingBefore() < 0) {
             log.error("Restoring");
-            event.getDirectorShotBlock().restorePreviousPosition();
+            event.getDirectorShotBlock().moveAsCloseToTopAsPossible();
             // negative flight
-        } else {
-            controllerManager.getScriptingProject().changed();
-            log.info("Shot moved");
-    
-            DirectorShotBlock changedBlock = event.getDirectorShotBlock();
-            
-            DirectorShot shot = changedBlock.getShot();
-    
-            
-         // Adjust model
-            shot.setBeginCount(changedBlock.getBeginCount());
-            shot.setEndCount(changedBlock.getEndCount());
-            
-            controllerManager.getTimelineControl().getCameraShotBlocks().forEach(shotBlock -> {
-                    controllerManager.getTimelineControl()
-                        .checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
-                    shotBlock.recompute();
-                });
-    
-            controllerManager.setActiveShotBlock(changedBlock);
-    
-            
-            
-            
-    
-            // check for collisions
-            checkCollisions(changedBlock);
         }
+        controllerManager.getScriptingProject().changed();
+        log.info("Shot moved");
+
+        DirectorShotBlock changedBlock = event.getDirectorShotBlock();
+        
+        DirectorShot shot = changedBlock.getShot();
+
+        
+     // Adjust model
+        shot.setBeginCount(changedBlock.getBeginCount());
+        shot.setEndCount(changedBlock.getEndCount());
+        
+        controllerManager.getTimelineControl().getCameraShotBlocks().forEach(shotBlock -> {
+                controllerManager.getTimelineControl()
+                    .checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
+                shotBlock.recompute();
+            });
+
+        controllerManager.setActiveShotBlock(changedBlock);
+
+        
+        
+        
+
+        // check for collisions
+        checkCollisions(changedBlock);
+    
     }
 
 

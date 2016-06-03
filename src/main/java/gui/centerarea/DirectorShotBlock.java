@@ -139,9 +139,11 @@ public class DirectorShotBlock extends ShotBlock {
         this.grid.removeDirectorShotBlock(this);
     }
     
-    public void restorePreviousPosition() {
-        this.setBeginCount(this.previousBeginCount);
-        this.setEndCount(this.previousEndCount);
+    public void moveAsCloseToTopAsPossible() {
+        double oldBegin = getBeginCount();
+        double oldEnd = getEndCount();
+        this.setBeginCount(0 + this.getPaddingBefore());
+        this.setEndCount(getBeginCount() + (oldEnd - oldBegin));
         this.recompute();
     }
 }
