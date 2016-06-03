@@ -8,8 +8,10 @@ import gui.headerarea.ToolButton;
 import gui.headerarea.ToolView;
 import gui.root.RootHeaderArea;
 import gui.root.RootPane;
+import javafx.collections.ObservableMap;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -31,10 +33,6 @@ public class ToolViewControllerTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) throws Exception {
-    }
-
-    @Before
-    public void initialize() {
         controllerManager = Mockito.mock(ControllerManager.class);
         RootPane rootPane = Mockito.mock(RootPane.class);
         RootHeaderArea rootHeaderArea = Mockito.mock(RootHeaderArea.class);
@@ -44,9 +42,18 @@ public class ToolViewControllerTest extends ApplicationTest {
         when(rootPane.getRootHeaderArea()).thenReturn(rootHeaderArea);
         when(rootHeaderArea.getToolView()).thenReturn(toolView);
 
+        when(rootPane.getPrimaryStage()).thenReturn(stage);
+
+        Scene sceneMock = Mockito.mock(Scene.class);
+        ObservableMap<KeyCombination, Runnable> mapMock = Mockito.mock(ObservableMap.class);
+        when(sceneMock.getAccelerators()).thenReturn(mapMock);
+        stage.setScene(sceneMock);
+
+        DirectorTimelineController directorTimelineControllerMock = Mockito.mock(DirectorTimelineController.class);
+        when(controllerManager.getDirectorTimelineControl()).thenReturn(directorTimelineControllerMock);
+
         toolViewController = new ToolViewController(controllerManager);
     }
-
 
     @Test
     public void noActiveBlockDeletionTest() {

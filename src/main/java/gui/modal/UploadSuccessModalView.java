@@ -2,9 +2,6 @@ package gui.modal;
 
 import gui.root.RootPane;
 import gui.styling.StyledButton;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 public class UploadSuccessModalView extends ButtonsOnlyModalView {

@@ -3,12 +3,12 @@ package gui.centerarea;
 import java.util.ArrayList;
 
 import control.CountUtilities;
-import javafx.geometry.Bounds;
-import javafx.geometry.Insets;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Class that represents the grid pane in the scrollable camera centerarea.
  */
+@Log4j2
 public class TimelinesGridPane extends ScrollableGridPane {
 
     /**
@@ -33,6 +33,8 @@ public class TimelinesGridPane extends ScrollableGridPane {
      * @param block - the block to add
      */
     public void addCameraShotBlock(CameraShotBlock block) {
+        log.error("Stuff {}", block.getTimetableNumber());
+        log.error("BeginCount {}", block.getBeginCount());
         this.add(block.getTimetableBlock(), block.getTimetableNumber(),
                 (int) Math.round(block.getBeginCount() * CountUtilities.NUMBER_OF_CELLS_PER_COUNT),
                 1, (int) Math.round((block.getEndCount()

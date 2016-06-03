@@ -32,8 +32,6 @@ public class ButtonsOnlyModalView extends ModalView {
             + "-fx-border-color: " + TweakingHelper.getColorString(1) + ";";
 
     // variables for the buttons
-    private int buttonWidth = 120;
-    private int buttonHeight = 25;
     private int buttonSpacing = 20;
 
     // variables for the title label

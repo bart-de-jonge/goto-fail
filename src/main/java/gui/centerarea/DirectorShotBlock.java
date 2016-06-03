@@ -1,11 +1,14 @@
 package gui.centerarea;
 
+import java.util.Set;
+
 import data.DirectorShot;
 import gui.events.DirectorShotBlockUpdatedEvent;
 import gui.events.ShotblockUpdatedEvent;
 import gui.root.RootCenterArea;
 import javafx.event.EventHandler;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Class that represents a shotblock for the director.
@@ -15,15 +18,51 @@ public class DirectorShotBlock extends ShotBlock {
     // The id of the shot
     @Getter
     private int shotId;
+    
+    @Getter
+    private double paddingBefore;
+    
+    @Getter
+    private double paddingAfter;
+    
+    @Getter @Setter
+    private Set<Integer> timelineIndices;
 
     // The directorGridpane the shot is in
     @Getter
     private DirectorGridPane grid;
-
+ 
     public DirectorShotBlock(DirectorShot shot, RootCenterArea rootCenterArea,
                              EventHandler<DirectorShotBlockUpdatedEvent> handler) {
         this(shot.getInstance(), rootCenterArea, shot.getBeginCount(),
                 shot.getEndCount(), shot.getDescription(), shot.getName(), handler, shot);
+    }
+    
+    /**
+     * Construct a new DirectorShotBlock.
+     * @param shotId the id of this shot block
+     * @param rootCenterArea the RootCenterArea that contains this shot block
+     * @param beginCount the begin count of the shot
+     * @param endCount the end count of the shot
+     * @param description the description of the shot
+     * @param paddingBefore the padding before the shot
+     * @param paddingAfter the padding after the shot
+     * @param timelineIndices the timeline indices for this shot
+     * @param handler the changed handler for this shot
+     * @param shot the shot
+     */
+    public DirectorShotBlock(int shotId, RootCenterArea rootCenterArea,
+                             double beginCount, double endCount, String description, 
+                             double paddingBefore, double paddingAfter, 
+                             Set<Integer> timelineIndices,
+                             EventHandler<DirectorShotBlockUpdatedEvent> handler,
+                             DirectorShot shot) {
+        this(shotId, rootCenterArea, beginCount, endCount, description,
+                shot.getName(), handler, shot);
+        
+        this.paddingBefore = paddingBefore;
+        this.paddingAfter = paddingAfter;
+        this.timelineIndices = timelineIndices;
     }
 
     /**
@@ -44,6 +83,11 @@ public class DirectorShotBlock extends ShotBlock {
 
         super(rootCenterArea, beginCount, endCount, description,
                 name, shot, DirectorTimetableBlock.class);
+        
+        this.paddingBefore = shot.getFrontShotPadding();
+        this.paddingAfter = shot.getEndShotPadding();
+        this.timelineIndices = shot.getTimelineIndices();
+        
 
         this.shotId = shotId;
         this.grid = rootCenterArea.getDirectorGridPane();
@@ -65,6 +109,38 @@ public class DirectorShotBlock extends ShotBlock {
     public ShotblockUpdatedEvent getShotBlockUpdatedEvent() {
         return new DirectorShotBlockUpdatedEvent(this);
     }
+    
+    @Override
+    public void setBeginCount(double count, boolean recompute) {
+        super.setBeginCount(count, recompute);
+    }
+    
+    /**
+     * Set the padding before this director shot block.
+     * @param padding the padding to set
+     */
+    public void setPaddingBefore(double padding) {
+        this.paddingBefore = padding;
+        ((DirectorTimetableBlock) this.getTimetableBlock())
+            .getPaddingBeforeLabel().setText(
+                "Front P: " + Double.toString(padding));
+    }
+    
+    /**
+     * Set the padding after this director shot block.
+     * @param padding the padding to set.
+     */
+    public void setPaddingAfter(double padding) {
+        this.paddingAfter = padding;
+        ((DirectorTimetableBlock) this.getTimetableBlock())
+            .getPaddingAfterLabel().setText(
+                    "Back P: " + Double.toString(padding));
+    }
+    
+    @Override
+    public void setEndCount(double count, boolean recompute) {
+        super.setEndCount(count, recompute);
+    }
 
     @Override
     public DirectorShot getShot() {
@@ -76,5 +152,16 @@ public class DirectorShotBlock extends ShotBlock {
      */
     public void removeFromView() {
         this.grid.removeDirectorShotBlock(this);
+    }
+    
+    /**
+     * Method used for snapping as close to top as possible with current margin.
+     */
+    public void moveAsCloseToTopAsPossible() {
+        double oldBegin = getBeginCount();
+        double oldEnd = getEndCount();
+        this.setBeginCount(0 + this.getPaddingBefore());
+        this.setEndCount(getBeginCount() + (oldEnd - oldBegin));
+        this.recompute();
     }
 }

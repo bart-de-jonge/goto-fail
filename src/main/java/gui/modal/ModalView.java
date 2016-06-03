@@ -4,6 +4,8 @@ import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -50,6 +52,9 @@ public abstract class ModalView {
         if (this.displayScene != null) {
             log.info("Displaying modal view.");
             this.modalStage.show();
+            this.modalStage.getScene().getAccelerators()
+                    .put(new KeyCodeCombination(KeyCode.ESCAPE),
+                         this::hideModal);
         }
     }
 

@@ -1,15 +1,17 @@
 package data;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The DirectorShot class has more elaborate information for the Director, like the description.
@@ -20,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DirectorShot extends Shot {
 
     // Counter that ensures no shots with duplicate numbers will be created.
+    @Setter
     private static int instanceCounter = 0;
 
     @Getter @Setter
@@ -37,6 +40,10 @@ public class DirectorShot extends Shot {
     @Getter
     @Setter
     private double endShotPadding = 0.0;
+    
+ // The instancenumber of the Shot.
+    @Getter
+    private int instance;
 
     /**
      * Default Constructor.
@@ -57,12 +64,13 @@ public class DirectorShot extends Shot {
      */
     public DirectorShot(String name, String description, double startCount, double endCount,
                         double frontShotPadding, double endShotPadding, List<Integer> cameras) {
-        super(instanceCounter, name, description, startCount, endCount);
+        super(name, description, startCount, endCount);
         this.frontShotPadding = frontShotPadding;
         this.endShotPadding = endShotPadding;
         this.timelineIndices = ConcurrentHashMap.newKeySet();
         this.timelineIndices.addAll(cameras);
         this.cameraShots = ConcurrentHashMap.newKeySet();
+        this.instance = instanceCounter;
         log.debug("Created new DirectorShot");
         DirectorShot.incrementCounter();
     }

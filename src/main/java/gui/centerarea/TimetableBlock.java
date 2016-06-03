@@ -46,7 +46,6 @@ public abstract class TimetableBlock extends Pane {
 
     private double verticalBorderSize = 6.0;
     private double margin = 5.0;
-    private double blurRadius = 20.0;
 
     /**
      *  Content variables.
@@ -103,7 +102,10 @@ public abstract class TimetableBlock extends Pane {
 
     @Getter
     private double startingY;
-
+    
+    private static final String BACKGROUND_COLOR_STRING = "-fx-background-color: ";
+    private static final String BORDER_COLOR_STRING = "-fx-border-color: ";
+    
     /**
      * Constructor for TimetableBlock class.
      * @param pane - the parent rootCenterArea.
@@ -154,11 +156,11 @@ public abstract class TimetableBlock extends Pane {
         this.getStyleClass().add("block_Background");
         this.getContentPane().getStyleClass().add("block_Foreground");
         this.setStyle(
-                "-fx-background-color: "  + TweakingHelper.getColorString(0) + ";"
-                + "-fx-border-color: " + TweakingHelper.getColorString(1) + ";");
+                BACKGROUND_COLOR_STRING  + TweakingHelper.getColorString(0) + ";"
+                + BORDER_COLOR_STRING + TweakingHelper.getColorString(1) + ";");
         this.getContentPane().setStyle(
-                "-fx-background-color: " + TweakingHelper.getColorString(3) + ";"
-                + "-fx-border-color: " + TweakingHelper.getColorString(2) + ";");
+                BACKGROUND_COLOR_STRING + TweakingHelper.getColorString(3) + ";"
+                + BORDER_COLOR_STRING + TweakingHelper.getColorString(2) + ";");
     }
 
     /**
@@ -198,11 +200,11 @@ public abstract class TimetableBlock extends Pane {
         this.getDraggedPane().getStyleClass().add("block_Background");
         this.getDraggedContentPane().getStyleClass().add("block_Foreground");
         this.getDraggedPane().setStyle(
-                "-fx-background-color: " + TweakingHelper.getColorString(0) + ";"
-                + "-fx-border-color: " + TweakingHelper.getColorString(1) + ";");
+                BACKGROUND_COLOR_STRING + TweakingHelper.getColorString(0) + ";"
+                + BORDER_COLOR_STRING + TweakingHelper.getColorString(1) + ";");
         this.getDraggedContentPane().setStyle(
-                "-fx-background-color: " + TweakingHelper.getColorString(3) + ";"
-                + "-fx-border-color: " + TweakingHelper.getColorString(2) + ";"
+                BACKGROUND_COLOR_STRING + TweakingHelper.getColorString(3) + ";"
+                + BORDER_COLOR_STRING + TweakingHelper.getColorString(2) + ";"
                 + "-fx-blend-mode: multiply; -fx-opacity: 0.9;");
     }
 

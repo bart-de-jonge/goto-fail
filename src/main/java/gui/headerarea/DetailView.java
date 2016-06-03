@@ -6,28 +6,38 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 /**
  * The detail view is the view with details for shots.
  */
-public class DetailView extends HBox {
+public class DetailView extends VBox {
 
     private String style = "-fx-background-color: "
             + TweakingHelper.getBackgroundHighString() + ";"
-            + "-fx-min-height: 40;"
+            + "-fx-min-height: 100;"
             + "-fx-border-width: 0 0 1px 0;"
             + "-fx-border-color: rgba(0,0,0,0.40);";
 
-    private static final String defaultEmptyString = "";
-    private static final String defaultEmptyNumber = "0";
+    protected static final String defaultEmptyString = "";
+    protected static final String defaultEmptyNumber = "0";
 
+    
     private boolean visible = false;
+    
+    @Getter
+    private HBox itemBox;
 
+    @Getter
     Label invisibleLabel;
+    @Getter
     HBox nameBox;
+    @Getter
     HBox descriptionBox;
+    @Getter
     HBox beginCountBox;
+    @Getter
     HBox endCountBox;
 
     @Getter
@@ -43,6 +53,8 @@ public class DetailView extends HBox {
      * Constructor.
      */
     public DetailView() {
+        itemBox = new HBox();
+        itemBox.setSpacing(TweakingHelper.GENERAL_SPACING);
         this.setStyle(style);
         this.setAlignment(Pos.CENTER);
         this.setPadding(new Insets(0));
@@ -52,6 +64,15 @@ public class DetailView extends HBox {
         initBeginCount();
         initEndCount();
         initInvisible();
+        this.getChildren().add(itemBox);
+    }
+    
+    public boolean getVisible() {
+        return visible;
+    }
+    
+    public void setVisibleForView(boolean visible) {
+        this.visible = visible;
     }
 
     /**
@@ -75,7 +96,7 @@ public class DetailView extends HBox {
      * @param d - the double to format
      * @return - a formatted string containng the double
      */
-    private String formatDouble(double d) {
+    public String formatDouble(double d) {
         if (d == (long) d) {
             return String.format("%d", (long) d);
         } else {
@@ -102,26 +123,26 @@ public class DetailView extends HBox {
     /**
      * Init the begincount part of the detailview.
      */
-    private  void initBeginCount() {
+    private void initBeginCount() {
         beginCountField = new DoubleTextField("123");
         beginCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("Start Count:");
         beginCountBox.getChildren().addAll(specifierLabel, beginCountField);
         beginCountBox.setAlignment(Pos.CENTER);
-        this.getChildren().add(beginCountBox);
+        itemBox.getChildren().add(beginCountBox);
     }
 
     /**
      * Init the endcount part of the detailview.
      */
-    private  void initEndCount() {
+    private void initEndCount() {
         endCountField = new DoubleTextField("123");
         endCountField.setAlignment(Pos.CENTER);
         endCountBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label specifierLabel = new Label("End Count:");
         endCountBox.getChildren().addAll(specifierLabel, endCountField);
         endCountBox.setAlignment(Pos.CENTER);
-        this.getChildren().add(endCountBox);
+        itemBox.getChildren().add(endCountBox);
     }
 
     /**
@@ -134,7 +155,7 @@ public class DetailView extends HBox {
         Label specifierLabel = new Label("Name:");
         nameBox.getChildren().addAll(specifierLabel, nameField);
         nameBox.setAlignment(Pos.CENTER);
-        this.getChildren().add(nameBox);
+        itemBox.getChildren().add(nameBox);
     }
 
     /**
@@ -147,7 +168,7 @@ public class DetailView extends HBox {
         Label specifierLabel = new Label("Description:");
         descriptionBox.getChildren().addAll(specifierLabel, descriptionField);
         descriptionBox.setAlignment(Pos.CENTER);
-        this.getChildren().add(descriptionBox);
+        itemBox.getChildren().add(descriptionBox);
     }
 
     /**
@@ -160,7 +181,7 @@ public class DetailView extends HBox {
         invisibleLabel = new Label("Select a shot to edit it.");
         invisibleLabel.setAlignment(Pos.CENTER);
         invisibleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        this.getChildren().add(invisibleLabel);
+        itemBox.getChildren().add(invisibleLabel);
     }
 
     /**
@@ -170,8 +191,9 @@ public class DetailView extends HBox {
         if (!visible) {
             this.setPadding(new Insets(0, 0, 0, TweakingHelper.GENERAL_PADDING));
             this.setSpacing(TweakingHelper.GENERAL_SPACING * 2);
-            this.getChildren().remove(invisibleLabel);
-            this.getChildren().addAll(nameBox, descriptionBox, beginCountBox, endCountBox);
+            itemBox.getChildren().clear();
+            itemBox.getChildren().remove(invisibleLabel);
+            itemBox.getChildren().addAll(nameBox, descriptionBox, beginCountBox, endCountBox);
             visible = true;
         }
     }
@@ -183,8 +205,8 @@ public class DetailView extends HBox {
         if (visible) {
             this.setPadding(new Insets(0));
             this.setSpacing(0);
-            this.getChildren().removeAll(nameBox, descriptionBox, beginCountBox, endCountBox);
-            this.getChildren().add(invisibleLabel);
+            itemBox.getChildren().removeAll(nameBox, descriptionBox, beginCountBox, endCountBox);
+            itemBox.getChildren().add(invisibleLabel);
             visible = false;
         }
     }

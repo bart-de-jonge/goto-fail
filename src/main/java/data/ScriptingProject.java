@@ -1,9 +1,10 @@
 package data;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
@@ -16,6 +17,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import control.ProjectController;
+import data.User.Role;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -56,6 +59,11 @@ public class ScriptingProject {
     @XmlElementWrapper(name = "camera-centerarea")
     @XmlElement(name = "cameraTimeline")
     private ArrayList<CameraTimeline> cameraTimelines;
+    
+    @Getter @Setter
+    @XmlElementWrapper(name = "users")
+    @XmlElement(name = "user")
+    private ArrayList<User> users;
 
     // The number of seconds per count;
     @Getter @Setter
@@ -91,8 +99,18 @@ public class ScriptingProject {
         this.cameraTimelines = new ArrayList<CameraTimeline>();
         this.directorTimeline = new DirectorTimeline(description, this);
         this.cameraTypes = new ArrayList<CameraType>();
+        this.users = new ArrayList<User>();
         this.changed = true;
     }
+    
+    /**
+     * Add a user.
+     * @param user the user to add
+     */
+    public void addUser(User user) {
+        this.users.add(user);
+    }
+    
     
     /**
      * Project changed -> set changed variable to true.
@@ -108,7 +126,31 @@ public class ScriptingProject {
         this.changed = false;
     }
     
-   
+    @Setter @Getter
+    private static int res = Integer.MIN_VALUE;
+    
+    /**
+     * Get the maximum instance used so far.
+     * @return the maximum instance used so far
+     */
+    public int getMaxInstance() {
+        int res = Integer.MIN_VALUE;
+        directorTimeline.getShots().forEach(shot -> {
+                if (shot.getInstance() > getRes()) {
+                    setRes(shot.getInstance());
+                }
+            });
+        for (int i = 0;i < cameraTimelines.size();i++) {
+            CameraTimeline timeline = cameraTimelines.get(i);
+            for (int j = 0;j < timeline.getShots().size();j++) {
+                if (timeline.getShots().get(j).getInstance() > res) {
+                    res = timeline.getShots().get(j).getInstance();
+                }
+            }
+        }
+        return res;
+    }
+    
     /**
      * Method to write the current project to a file.
      * @param fileName  - the file to write the project to
@@ -195,6 +237,22 @@ public class ScriptingProject {
         }
         
         return result;
+    }
+    
+    /**
+     * Removes the offsetted camera blocks from this project
+     Needed because of loading functionality. 
+     */
+    public void removeOffsettedCameraBlocks() {
+        for (CameraTimeline timeline : cameraTimelines) {
+            Iterator<CameraShot> iterator = timeline.getShots().iterator();
+            while (iterator.hasNext()) {
+                CameraShot shot = iterator.next();
+                if (shot.getBeginCount() == ProjectController.UNUSED_BLOCK_OFFSET) {
+                    iterator.remove();
+                }
+            }
+        }
     }
 
     /**

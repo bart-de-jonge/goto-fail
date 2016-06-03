@@ -1,19 +1,19 @@
 package control;
 
-import data.CameraShot;
-import data.DirectorShot;
-import data.DirectorTimeline;
-import data.Shot;
-import gui.centerarea.CameraShotBlock;
-import gui.centerarea.DirectorShotBlock;
-import gui.events.DirectorShotBlockUpdatedEvent;
-import gui.root.RootPane;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import data.CameraShot;
+import data.DirectorShot;
+import data.DirectorTimeline;
+import data.Shot;
+import gui.centerarea.DirectorShotBlock;
+import gui.events.DirectorShotBlockUpdatedEvent;
+import gui.root.RootPane;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
@@ -86,8 +86,10 @@ public class DirectorTimelineController {
     protected void initShotBlock(DirectorShot shot) {
         DirectorShotBlock shotBlock = new DirectorShotBlock(shot.getInstance(),
             rootPane.getRootCenterArea(), shot.getBeginCount(), shot.getEndCount(),
-            shot.getDescription(), shot.getName(), this::shotChangedHandler, shot);
-
+            shot.getDescription(), shot.getFrontShotPadding(),
+            shot.getEndShotPadding(), shot.getTimelineIndices(), 
+            this::shotChangedHandler, shot);
+       
 
         controllerManager.setActiveShotBlock(shotBlock);
         this.directorShotBlockMap.put(shot, shotBlock);
@@ -106,21 +108,41 @@ public class DirectorTimelineController {
      * @param event Camera shot change event.
      */
     public void shotChangedHandler(DirectorShotBlockUpdatedEvent event) {
+        log.error("New begin count is {}", event.getDirectorShotBlock().getBeginCount());
+        log.error("Padding is {}", event.getDirectorShotBlock().getPaddingBefore());
+        if (event.getDirectorShotBlock().getBeginCount()
+                - event.getDirectorShotBlock().getPaddingBefore() < 0) {
+            log.error("Restoring");
+            event.getDirectorShotBlock().moveAsCloseToTopAsPossible();
+            // negative flight
+        }
         controllerManager.getScriptingProject().changed();
         log.info("Shot moved");
 
         DirectorShotBlock changedBlock = event.getDirectorShotBlock();
+        
+        DirectorShot shot = changedBlock.getShot();
+
+        
+     // Adjust model
+        shot.setBeginCount(changedBlock.getBeginCount());
+        shot.setEndCount(changedBlock.getEndCount());
+        
+        controllerManager.getTimelineControl().getCameraShotBlocks().forEach(shotBlock -> {
+                controllerManager.getTimelineControl()
+                    .checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
+                shotBlock.recompute();
+            });
 
         controllerManager.setActiveShotBlock(changedBlock);
 
-        DirectorShot shot = changedBlock.getShot();
-
-        // Adjust model
-        shot.setBeginCount(changedBlock.getBeginCount());
-        shot.setEndCount(changedBlock.getEndCount());
+        
+        
+        
 
         // check for collisions
         checkCollisions(changedBlock);
+    
     }
 
 

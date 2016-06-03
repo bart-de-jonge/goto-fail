@@ -6,12 +6,13 @@ import gui.misc.TweakingHelper;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Class that represents the whole of top-level elements in the gui.
@@ -22,13 +23,11 @@ public class RootHeaderArea extends VBox {
     private RootPane rootPane;
     private VBox headerBar;
 
-    @Getter
+    @Getter @Setter
     private DetailView detailView;
 
     @Getter
     private ToolView toolView;
-
-    private DropShadow dropShadow;
 
     /**
      * RootHeaderArea Constructor.
@@ -57,25 +56,39 @@ public class RootHeaderArea extends VBox {
 
         return headerBar;
     }
+    
+    /**
+     * Re-init the header bar.
+     * @param detailView the detail view to re-init.
+     */
+    public void reInitHeaderBar(DetailView detailView) {
+        headerBar.getChildren().clear();
+        headerBar.getChildren().add(toolView);
+        this.detailView = detailView;
+        headerBar.getChildren().add(detailView);
+    }
 
     /**
      * Initializes top menu (file, edit, etc).
      * @return MenuBar containing menus.
      */
     private MenuBar initMenus() {
-       
         Menu editMenu = new Menu("Edit");
         
         MenuItem editProjectItem = new MenuItem("Project");
         editProjectItem.setOnAction(e -> {
                 rootPane.getControllerManager().getProjectController().editProject();
             });
+        editMenu.getItems().add(editProjectItem);
+
         MenuItem preferencesItem = new MenuItem("Preferences");
         preferencesItem.setOnAction(e -> {
                 rootPane.getControllerManager().getPreferencesViewController()
                         .showPreferencesWindow();
             });
-        editMenu.getItems().addAll(editProjectItem, preferencesItem);
+        preferencesItem.setAccelerator(new KeyCodeCombination(KeyCode.COMMA,
+                                                              KeyCombination.SHORTCUT_DOWN));
+        editMenu.getItems().add(preferencesItem);
         
         Menu helpMenu = new Menu("Help");
         
@@ -105,30 +118,16 @@ public class RootHeaderArea extends VBox {
      * @return the initialized file Menu
      */
     private Menu initFileMenu() {
-        MenuItem newItem = new MenuItem("New");
-        newItem.setOnAction(e -> {
-                rootPane.getControllerManager().getProjectController().newProject();
-            });
+        Menu fileMenu = new Menu("File");
 
-        MenuItem saveItem = new MenuItem("Save");
-        saveItem.setOnAction(e -> {
-                rootPane.getControllerManager().getProjectController().save();
-            });
-
-        MenuItem saveAsItem = new MenuItem("Save as");
-        saveAsItem.setOnAction(e -> {
-                rootPane.getControllerManager().getProjectController().saveAs();
-            });
-        
-        MenuItem loadItem = new MenuItem("Load");
-        loadItem.setOnAction(e -> {
-                rootPane.getControllerManager().getProjectController().load();
-            });
+        initializeLocalFileItems(fileMenu);
 
         MenuItem uploadItem = new MenuItem("Upload to webserver");
         uploadItem.setOnAction(e -> {
                 rootPane.getControllerManager().getProjectController().uploadToWebserver();
             });
+        uploadItem.setAccelerator(new KeyCodeCombination(KeyCode.U, KeyCombination.SHORTCUT_DOWN));
+
         MenuItem quit = new MenuItem("Quit");
         quit.setOnAction(e -> {
                 if (rootPane.getControllerManager().getScriptingProject() != null
@@ -139,10 +138,42 @@ public class RootHeaderArea extends VBox {
                     rootPane.getPrimaryStage().close();
                 }
             });
-        Menu fileMenu = new Menu("File");
-        fileMenu.getItems().addAll(newItem, saveItem, saveAsItem, loadItem, quit,
-                uploadItem);
+        fileMenu.getItems().addAll(quit, uploadItem);
         return fileMenu;
+    }
+
+    /**
+     * Initializes MenuItems for local file handling.
+     * @param fileMenu Menu to add items to.
+     */
+    private void initializeLocalFileItems(Menu fileMenu) {
+        MenuItem newItem = new MenuItem("New");
+        newItem.setOnAction(e -> {
+                rootPane.getControllerManager().getProjectController().newProject();
+            });
+        newItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN,
+                                                      KeyCombination.ALT_DOWN));
+
+        MenuItem saveItem = new MenuItem("Save");
+        saveItem.setOnAction(e -> {
+                rootPane.getControllerManager().getProjectController().save();
+            });
+        saveItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN));
+
+        MenuItem saveAsItem = new MenuItem("Save as");
+        saveAsItem.setOnAction(e -> {
+                rootPane.getControllerManager().getProjectController().saveAs();
+            });
+        saveAsItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN,
+                                                         KeyCombination.SHIFT_DOWN));
+
+        MenuItem loadItem = new MenuItem("Load");
+        loadItem.setOnAction(e -> {
+                rootPane.getControllerManager().getProjectController().load();
+            });
+        loadItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN));
+
+        fileMenu.getItems().addAll(newItem, saveItem, saveAsItem, loadItem);
     }
 
     /**

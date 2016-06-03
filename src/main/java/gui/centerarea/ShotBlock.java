@@ -52,6 +52,8 @@ public abstract class ShotBlock {
 
     @Getter
     private boolean colliding;
+    
+    private static String BACKGROUND_COLOR_STRING = "-fx-background-color: ";
 
     /**
      * Constructor.
@@ -100,20 +102,20 @@ public abstract class ShotBlock {
         this.colliding = colliding;
 
         if (colliding) {
-            this.timetableBlock.setStyle("-fx-background-color: "
+            this.timetableBlock.setStyle(BACKGROUND_COLOR_STRING
                     + TweakingHelper.getColorString(0) + ";"
                     + "-fx-border-color: red;"
                     + "-fx-border-width: 3;");
-            this.timetableBlock.getContentPane().setStyle("-fx-background-color: "
+            this.timetableBlock.getContentPane().setStyle(BACKGROUND_COLOR_STRING
                     + TweakingHelper.getColorString(3) + ";"
                     + "-fx-border-color: "
                     + TweakingHelper.getColorString(2) + ";");
         } else {
-            this.timetableBlock.setStyle("-fx-background-color: "
+            this.timetableBlock.setStyle(BACKGROUND_COLOR_STRING
                     + TweakingHelper.getColorString(0) + ";"
                     + "-fx-border-color: "
                     + TweakingHelper.getColorString(1) + ";");
-            this.timetableBlock.getContentPane().setStyle("-fx-background-color: "
+            this.timetableBlock.getContentPane().setStyle(BACKGROUND_COLOR_STRING
                     + TweakingHelper.getColorString(3) + ";"
                     + "-fx-border-color: "
                     + TweakingHelper.getColorString(2) + ";");

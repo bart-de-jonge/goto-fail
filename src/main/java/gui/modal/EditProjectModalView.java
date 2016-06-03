@@ -39,18 +39,18 @@ public class EditProjectModalView extends ModalView {
     private static final int bottomAreaHeight = 60;
 
     // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: "
+    private String topStyle = BACKGROUND_COLOR_STRING
             + TweakingHelper.getColorString(0) + ";"
             + "-fx-text-fill: white; -fx-font-size: 26;"
             + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
             + "-fx-border-width: 0 0 10 0;"
             + "-fx-border-color: "
             + TweakingHelper.getColorString(1) + ";";
-    private String centerLeftStyle = "-fx-background-color: "
+    private String centerLeftStyle = BACKGROUND_COLOR_STRING
             + TweakingHelper.getBackgroundHighString() + ";";
-    private String centerRightStyle = "-fx-background-color: "
+    private String centerRightStyle = BACKGROUND_COLOR_STRING
             + TweakingHelper.getBackgroundString() + ";";
-    private String bottomStyle = "-fx-background-color: "
+    private String bottomStyle = BACKGROUND_COLOR_STRING
             + TweakingHelper.getColorString(0) + ";";
 
     // variables for the Create and Cancel buttons
@@ -130,6 +130,8 @@ public class EditProjectModalView extends ModalView {
     private ArrayList<CameraTimeline> timelines;
 
     private boolean fillWithCurrentProjectInfo;
+    
+    private static final String BACKGROUND_COLOR_STRING = "-fx-background-color: ";
     
     /**
      * Construct a new EditProjectModalView.
