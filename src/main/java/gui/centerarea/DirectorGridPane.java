@@ -30,6 +30,9 @@ public class DirectorGridPane extends ScrollableGridPane {
             (int) Math.round(block.getBeginCount() * CountUtilities.NUMBER_OF_CELLS_PER_COUNT),
                 1, (int) Math.round(block.getEndCount() - block.getBeginCount())
                     * CountUtilities.NUMBER_OF_CELLS_PER_COUNT);
+        ((DirectorTimetableBlock) block.getTimetableBlock()).getPaddingBeforeLabel().setText("Front P: " + Double.toString(block.getPaddingBefore()));
+        ((DirectorTimetableBlock) block.getTimetableBlock()).getPaddingAfterLabel().setText("Back P: " + Double.toString(block.getPaddingAfter()));
+        
     }
 
     public void removeDirectorShotBlock(DirectorShotBlock block) {
