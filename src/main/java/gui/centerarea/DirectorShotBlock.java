@@ -115,14 +115,26 @@ public class DirectorShotBlock extends ShotBlock {
         super.setBeginCount(count, recompute);
     }
     
+    /**
+     * Set the padding before this director shot block.
+     * @param padding the padding to set
+     */
     public void setPaddingBefore(double padding) {
         this.paddingBefore = padding;
-        ((DirectorTimetableBlock) this.getTimetableBlock()).getPaddingBeforeLabel().setText("Front P: " + Double.toString(padding));
+        ((DirectorTimetableBlock) this.getTimetableBlock())
+            .getPaddingBeforeLabel().setText(
+                "Front P: " + Double.toString(padding));
     }
     
+    /**
+     * Set the padding after this director shot block.
+     * @param padding the padding to set.
+     */
     public void setPaddingAfter(double padding) {
         this.paddingAfter = padding;
-        ((DirectorTimetableBlock) this.getTimetableBlock()).getPaddingAfterLabel().setText("Back P: " + Double.toString(padding));
+        ((DirectorTimetableBlock) this.getTimetableBlock())
+            .getPaddingAfterLabel().setText(
+                    "Back P: " + Double.toString(padding));
     }
     
     @Override
@@ -142,6 +154,9 @@ public class DirectorShotBlock extends ShotBlock {
         this.grid.removeDirectorShotBlock(this);
     }
     
+    /**
+     * Method used for snapping as close to top as possible with current margin.
+     */
     public void moveAsCloseToTopAsPossible() {
         double oldBegin = getBeginCount();
         double oldEnd = getEndCount();
