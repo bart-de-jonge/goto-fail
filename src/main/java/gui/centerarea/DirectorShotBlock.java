@@ -117,12 +117,12 @@ public class DirectorShotBlock extends ShotBlock {
     
     public void setPaddingBefore(double padding) {
         this.paddingBefore = padding;
-        ((DirectorTimetableBlock) this.getTimetableBlock()).getPaddingBeforeLabel().setText(Double.toString(padding));
+        ((DirectorTimetableBlock) this.getTimetableBlock()).getPaddingBeforeLabel().setText("Front P: " + Double.toString(padding));
     }
     
     public void setPaddingAfter(double padding) {
         this.paddingAfter = padding;
-        ((DirectorTimetableBlock) this.getTimetableBlock()).getPaddingAfterLabel().setText(Double.toString(padding));
+        ((DirectorTimetableBlock) this.getTimetableBlock()).getPaddingAfterLabel().setText("Back P: " + Double.toString(padding));
     }
     
     @Override
