@@ -32,6 +32,10 @@ public class DirectorShotBlock extends ShotBlock {
     @Getter
     private DirectorGridPane grid;
     
+    private double previousBeginCount;
+    
+    private double previousEndCount;
+    
     
     
 
@@ -86,6 +90,9 @@ public class DirectorShotBlock extends ShotBlock {
 
         super(rootCenterArea, beginCount, endCount, description,
                 name, shot, DirectorTimetableBlock.class);
+        
+        this.previousBeginCount = -1;
+        this.previousEndCount = -1;
 
         this.shotId = shotId;
         this.grid = rootCenterArea.getDirectorGridPane();
@@ -107,6 +114,18 @@ public class DirectorShotBlock extends ShotBlock {
     public ShotblockUpdatedEvent getShotBlockUpdatedEvent() {
         return new DirectorShotBlockUpdatedEvent(this);
     }
+    
+    @Override
+    public void setBeginCount(double count, boolean recompute) {
+        this.previousBeginCount = this.getBeginCount();
+        super.setBeginCount(count, recompute);
+    }
+    
+    @Override
+    public void setEndCount(double count, boolean recompute) {
+        this.previousEndCount = this.getEndCount();
+        super.setEndCount(count, recompute);
+    }
 
     @Override
     public DirectorShot getShot() {
@@ -118,5 +137,11 @@ public class DirectorShotBlock extends ShotBlock {
      */
     public void removeFromView() {
         this.grid.removeDirectorShotBlock(this);
+    }
+    
+    public void restorePreviousPosition() {
+        this.setBeginCount(this.previousBeginCount);
+        this.setEndCount(this.previousEndCount);
+        this.recompute();
     }
 }
