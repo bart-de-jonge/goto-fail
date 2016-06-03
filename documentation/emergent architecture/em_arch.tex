@@ -68,7 +68,7 @@ The controllers have been split into two subgroups: those which create the gui, 
 	\caption{Server Architecture}
 	\label{fig:archdecomp}
 \end{figure}
-In addition to the scripting software, a webserver has been created which follows the REST architecture. The server serves a client application to the browser. This client application takes the data provided by RESTful routes and manipulates it in a View-Controller manner.
+In addition to the scripting software, a webserver has been created which follows the REST (Representational State Transfer) architecture. This means that the server works with standard HTTP methods such as GET and POST, and that it doesn't store client session data. The session data is stored in a client's browser and per request, the necessary session data is sent to the server in order to successfully complete the request. As the webserver is RESTful, it also operates using a clear separation of concerns between the server and the client-side application, e.g. that the server is not responsible for managin the client interface or state, and that the client is not responsible for the storage of data on the server. The client application takes the data provided by the RESTful routes and manipulates it in a View-Controller manner.
 
 \subsection{Hardware/Software Mapping}
 % Laptop to IP cameras
@@ -79,7 +79,7 @@ In addition to the scripting software, a webserver has been created which follow
 	\label{fig:mapping}
 \end{figure}
 
-The software for creating the director script will be used by the director. Once he/she is satisfied with the script, it can then be uploaded to a a web server. At this point the remote camera operators can login in to view the script, and then add camera choreography presets. In addition, the remote camera operators will be able to determine which commands will be sent to the IP cameras. When a recording is taking place the webserver will send these recorded commands to the IP cameras. If a camera operator needs to make adjustments to a shot, then the webserver will yield to manual operation.
+The software for creating the director script will be used by the director. Once he/she is satisfied with the script, it can then be uploaded to a a web server. At this point the remote camera operators can login in to view the script, and then add camera choreography presets. In addition, the remote camera operators will be able to determine which commands will be sent to the IP cameras. When a recording is taking place the webserver will send these recorded commands to the IP cameras. If a camera operator needs to make adjustments to a shot, then the webserver will yield to manual operation. The shot caller (responsible for the live timing) can also use the webserver to advance the script during live recordings.
 %The hardware and software will be the same for both the director and the camera operator. The functionality of the software will differ through the use of different modes. There is one mode for the scripting, and one for camera choreography and coordination of the commands which will be sent to the IP cameras. When a recording is taking place the software will send commands from the computer to the proper cameras. The current plan is to use a server (possibly using the command design pattern) to push these commands to the IP cameras, which will allow the remote camera operators to take over whenever they deem it necessary to make changes and/or corrections.
 
 \subsection{Persistent Data Management}
