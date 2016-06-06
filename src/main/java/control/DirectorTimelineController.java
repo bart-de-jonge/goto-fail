@@ -108,11 +108,8 @@ public class DirectorTimelineController {
      * @param event Camera shot change event.
      */
     public void shotChangedHandler(DirectorShotBlockUpdatedEvent event) {
-        log.error("New begin count is {}", event.getDirectorShotBlock().getBeginCount());
-        log.error("Padding is {}", event.getDirectorShotBlock().getPaddingBefore());
         if (event.getDirectorShotBlock().getBeginCount()
                 - event.getDirectorShotBlock().getPaddingBefore() < 0) {
-            log.error("Restoring");
             event.getDirectorShotBlock().moveAsCloseToTopAsPossible();
             // negative flight
         }

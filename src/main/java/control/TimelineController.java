@@ -118,7 +118,6 @@ public class TimelineController {
      * @param cameraShotBlock CameraShotBlock to be removed
      */
     public void removeCameraShot(CameraShotBlock cameraShotBlock) {
-        log.error("REMOVING SOME SHOT BLOCK KEK {}", cameraShotBlock.getShot().getName());
         // If we are removing the active shot, then this must be updated accordingly
         if (cameraShotBlock.equals(this.controllerManager.getActiveShotBlock())) {
             this.controllerManager.setActiveShotBlock(null);
@@ -145,7 +144,6 @@ public class TimelineController {
      * @param shot Camera Shot to be removed
      */
     public void removeCameraShot(CameraShot shot) {
-        log.error("REMOVING SOME SHOT EZ {} " + shot.getName());
         CameraShotBlock shotBlock = cameraShotBlockMap.get(shot);
 
         if (shotBlock != null) {
@@ -241,7 +239,6 @@ public class TimelineController {
      */
     protected void checkCollisions(int timelineNumber, int oldTimelineNumber,
                                  CameraShotBlock cameraShotBlock) {
-        log.error("Checking colissions for shot name {}", cameraShotBlock.getName());
        
         CameraTimeline timeline = controllerManager.getScriptingProject()
                                                    .getCameraTimelines()
@@ -272,7 +269,6 @@ public class TimelineController {
                             }
                         });
             for (CameraShotBlock shotBlock : overlappingShotBlocks) {
-                log.error("Found colission with {}", shotBlock.getName());
                 shotBlock.setColliding(true);
             }
         } else {
@@ -325,7 +321,6 @@ public class TimelineController {
      * @param shotBlock CameraShot for which to confirm changes.
      */
     protected void decoupleAndModify(CameraShotBlockUpdatedEvent event, CameraShotBlock shotBlock) {
-        log.error("DECOUPLING");
         if (shotBlock.getShot().getDirectorShot() != null && this.shotBlockTimingModified(event)) {
             ShotDecouplingModalView decouplingModalView = new ShotDecouplingModalView(
                     this.rootPane, shotBlock.getShot());
