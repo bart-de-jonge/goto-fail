@@ -35,13 +35,6 @@ public class DirectorTimelineTest {
     }
 
     @Test
-    public void addShotTest() {
-        timeline.addShot("testname", "testdescription", 1, 2, 0, 0, new ArrayList<>());
-        assertEquals(1, timeline.getShots().size());
-        assertEquals("testname", timeline.getShots().getFirst().getName());
-    }
-
-    @Test
     public void addDirectorShotTest() {
         DirectorShot shot = new DirectorShot("testname", "testdescription", 1, 2, 0, 0, new ArrayList<>());
         timeline.addShot(shot);
@@ -51,29 +44,29 @@ public class DirectorTimelineTest {
 
     @Test
     public void addBeforeDirectorShotTest() {
-        timeline.addShot("last", "", 2, 4, 0, 0, new ArrayList<>());
-        timeline.addShot("first", "", 1, 3, 0, 0, new ArrayList<>());
+        timeline.addShot(new DirectorShot("last", "", 2, 4, 0, 0, new ArrayList<>()));
+        timeline.addShot(new DirectorShot("first", "", 1, 3, 0, 0, new ArrayList<>()));
         assertEquals("first", timeline.getShots().getFirst().getName());
     }
 
     @Test
     public void addAfterDirectorShotTest() {
-        timeline.addShot("first", "", 1, 3, 0, 0, new ArrayList<>());
-        timeline.addShot("last", "", 2, 4, 0, 0, new ArrayList<>());
+        timeline.addShot(new DirectorShot("first", "", 1, 3, 0, 0, new ArrayList<>()));
+        timeline.addShot(new DirectorShot("last", "", 2, 4, 0, 0, new ArrayList<>()));
         assertEquals("last", timeline.getShots().getLast().getName());
     }
 
     @Test
     public void addFullOverlapDirectorShotTest() {
-        timeline.addShot("first", "", 2, 3, 0, 0, new ArrayList<>());
-        timeline.addShot("last", "", 1, 4, 0, 0, new ArrayList<>());
+        timeline.addShot(new DirectorShot("first", "", 2, 3, 0, 0, new ArrayList<>()));
+        timeline.addShot(new DirectorShot("last", "", 1, 4, 0, 0, new ArrayList<>()));
         assertEquals("last", timeline.getShots().getFirst().getName());
     }
 
     @Test
     public void addSameTimeDirectorShotTest() {
-        timeline.addShot("first", "", 1, 3, 0, 0, new ArrayList<>());
-        timeline.addShot("last", "", 1, 3, 0, 0, new ArrayList<>());
+        timeline.addShot(new DirectorShot("first", "", 1, 3, 0, 0, new ArrayList<>()));
+        timeline.addShot(new DirectorShot("last", "", 1, 3, 0, 0, new ArrayList<>()));
         assertEquals("last", timeline.getShots().getFirst().getName());
     }
 
