@@ -117,12 +117,14 @@ public class CameraShotBlock extends ShotBlock {
     @Override
     public void setBeginCount(double count, boolean recompute) {
         this.previousBeginCount = this.getBeginCount();
+        this.getShot().setBeginCount(count);
         super.setBeginCount(count, recompute);
     }
 
     @Override
     public void setEndCount(double count, boolean recompute) {
         this.previousEndCount = this.getEndCount();
+        this.getShot().setEndCount(count);
         super.setEndCount(count, recompute);
     }
 
