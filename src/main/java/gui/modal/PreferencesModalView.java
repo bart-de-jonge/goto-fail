@@ -29,13 +29,7 @@ public class PreferencesModalView extends ModalView {
     protected static final int bottomAreaHeight = 60;
 
     // area styling
-    protected String topStyle = "-fx-background-color: "
-            + TweakingHelper.getColorString(0) + ";"
-            + "-fx-text-fill: white; -fx-font-size: 22;"
-            + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
-            + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: "
-            + TweakingHelper.getColorString(1) + ";";
+    protected String topStyle = TweakingHelper.constructDefaultModalTopStyle(22);
     protected String centerStyle = "-fx-background-color: "
             + TweakingHelper.getBackgroundString() + ";";
     protected String bottomStyle = "-fx-background-color: "

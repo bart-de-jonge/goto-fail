@@ -25,11 +25,7 @@ public class ButtonsOnlyModalView extends ModalView {
     private static final int topAreaHeight = 80;
 
     // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: " + TweakingHelper.getColorString(0) + ";"
-            + "-fx-text-fill: white; -fx-font-size: 20;"
-            + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
-            + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: " + TweakingHelper.getColorString(1) + ";";
+    private String topStyle = TweakingHelper.constructDefaultModalTopStyle(20);
 
     // variables for the buttons
     private int buttonSpacing = 20;

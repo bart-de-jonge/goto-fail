@@ -39,13 +39,7 @@ public class EditProjectModalView extends ModalView {
     private static final int bottomAreaHeight = 60;
 
     // simple background styles of the three main areas.
-    private String topStyle = BACKGROUND_COLOR_STRING
-            + TweakingHelper.getColorString(0) + ";"
-            + "-fx-text-fill: white; -fx-font-size: 26;"
-            + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
-            + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: "
-            + TweakingHelper.getColorString(1) + ";";
+    private String topStyle = TweakingHelper.constructDefaultModalTopStyle(26);
     private String centerLeftStyle = BACKGROUND_COLOR_STRING
             + TweakingHelper.getBackgroundHighString() + ";";
     private String centerRightStyle = BACKGROUND_COLOR_STRING

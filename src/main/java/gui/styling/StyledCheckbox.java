@@ -24,6 +24,8 @@ import lombok.Setter;
  * @author Mark
  */
 public class StyledCheckbox extends CheckBox {
+    
+    private StyledElementHelper helper = new StyledElementHelper();
 
     /*
      * Color tweaking. These are generally overwritten from above, though,
@@ -55,9 +57,9 @@ public class StyledCheckbox extends CheckBox {
     private DropShadow dropShadow; // adds simple drop shadow.
     private TransitionHelper transitionHelper;
     private ObjectProperty<Color> markColorProperty = new SimpleObjectProperty<>(Color.WHITE);
-    private StringProperty markStringProperty = createColorStringProperty(markColorProperty);
+    private StringProperty markStringProperty = helper.createColorStringProperty(markColorProperty);
     private ObjectProperty<Color> fillColorProperty = new SimpleObjectProperty<>(Color.WHITE);
-    private StringProperty fillStringProperty = createColorStringProperty(fillColorProperty);
+    private StringProperty fillStringProperty = helper.createColorStringProperty(fillColorProperty);
 
     /*
      * Subpanes and their initialization.
@@ -180,38 +182,10 @@ public class StyledCheckbox extends CheckBox {
 
         mark.styleProperty().bind(new SimpleStringProperty("-fx-background-color: ")
                 .concat(markStringProperty).concat(";").concat("-fx-border-color: ")
-                .concat(getStringFromColor(borderColor)).concat(";"));
+                .concat(helper.getStringFromColor(borderColor)).concat(";"));
         box.styleProperty().bind(new SimpleStringProperty("-fx-background-color: ")
                 .concat(fillStringProperty).concat(";").concat("-fx-border-color: ")
-                .concat(getStringFromColor(borderColor)));
-    }
-
-    /**
-     * Helper function for binding a fill color. Creates a string property used
-     * to modify the style at runtime.
-     * @param colorProperty the colorProperty whose color we want to show.
-     * @return The StringProperty which we'll use to set the style.
-     */
-    private StringProperty createColorStringProperty(ObjectProperty<Color> colorProperty) {
-        StringProperty stringProperty = new SimpleStringProperty();
-        stringProperty.set(getStringFromColor(colorProperty.get()));
-        colorProperty.addListener(
-            e -> {
-                stringProperty.set(getStringFromColor(colorProperty.get()));
-            });
-        return stringProperty;
-    }
-
-    /**
-     * Parses color from a Color object to javafx-css-compatible string.
-     * @param color the color to parse.
-     * @return a representative string.
-     */
-    private String getStringFromColor(Color color) {
-        return "rgba(" + ((int) (color.getRed()   * 255)) + ","
-                + ((int) (color.getGreen() * 255)) + ","
-                + ((int) (color.getBlue()  * 255)) + ","
-                + color.getOpacity() + ")";
+                .concat(helper.getStringFromColor(borderColor)));
     }
 
     /**
