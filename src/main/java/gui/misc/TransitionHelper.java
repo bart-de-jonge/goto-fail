@@ -1,6 +1,5 @@
 package gui.misc;
 
-import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,12 +8,12 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.Property;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.Node;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import lombok.Getter;
 
@@ -276,6 +275,11 @@ public class TransitionHelper {
                 t2.play();
             }
         };
+    }
+    
+    public void addDefaultMouseOverTransition(InnerShadow innerShadow, double shadowTotalRadius, int transitionMouseoverTime, double shadowOpacity) {
+        addMouseOverTransition(new TransitionData<>(innerShadow.radiusProperty(), 100, Interpolator.LINEAR), shadowTotalRadius);
+        addMouseOverTransition(new TransitionData<>(innerShadow.colorProperty(), transitionMouseoverTime, Interpolator.LINEAR), Color.rgb(0, 0, 0, 0), Color.rgb(0, 0, 0, shadowOpacity));
     }
 
 }

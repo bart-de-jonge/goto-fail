@@ -95,12 +95,8 @@ public class StyledTextfield extends TextField {
                 .concat(textStringProperty).concat(";"));
 
         transitionHelper = new TransitionHelper(this);
-        transitionHelper.addMouseOverTransition(new TransitionData<>(innerShadow.radiusProperty(),
-                100, Interpolator.LINEAR), shadowTotalRadius);
-        transitionHelper.addMouseOverTransition(new TransitionData<>(innerShadow.colorProperty(),
-                transitionMouseoverTime, Interpolator.LINEAR), Color.rgb(0, 0, 0, 0),
-                Color.rgb(0, 0, 0, shadowOpacity));
-
+        transitionHelper.addDefaultMouseOverTransition(innerShadow, shadowTotalRadius, transitionMouseoverTime, shadowOpacity);
+        
         focusedProperty().addListener(
             e -> {
                 if (isFocused()) {
