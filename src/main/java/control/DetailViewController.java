@@ -101,6 +101,8 @@ public class DetailViewController {
                     CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
                     shotBlock.setBeginCount(((DirectorShot) manager.getActiveShotBlock()
                             .getShot()).getBeginCount() - newVal, true);
+                    log.error("CHECKING COLLISSIONS");
+                    manager.getTimelineControl().checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
                 });
         }
     }
@@ -147,6 +149,8 @@ public class DetailViewController {
                     CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
                     shotBlock.setEndCount(((DirectorShot) manager.getActiveShotBlock().getShot())
                             .getEndCount() + newVal, true);
+                    log.error("CHECKING COLISSIONS 2");
+                    manager.getTimelineControl().checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
                 });
         }
     }

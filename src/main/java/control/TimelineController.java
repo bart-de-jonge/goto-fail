@@ -286,10 +286,11 @@ public class TimelineController {
         cameraShotBlock.setColliding(false);
         cameraShotBlock.getShot().setColliding(false);
         cameraShotBlock.getShot().getCollidesWith().forEach(e -> {
-                this.checkCollisions(
-                    this.getShotBlockForShot((CameraShot) e)
-                    .getTimetableNumber(),
-                    this.getShotBlockForShot((CameraShot) e));
+                CameraShotBlock toReset = this.getShotBlockForShot((CameraShot) e);
+                if (toReset != null) {
+                    this.checkCollisions(
+                            toReset.getTimetableNumber(), toReset);
+                }
             });
         removeCollisionFromCameraShotBlock(cameraShotBlock);
     }
