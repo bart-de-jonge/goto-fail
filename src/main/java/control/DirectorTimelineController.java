@@ -2,7 +2,6 @@ package control;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -10,6 +9,7 @@ import java.util.stream.Collectors;
 import data.CameraShot;
 import data.DirectorShot;
 import data.DirectorTimeline;
+import data.GeneralShotData;
 import data.Shot;
 import gui.centerarea.DirectorShotBlock;
 import gui.events.DirectorShotBlockUpdatedEvent;
@@ -217,10 +217,10 @@ public class DirectorTimelineController {
                     double cameraEnd = shot.getEndCount() + shot.getEndShotPadding();
 
                     shot.getTimelineIndices().forEach(index -> {
-                            CameraShot subShot = new CameraShot(shot.getName(),
+                            CameraShot subShot = new CameraShot(new GeneralShotData(shot.getName(),
                                                                 shot.getDescription(),
                                                                 cameraStart,
-                                                                cameraEnd,
+                                                                cameraEnd),
                                                                 shot);
                             shot.addCameraShot(subShot);
                             this.controllerManager.getTimelineControl()

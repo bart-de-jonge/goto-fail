@@ -56,7 +56,7 @@ public class CameraShotTest {
     public void getInitializedDirectorShotTest() {
         DirectorShot directorShot = new DirectorShot(new GeneralShotData("direct shot", "descrip", 0, 1), 0, 0,
                 new ArrayList<>());
-        CameraShot shot = new CameraShot("name", "another-description", 1, 2, directorShot);
+        CameraShot shot = new CameraShot(new GeneralShotData("name", "another-description", 1, 2), directorShot);
         assertEquals(directorShot, shot.getDirectorShot());
     }
 
