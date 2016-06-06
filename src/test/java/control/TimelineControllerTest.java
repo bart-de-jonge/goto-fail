@@ -97,8 +97,8 @@ public class TimelineControllerTest extends ApplicationTest {
 
     @Test
     public void decoupleTest() {
-        DirectorShot directorShotSpy = Mockito.spy(new DirectorShot("dir shot", "description",
-                1, 2, 0, 0, new ArrayList<>()));
+        DirectorShot directorShotSpy = Mockito.spy(new DirectorShot(new GeneralShotData("dir shot", "description",
+                1, 2), 0, 0, new ArrayList<>()));
         CameraShot shotSpy = Mockito.spy(shot);
         directorShotSpy.addCameraTimelineIndex(0);
         directorShotSpy.addCameraShot(shotSpy);

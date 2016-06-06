@@ -49,7 +49,7 @@ public class DirectorShot extends Shot {
      * Default Constructor.
      */
     public DirectorShot() {
-        this("", "", 0, 0, 0, 0, new ArrayList<>());
+        this(new GeneralShotData("", "", 0, 0), 0, 0, new ArrayList<>());
     }
 
     /**
@@ -62,9 +62,9 @@ public class DirectorShot extends Shot {
      * @param endShotPadding the additional time to film after the shot starts
      * @param cameras the cameras that the shot will or can use
      */
-    public DirectorShot(String name, String description, double startCount, double endCount,
+    public DirectorShot(GeneralShotData shotData,
                         double frontShotPadding, double endShotPadding, List<Integer> cameras) {
-        super(name, description, startCount, endCount);
+        super(shotData.getName(), shotData.getName(), shotData.getStartCount(), shotData.getEndCount());
         this.frontShotPadding = frontShotPadding;
         this.endShotPadding = endShotPadding;
         this.timelineIndices = ConcurrentHashMap.newKeySet();

@@ -1,7 +1,18 @@
 package control;
 
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.reflect.internal.WhiteboxImpl;
+import org.testfx.framework.junit.ApplicationTest;
+
 import data.CameraShot;
 import data.DirectorShot;
+import data.GeneralShotData;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
 import gui.headerarea.ToolButton;
@@ -12,15 +23,6 @@ import javafx.collections.ObservableMap;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
-import org.junit.Test;
-import org.mockito.Mockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.reflect.internal.WhiteboxImpl;
-import org.testfx.framework.junit.ApplicationTest;
-
-import java.util.ArrayList;
-
-import static org.mockito.Mockito.when;
 
 /**
  * Created by alexandergeenen on 12/05/16.
@@ -94,7 +96,7 @@ public class ToolViewControllerTest extends ApplicationTest {
     @Test
     public void enableGenActiveBlockTest() {
         DirectorShotBlock mockBlock = Mockito.mock(DirectorShotBlock.class);
-        DirectorShot directorShot = new DirectorShot("Dir shot", "description", 0, 1, 0, 0, new ArrayList<>());
+        DirectorShot directorShot = new DirectorShot(new GeneralShotData("Dir shot", "descr iption", 0, 1), 0, 0, new ArrayList<>());
         when(mockBlock.getShot()).thenReturn(directorShot);
         when(controllerManager.getActiveShotBlock()).thenReturn(mockBlock);
         ToolButton genSpy = Mockito.spy(toolView.getShotGenerationTool());
@@ -106,7 +108,7 @@ public class ToolViewControllerTest extends ApplicationTest {
     @Test
     public void generateCameraShotsTest() {
         DirectorShotBlock mockBlock = Mockito.mock(DirectorShotBlock.class);
-        DirectorShot directorShot = new DirectorShot("Dir shot", "description", 0, 1, 0, 0, new ArrayList<>());
+        DirectorShot directorShot = new DirectorShot(new GeneralShotData("Dir shot", "description", 0, 1), 0, 0, new ArrayList<>());
         directorShot.addCameraTimelineIndex(0);
         when(mockBlock.getShot()).thenReturn(directorShot);
         when(controllerManager.getActiveShotBlock()).thenReturn(mockBlock);
