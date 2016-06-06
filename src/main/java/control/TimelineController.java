@@ -99,10 +99,8 @@ public class TimelineController {
      */
     protected void initShotBlock(int cameraIndex,
                                CameraShot newShot) {
-        CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(),
-            cameraIndex, rootPane.getRootCenterArea(), newShot.getBeginCount(),
-            newShot.getEndCount(), newShot.getDescription(), newShot.getName(),
-            this::shotChangedHandler, newShot);
+        CameraShotBlock shotBlock = new CameraShotBlock(
+            cameraIndex, rootPane.getRootCenterArea(), this::shotChangedHandler, newShot);
 
         controllerManager.setActiveShotBlock(shotBlock);
         this.cameraShotBlocks.add(shotBlock);
