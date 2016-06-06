@@ -150,7 +150,8 @@ public class DetailViewController {
                     ((DirectorDetailView) detailView).getPaddingAfterField().getText());
             ((DirectorDetailView) detailView).getPaddingAfterField().setText(newValue);
             double newVal = Double.parseDouble(newValue);
-            DirectorShotBlock directorShotBlock = ((DirectorShotBlock) manager.getActiveShotBlock());
+            DirectorShotBlock directorShotBlock = 
+                    ((DirectorShotBlock) manager.getActiveShotBlock());
             
             directorShotBlock.setPaddingAfter(newVal);
             ((DirectorShot) manager.getActiveShotBlock().getShot()).setEndShotPadding(newVal);
