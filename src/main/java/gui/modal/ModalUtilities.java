@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class ModalUtilities {
     
@@ -38,6 +39,15 @@ public class ModalUtilities {
         titleLabel.setPrefHeight(topAreaHeight);
         titleLabel.setMaxHeight(topAreaHeight);
         return titleLabel;
+    }
+    
+    public static VBox constructFieldsPane() {
+        VBox pane = new VBox(TweakingHelper.GENERAL_SPACING);
+        pane.setAlignment(Pos.CENTER);
+        pane.setPrefWidth(TweakingHelper.GENERAL_SIZE);
+        pane.setPrefHeight(TweakingHelper.GENERAL_SIZE);
+        pane.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
+        return pane;
     }
 
 }

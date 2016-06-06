@@ -64,11 +64,7 @@ public class CameraModificationModalView extends ModalView {
      * @return a VBox with these fields
      */
     protected VBox initNameDescriptionFields() {
-        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
-        content.setAlignment(Pos.CENTER);
-        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
-        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
+        VBox content = ModalUtilities.constructFieldsPane();
         content.setStyle(centerStyle);
 
         final Label nameLabel = new Label("Name:  ");

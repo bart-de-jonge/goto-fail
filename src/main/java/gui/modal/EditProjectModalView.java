@@ -228,12 +228,9 @@ public class EditProjectModalView extends ModalView {
      * Initialize the fields.
      */
     private void initFields() {
-        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
+        VBox content = ModalUtilities.constructFieldsPane();
         content.setAlignment(Pos.CENTER_LEFT);
         content.setMinWidth(TEXT_AREA_MIN_WIDTH);
-        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
-        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
         content.setStyle(centerLeftStyle);
 
         initNameDescriptionFields(content);

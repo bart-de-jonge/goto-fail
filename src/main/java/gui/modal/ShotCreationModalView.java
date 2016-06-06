@@ -170,13 +170,10 @@ public class ShotCreationModalView extends ModalView {
      * @return the box containing the text fields
      */
     protected VBox getTextfieldBox() {
-        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
+        VBox content = ModalUtilities.constructFieldsPane();
+        content.setStyle(centerLeftStyle);
         content.setAlignment(Pos.CENTER_LEFT);
         content.setMinWidth(TEXT_AREA_MIN_WIDTH);
-        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
-        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
-        content.setStyle(centerLeftStyle);
         return content;
     }
     
