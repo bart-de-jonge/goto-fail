@@ -26,7 +26,7 @@ public class ShotCreationModalView extends ModalView {
     protected static final String BACKGROUND_STYLE_STRING = "-fx-background-color: ";
 
     // simple background styles of the three main areas.
-    protected String topStyle = TweakingHelper.constructDefaultModalTopStyle(26);
+    protected String topStyle = ModalUtilities.constructDefaultModalTopStyle(26);
     protected String centerLeftStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.getBackgroundHighString() + ";";
     protected String centerRightStyle = BACKGROUND_STYLE_STRING

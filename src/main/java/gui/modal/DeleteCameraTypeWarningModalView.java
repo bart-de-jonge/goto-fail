@@ -29,7 +29,7 @@ public class DeleteCameraTypeWarningModalView extends ModalView {
     private static final int bottomAreaHeight = 60;
 
     // simple background styles of the three main areas.
-    private String topStyle = TweakingHelper.constructDefaultModalTopStyle(20);
+    private String topStyle = ModalUtilities.constructDefaultModalTopStyle(20);
     private String bottomStyle = "-fx-background-color: "
             + TweakingHelper.getColorString(0) + ";";
 

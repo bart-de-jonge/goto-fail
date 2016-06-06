@@ -58,10 +58,6 @@ public abstract class ShotBlock {
     /**
      * Constructor.
      * @param rootCenterArea - the rootCenterArea this shot belongs to
-     * @param beginCount - the begin count of this shot
-     * @param endCount - the end count of this shot
-     * @param description - the description of this shot
-     * @param name - the name of this shot
      * @param shot - the shot of this ShotBlock
      * @param timetableBlockClass - the class of the timetableblock implementation
      *        that belongs to this shotblock. This must be a valid subclass of

@@ -153,13 +153,4 @@ public final class TweakingHelper {
                 + ((int) (color.getBlue()  * 255)) + ","
                 + color.getOpacity() + ")";
     }
-    
-    public static String constructDefaultModalTopStyle(int fontSize) {
-        return "-fx-background-color: "
-                + getColorString(0) + ";"
-                + "-fx-text-fill: white; -fx-font-size: " + fontSize + ";"
-                + "-fx-border-width: 0 0 10 0;"
-                + "-fx-border-color: " + getColorString(1) + ";";
-    }
-    
 }

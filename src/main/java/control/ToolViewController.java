@@ -124,7 +124,8 @@ public class ToolViewController {
             double cameraEnd = shot.getEndCount() + shot.getEndShotPadding();
 
             shot.getTimelineIndices().forEach(index -> {
-                    CameraShot subShot = new CameraShot(new GeneralShotData(shot.getName(), shot.getDescription(),
+                    CameraShot subShot = new CameraShot(new GeneralShotData(
+                                                    shot.getName(), shot.getDescription(),
                                                     cameraStart, cameraEnd), shot);
                     shot.addCameraShot(subShot);
                     this.controllerManager.getTimelineControl().addCameraShot(index, subShot);

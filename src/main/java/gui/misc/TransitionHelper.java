@@ -60,10 +60,8 @@ public class TransitionHelper {
     /**
      * Add a transition event, on mouse enter and exit, between a specified double
      * value and a specified double offset.
-     * @param property the property being modified.
-     * @param ms the time in milliseconds for transition.
      * @param v the offset value.
-     * @param interpolator the interpolation type being used.
+     * @param data the transition data
      */
     public void addMouseClickTransition(TransitionData data, double v) {
         setupMouseTransition(data, v, MouseEvent.MOUSE_PRESSED, MouseEvent.MOUSE_RELEASED);
@@ -72,11 +70,9 @@ public class TransitionHelper {
     /**
      * Add a transition event, on mouse press and release, between two values,
      * with a specified transition half-time, over a specified property.
-     * @param property property being modified. (for example, color property)
-     * @param ms time in milliseconds for transition.
      * @param x value before transition.
      * @param y value after transition.
-     * @param interpolator type of interpolation used.
+     * @param data the transition data
      * @param <T> generic type.
      */
     public <T> void addMouseClickTransition(TransitionData<T> data, T x, T y) {
@@ -95,7 +91,15 @@ public class TransitionHelper {
         node.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseOutHandler);
     }
     
-    public void setupMouseTransition(TransitionData data, double v, EventType<MouseEvent> in, EventType<MouseEvent> out) {
+    /**
+     * Setup a mouse transition.
+     * @param data the transition data
+     * @param v the offset value
+     * @param in the event type for ingoing transition
+     * @param out the event type for outgoing transition
+     */
+    public void setupMouseTransition(TransitionData data, 
+            double v, EventType<MouseEvent> in, EventType<MouseEvent> out) {
         // setup timelines
         Timeline t1 = new Timeline();
         Timeline t2 = new Timeline();
@@ -118,10 +122,8 @@ public class TransitionHelper {
     /**
      * Add a transition event, on mouse enter and exit, between a specified double
      * value and a specified double offset.
-     * @param property the property being modified.
-     * @param ms the time in milliseconds for transition.
      * @param v the offset value.
-     * @param interpolator the interpolation type being used.
+     * @param data the transition data
      */
     public void addMouseOverTransition(TransitionData data, double v) {
         setupMouseTransition(data, v, MouseEvent.MOUSE_ENTERED, MouseEvent.MOUSE_EXITED);
@@ -130,11 +132,9 @@ public class TransitionHelper {
     /**
      * Add a transition event, on mouse enter and exit, between two values,
      * with a specified transition half-time, over a specified property
-     * @param property property being modified. (for example, color property)
-     * @param ms time in milliseconds for transition.
      * @param x value before transition.
      * @param y value after transition.
-     * @param interpolator type of interpolation used.
+     * @param data the transition data
      * @param <T> generic type.
      */
     public <T> void addMouseOverTransition(TransitionData<T> data, T x, T y) {
@@ -165,11 +165,9 @@ public class TransitionHelper {
      * Realize that elements are always forced to the x and y position by this transition.
      * Downside is, this means that multiple transitions on the same property do not stack.
      * Upside is, this is very safe to use.
-     * @param property the property to operate on.
-     * @param ms duration in milliseconds.
      * @param x begin value of transition.
      * @param y end value of transition.
-     * @param interpolator type of interpolation used.
+     * @param data the transition data
      * @param <T> generic type.
      * @return the new eventhandler.
      */
@@ -198,10 +196,8 @@ public class TransitionHelper {
      * (B) run from the current value, which is neat.
      * (C) not bound to a specific event.
      * Example usage: when firing a custom event. See StyledCheckbox for usage.
-     * @param property property to transition over.
-     * @param ms duration in milliseconds.
      * @param v value to transition towards.
-     * @param interpolator type of Interpolation used.
+     * @param data the transition data
      * @param <T> generic type.
      */
     public <T> void runTransitionToValue(TransitionData<T> data, T v) {
@@ -227,13 +223,11 @@ public class TransitionHelper {
      * The interpolation can be something like linear, edge-in, etc...
      * This transition moves from wherever the current point is.
      * This means elements can get lost if handled improperly.
-     * @param property the property to operate on.
      * @param t1 timeline for forward-transition.
      * @param t2 timeline for backward-transition.
-     * @param ms duration in milliseconds.
      * @param v end value of transition.
      * @param done whether double used is done.
-     * @param interpolator type of interpolation used.
+     * @param data the transition data.
      * @return the new eventhandler.
      */
     private EventHandler createHandlerTowardsDouble(TransitionData data, Timeline t1, Timeline t2,
@@ -277,9 +271,21 @@ public class TransitionHelper {
         };
     }
     
-    public void addDefaultMouseOverTransition(InnerShadow innerShadow, double shadowTotalRadius, int transitionMouseoverTime, double shadowOpacity) {
-        addMouseOverTransition(new TransitionData<>(innerShadow.radiusProperty(), 100, Interpolator.LINEAR), shadowTotalRadius);
-        addMouseOverTransition(new TransitionData<>(innerShadow.colorProperty(), transitionMouseoverTime, Interpolator.LINEAR), Color.rgb(0, 0, 0, 0), Color.rgb(0, 0, 0, shadowOpacity));
+    /**
+     * Add a default mouse over transition.
+     * @param innerShadow the inner shadow to use
+     * @param shadowTotalRadius the radius of the shadow
+     * @param transitionMouseoverTime the time for the transition
+     * @param shadowOpacity the opacity to use
+     */
+    public void addDefaultMouseOverTransition(InnerShadow innerShadow, 
+            double shadowTotalRadius, int transitionMouseoverTime,
+            double shadowOpacity) {
+        addMouseOverTransition(new TransitionData<>(innerShadow.radiusProperty(),
+                100, Interpolator.LINEAR), shadowTotalRadius);
+        addMouseOverTransition(new TransitionData<>(innerShadow.colorProperty(),
+                transitionMouseoverTime, Interpolator.LINEAR), Color.rgb(0, 0, 0, 0),
+                Color.rgb(0, 0, 0, shadowOpacity));
     }
 
 }

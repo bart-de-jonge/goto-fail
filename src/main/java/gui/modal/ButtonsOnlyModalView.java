@@ -25,7 +25,7 @@ public class ButtonsOnlyModalView extends ModalView {
     private static final int topAreaHeight = 80;
 
     // simple background styles of the three main areas.
-    private String topStyle = TweakingHelper.constructDefaultModalTopStyle(20);
+    private String topStyle = ModalUtilities.constructDefaultModalTopStyle(20);
 
     // variables for the buttons
     private int buttonSpacing = 20;

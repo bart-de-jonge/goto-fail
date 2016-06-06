@@ -57,7 +57,8 @@ public class StyledListview<T> extends ListView {
 
         // add some transitions because cool and stuff
         transitionHelper = new TransitionHelper(this);
-        transitionHelper.addDefaultMouseOverTransition(innerShadow, shadowTotalRadius, transitionMouseoverTime, shadowOpacity);
+        transitionHelper.addDefaultMouseOverTransition(
+                innerShadow, shadowTotalRadius, transitionMouseoverTime, shadowOpacity);
 
         this.setStyle(style);
     }

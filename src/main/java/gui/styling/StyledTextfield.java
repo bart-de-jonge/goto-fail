@@ -95,20 +95,25 @@ public class StyledTextfield extends TextField {
                 .concat(textStringProperty).concat(";"));
 
         transitionHelper = new TransitionHelper(this);
-        transitionHelper.addDefaultMouseOverTransition(innerShadow, shadowTotalRadius, transitionMouseoverTime, shadowOpacity);
+        transitionHelper.addDefaultMouseOverTransition(
+                innerShadow, shadowTotalRadius, transitionMouseoverTime, shadowOpacity);
         
         focusedProperty().addListener(
             e -> {
                 if (isFocused()) {
-                    transitionHelper.runTransitionToValue(new TransitionData<>(fillColorProperty, transitionFocusTime, Interpolator.LINEAR),
-                            fillActiveColor);
-                    transitionHelper.runTransitionToValue(new TransitionData<>(textColorProperty, transitionFocusTime, Interpolator.LINEAR),
-                            textActiveColor);
+                    transitionHelper.runTransitionToValue(new TransitionData<>(
+                            fillColorProperty, transitionFocusTime, Interpolator.LINEAR),
+                        fillActiveColor);
+                    transitionHelper.runTransitionToValue(new TransitionData<>(
+                            textColorProperty, transitionFocusTime, Interpolator.LINEAR),
+                        textActiveColor);
                 } else {
-                    transitionHelper.runTransitionToValue(new TransitionData<>(fillColorProperty, transitionFocusTime, Interpolator.LINEAR),
-                            fillColor);
-                    transitionHelper.runTransitionToValue(new TransitionData<>(textColorProperty, transitionFocusTime, Interpolator.LINEAR),
-                            borderColor);
+                    transitionHelper.runTransitionToValue(new TransitionData<>(
+                            fillColorProperty, transitionFocusTime, Interpolator.LINEAR),
+                        fillColor);
+                    transitionHelper.runTransitionToValue(new TransitionData<>(
+                            textColorProperty, transitionFocusTime, Interpolator.LINEAR),
+                        borderColor);
                 }
             });
     }

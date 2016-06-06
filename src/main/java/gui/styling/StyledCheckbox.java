@@ -147,15 +147,18 @@ public class StyledCheckbox extends CheckBox {
 
             // Perform transitions.
             if (self.isSelected()) {
-                transitionHelper.runTransitionToValue(new TransitionData<>(mark.translateXProperty(),
-                        transitionTime, interpolator), markPositionRight);
-                transitionHelper.runTransitionToValue(new TransitionData<>(markColorProperty,
-                        transitionTime, interpolator), markColor);
+                transitionHelper.runTransitionToValue(new TransitionData<>(
+                        mark.translateXProperty(), transitionTime, interpolator),
+                    markPositionRight);
+                transitionHelper.runTransitionToValue(new TransitionData<>(
+                        markColorProperty, transitionTime, interpolator),
+                    markColor);
                 transitionHelper.runTransitionToValue(new TransitionData<>(fillColorProperty,
                         transitionTime, interpolator), fillColor);
             } else {
-                transitionHelper.runTransitionToValue(new TransitionData<>(mark.translateXProperty(),
-                        transitionTime, interpolator), markPositionLeft);
+                transitionHelper.runTransitionToValue(new TransitionData<>(
+                        mark.translateXProperty(), transitionTime, interpolator),
+                        markPositionLeft);
                 transitionHelper.runTransitionToValue(new TransitionData<>(markColorProperty,
                         transitionTime, interpolator), Color.WHITE);
                 transitionHelper.runTransitionToValue(new TransitionData<>(fillColorProperty,

@@ -244,8 +244,8 @@ public class ProjectController {
     }
 
     /**
-     * Set some data for project.
-     * @param project the project to set it for
+     * Init project with modal data.
+     * @return the initialized project
      */
     private ScriptingProject constructProjectFromModalData() {
         String name = editProjectModal.getNameField().getText();

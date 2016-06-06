@@ -95,9 +95,11 @@ public class StyledButton extends Button {
      * Initializes mouse over transitions.
      */
     private void initMouseOverTransitions() {
-        transitionHelper.addMouseOverTransition(new TransitionData<>(fillColorProperty, mouseOverDuration, Interpolator.LINEAR),
+        transitionHelper.addMouseOverTransition(new TransitionData<>(
+                    fillColorProperty, mouseOverDuration, Interpolator.LINEAR),
                 fillColor, borderColor);
-        transitionHelper.addMouseOverTransition(new TransitionData<>(borderColorProperty, mouseOverDuration, Interpolator.LINEAR),
+        transitionHelper.addMouseOverTransition(new TransitionData<>(
+                    borderColorProperty, mouseOverDuration, Interpolator.LINEAR),
                 borderColor, fillColor);
     }
 

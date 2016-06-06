@@ -16,7 +16,7 @@ public class CameraModificationModalView extends ModalView {
     protected static final int topAreaHeight = 50;
     protected static final int bottomAreaHeight = 60;
     
-    protected String topStyle = TweakingHelper.constructDefaultModalTopStyle(22);
+    protected String topStyle = ModalUtilities.constructDefaultModalTopStyle(22);
     protected String centerStyle = "-fx-background-color: "
             + TweakingHelper.getBackgroundString() + ";";
     protected String bottomStyle = "-fx-background-color: "

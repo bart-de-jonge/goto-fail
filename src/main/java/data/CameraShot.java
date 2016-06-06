@@ -41,14 +41,12 @@ public class CameraShot extends Shot {
 
     /**
      * The constructor for the Shot.
-     * @param name the name of the Shot
-     * @param description the description of the Shot
-     * @param startCount the count the Shot starts
-     * @param endCount the count the Shot ends
+     * @param shotData the shot data
      * @param directorShot the parent DirectorShot
      */
     public CameraShot(GeneralShotData shotData, DirectorShot directorShot) {
-        super(shotData.getName(), shotData.getDescription(), shotData.getStartCount(), shotData.getEndCount());
+        super(shotData.getName(), shotData.getDescription(), 
+                shotData.getStartCount(), shotData.getEndCount());
         log.debug("Created new CameraShot");
         this.directorShot = directorShot;
         this.instance = instanceCounter;

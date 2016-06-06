@@ -12,6 +12,12 @@ public class TransitionData<T> {
     @Getter
     private Interpolator interpolator;
     
+    /**
+     * Constructor.
+     * @param property the property for which the transition is used
+     * @param ms the time in ms the transition takes
+     * @param interpolator the interpolator to use
+     */
     public TransitionData(Property<T> property, int ms, Interpolator interpolator) {
         this.property = property;
         this.ms = ms;
