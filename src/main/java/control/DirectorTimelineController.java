@@ -49,24 +49,6 @@ public class DirectorTimelineController {
     }
 
     /**
-     * Add a director shot to the directorTimeline.
-     * @param name Name of the shot
-     * @param description Shot description
-     * @param startCount Start count
-     * @param endCount End count
-     * @param frontPadding additional recording time at the front
-     * @param endPadding additional recording time at the end
-     * @param cameras the cameras to generate the shot to
-     */
-    public void addDirectorShot(String name, String description,
-                                double startCount, double endCount,
-                                double frontPadding, double endPadding,
-                                List<Integer> cameras) {
-        addDirectorShot(new DirectorShot(name, description, startCount, endCount,
-                frontPadding, endPadding, cameras));
-    }
-
-    /**
      * Add a directorShot to the directortimeline.
      * @param shot the shot to add
      */

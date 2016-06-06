@@ -1,6 +1,7 @@
 package control;
 
 import data.CameraShot;
+import data.DirectorShot;
 import gui.modal.CameraShotCreationModalView;
 import gui.modal.DirectorShotCreationModalView;
 import javafx.beans.value.ObservableValue;
@@ -273,14 +274,14 @@ public class CreationModalViewController {
             DirectorTimelineController directorTimelineController =
                     this.controllerManager.getDirectorTimelineControl();
 
-            directorTimelineController.addDirectorShot(
+            directorTimelineController.addDirectorShot(new DirectorShot(
                 directorShotCreationModalView.getNameField().getText(),
                 directorShotCreationModalView.getDescriptionField().getText(),
                 Double.parseDouble(directorShotCreationModalView.getStartField().getText()),
                 Double.parseDouble(directorShotCreationModalView.getEndField().getText()),
                 Double.parseDouble(directorShotCreationModalView.getFrontPaddingField().getText()),
                 Double.parseDouble(directorShotCreationModalView.getEndPaddingField().getText()),
-                directorShotCreationModalView.getCamerasInShot());
+                directorShotCreationModalView.getCamerasInShot()));
 
             // keep at end of if statement
             directorShotCreationModalView.getModalStage().close();
