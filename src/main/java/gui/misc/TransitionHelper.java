@@ -67,23 +67,7 @@ public class TransitionHelper {
      * @param interpolator the interpolation type being used.
      */
     public void addMouseClickTransition(TransitionData data, double v) {
-        // setup timelines
-        Timeline t1 = new Timeline();
-        Timeline t2 = new Timeline();
-
-        // Create event handlers from x to y, and from y to x.
-        EventHandler mouseInHandler = createHandlerTowardsDouble(data, t1, t2, v, false);
-        EventHandler mouseOutHandler = createHandlerTowardsDouble(data, t1, t2, v, true);
-
-        // Store handlers so we can kill them again
-        addedHandlers.add(mouseInHandler);
-        addedHandlers.add(mouseOutHandler);
-        addedTypes.add(MouseEvent.MOUSE_PRESSED.getSuperType());
-        addedTypes.add(MouseEvent.MOUSE_RELEASED.getSuperType());
-
-        // Bind event handlers on mouse enter and exit for this Node.
-        node.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseInHandler);
-        node.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseOutHandler);
+        setupMouseTransition(data, v, MouseEvent.MOUSE_PRESSED, MouseEvent.MOUSE_RELEASED);
     }
 
     /**
@@ -112,6 +96,26 @@ public class TransitionHelper {
         node.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseOutHandler);
     }
     
+    public void setupMouseTransition(TransitionData data, double v, EventType<MouseEvent> in, EventType<MouseEvent> out) {
+        // setup timelines
+        Timeline t1 = new Timeline();
+        Timeline t2 = new Timeline();
+        
+        // Create event handlers from x to y, and from y to x.
+        EventHandler mouseInHandler = createHandlerTowardsDouble(data, t1, t2, v, false);
+        EventHandler mouseOutHandler = createHandlerTowardsDouble(data, t1, t2, v, true);
+        
+        // Store handlers so we can kill them again
+        addedHandlers.add(mouseInHandler);
+        addedHandlers.add(mouseOutHandler);
+        addedTypes.add(in.getSuperType());
+        addedTypes.add(out.getSuperType());
+        
+        // Bind event handlers on mouse enter and exit for this Node.
+        node.addEventHandler(in, mouseInHandler);
+        node.addEventHandler(out, mouseOutHandler);
+    }
+    
     /**
      * Add a transition event, on mouse enter and exit, between a specified double
      * value and a specified double offset.
@@ -121,23 +125,7 @@ public class TransitionHelper {
      * @param interpolator the interpolation type being used.
      */
     public void addMouseOverTransition(TransitionData data, double v) {
-        // setup timelines
-        Timeline t1 = new Timeline();
-        Timeline t2 = new Timeline();
-
-        // Create event handlers from x to y, and from y to x.
-        EventHandler mouseInHandler = createHandlerTowardsDouble(data, t1, t2, v, false);
-        EventHandler mouseOutHandler = createHandlerTowardsDouble(data, t1, t2, v, true);
-
-        // Store handlers so we can kill them again
-        addedHandlers.add(mouseInHandler);
-        addedHandlers.add(mouseOutHandler);
-        addedTypes.add(MouseEvent.MOUSE_ENTERED.getSuperType());
-        addedTypes.add(MouseEvent.MOUSE_EXITED.getSuperType());
-
-        // Bind event handlers on mouse enter and exit for this Node.
-        node.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseInHandler);
-        node.addEventHandler(MouseEvent.MOUSE_EXITED, mouseOutHandler);
+        setupMouseTransition(data, v, MouseEvent.MOUSE_ENTERED, MouseEvent.MOUSE_EXITED);
     }
 
     /**

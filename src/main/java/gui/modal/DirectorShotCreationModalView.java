@@ -71,10 +71,11 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
     private void initializeCreationView() {
         
         // force minimum size
-        getModalStage().setHeight(height);
-        getModalStage().setWidth(width);
         getModalStage().setMinWidth(width);
         getModalStage().setMinHeight(height);
+        getModalStage().setHeight(height);
+        getModalStage().setWidth(width);
+       
 
         // Create a new VBox for vertical layout
         this.rootPane = new VBox();
