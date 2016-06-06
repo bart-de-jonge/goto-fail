@@ -39,8 +39,7 @@ public class CameraShotBlock extends ShotBlock {
     public CameraShotBlock(int timetableNumber, RootCenterArea rootCenterArea,
                            EventHandler<CameraShotBlockUpdatedEvent> handler, CameraShot shot) {
 
-        super(rootCenterArea, shot.getBeginCount(), shot.getEndCount(), shot.getDescription(),
-                shot.getName(), shot, CameraTimetableBlock.class);
+        super(rootCenterArea, shot, CameraTimetableBlock.class);
 
         this.shotId = shot.getInstance();
         this.timetableNumber = timetableNumber;

@@ -68,12 +68,11 @@ public abstract class ShotBlock {
      *        TimetableBlock with its default constructor implemented. Otherwise
      *        timetableBlock is initialized to null.
      */
-    public ShotBlock(RootCenterArea rootCenterArea, double beginCount, double endCount,
-                     String description, String name, Shot shot, Class<?> timetableBlockClass) {
-        this.description = description;
-        this.name = name;
-        this.beginCount = beginCount;
-        this.endCount = endCount;
+    public ShotBlock(RootCenterArea rootCenterArea, Shot shot, Class<?> timetableBlockClass) {
+        this.description = shot.getDescription();
+        this.name = shot.getName();
+        this.beginCount = shot.getBeginCount();
+        this.endCount = shot.getEndCount();
         this.shot = shot;
         this.colliding = false;
         this.tempBeginCount = -1;

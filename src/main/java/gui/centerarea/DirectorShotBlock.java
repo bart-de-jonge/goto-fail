@@ -43,8 +43,7 @@ public class DirectorShotBlock extends ShotBlock {
                              EventHandler<DirectorShotBlockUpdatedEvent> handler,
                              DirectorShot shot) {
 
-        super(rootCenterArea, shot.getBeginCount(), shot.getEndCount(), shot.getDescription(),
-                shot.getName(), shot, DirectorTimetableBlock.class);
+        super(rootCenterArea, shot, DirectorTimetableBlock.class);
         
         this.paddingBefore = shot.getFrontShotPadding();
         this.paddingAfter = shot.getEndShotPadding();
