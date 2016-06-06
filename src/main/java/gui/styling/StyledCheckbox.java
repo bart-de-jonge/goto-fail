@@ -1,5 +1,6 @@
 package gui.styling;
 
+import gui.misc.TransitionData;
 import gui.misc.TransitionHelper;
 import gui.misc.TweakingHelper;
 import javafx.animation.Interpolator;
@@ -144,19 +145,19 @@ public class StyledCheckbox extends CheckBox {
 
             // Perform transitions.
             if (self.isSelected()) {
-                transitionHelper.runTransitionToValue(mark.translateXProperty(),
-                        transitionTime, markPositionRight, interpolator);
-                transitionHelper.runTransitionToValue(markColorProperty,
-                        transitionTime, markColor, interpolator);
-                transitionHelper.runTransitionToValue(fillColorProperty,
-                        transitionTime, fillColor, interpolator);
+                transitionHelper.runTransitionToValue(new TransitionData<>(mark.translateXProperty(),
+                        transitionTime, interpolator), markPositionRight);
+                transitionHelper.runTransitionToValue(new TransitionData<>(markColorProperty,
+                        transitionTime, interpolator), markColor);
+                transitionHelper.runTransitionToValue(new TransitionData<>(fillColorProperty,
+                        transitionTime, interpolator), fillColor);
             } else {
-                transitionHelper.runTransitionToValue(mark.translateXProperty(),
-                        transitionTime, markPositionLeft, interpolator);
-                transitionHelper.runTransitionToValue(markColorProperty,
-                        transitionTime, Color.WHITE, interpolator);
-                transitionHelper.runTransitionToValue(fillColorProperty,
-                        transitionTime, Color.WHITE, interpolator);
+                transitionHelper.runTransitionToValue(new TransitionData<>(mark.translateXProperty(),
+                        transitionTime, interpolator), markPositionLeft);
+                transitionHelper.runTransitionToValue(new TransitionData<>(markColorProperty,
+                        transitionTime, interpolator), Color.WHITE);
+                transitionHelper.runTransitionToValue(new TransitionData<>(fillColorProperty,
+                        transitionTime, interpolator), Color.WHITE);
             }
         };
     }

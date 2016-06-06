@@ -1,6 +1,7 @@
 package gui.styling;
 
 
+import gui.misc.TransitionData;
 import gui.misc.TransitionHelper;
 import gui.misc.TweakingHelper;
 import javafx.animation.Interpolator;
@@ -94,24 +95,24 @@ public class StyledTextfield extends TextField {
                 .concat(textStringProperty).concat(";"));
 
         transitionHelper = new TransitionHelper(this);
-        transitionHelper.addMouseOverTransition(innerShadow.radiusProperty(),
-                100, shadowTotalRadius, Interpolator.LINEAR);
-        transitionHelper.addMouseOverTransition(innerShadow.colorProperty(),
-                transitionMouseoverTime,  Color.rgb(0, 0, 0, 0),
-                Color.rgb(0, 0, 0, shadowOpacity), Interpolator.LINEAR);
+        transitionHelper.addMouseOverTransition(new TransitionData<>(innerShadow.radiusProperty(),
+                100, Interpolator.LINEAR), shadowTotalRadius);
+        transitionHelper.addMouseOverTransition(new TransitionData<>(innerShadow.colorProperty(),
+                transitionMouseoverTime, Interpolator.LINEAR), Color.rgb(0, 0, 0, 0),
+                Color.rgb(0, 0, 0, shadowOpacity));
 
         focusedProperty().addListener(
             e -> {
                 if (isFocused()) {
-                    transitionHelper.runTransitionToValue(fillColorProperty, transitionFocusTime,
-                            fillActiveColor, Interpolator.LINEAR);
-                    transitionHelper.runTransitionToValue(textColorProperty, transitionFocusTime,
-                            textActiveColor, Interpolator.LINEAR);
+                    transitionHelper.runTransitionToValue(new TransitionData<>(fillColorProperty, transitionFocusTime, Interpolator.LINEAR),
+                            fillActiveColor);
+                    transitionHelper.runTransitionToValue(new TransitionData<>(textColorProperty, transitionFocusTime, Interpolator.LINEAR),
+                            textActiveColor);
                 } else {
-                    transitionHelper.runTransitionToValue(fillColorProperty, transitionFocusTime,
-                            fillColor, Interpolator.LINEAR);
-                    transitionHelper.runTransitionToValue(textColorProperty, transitionFocusTime,
-                            borderColor, Interpolator.LINEAR);
+                    transitionHelper.runTransitionToValue(new TransitionData<>(fillColorProperty, transitionFocusTime, Interpolator.LINEAR),
+                            fillColor);
+                    transitionHelper.runTransitionToValue(new TransitionData<>(textColorProperty, transitionFocusTime, Interpolator.LINEAR),
+                            borderColor);
                 }
             });
     }

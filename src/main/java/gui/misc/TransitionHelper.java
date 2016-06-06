@@ -1,5 +1,6 @@
 package gui.misc;
 
+import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,17 +66,14 @@ public class TransitionHelper {
      * @param v the offset value.
      * @param interpolator the interpolation type being used.
      */
-    public void addMouseClickTransition(DoubleProperty property, int ms,
-                                       double v, Interpolator interpolator) {
+    public void addMouseClickTransition(TransitionData data, double v) {
         // setup timelines
         Timeline t1 = new Timeline();
         Timeline t2 = new Timeline();
 
         // Create event handlers from x to y, and from y to x.
-        EventHandler mouseInHandler = createHandlerTowardsDouble(property, t1, t2, ms,
-                v, false, interpolator);
-        EventHandler mouseOutHandler = createHandlerTowardsDouble(property, t1, t2, ms,
-                v, true, interpolator);
+        EventHandler mouseInHandler = createHandlerTowardsDouble(data, t1, t2, v, false);
+        EventHandler mouseOutHandler = createHandlerTowardsDouble(data, t1, t2, v, true);
 
         // Store handlers so we can kill them again
         addedHandlers.add(mouseInHandler);
@@ -98,13 +96,10 @@ public class TransitionHelper {
      * @param interpolator type of interpolation used.
      * @param <T> generic type.
      */
-    public <T> void addMouseClickTransition(Property<T> property, int ms,
-                                            T x, T y, Interpolator interpolator) {
+    public <T> void addMouseClickTransition(TransitionData<T> data, T x, T y) {
         // Create event handlers from x to y, and from y to x.
-        EventHandler mouseInHandler = createHandlerBetweenGenerics(property, ms,
-                x, y, interpolator);
-        EventHandler mouseOutHandler = createHandlerBetweenGenerics(property, ms,
-                y, x, interpolator);
+        EventHandler mouseInHandler = createHandlerBetweenGenerics(data, x, y);
+        EventHandler mouseOutHandler = createHandlerBetweenGenerics(data, y, x);
 
         // Store handlers so we can kill them again
         addedHandlers.add(mouseInHandler);
@@ -116,7 +111,7 @@ public class TransitionHelper {
         node.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseInHandler);
         node.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseOutHandler);
     }
-
+    
     /**
      * Add a transition event, on mouse enter and exit, between a specified double
      * value and a specified double offset.
@@ -125,17 +120,14 @@ public class TransitionHelper {
      * @param v the offset value.
      * @param interpolator the interpolation type being used.
      */
-    public void addMouseOverTransition(DoubleProperty property, int ms,
-                                           double v, Interpolator interpolator) {
+    public void addMouseOverTransition(TransitionData data, double v) {
         // setup timelines
         Timeline t1 = new Timeline();
         Timeline t2 = new Timeline();
 
         // Create event handlers from x to y, and from y to x.
-        EventHandler mouseInHandler = createHandlerTowardsDouble(property, t1, t2, ms,
-                v, false, interpolator);
-        EventHandler mouseOutHandler = createHandlerTowardsDouble(property, t1, t2, ms,
-                v, true, interpolator);
+        EventHandler mouseInHandler = createHandlerTowardsDouble(data, t1, t2, v, false);
+        EventHandler mouseOutHandler = createHandlerTowardsDouble(data, t1, t2, v, true);
 
         // Store handlers so we can kill them again
         addedHandlers.add(mouseInHandler);
@@ -158,13 +150,10 @@ public class TransitionHelper {
      * @param interpolator type of interpolation used.
      * @param <T> generic type.
      */
-    public <T> void addMouseOverTransition(Property<T> property, int ms,
-                                           T x, T y, Interpolator interpolator) {
+    public <T> void addMouseOverTransition(TransitionData<T> data, T x, T y) {
         // Create event handlers from x to y, and from y to x.
-        EventHandler mouseInHandler = createHandlerBetweenGenerics(property, ms,
-                x, y, interpolator);
-        EventHandler mouseOutHandler = createHandlerBetweenGenerics(property, ms,
-                y, x, interpolator);
+        EventHandler mouseInHandler = createHandlerBetweenGenerics(data, x, y);
+        EventHandler mouseOutHandler = createHandlerBetweenGenerics(data, y, x);
 
         // Store handlers so we can kill them again
         addedHandlers.add(mouseInHandler);
@@ -197,18 +186,17 @@ public class TransitionHelper {
      * @param <T> generic type.
      * @return the new eventhandler.
      */
-    private <T> EventHandler createHandlerBetweenGenerics(Property<T> property, int ms,
-                                                              T x, T y, Interpolator interpolator) {
+    private <T> EventHandler createHandlerBetweenGenerics(TransitionData<T> data, T x, T y) {
         return  e -> {
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.seconds(0),
-                            new KeyValue(property,
+                            new KeyValue(data.getProperty(),
                                     x,
-                                    interpolator)),
-                    new KeyFrame(Duration.millis(ms),
-                            new KeyValue(property,
+                                    data.getInterpolator())),
+                    new KeyFrame(Duration.millis(data.getMs()),
+                            new KeyValue(data.getProperty(),
                                     y,
-                                    interpolator))
+                                    data.getInterpolator()))
             );
             timeline.setCycleCount(1);
             timeline.setAutoReverse(false);
@@ -229,17 +217,16 @@ public class TransitionHelper {
      * @param interpolator type of Interpolation used.
      * @param <T> generic type.
      */
-    public <T> void runTransitionToValue(Property<T> property, int ms, T v,
-                                           Interpolator interpolator) {
+    public <T> void runTransitionToValue(TransitionData<T> data, T v) {
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0),
-                        new KeyValue(property,
-                                property.getValue(),
-                                interpolator)),
-                new KeyFrame(Duration.millis(ms),
-                        new KeyValue(property,
+                        new KeyValue(data.getProperty(),
+                                data.getProperty().getValue(),
+                                data.getInterpolator())),
+                new KeyFrame(Duration.millis(data.getMs()),
+                        new KeyValue(data.getProperty(),
                                 v,
-                                interpolator))
+                                data.getInterpolator()))
         );
         timeline.setCycleCount(1);
         timeline.setAutoReverse(false);
@@ -262,22 +249,20 @@ public class TransitionHelper {
      * @param interpolator type of interpolation used.
      * @return the new eventhandler.
      */
-    private EventHandler createHandlerTowardsDouble(DoubleProperty property,
-                                                                 Timeline t1, Timeline t2,
-                                                                int ms, double v, boolean done,
-                                                                Interpolator interpolator) {
+    private EventHandler createHandlerTowardsDouble(TransitionData data, Timeline t1, Timeline t2,
+                                                                double v, boolean done) {
         return  e -> {
             if (!done) { // setup animation t1 towards v.
                 t1.getKeyFrames().add(
                         new KeyFrame(Duration.seconds(0),
-                                new KeyValue(property,
-                                        property.getValue(),
-                                        interpolator)) );
+                                new KeyValue(data.getProperty(),
+                                        data.getProperty().getValue(),
+                                        data.getInterpolator())) );
                 t1.getKeyFrames().add(
-                        new KeyFrame(Duration.millis(ms),
-                                new KeyValue(property,
-                                        property.getValue() + v,
-                                        interpolator)) );
+                        new KeyFrame(Duration.millis(data.getMs()),
+                                new KeyValue(data.getProperty(),
+                                        (double) data.getProperty().getValue() + v,
+                                        data.getInterpolator())) );
                 t1.setCycleCount(1);
                 t1.setAutoReverse(false);
                 t1.play();
@@ -290,14 +275,14 @@ public class TransitionHelper {
                 }
                 t2.getKeyFrames().add(
                         new KeyFrame(Duration.seconds(0),
-                                new KeyValue(property,
-                                        property.getValue(),
-                                        interpolator)) );
+                                new KeyValue(data.getProperty(),
+                                        data.getProperty().getValue(),
+                                        data.getInterpolator())) );
                 t2.getKeyFrames().add(
-                        new KeyFrame(Duration.millis(ms),
-                                new KeyValue(property,
-                                        property.getValue() - progressBack,
-                                        interpolator)) );
+                        new KeyFrame(Duration.millis(data.getMs()),
+                                new KeyValue(data.getProperty(),
+                                        (double) data.getProperty().getValue() - progressBack,
+                                        data.getInterpolator())) );
                 t2.setCycleCount(1);
                 t2.setAutoReverse(false);
                 t2.play();
