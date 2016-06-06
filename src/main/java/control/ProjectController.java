@@ -29,6 +29,7 @@ import data.CameraType;
 import data.DirectorShot;
 import data.DirectorTimeline;
 import data.ScriptingProject;
+import data.User;
 import gui.modal.AddCameraModalView;
 import gui.modal.AddCameraTypeModalView;
 import gui.modal.DeleteCameraTypeWarningModalView;
@@ -274,6 +275,8 @@ public class ProjectController {
             setData(project);
             project.getDirectorTimeline().setProject(project);
             project.getCameraTimelines().forEach(c -> c.setProject(project));
+            ArrayList<User> oldUsers = controllerManager.getScriptingProject().getUsers();
+            project.setUsers(oldUsers);
             controllerManager.setScriptingProject(project);
             controllerManager.updateWindowTitle();
             RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),

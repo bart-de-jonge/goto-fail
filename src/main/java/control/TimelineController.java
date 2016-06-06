@@ -118,7 +118,6 @@ public class TimelineController {
      * @param cameraShotBlock CameraShotBlock to be removed
      */
     public void removeCameraShot(CameraShotBlock cameraShotBlock) {
-        log.error("REMOVING SOME SHOT BLOCK KEK {}", cameraShotBlock.getShot().getName());
         // If we are removing the active shot, then this must be updated accordingly
         if (cameraShotBlock.equals(this.controllerManager.getActiveShotBlock())) {
             this.controllerManager.setActiveShotBlock(null);
@@ -145,7 +144,6 @@ public class TimelineController {
      * @param shot Camera Shot to be removed
      */
     public void removeCameraShot(CameraShot shot) {
-        log.error("REMOVING SOME SHOT EZ {} " + shot.getName());
         CameraShotBlock shotBlock = cameraShotBlockMap.get(shot);
 
         if (shotBlock != null) {
@@ -279,6 +277,15 @@ public class TimelineController {
     }
     
     /**
+     * Recompute all the collissions.
+     */
+    public void recomputeAllCollisions() {
+        this.cameraShotBlocks.forEach(shotBlock -> {
+                this.checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
+            });
+    }
+    
+    /**
      * Reset colliding status on camera shot block.
      * @param cameraShotBlock the shot block to do that on
      */
@@ -286,10 +293,11 @@ public class TimelineController {
         cameraShotBlock.setColliding(false);
         cameraShotBlock.getShot().setColliding(false);
         cameraShotBlock.getShot().getCollidesWith().forEach(e -> {
-                this.checkCollisions(
-                    this.getShotBlockForShot((CameraShot) e)
-                    .getTimetableNumber(),
-                    this.getShotBlockForShot((CameraShot) e));
+                CameraShotBlock toReset = this.getShotBlockForShot((CameraShot) e);
+                if (toReset != null) {
+                    this.checkCollisions(
+                            toReset.getTimetableNumber(), toReset);
+                }
             });
         removeCollisionFromCameraShotBlock(cameraShotBlock);
     }

@@ -7,6 +7,7 @@ import data.CameraShot;
 import data.DirectorShot;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
+import gui.events.CameraShotBlockUpdatedEvent;
 import gui.headerarea.DetailView;
 import gui.headerarea.DirectorDetailView;
 import javafx.beans.value.ObservableValue;
@@ -94,14 +95,23 @@ public class DetailViewController {
                     ((DirectorDetailView) detailView).getPaddingBeforeField().getText());
             ((DirectorDetailView) detailView).getPaddingBeforeField().setText(newValue);
             double newVal = Double.parseDouble(newValue);
+            DirectorShotBlock directorShotBlock = 
+                    ((DirectorShotBlock) manager.getActiveShotBlock());
             
-            ((DirectorShotBlock) manager.getActiveShotBlock()).setPaddingBefore(newVal);
-            ((DirectorShot) manager.getActiveShotBlock().getShot()).setFrontShotPadding(newVal);
-            ((DirectorShot) manager.getActiveShotBlock().getShot()).getCameraShots().forEach(e -> {
+            directorShotBlock.setPaddingBefore(newVal);
+            DirectorShot directorShot = ((DirectorShot) manager.getActiveShotBlock().getShot());
+            
+            directorShot.setFrontShotPadding(newVal);
+            directorShot.getCameraShots().forEach(e -> {
                     CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
-                    shotBlock.setBeginCount(((DirectorShot) manager.getActiveShotBlock()
-                            .getShot()).getBeginCount() - newVal, true);
+                    shotBlock.setBeginCount(directorShot.getBeginCount() - newVal, true);
+                    manager.getTimelineControl().modifyCameraShot(
+                            (CameraShotBlockUpdatedEvent) shotBlock.getShotBlockUpdatedEvent(),
+                                                          shotBlock);
+                    manager.setActiveShotBlock(directorShotBlock);
                 });
+            manager.getTimelineControl().recomputeAllCollisions();
+
         }
     }
     
@@ -140,14 +150,22 @@ public class DetailViewController {
                     ((DirectorDetailView) detailView).getPaddingAfterField().getText());
             ((DirectorDetailView) detailView).getPaddingAfterField().setText(newValue);
             double newVal = Double.parseDouble(newValue);
+            DirectorShotBlock directorShotBlock = 
+                    ((DirectorShotBlock) manager.getActiveShotBlock());
             
-            ((DirectorShotBlock) manager.getActiveShotBlock()).setPaddingAfter(newVal);
+            directorShotBlock.setPaddingAfter(newVal);
             ((DirectorShot) manager.getActiveShotBlock().getShot()).setEndShotPadding(newVal);
             ((DirectorShot) manager.getActiveShotBlock().getShot()).getCameraShots().forEach(e -> {
                     CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
                     shotBlock.setEndCount(((DirectorShot) manager.getActiveShotBlock().getShot())
                             .getEndCount() + newVal, true);
+                    manager.getTimelineControl().modifyCameraShot(
+                            (CameraShotBlockUpdatedEvent) shotBlock.getShotBlockUpdatedEvent(),
+                                                          shotBlock);
+                    manager.setActiveShotBlock(directorShotBlock);
                 });
+            manager.getTimelineControl().recomputeAllCollisions();
+
         }
     }
     
