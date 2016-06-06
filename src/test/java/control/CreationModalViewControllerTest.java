@@ -175,7 +175,7 @@ public class CreationModalViewControllerTest extends ApplicationTest {
             when(modalView[0].getCamerasInShot()).thenReturn(new ArrayList(Arrays.asList(1)));
 
             timelineController[0] = Mockito.mock(TimelineController.class);
-            Mockito.doNothing().when(timelineController[0]).addCameraShot(anyInt(), anyString(), anyString(), anyDouble(), anyDouble());
+            Mockito.doNothing().when(timelineController[0]).addCameraShot(anyInt(), anyObject());
             when(manager.getTimelineControl()).thenReturn(timelineController[0]);
 
             try {
@@ -187,7 +187,7 @@ public class CreationModalViewControllerTest extends ApplicationTest {
         });
         latch[0].await();
 
-        verify(timelineController[0], times(1)).addCameraShot(anyInt(), anyString(), anyString(), anyDouble(), anyDouble());
+        verify(timelineController[0], times(1)).addCameraShot(anyInt(), anyObject());
         verify(modalView[0], times(1)).getModalStage();
 
         tearDownCameraCreationModalView();

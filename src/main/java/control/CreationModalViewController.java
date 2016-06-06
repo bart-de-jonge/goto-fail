@@ -1,5 +1,6 @@
 package control;
 
+import data.CameraShot;
 import gui.modal.CameraShotCreationModalView;
 import gui.modal.DirectorShotCreationModalView;
 import javafx.beans.value.ObservableValue;
@@ -121,13 +122,13 @@ public class CreationModalViewController {
             TimelineController timelineController = this.controllerManager.getTimelineControl();
 
             cameraShotCreationModalView.getCamerasInShot().forEach(cameraIndex -> {
-                    timelineController.addCameraShot(cameraIndex,
+                    timelineController.addCameraShot(cameraIndex, new CameraShot(
                             cameraShotCreationModalView.getNameField().getText(),
                             cameraShotCreationModalView.getDescriptionField().getText(),
                             Double.parseDouble(
                                     cameraShotCreationModalView.getStartField().getText()),
                             Double.parseDouble(
-                                    cameraShotCreationModalView.getEndField().getText()));
+                                    cameraShotCreationModalView.getEndField().getText())));
                 });
 
             cameraShotCreationModalView.getModalStage().close();

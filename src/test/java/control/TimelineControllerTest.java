@@ -129,7 +129,7 @@ public class TimelineControllerTest extends ApplicationTest {
     @Test
     public void addCameraShot1() {
         Mockito.doNothing().when(timelineController).addCameraShot(anyInt(), anyObject());
-        timelineController.addCameraShot(1, "name", "description", 2.0, 3.0);
+        timelineController.addCameraShot(1, new CameraShot("name", "description", 2.0, 3.0));
         Mockito.verify(timelineController, times(1)).addCameraShot(anyInt(), anyObject());
     }
 
