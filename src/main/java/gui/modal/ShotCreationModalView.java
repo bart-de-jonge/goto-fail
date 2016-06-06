@@ -135,15 +135,7 @@ public class ShotCreationModalView extends ModalView {
      */
     protected void initButtons() {
         // setup button pane
-        this.buttonPane = new HBox();
-        this.buttonPane.setSpacing(buttonSpacing);
-        this.buttonPane.setAlignment(Pos.CENTER_LEFT);
-        this.buttonPane.setMinHeight(bottomAreaHeight);
-        this.buttonPane.setPrefHeight(bottomAreaHeight);
-        this.buttonPane.setMaxHeight(bottomAreaHeight);
-        this.buttonPane.setStyle(bottomStyle);
-        this.buttonPane.setPadding(new Insets(0, titlelabelOffsetFromLeft,
-                0, titlelabelOffsetFromLeft));
+        this.buttonPane = ModalUtilities.constructButtonPane();
         this.rootPane.getChildren().add(buttonPane);
 
         // Add cancel button

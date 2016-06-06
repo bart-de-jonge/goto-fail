@@ -377,14 +377,7 @@ public class EditProjectModalView extends ModalView {
      */
     private void initButtons() {
         // setup button pane
-        this.buttonPane = new HBox();
-        this.buttonPane.setSpacing(buttonSpacing);
-        this.buttonPane.setAlignment(Pos.CENTER_LEFT);
-        this.buttonPane.setMinHeight(bottomAreaHeight);
-        this.buttonPane.setPrefHeight(bottomAreaHeight);
-        this.buttonPane.setMaxHeight(bottomAreaHeight);
-        this.buttonPane.setStyle(bottomStyle);
-        this.buttonPane.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
+        this.buttonPane = ModalUtilities.constructButtonPane();
         this.viewPane.getChildren().add(buttonPane);
 
         // Add cancel button
