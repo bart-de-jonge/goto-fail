@@ -105,6 +105,8 @@ public class DetailViewController {
                     manager.getTimelineControl().checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
                     shotBlock.recompute();
                 });
+            manager.getTimelineControl().recomputeAllCollisions();
+
         }
     }
     
@@ -153,7 +155,10 @@ public class DetailViewController {
                     log.error("CHECKING COLISSIONS 2");
                     manager.getTimelineControl().checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
                     shotBlock.recompute();
+
                 });
+            manager.getTimelineControl().recomputeAllCollisions();
+
         }
     }
     

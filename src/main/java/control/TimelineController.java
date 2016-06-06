@@ -280,6 +280,12 @@ public class TimelineController {
         }
     }
     
+    public void recomputeAllCollisions() {
+        this.cameraShotBlocks.forEach(shotBlock -> {
+            this.checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
+        });
+    }
+    
     /**
      * Reset colliding status on camera shot block.
      * @param cameraShotBlock the shot block to do that on
