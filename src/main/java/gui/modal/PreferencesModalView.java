@@ -107,14 +107,8 @@ public class PreferencesModalView extends ModalView {
      * Init the title label.
      */
     private void initTitleLabel() {
-        titleLabel = new Label("Preferences");
-        titleLabel.setStyle(topStyle);
-        titleLabel.setAlignment(Pos.CENTER_LEFT);
-        titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        titleLabel.setMinHeight(topAreaHeight);
-        titleLabel.setPrefHeight(topAreaHeight);
-        titleLabel.setMaxHeight(topAreaHeight);
+        titleLabel = ModalUtilities.constructTitleLabel(topStyle, topAreaHeight);
+        titleLabel.setText("Preferences");
         this.viewPane.getChildren().add(titleLabel);
     }
 

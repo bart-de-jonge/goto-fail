@@ -3,6 +3,7 @@ package gui.modal;
 import gui.misc.TweakingHelper;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
 public class ModalUtilities {
@@ -24,6 +25,19 @@ public class ModalUtilities {
         buttonPane.setPadding(new Insets(0, TITLE_LABEL_OFFSET_FROM_LEFT,
                 0, TITLE_LABEL_OFFSET_FROM_LEFT));
         return buttonPane;
+    }
+    
+    public static Label constructTitleLabel(String style, int topAreaHeight) {
+        Label titleLabel = new Label("Test title, please ignore...");
+        titleLabel.setStyle(style);
+        titleLabel.setAlignment(Pos.CENTER);
+        titleLabel.setPadding(new Insets(0, TITLE_LABEL_OFFSET_FROM_LEFT,
+                0, TITLE_LABEL_OFFSET_FROM_LEFT));
+        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
+        titleLabel.setMinHeight(topAreaHeight);
+        titleLabel.setPrefHeight(topAreaHeight);
+        titleLabel.setMaxHeight(topAreaHeight);
+        return titleLabel;
     }
 
 }

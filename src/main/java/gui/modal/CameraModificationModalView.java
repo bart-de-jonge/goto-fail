@@ -54,14 +54,8 @@ public class CameraModificationModalView extends ModalView {
      * Init the title label.
      */
     protected void initTitleLabel() {
-        titleLabel = new Label("Add a camera...");
-        titleLabel.setStyle(topStyle);
-        titleLabel.setAlignment(Pos.CENTER_LEFT);
-        titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        titleLabel.setMinHeight(topAreaHeight);
-        titleLabel.setPrefHeight(topAreaHeight);
-        titleLabel.setMaxHeight(topAreaHeight);
+        titleLabel = ModalUtilities.constructTitleLabel(topStyle, topAreaHeight);
+        titleLabel.setText("Add a camera...");
         this.viewPane.getChildren().add(titleLabel);
     }
     

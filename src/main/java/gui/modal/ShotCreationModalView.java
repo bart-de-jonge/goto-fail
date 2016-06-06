@@ -84,14 +84,8 @@ public class ShotCreationModalView extends ModalView {
      * @param text the text to put in the title label
      */
     protected void initTitleLabel(String text) {
-        titleLabel = new Label(text);
-        titleLabel.setStyle(topStyle);
-        titleLabel.setAlignment(Pos.CENTER_LEFT);
-        titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        titleLabel.setMinHeight(topAreaHeight);
-        titleLabel.setPrefHeight(topAreaHeight);
-        titleLabel.setMaxHeight(topAreaHeight);
+        titleLabel = ModalUtilities.constructTitleLabel(topStyle, topAreaHeight);
+        titleLabel.setText(text);
         this.rootPane.getChildren().add(titleLabel);
     }
     

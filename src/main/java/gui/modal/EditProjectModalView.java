@@ -220,16 +220,9 @@ public class EditProjectModalView extends ModalView {
      * Initialize title label.
      */
     private void initTitleLabel() {
-        titleLabel = new Label("");
+        titleLabel = ModalUtilities.constructTitleLabel(topStyle, topAreaHeight);
         titleLabel.setText( fillWithCurrentProjectInfo
                 ? "Edit the current project..." : "Create a new project...");
-        titleLabel.setStyle(topStyle);
-        titleLabel.setAlignment(Pos.CENTER_LEFT);
-        titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        titleLabel.setMinHeight(topAreaHeight);
-        titleLabel.setPrefHeight(topAreaHeight);
-        titleLabel.setMaxHeight(topAreaHeight);
         this.viewPane.getChildren().add(titleLabel);
     }
 

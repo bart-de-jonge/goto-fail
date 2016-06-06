@@ -86,16 +86,7 @@ public class ButtonsOnlyModalView extends ModalView {
      * Initializes title area content and layout.
      */
     private void initializeTitleLabel() {
-        titleLabel = new Label("Test title, please ignore...");
-        titleLabel.setStyle(topStyle);
-        titleLabel.setAlignment(Pos.CENTER);
-        titleLabel.setPadding(new Insets(0, titlelabelOffsetFromLeft,
-                0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        titleLabel.setMinHeight(topAreaHeight);
-        titleLabel.setPrefHeight(topAreaHeight);
-        titleLabel.setMaxHeight(topAreaHeight);
-
+        titleLabel = ModalUtilities.constructTitleLabel(topStyle, topAreaHeight);
         this.viewPane.getChildren().add(titleLabel);
     }
 
