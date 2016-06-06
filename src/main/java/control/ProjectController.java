@@ -247,10 +247,22 @@ public class ProjectController {
      * Set some data for project.
      * @param project the project to set it for
      */
-    private void setData(ScriptingProject project) {
+    private ScriptingProject constructProjectFromModalData() {
+        String name = editProjectModal.getNameField().getText();
+        String description = editProjectModal.getDescriptionField().getText();
+        String directorTimelineDescription = editProjectModal
+                .getDirectorTimelineDescriptionField().getText();
+        double secondsPerCount = Double.parseDouble(
+                editProjectModal.getSecondsPerCountField().getText());
+        ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
+        if (controllerManager.getScriptingProject() != null) {
+            project.setFilePath(controllerManager.getScriptingProject().getFilePath());
+        }
+        project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
         project.setCameraTypes(editProjectModal.getCameraTypes());
         project.setCameras(editProjectModal.getCameras());
         project.setCameraTimelines(editProjectModal.getTimelines());
+        return project;
     }
     
     /**
@@ -261,18 +273,7 @@ public class ProjectController {
     private void applyEdit(MouseEvent event) {
         if (validateProjectData()) {
             editProjectModal.hideModal();
-            String name = editProjectModal.getNameField().getText();
-            String description = editProjectModal.getDescriptionField().getText();
-            String directorTimelineDescription = editProjectModal
-                    .getDirectorTimelineDescriptionField().getText();
-            double secondsPerCount = Double.parseDouble(
-                    editProjectModal.getSecondsPerCountField().getText());
-            ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
-            if (controllerManager.getScriptingProject() != null) {
-                project.setFilePath(controllerManager.getScriptingProject().getFilePath());
-            }
-            project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
-            setData(project);
+            ScriptingProject project = constructProjectFromModalData();
             project.getDirectorTimeline().setProject(project);
             project.getCameraTimelines().forEach(c -> c.setProject(project));
             ArrayList<User> oldUsers = controllerManager.getScriptingProject().getUsers();
@@ -294,15 +295,7 @@ public class ProjectController {
     private void applyNew(MouseEvent event) {
         if (validateProjectData()) {
             editProjectModal.hideModal();
-            String name = editProjectModal.getNameField().getText();
-            String description = editProjectModal.getDescriptionField().getText();
-            String directorTimelineDescription = editProjectModal
-                    .getDirectorTimelineDescriptionField().getText();
-            double secondsPerCount = Double.parseDouble(
-                    editProjectModal.getSecondsPerCountField().getText());
-            ScriptingProject project = new ScriptingProject(name, description, secondsPerCount);
-            project.setDirectorTimeline(new DirectorTimeline(directorTimelineDescription, null));
-            setData(project);
+            ScriptingProject project = constructProjectFromModalData();
             project.getDirectorTimeline().setProject(project);
             project.getCameraTimelines().forEach(c -> c.setProject(project));
             controllerManager.setScriptingProject(project);
