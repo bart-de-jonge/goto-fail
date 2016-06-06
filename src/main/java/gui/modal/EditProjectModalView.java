@@ -170,10 +170,7 @@ public class EditProjectModalView extends ModalView {
     private void initializeView() {
 
         // force minimum size
-        getModalStage().setHeight(height);
-        getModalStage().setWidth(width);
-        getModalStage().setMinWidth(width);
-        getModalStage().setMinHeight(height);
+        forceBounds(height, width);
 
         // Create a new VBox for vertical layout.
         this.viewPane = new VBox();

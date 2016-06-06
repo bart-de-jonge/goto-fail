@@ -68,10 +68,7 @@ public class ButtonsOnlyModalView extends ModalView {
         this.viewPane = new VBox();
 
         // force minimum size
-        getModalStage().setHeight(height);
-        getModalStage().setWidth(width);
-        getModalStage().setMinWidth(width);
-        getModalStage().setMinHeight(height);
+        forceBounds(height, width);
 
         // Add content
         initializeTitleLabel();

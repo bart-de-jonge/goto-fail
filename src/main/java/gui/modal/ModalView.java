@@ -94,4 +94,11 @@ public abstract class ModalView {
         button.setPrefHeight(buttonHeight);
         return button;
     }
+    
+    protected void forceBounds(int height, int width) {
+        getModalStage().setHeight(height);
+        getModalStage().setWidth(width);
+        getModalStage().setMinWidth(width);
+        getModalStage().setMinHeight(height);
+    }
 }

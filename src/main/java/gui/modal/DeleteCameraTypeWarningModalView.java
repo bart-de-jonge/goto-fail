@@ -81,10 +81,7 @@ public class DeleteCameraTypeWarningModalView extends ModalView {
      * Initialize the view of this modal.
      */
     private void initView() {
-        getModalStage().setHeight(height);
-        getModalStage().setWidth(width);
-        getModalStage().setMinHeight(height);
-        getModalStage().setMinWidth(width);
+        forceBounds(height, width);
         
         this.viewPane = new VBox();
         
