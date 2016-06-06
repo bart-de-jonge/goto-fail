@@ -145,15 +145,7 @@ public class DeleteCameraTypeWarningModalView extends ModalView {
      * Initialize the buttons.
      */
     private void initButtons() {
-        HBox content = new HBox();
-        content.setSpacing(buttonSpacing);
-        content.setAlignment(Pos.CENTER_LEFT);
-        content.setMinHeight(bottomAreaHeight);
-        content.setPrefHeight(bottomAreaHeight);
-        content.setMaxHeight(bottomAreaHeight);
-        content.setStyle(bottomStyle);
-        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
-        content.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
+        HBox content = ModalUtilities.constructButtonPane();
         this.viewPane.getChildren().add(content);
 
         confirmButton = createButton("Confirm", false);

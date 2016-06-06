@@ -98,16 +98,7 @@ public class CameraModificationModalView extends ModalView {
      * @return a HBox styled and ready to take in some buttons.
      */
     protected HBox initHBoxForButtons() {
-        // setup button pane
-        HBox content = new HBox();
-        content.setSpacing(buttonSpacing);
-        content.setAlignment(Pos.CENTER_LEFT);
-        content.setMinHeight(bottomAreaHeight);
-        content.setPrefHeight(bottomAreaHeight);
-        content.setMaxHeight(bottomAreaHeight);
-        content.setStyle(bottomStyle);
-        content.setPadding(new Insets(0, titlelabelOffsetFromLeft,
-                0, titlelabelOffsetFromLeft));
+        HBox content = ModalUtilities.constructButtonPane();
         this.viewPane.getChildren().add(content);
         return content;
     }
