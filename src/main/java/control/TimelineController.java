@@ -276,10 +276,13 @@ public class TimelineController {
         }
     }
     
+    /**
+     * Recompute all the collissions.
+     */
     public void recomputeAllCollisions() {
         this.cameraShotBlocks.forEach(shotBlock -> {
-            this.checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
-        });
+                this.checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
+            });
     }
     
     /**

@@ -95,7 +95,8 @@ public class DetailViewController {
                     ((DirectorDetailView) detailView).getPaddingBeforeField().getText());
             ((DirectorDetailView) detailView).getPaddingBeforeField().setText(newValue);
             double newVal = Double.parseDouble(newValue);
-            DirectorShotBlock directorShotBlock = ((DirectorShotBlock) manager.getActiveShotBlock());
+            DirectorShotBlock directorShotBlock = 
+                    ((DirectorShotBlock) manager.getActiveShotBlock());
             
             directorShotBlock.setPaddingBefore(newVal);
             DirectorShot directorShot = ((DirectorShot) manager.getActiveShotBlock().getShot());
@@ -104,10 +105,12 @@ public class DetailViewController {
             directorShot.getCameraShots().forEach(e -> {
                     CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
                     shotBlock.setBeginCount(directorShot.getBeginCount() - newVal, true);
-                    manager.getTimelineControl().checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
+                    manager.getTimelineControl()
+                           .checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
                     shotBlock.recompute();
-                  //  manager.getTimelineControl().shotChangedHandler((CameraShotBlockUpdatedEvent) shotBlock.getShotBlockUpdatedEvent());
-                    manager.getTimelineControl().modifyCameraShot((CameraShotBlockUpdatedEvent) shotBlock.getShotBlockUpdatedEvent(), shotBlock);
+                    manager.getTimelineControl().modifyCameraShot(
+                            (CameraShotBlockUpdatedEvent) shotBlock.getShotBlockUpdatedEvent(),
+                                                          shotBlock);
                     manager.setActiveShotBlock(directorShotBlock);
                 });
             manager.getTimelineControl().recomputeAllCollisions();
@@ -157,7 +160,8 @@ public class DetailViewController {
                     CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
                     shotBlock.setEndCount(((DirectorShot) manager.getActiveShotBlock().getShot())
                             .getEndCount() + newVal, true);
-                    manager.getTimelineControl().checkCollisions(shotBlock.getTimetableNumber(), shotBlock);
+                    manager.getTimelineControl().checkCollisions(shotBlock.getTimetableNumber(),
+                                                                 shotBlock);
                     shotBlock.recompute();
 
                 });
