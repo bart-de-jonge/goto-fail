@@ -124,9 +124,10 @@ public class CreationModalViewController {
             TimelineController timelineController = this.controllerManager.getTimelineControl();
 
             cameraShotCreationModalView.getCamerasInShot().forEach(cameraIndex -> {
-                    timelineController.addCameraShot(cameraIndex, new CameraShot(
-                            cameraShotCreationModalView.getNameField().getText(),
-                            cameraShotCreationModalView.getDescriptionField().getText(),
+                    timelineController.addCameraShot(cameraIndex,
+                            new CameraShot(
+                                cameraShotCreationModalView.getNameField().getText(),
+                                cameraShotCreationModalView.getDescriptionField().getText(),
                             Double.parseDouble(
                                     cameraShotCreationModalView.getStartField().getText()),
                             Double.parseDouble(
@@ -275,10 +276,13 @@ public class CreationModalViewController {
             DirectorTimelineController directorTimelineController =
                     this.controllerManager.getDirectorTimelineControl();
 
-            directorTimelineController.addDirectorShot(new DirectorShot(new GeneralShotData(
-                directorShotCreationModalView.getNameField().getText(),
-                directorShotCreationModalView.getDescriptionField().getText(),
-                Double.parseDouble(directorShotCreationModalView.getStartField().getText()),
+            directorTimelineController.addDirectorShot(
+                new DirectorShot(
+                    new GeneralShotData(
+                        directorShotCreationModalView.getNameField().getText(),
+                        directorShotCreationModalView.getDescriptionField().getText(),
+                        Double.parseDouble(directorShotCreationModalView.getStartField().getText()
+                    ),
                 Double.parseDouble(directorShotCreationModalView.getEndField().getText())),
                 Double.parseDouble(directorShotCreationModalView.getFrontPaddingField().getText()),
                 Double.parseDouble(directorShotCreationModalView.getEndPaddingField().getText()),
