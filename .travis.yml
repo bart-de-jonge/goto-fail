@@ -31,6 +31,6 @@ after_script:
   - echo "== PMD_RESULT ==" && cat "out/pmd.xml" && echo "== END_PMD_RESULT =="
   - echo "== FINDBUGS_RESULT ==" && cat "out/findbugsXml.xml" && echo "== END_FINDBUGS_RESULT =="
 after_success:
-  - mvn clean -DTRAVIS_JOB_ID=$TRAVIS_JOB_ID jacoco:report coveralls:report
+  - mvn clean test -DTRAVIS_JOB_ID=$TRAVIS_JOB_ID jacoco:report coveralls:report
 after_failure:
   - echo "== CHECKSTYLE_RESULT ==" && cat "out/checkstyle-result.xml" && echo "== END_CHECKSTYLE_RESULT =="
