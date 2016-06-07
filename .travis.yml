@@ -30,5 +30,7 @@ after_script:
   - echo "== CHECKSTYLE_RESULT ==" && cat "out/checkstyle-result.xml" && echo "== END_CHECKSTYLE_RESULT =="
   - echo "== PMD_RESULT ==" && cat "out/pmd.xml" && echo "== END_PMD_RESULT =="
   - echo "== FINDBUGS_RESULT ==" && cat "out/findbugsXml.xml" && echo "== END_FINDBUGS_RESULT =="
+after_success:
+  - mvn clean test jacoco:report coveralls:report
 after_failure:
   - echo "== CHECKSTYLE_RESULT ==" && cat "out/checkstyle-result.xml" && echo "== END_CHECKSTYLE_RESULT =="
