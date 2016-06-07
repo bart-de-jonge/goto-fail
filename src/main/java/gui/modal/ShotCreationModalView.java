@@ -26,13 +26,7 @@ public class ShotCreationModalView extends ModalView {
     protected static final String BACKGROUND_STYLE_STRING = "-fx-background-color: ";
 
     // simple background styles of the three main areas.
-    protected String topStyle = BACKGROUND_STYLE_STRING
-            + TweakingHelper.getColorString(0) + ";"
-            + "-fx-text-fill: white; -fx-font-size: 26;"
-            + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
-            + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: "
-            + TweakingHelper.getColorString(1) + ";";
+    protected String topStyle = ModalUtilities.constructDefaultModalTopStyle(26);
     protected String centerLeftStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.getBackgroundHighString() + ";";
     protected String centerRightStyle = BACKGROUND_STYLE_STRING
@@ -90,14 +84,8 @@ public class ShotCreationModalView extends ModalView {
      * @param text the text to put in the title label
      */
     protected void initTitleLabel(String text) {
-        titleLabel = new Label(text);
-        titleLabel.setStyle(topStyle);
-        titleLabel.setAlignment(Pos.CENTER_LEFT);
-        titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        titleLabel.setMinHeight(topAreaHeight);
-        titleLabel.setPrefHeight(topAreaHeight);
-        titleLabel.setMaxHeight(topAreaHeight);
+        titleLabel = ModalUtilities.constructTitleLabel(topStyle, topAreaHeight);
+        titleLabel.setText(text);
         this.rootPane.getChildren().add(titleLabel);
     }
     
@@ -141,15 +129,7 @@ public class ShotCreationModalView extends ModalView {
      */
     protected void initButtons() {
         // setup button pane
-        this.buttonPane = new HBox();
-        this.buttonPane.setSpacing(buttonSpacing);
-        this.buttonPane.setAlignment(Pos.CENTER_LEFT);
-        this.buttonPane.setMinHeight(bottomAreaHeight);
-        this.buttonPane.setPrefHeight(bottomAreaHeight);
-        this.buttonPane.setMaxHeight(bottomAreaHeight);
-        this.buttonPane.setStyle(bottomStyle);
-        this.buttonPane.setPadding(new Insets(0, titlelabelOffsetFromLeft,
-                0, titlelabelOffsetFromLeft));
+        this.buttonPane = ModalUtilities.constructButtonPane();
         this.rootPane.getChildren().add(buttonPane);
 
         // Add cancel button
@@ -190,13 +170,10 @@ public class ShotCreationModalView extends ModalView {
      * @return the box containing the text fields
      */
     protected VBox getTextfieldBox() {
-        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
+        VBox content = ModalUtilities.constructFieldsPane();
+        content.setStyle(centerLeftStyle);
         content.setAlignment(Pos.CENTER_LEFT);
         content.setMinWidth(TEXT_AREA_MIN_WIDTH);
-        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
-        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
-        content.setStyle(centerLeftStyle);
         return content;
     }
     

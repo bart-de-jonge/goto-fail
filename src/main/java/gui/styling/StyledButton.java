@@ -1,5 +1,6 @@
 package gui.styling;
 
+import gui.misc.TransitionData;
 import gui.misc.TransitionHelper;
 import gui.misc.TweakingHelper;
 import javafx.animation.Interpolator;
@@ -94,23 +95,25 @@ public class StyledButton extends Button {
      * Initializes mouse over transitions.
      */
     private void initMouseOverTransitions() {
-        transitionHelper.addMouseOverTransition(fillColorProperty, mouseOverDuration,
-                fillColor, borderColor, Interpolator.LINEAR);
-        transitionHelper.addMouseOverTransition(borderColorProperty, mouseOverDuration,
-                borderColor, fillColor, Interpolator.LINEAR);
+        transitionHelper.addMouseOverTransition(new TransitionData<>(
+                    fillColorProperty, mouseOverDuration, Interpolator.LINEAR),
+                fillColor, borderColor);
+        transitionHelper.addMouseOverTransition(new TransitionData<>(
+                    borderColorProperty, mouseOverDuration, Interpolator.LINEAR),
+                borderColor, fillColor);
     }
 
     /**
      * Initializes mouse click transitions.
      */
     private void initMouseClickTransitions() {
-        transitionHelper.addMouseClickTransition(this.translateYProperty(),
-                mouseClickDuration, 0.5, Interpolator.LINEAR);
-        transitionHelper.addMouseClickTransition(dropShadow.radiusProperty(),
-                mouseClickDuration, -5, Interpolator.LINEAR);
-        transitionHelper.addMouseClickTransition(dropShadow.colorProperty(),
-                mouseClickDuration, Color.rgb(0, 0, 0, shadowOpacity),
-                Color.rgb(0, 0, 0, shadowClickOpacity), Interpolator.LINEAR);
+        transitionHelper.addMouseClickTransition(new TransitionData<>(this.translateYProperty(),
+                mouseClickDuration, Interpolator.LINEAR), 0.5);
+        transitionHelper.addMouseClickTransition(new TransitionData<>(dropShadow.radiusProperty(),
+                mouseClickDuration, Interpolator.LINEAR), -5);
+        transitionHelper.addMouseClickTransition(new TransitionData<>(dropShadow.colorProperty(),
+                mouseClickDuration, Interpolator.LINEAR), Color.rgb(0, 0, 0, shadowOpacity),
+                Color.rgb(0, 0, 0, shadowClickOpacity));
     }
 
     

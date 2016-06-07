@@ -1,5 +1,8 @@
 package control;
 
+import data.CameraShot;
+import data.DirectorShot;
+import data.GeneralShotData;
 import gui.modal.CameraShotCreationModalView;
 import gui.modal.DirectorShotCreationModalView;
 import javafx.beans.value.ObservableValue;
@@ -122,12 +125,13 @@ public class CreationModalViewController {
 
             cameraShotCreationModalView.getCamerasInShot().forEach(cameraIndex -> {
                     timelineController.addCameraShot(cameraIndex,
-                            cameraShotCreationModalView.getNameField().getText(),
-                            cameraShotCreationModalView.getDescriptionField().getText(),
+                            new CameraShot(
+                                cameraShotCreationModalView.getNameField().getText(),
+                                cameraShotCreationModalView.getDescriptionField().getText(),
                             Double.parseDouble(
                                     cameraShotCreationModalView.getStartField().getText()),
                             Double.parseDouble(
-                                    cameraShotCreationModalView.getEndField().getText()));
+                                    cameraShotCreationModalView.getEndField().getText())));
                 });
 
             cameraShotCreationModalView.getModalStage().close();
@@ -273,13 +277,16 @@ public class CreationModalViewController {
                     this.controllerManager.getDirectorTimelineControl();
 
             directorTimelineController.addDirectorShot(
-                directorShotCreationModalView.getNameField().getText(),
-                directorShotCreationModalView.getDescriptionField().getText(),
-                Double.parseDouble(directorShotCreationModalView.getStartField().getText()),
-                Double.parseDouble(directorShotCreationModalView.getEndField().getText()),
+                new DirectorShot(
+                    new GeneralShotData(
+                        directorShotCreationModalView.getNameField().getText(),
+                        directorShotCreationModalView.getDescriptionField().getText(),
+                        Double.parseDouble(directorShotCreationModalView.getStartField().getText()
+                    ),
+                Double.parseDouble(directorShotCreationModalView.getEndField().getText())),
                 Double.parseDouble(directorShotCreationModalView.getFrontPaddingField().getText()),
                 Double.parseDouble(directorShotCreationModalView.getEndPaddingField().getText()),
-                directorShotCreationModalView.getCamerasInShot());
+                directorShotCreationModalView.getCamerasInShot()));
 
             // keep at end of if statement
             directorShotCreationModalView.getModalStage().close();

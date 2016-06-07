@@ -28,32 +28,20 @@ public class CameraShotBlock extends ShotBlock {
     @Getter
     private TimelinesGridPane grid;
     
-    public CameraShotBlock(CameraShot shot, int timetableNumber, RootCenterArea rootCenterArea,
-                           EventHandler<CameraShotBlockUpdatedEvent> handler) {
-        this(shot.getInstance(), timetableNumber, rootCenterArea, shot.getBeginCount(),
-                shot.getEndCount(), shot.getDescription(), shot.getName(), handler, shot);
-    }
 
     /**
      * Constructor.
-     * @param shotId the shot's unique id
      * @param timetableNumber - the timeTableNumber this shot belongs to
      * @param rootCenterArea - the rootCenterArea this shot belongs to
-     * @param beginCount - the begin count of this shot
-     * @param endCount - the end count of this shot
      * @param handler - The handler for this camerashotblock
-     * @param description - the description of this camerashotblock
-     * @param name - the name of this camerashotblock
      * @param shot - The shot in the model belonging to this camerashotblock
      */
-    public CameraShotBlock(int shotId, int timetableNumber, RootCenterArea rootCenterArea,
-                           double beginCount, double endCount, String description, String name,
+    public CameraShotBlock(int timetableNumber, RootCenterArea rootCenterArea,
                            EventHandler<CameraShotBlockUpdatedEvent> handler, CameraShot shot) {
 
-        super(rootCenterArea, beginCount, endCount, description,
-                name, shot, CameraTimetableBlock.class);
+        super(rootCenterArea, shot, CameraTimetableBlock.class);
 
-        this.shotId = shotId;
+        this.shotId = shot.getInstance();
         this.timetableNumber = timetableNumber;
         this.grid = rootCenterArea.getMainTimeLineGridPane();
 

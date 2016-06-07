@@ -153,5 +153,4 @@ public final class TweakingHelper {
                 + ((int) (color.getBlue()  * 255)) + ","
                 + color.getOpacity() + ")";
     }
-    
 }

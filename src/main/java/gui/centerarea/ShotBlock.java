@@ -58,22 +58,17 @@ public abstract class ShotBlock {
     /**
      * Constructor.
      * @param rootCenterArea - the rootCenterArea this shot belongs to
-     * @param beginCount - the begin count of this shot
-     * @param endCount - the end count of this shot
-     * @param description - the description of this shot
-     * @param name - the name of this shot
      * @param shot - the shot of this ShotBlock
      * @param timetableBlockClass - the class of the timetableblock implementation
      *        that belongs to this shotblock. This must be a valid subclass of
      *        TimetableBlock with its default constructor implemented. Otherwise
      *        timetableBlock is initialized to null.
      */
-    public ShotBlock(RootCenterArea rootCenterArea, double beginCount, double endCount,
-                     String description, String name, Shot shot, Class<?> timetableBlockClass) {
-        this.description = description;
-        this.name = name;
-        this.beginCount = beginCount;
-        this.endCount = endCount;
+    public ShotBlock(RootCenterArea rootCenterArea, Shot shot, Class<?> timetableBlockClass) {
+        this.description = shot.getDescription();
+        this.name = shot.getName();
+        this.beginCount = shot.getBeginCount();
+        this.endCount = shot.getEndCount();
         this.shot = shot;
         this.colliding = false;
         this.tempBeginCount = -1;

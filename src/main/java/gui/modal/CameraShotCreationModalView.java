@@ -59,11 +59,7 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
      */
     private void initializeCreationView() {
         // force minimum size
-        getModalStage().setHeight(height);
-        getModalStage().setWidth(width);
-        getModalStage().setMinWidth(width);
-        getModalStage().setMinHeight(height);
-
+        forceBounds(height, width);
         // Create a new VBox for vertical layout
         this.rootPane = new VBox();
 
@@ -77,28 +73,16 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
         this.centerPane.setPrefHeight(TweakingHelper.GENERAL_SIZE);
         this.centerPane.setSpacing(40.0);
         this.rootPane.getChildren().add(centerPane);
+        
+        // add buttons at bottom.
+        initButtons();
 
         // actually add textfields and checkboxes
         initTextFields();
         initCamCheckBoxes();
 
-        // add buttons at bottom.
-        initButtons();
-
         super.setModalView(this.rootPane);
         super.displayModal();
-    }
-
-    /**
-     * Initialize all textfields, add them to a left-central VBox.
-     */
-    private void initTextFields() {
-        VBox content = getTextfieldBox();
-
-        initNameDescriptionFields(content);
-        initCountTextfields(content);
-
-        this.centerPane.getChildren().add(content);
     }
 
     /**
@@ -118,6 +102,18 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
         // add all to scene
         this.checkboxPane.getChildren().addAll(cameraCheckboxes);
         this.centerPane.getChildren().add(this.checkboxPane);
+    }
+    
+    /**
+     * Initialize all textfields, add them to a left-central VBox.
+     */
+    private void initTextFields() {
+        VBox content = getTextfieldBox();
+
+        initNameDescriptionFields(content);
+        initCountTextfields(content);
+
+        this.centerPane.getChildren().add(content);
     }
 
    

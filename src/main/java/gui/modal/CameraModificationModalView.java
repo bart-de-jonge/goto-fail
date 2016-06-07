@@ -16,13 +16,7 @@ public class CameraModificationModalView extends ModalView {
     protected static final int topAreaHeight = 50;
     protected static final int bottomAreaHeight = 60;
     
-    protected String topStyle = "-fx-background-color: "
-            + TweakingHelper.getColorString(0) + ";"
-            + "-fx-text-fill: white; -fx-font-size: 22;"
-            + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
-            + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: "
-            + TweakingHelper.getColorString(1) + ";";
+    protected String topStyle = ModalUtilities.constructDefaultModalTopStyle(22);
     protected String centerStyle = "-fx-background-color: "
             + TweakingHelper.getBackgroundString() + ";";
     protected String bottomStyle = "-fx-background-color: "
@@ -60,14 +54,8 @@ public class CameraModificationModalView extends ModalView {
      * Init the title label.
      */
     protected void initTitleLabel() {
-        titleLabel = new Label("Add a camera...");
-        titleLabel.setStyle(topStyle);
-        titleLabel.setAlignment(Pos.CENTER_LEFT);
-        titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        titleLabel.setMinHeight(topAreaHeight);
-        titleLabel.setPrefHeight(topAreaHeight);
-        titleLabel.setMaxHeight(topAreaHeight);
+        titleLabel = ModalUtilities.constructTitleLabel(topStyle, topAreaHeight);
+        titleLabel.setText("Add a camera...");
         this.viewPane.getChildren().add(titleLabel);
     }
     
@@ -76,11 +64,7 @@ public class CameraModificationModalView extends ModalView {
      * @return a VBox with these fields
      */
     protected VBox initNameDescriptionFields() {
-        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
-        content.setAlignment(Pos.CENTER);
-        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
-        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
+        VBox content = ModalUtilities.constructFieldsPane();
         content.setStyle(centerStyle);
 
         final Label nameLabel = new Label("Name:  ");
@@ -110,16 +94,7 @@ public class CameraModificationModalView extends ModalView {
      * @return a HBox styled and ready to take in some buttons.
      */
     protected HBox initHBoxForButtons() {
-        // setup button pane
-        HBox content = new HBox();
-        content.setSpacing(buttonSpacing);
-        content.setAlignment(Pos.CENTER_LEFT);
-        content.setMinHeight(bottomAreaHeight);
-        content.setPrefHeight(bottomAreaHeight);
-        content.setMaxHeight(bottomAreaHeight);
-        content.setStyle(bottomStyle);
-        content.setPadding(new Insets(0, titlelabelOffsetFromLeft,
-                0, titlelabelOffsetFromLeft));
+        HBox content = ModalUtilities.constructButtonPane();
         this.viewPane.getChildren().add(content);
         return content;
     }

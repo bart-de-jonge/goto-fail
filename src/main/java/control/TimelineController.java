@@ -62,21 +62,7 @@ public class TimelineController {
         this.cameraShotBlockMap = new HashMap<>();
     }
 
-    /**
-     * Add a camera shot to the corresponding timeline.
-     * @param cameraIndex Index of the camera track.
-     * @param name Name of the shot.
-     * @param description Shot description.
-     * @param startCount Start count.
-     * @param endCount End count.
-     */
-    public void addCameraShot(int cameraIndex, String name, String description,
-                              double startCount, double endCount) {
-
-        CameraShot newShot = new CameraShot(name,description, startCount, endCount);
-        this.addCameraShot(cameraIndex, newShot);
-    }
-
+    
     /**
      * Add an existing CameraShot to the corresponding timeline.
      * @param cameraIndex Index of the camera track
@@ -99,10 +85,8 @@ public class TimelineController {
      */
     protected void initShotBlock(int cameraIndex,
                                CameraShot newShot) {
-        CameraShotBlock shotBlock = new CameraShotBlock(newShot.getInstance(),
-            cameraIndex, rootPane.getRootCenterArea(), newShot.getBeginCount(),
-            newShot.getEndCount(), newShot.getDescription(), newShot.getName(),
-            this::shotChangedHandler, newShot);
+        CameraShotBlock shotBlock = new CameraShotBlock(
+            cameraIndex, rootPane.getRootCenterArea(), this::shotChangedHandler, newShot);
 
         controllerManager.setActiveShotBlock(shotBlock);
         this.cameraShotBlocks.add(shotBlock);

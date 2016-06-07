@@ -2,7 +2,6 @@ package control;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -10,6 +9,7 @@ import java.util.stream.Collectors;
 import data.CameraShot;
 import data.DirectorShot;
 import data.DirectorTimeline;
+import data.GeneralShotData;
 import data.Shot;
 import gui.centerarea.DirectorShotBlock;
 import gui.events.DirectorShotBlockUpdatedEvent;
@@ -49,24 +49,6 @@ public class DirectorTimelineController {
     }
 
     /**
-     * Add a director shot to the directorTimeline.
-     * @param name Name of the shot
-     * @param description Shot description
-     * @param startCount Start count
-     * @param endCount End count
-     * @param frontPadding additional recording time at the front
-     * @param endPadding additional recording time at the end
-     * @param cameras the cameras to generate the shot to
-     */
-    public void addDirectorShot(String name, String description,
-                                double startCount, double endCount,
-                                double frontPadding, double endPadding,
-                                List<Integer> cameras) {
-        addDirectorShot(new DirectorShot(name, description, startCount, endCount,
-                frontPadding, endPadding, cameras));
-    }
-
-    /**
      * Add a directorShot to the directortimeline.
      * @param shot the shot to add
      */
@@ -84,11 +66,8 @@ public class DirectorTimelineController {
      * @param shot DirectorShot to display
      */
     protected void initShotBlock(DirectorShot shot) {
-        DirectorShotBlock shotBlock = new DirectorShotBlock(shot.getInstance(),
-            rootPane.getRootCenterArea(), shot.getBeginCount(), shot.getEndCount(),
-            shot.getDescription(), shot.getFrontShotPadding(),
-            shot.getEndShotPadding(), shot.getTimelineIndices(), 
-            this::shotChangedHandler, shot);
+        DirectorShotBlock shotBlock = new DirectorShotBlock(
+            rootPane.getRootCenterArea(), this::shotChangedHandler, shot);
        
 
         controllerManager.setActiveShotBlock(shotBlock);
@@ -238,10 +217,10 @@ public class DirectorTimelineController {
                     double cameraEnd = shot.getEndCount() + shot.getEndShotPadding();
 
                     shot.getTimelineIndices().forEach(index -> {
-                            CameraShot subShot = new CameraShot(shot.getName(),
+                            CameraShot subShot = new CameraShot(new GeneralShotData(shot.getName(),
                                                                 shot.getDescription(),
                                                                 cameraStart,
-                                                                cameraEnd,
+                                                                cameraEnd),
                                                                 shot);
                             shot.addCameraShot(subShot);
                             this.controllerManager.getTimelineControl()

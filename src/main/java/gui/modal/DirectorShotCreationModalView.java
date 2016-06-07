@@ -71,10 +71,8 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
     private void initializeCreationView() {
         
         // force minimum size
-        getModalStage().setHeight(height);
-        getModalStage().setWidth(width);
-        getModalStage().setMinWidth(width);
-        getModalStage().setMinHeight(height);
+        forceBounds(height, width);
+       
 
         // Create a new VBox for vertical layout
         this.rootPane = new VBox();
@@ -170,20 +168,4 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
         errText.setFill(Color.RED);
         this.rootPane.getChildren().add(this.rootPane.getChildren().size() - 1, errText);
     }
-
-    /**
-     * Builds a list of which cameras are in the shot.
-     * @return list of cameras in shot
-     */
-    public List<Integer> getCamerasInShot() {
-        List<Integer> camsInShot = new ArrayList<>();
-
-        for (int i = 0; i < cameraCheckboxes.size(); i++) {
-            if (cameraCheckboxes.get(i).isSelected()) {
-                camsInShot.add(i);
-            }
-        }
-        return camsInShot;
-    }
-
 }

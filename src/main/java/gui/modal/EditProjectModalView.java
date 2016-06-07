@@ -39,13 +39,7 @@ public class EditProjectModalView extends ModalView {
     private static final int bottomAreaHeight = 60;
 
     // simple background styles of the three main areas.
-    private String topStyle = BACKGROUND_COLOR_STRING
-            + TweakingHelper.getColorString(0) + ";"
-            + "-fx-text-fill: white; -fx-font-size: 26;"
-            + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
-            + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: "
-            + TweakingHelper.getColorString(1) + ";";
+    private String topStyle = ModalUtilities.constructDefaultModalTopStyle(26);
     private String centerLeftStyle = BACKGROUND_COLOR_STRING
             + TweakingHelper.getBackgroundHighString() + ";";
     private String centerRightStyle = BACKGROUND_COLOR_STRING
@@ -176,10 +170,7 @@ public class EditProjectModalView extends ModalView {
     private void initializeView() {
 
         // force minimum size
-        getModalStage().setHeight(height);
-        getModalStage().setWidth(width);
-        getModalStage().setMinWidth(width);
-        getModalStage().setMinHeight(height);
+        forceBounds(height, width);
 
         // Create a new VBox for vertical layout.
         this.viewPane = new VBox();
@@ -226,16 +217,9 @@ public class EditProjectModalView extends ModalView {
      * Initialize title label.
      */
     private void initTitleLabel() {
-        titleLabel = new Label("");
+        titleLabel = ModalUtilities.constructTitleLabel(topStyle, topAreaHeight);
         titleLabel.setText( fillWithCurrentProjectInfo
                 ? "Edit the current project..." : "Create a new project...");
-        titleLabel.setStyle(topStyle);
-        titleLabel.setAlignment(Pos.CENTER_LEFT);
-        titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        titleLabel.setMinHeight(topAreaHeight);
-        titleLabel.setPrefHeight(topAreaHeight);
-        titleLabel.setMaxHeight(topAreaHeight);
         this.viewPane.getChildren().add(titleLabel);
     }
 
@@ -244,12 +228,9 @@ public class EditProjectModalView extends ModalView {
      * Initialize the fields.
      */
     private void initFields() {
-        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
+        VBox content = ModalUtilities.constructFieldsPane();
         content.setAlignment(Pos.CENTER_LEFT);
         content.setMinWidth(TEXT_AREA_MIN_WIDTH);
-        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
-        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
         content.setStyle(centerLeftStyle);
 
         initNameDescriptionFields(content);
@@ -383,14 +364,7 @@ public class EditProjectModalView extends ModalView {
      */
     private void initButtons() {
         // setup button pane
-        this.buttonPane = new HBox();
-        this.buttonPane.setSpacing(buttonSpacing);
-        this.buttonPane.setAlignment(Pos.CENTER_LEFT);
-        this.buttonPane.setMinHeight(bottomAreaHeight);
-        this.buttonPane.setPrefHeight(bottomAreaHeight);
-        this.buttonPane.setMaxHeight(bottomAreaHeight);
-        this.buttonPane.setStyle(bottomStyle);
-        this.buttonPane.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
+        this.buttonPane = ModalUtilities.constructButtonPane();
         this.viewPane.getChildren().add(buttonPane);
 
         // Add cancel button
