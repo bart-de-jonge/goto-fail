@@ -16,3 +16,10 @@ coverage-error.log
 **/*.swp
 **/.tern-project
 npm-debug.log
+*.aux
+documentation/final-report/*.txt
+*.out
+*.toc
+documentation/final-report/report.pdf
+*.gz
+*.log
