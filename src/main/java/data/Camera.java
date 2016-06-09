@@ -67,7 +67,7 @@ public class Camera implements Cloneable {
         Camera.incrementCounter();
         log.debug("Created new Camera(name={}, description={}, cameraType={}",
                 name, description, cameraType);
-        this.ip = "8.8.8.8";
+        this.ip = "";
     }
     
     @Override
