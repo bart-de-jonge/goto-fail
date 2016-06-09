@@ -20,6 +20,7 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
+  - mvn clean
 script:
   - mvn test
 matrix:
@@ -31,6 +32,7 @@ after_script:
   - echo "== PMD_RESULT ==" && cat "out/pmd.xml" && echo "== END_PMD_RESULT =="
   - echo "== FINDBUGS_RESULT ==" && cat "out/findbugsXml.xml" && echo "== END_FINDBUGS_RESULT =="
 after_success:
-  - mvn clean test -DTRAVIS_JOB_ID=$TRAVIS_JOB_ID jacoco:report coveralls:report
+  - mvn jacoco:report
+  - mvn coveralls:report
 after_failure:
   - echo "== CHECKSTYLE_RESULT ==" && cat "out/checkstyle-result.xml" && echo "== END_CHECKSTYLE_RESULT =="
