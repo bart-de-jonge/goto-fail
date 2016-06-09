@@ -28,6 +28,9 @@ public class Camera implements Cloneable {
     // Type of this camera
     @Getter @Setter
     private CameraType cameraType;
+    
+    @Getter @Setter
+    private String ip;
 
     // The movementMargin, the time it takes for the Camera to move to a new position
     // Defined in seconds
@@ -64,6 +67,7 @@ public class Camera implements Cloneable {
         Camera.incrementCounter();
         log.debug("Created new Camera(name={}, description={}, cameraType={}",
                 name, description, cameraType);
+        this.ip = "8.8.8.8";
     }
     
     @Override
