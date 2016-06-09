@@ -1,6 +1,8 @@
 # Context project by goto fail;
 [![Build Status](https://travis-ci.org/bartdejonge1996/goto-fail.png)](https://travis-ci.org/bartdejonge1996/goto-fail)
 
+[![Coverage Status](https://coveralls.io/repos/github/bartdejonge1996/goto-fail/badge.svg?branch=coveralls)](https://coveralls.io/github/bartdejonge1996/goto-fail?branch=coveralls)
+
 This is the Context project of the team 'goto fail;'. This project aims to improve the workflow and overall productivity of the scripting and production at 'Polycast'.
 
 ## Other repository
