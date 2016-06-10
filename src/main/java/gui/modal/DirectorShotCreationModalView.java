@@ -61,6 +61,7 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
      * @param cameraTimelines Cameras in timeline
      * @param modalWidth Modal display width
      * @param modalHeight Modal display height
+     * @param instruments the instruments that can be used
      */
     public DirectorShotCreationModalView(RootPane rootPane, List<CameraTimeline> cameraTimelines,
                                  ArrayList<Instrument> instruments,

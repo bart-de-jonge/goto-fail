@@ -327,6 +327,10 @@ public class EditProjectModalView extends ModalView {
         this.centerPane.getChildren().add(content);
     }
     
+    /**
+     * Initialize the instrument add.
+     * @param content the content to put this in
+     */
     private void initInstrumentAdd(VBox content) {
         addInstrumentButton = createButton("Add Instrument", true);
         editInstrumentButton = createButton("Edit Instrument", true);
@@ -341,6 +345,10 @@ public class EditProjectModalView extends ModalView {
         content.getChildren().addAll(instrumentContent, instrumentList);
     }
     
+    /**
+     * Initialize the camera type add.
+     * @param content the content to put this in
+     */
     private void initCameraTypeAdd(VBox content) {
         addCameraTypeButton = createButton("Add Camera Type", true);
         editCameraTypeButton = createButton("Edit Camera Type", true);
@@ -355,6 +363,10 @@ public class EditProjectModalView extends ModalView {
         content.getChildren().addAll(cameraTypeContent, cameraTypeList);
     }
     
+    /**
+     * Initialize the camera add.
+     * @param content the content to put this in
+     */
     private void initCameraAdd(VBox content) {
         addCameraButton = createButton("Add Camera", true);
         editCameraButton = createButton("Edit Camera", true);
@@ -372,7 +384,6 @@ public class EditProjectModalView extends ModalView {
      * Initialize the camera type list.
      * @param typeList the list that should be initiated.
      */
-
     private void initCameraTypeList(ListView<HBox> typeList) {
         typeList.setMinHeight(75);
         for (CameraType type: cameraTypes) {
@@ -398,6 +409,10 @@ public class EditProjectModalView extends ModalView {
         }
     }
     
+    /**
+     * Initialize the list of instruments.
+     * @param instrumentList the instruments to put in
+     */
     private void initInstrumentList(ListView<HBox> instrumentList) {
         System.out.println("Adding instruments");
         System.out.println(project.getInstruments().size());
@@ -408,7 +423,8 @@ public class EditProjectModalView extends ModalView {
             if (i.getDescription().isEmpty()) {
                 box.getChildren().add(new Label(i.getName()));
             } else {
-                box.getChildren().addAll(new Label(i.getName()), new Label(" - "), new Label(i.getDescription()));
+                box.getChildren().addAll(new Label(i.getName()), 
+                        new Label(" - "), new Label(i.getDescription()));
             }
             instrumentList.getItems().add(box);
         }

@@ -49,6 +49,7 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
      * @param cameraTimelines CameraTimelines to work with
      * @param modalWidth Modal display width
      * @param modalHeight Modal display height
+     * @param instruments the instruments that can be used
      */
     public CameraShotCreationModalView(RootPane rootPane, List<CameraTimeline> cameraTimelines,
                                        ArrayList<Instrument> instruments,

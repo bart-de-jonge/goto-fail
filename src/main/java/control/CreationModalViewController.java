@@ -132,9 +132,11 @@ public class CreationModalViewController {
                         cameraShotCreationModalView.getStartField().getText()),
                 Double.parseDouble(
                         cameraShotCreationModalView.getEndField().getText()));
-            cameraShotCreationModalView.getInstrumentsDropdown().getCheckModel().getCheckedIndices().forEach(e -> {
-                shot.addInstrument(this.controllerManager.getScriptingProject().getInstruments().get(e));
-            });
+            cameraShotCreationModalView.getInstrumentsDropdown().getCheckModel()
+                .getCheckedIndices().forEach(e -> {
+                        shot.addInstrument(this.controllerManager.getScriptingProject()
+                                                                 .getInstruments().get(e));
+                    });
 
             cameraShotCreationModalView.getCamerasInShot().forEach(cameraIndex -> {
                     timelineController.addCameraShot(cameraIndex, shot);
@@ -284,19 +286,21 @@ public class CreationModalViewController {
                     this.controllerManager.getDirectorTimelineControl();
             
             DirectorShot shot = new DirectorShot(
-                    new GeneralShotData(
-                            directorShotCreationModalView.getNameField().getText(),
-                            directorShotCreationModalView.getDescriptionField().getText(),
-                            Double.parseDouble(directorShotCreationModalView.getStartField().getText()
-                        ),
-                    Double.parseDouble(directorShotCreationModalView.getEndField().getText())),
-                    Double.parseDouble(directorShotCreationModalView.getFrontPaddingField().getText()),
-                    Double.parseDouble(directorShotCreationModalView.getEndPaddingField().getText()),
-                    directorShotCreationModalView.getCamerasInShot());
+                new GeneralShotData(
+                        directorShotCreationModalView.getNameField().getText(),
+                        directorShotCreationModalView.getDescriptionField().getText(),
+                        Double.parseDouble(directorShotCreationModalView.getStartField().getText()
+                    ),
+                Double.parseDouble(directorShotCreationModalView.getEndField().getText())),
+                Double.parseDouble(directorShotCreationModalView.getFrontPaddingField().getText()),
+                Double.parseDouble(directorShotCreationModalView.getEndPaddingField().getText()),
+                directorShotCreationModalView.getCamerasInShot());
             
-            directorShotCreationModalView.getInstrumentsDropdown().getCheckModel().getCheckedIndices().forEach(e -> {
-                shot.addInstrument(this.controllerManager.getScriptingProject().getInstruments().get(e));
-            });
+            directorShotCreationModalView.getInstrumentsDropdown().getCheckModel()
+                .getCheckedIndices().forEach(e -> {
+                        shot.addInstrument(this.controllerManager.getScriptingProject()
+                            .getInstruments().get(e));
+                    });
 
             directorTimelineController.addDirectorShot(shot);
 

@@ -170,11 +170,16 @@ public class ShotCreationModalView extends ModalView {
         content.getChildren().addAll(startBox, endBox);
     }
     
+    /**
+     * Initialize the dropdown with instruments.
+     * @param content the content to put the dropdown in
+     * @param instruments the instruments to put in the dropdown
+     */
     protected void initInstrumentsDropdown(VBox content, ArrayList<Instrument> instruments) {
         this.instrumentsDropdown = new CheckComboBox<>();
         instruments.forEach(e -> {
-            instrumentsDropdown.getItems().add(e.getName());
-        });
+                instrumentsDropdown.getItems().add(e.getName());
+            });
         content.getChildren().addAll(instrumentsDropdown);
     }
     
