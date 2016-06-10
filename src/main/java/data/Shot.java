@@ -84,7 +84,6 @@ public abstract class Shot {
         this.endCount = new SimpleDoubleProperty(endCount);
         this.collidesWith = new ArrayList<>();
         this.instruments = new ArrayList<>();
-        this.instruments.add(new Instrument("Guitar", "An awesome guiter"));
     }
     
     public void addInstrument(Instrument instrument) {
