@@ -29,6 +29,9 @@ public class CameraShot extends Shot {
  // The instancenumber of the Shot.
     @Getter
     private int instance;
+    
+    @Getter @Setter
+    private int presetId;
    
     /**
      * Default constructor.
@@ -36,6 +39,7 @@ public class CameraShot extends Shot {
     public CameraShot() {
         super();
         this.instance = instanceCounter;
+        this.presetId = -1;
         CameraShot.incrementCounter();
     }
 
@@ -50,6 +54,7 @@ public class CameraShot extends Shot {
         log.debug("Created new CameraShot");
         this.directorShot = directorShot;
         this.instance = instanceCounter;
+        this.presetId = -1;
         CameraShot.incrementCounter();
     }
 
