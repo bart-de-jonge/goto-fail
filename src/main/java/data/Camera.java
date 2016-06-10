@@ -28,11 +28,6 @@ public class Camera implements Cloneable {
     @Getter @Setter
     private String name;
     
-    @Getter @Setter
-    @XmlElementWrapper(name = "presets")
-    @XmlElement(name = "preset")
-    private ArrayList<Preset> presets;
-
     // Description of the camera
     @Getter @Setter
     private String description;
@@ -80,7 +75,6 @@ public class Camera implements Cloneable {
         log.debug("Created new Camera(name={}, description={}, cameraType={}",
                 name, description, cameraType);
         this.ip = "";
-        this.presets = new ArrayList<>();
     }
     
     @Override
