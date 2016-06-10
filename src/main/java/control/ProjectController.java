@@ -265,6 +265,7 @@ public class ProjectController {
         project.setCameraTypes(editProjectModal.getCameraTypes());
         project.setCameras(editProjectModal.getCameras());
         project.setCameraTimelines(editProjectModal.getTimelines());
+        project.setInstruments(editProjectModal.getInstruments());
         return project;
     }
     

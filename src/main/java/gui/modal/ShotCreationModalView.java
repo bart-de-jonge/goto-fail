@@ -1,14 +1,16 @@
 package gui.modal;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.controlsfx.control.CheckComboBox;
+
 import gui.headerarea.DoubleTextField;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledCheckbox;
 import gui.styling.StyledTextfield;
-import java.util.ArrayList;
-import java.util.List;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
@@ -74,6 +76,8 @@ public class ShotCreationModalView extends ModalView {
     protected StyledButton cancelButton;
     @Getter
     protected List<StyledCheckbox> cameraCheckboxes;
+    @Getter
+    protected CheckComboBox<String> instrumentsDropdown;
     
     public ShotCreationModalView(RootPane rootPane, int width, int height) {
         super(rootPane, width, height);

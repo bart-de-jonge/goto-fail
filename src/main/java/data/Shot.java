@@ -1,18 +1,24 @@
 package data;
 
+import java.util.ArrayList;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-
 /**
  * This class contains information about a Shot.
  */
 @XmlRootElement(name = "shot")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Log4j2
 public abstract class Shot {
 
@@ -28,7 +34,10 @@ public abstract class Shot {
     @Getter
     private int instance;
 
-    
+    @Getter @Setter
+    @XmlElementWrapper(name = "instruments")
+    @XmlElement(name = "instrument")
+    private ArrayList<Instrument> instruments;
 
     // The start count of the Shot.
     private DoubleProperty beginCount;
@@ -52,6 +61,7 @@ public abstract class Shot {
         beginCount = new SimpleDoubleProperty(0);
         endCount = new SimpleDoubleProperty(0);
         collidesWith = new ArrayList<>();
+        instruments = new ArrayList<>();
     }
 
     /**
@@ -73,6 +83,12 @@ public abstract class Shot {
         this.beginCount = new SimpleDoubleProperty(beginCount);
         this.endCount = new SimpleDoubleProperty(endCount);
         this.collidesWith = new ArrayList<>();
+        this.instruments = new ArrayList<>();
+        this.instruments.add(new Instrument("Guitar", "An awesome guiter"));
+    }
+    
+    public void addInstrument(Instrument instrument) {
+        this.instruments.add(instrument);
     }
 
     /**

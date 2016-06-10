@@ -330,7 +330,7 @@ public class EditProjectModalView extends ModalView {
     private void initInstrumentAdd(VBox content) {
         addInstrumentButton = createButton("Add Instrument", true);
         editInstrumentButton = createButton("Edit Instrument", true);
-        deleteInstrumentButton = createButton("Delte Instrument", true);
+        deleteInstrumentButton = createButton("Delete Instrument", true);
         addInstrumentButton.setPrefWidth(buttonWidth);
         editInstrumentButton.setPrefWidth(buttonWidth);
         deleteInstrumentButton.setPrefWidth(buttonWidth);
