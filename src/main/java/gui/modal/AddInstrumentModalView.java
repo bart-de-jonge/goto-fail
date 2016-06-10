@@ -22,6 +22,7 @@ public class AddInstrumentModalView extends CameraModificationModalView {
     public AddInstrumentModalView(RootPane rootPane, int width, int height) {
         super(rootPane, width, height);
         initializeView();
+        this.titleLabel.setText("Create an instrument");
     }
     
     public AddInstrumentModalView(RootPane rootPane, Instrument instrument) {
@@ -38,10 +39,16 @@ public class AddInstrumentModalView extends CameraModificationModalView {
         
         this.viewPane = new VBox();
         initTitleLabel();
+        initFields();
         initButtons();
         
         super.setModalView(this.viewPane);
         super.displayModal();
+    }
+    
+    private void initFields() {
+        VBox content = initNameDescriptionFields();
+        this.viewPane.getChildren().add(content);
     }
     
     private void initButtons() {

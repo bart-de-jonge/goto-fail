@@ -107,8 +107,6 @@ public class ScriptingProject {
         this.cameraTypes = new ArrayList<CameraType>();
         this.users = new ArrayList<User>();
         this.instruments = new ArrayList<Instrument>();
-        this.instruments.add(new Instrument("Kek", "Lel"));
-        this.instruments.add(new Instrument("Do u event?", ""));
         this.changed = true;
     }
     
