@@ -430,9 +430,6 @@ public class EditProjectModalView extends ModalView {
         }
     }
     
-
-
-    
     /**
      * Initialize the save/cancel buttons.
      */
