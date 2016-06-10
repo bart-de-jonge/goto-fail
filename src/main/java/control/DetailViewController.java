@@ -1,19 +1,34 @@
 package control;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
+import data.Camera;
 import data.CameraShot;
 import data.DirectorShot;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
+import gui.centerarea.ShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;
 import gui.headerarea.DetailView;
 import gui.headerarea.DirectorDetailView;
+import gui.styling.StyledCheckbox;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.scene.control.CustomMenuItem;
+import javafx.scene.control.MenuButton;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import lombok.extern.log4j.Log4j2;
+
+import javax.swing.event.DocumentEvent;
+import javax.swing.text.Style;
 
 /**
  * Controller for the DetailView.
@@ -23,6 +38,9 @@ public class DetailViewController {
 
     private DetailView detailView;
     private ControllerManager manager;
+
+    private DirectorShotBlock activeBlock;
+    private List<StyledCheckbox> activeBlockBoxes;
 
     /**
      * Constructor.
@@ -55,6 +73,7 @@ public class DetailViewController {
         initBeginPadding();
         initEndPadding();
         initCamerasDropDown();
+        initDropDown();
     }
     
     /**
@@ -184,7 +203,6 @@ public class DetailViewController {
      * @param c The Change with information about what changed.
      */
     private void camerasDropdownChangeListener(ListChangeListener.Change c) {
-        System.out.println("CHANGE LISTENER");
         DirectorShot shot = ((DirectorShot) manager.getActiveShotBlock().getShot());
         c.next();
         if (c.wasAdded()) {
@@ -405,7 +423,8 @@ public class DetailViewController {
                     .setText(detailView.formatDouble(shotBlock.getPaddingBefore()));
                 ((DirectorDetailView) detailView).getPaddingAfterField()
                     .setText(detailView.formatDouble(shotBlock.getPaddingAfter()));
-                initDropDown(shotBlock);
+//                initDropDown(shotBlock);
+                activeBlock = shotBlock;
                 detailView.setVisible();
                 detailView.setVisible(true);
                 // Re-init the detail view with new data
@@ -434,5 +453,44 @@ public class DetailViewController {
                 ((DirectorDetailView) detailView).getSelectCamerasDropDown()
                     .getCheckModel().check(e);
             });
+    }
+
+    /**
+     * Initialize drop down menu.
+     */
+    private void initDropDown() {
+        MenuButton cameraButtons = ((DirectorDetailView) detailView).getSelectCamerasButton();
+        activeBlockBoxes = new ArrayList<>();
+
+        cameraButtons.showingProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (newValue) {
+                    Set<Integer> indices = activeBlock.getTimelineIndices();
+
+                    for (int i = 0; i < manager.getScriptingProject().getCameras().size(); i++) {
+                        Camera camera = manager.getScriptingProject().getCameras().get(i);
+                        int j = i;
+                        StyledCheckbox checkbox = new StyledCheckbox(camera.getName(), indices.contains(i));
+                        activeBlockBoxes.add(checkbox);
+                        CustomMenuItem item = new CustomMenuItem(checkbox);
+                        item.setHideOnClick(false);
+                        cameraButtons.getItems().add(item);
+                        checkbox.setOnMouseClicked(e -> {
+                            if (checkbox.isSelected()) {
+                                cameraAddedInDropdown(j);
+                            } else {
+                                cameraDeletedInDropdown(j);
+                            }
+                        });
+                    }
+
+                } else {
+                    activeBlockBoxes.clear();
+                    cameraButtons.getItems().clear();
+                }
+            }
+        });
+
     }
 }

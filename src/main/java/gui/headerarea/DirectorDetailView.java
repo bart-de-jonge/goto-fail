@@ -1,5 +1,11 @@
 package gui.headerarea;
 
+import gui.styling.StyledCheckbox;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.CustomMenuItem;
+import javafx.scene.control.MenuButton;
 import org.controlsfx.control.CheckComboBox;
 
 import gui.misc.TweakingHelper;
@@ -18,7 +24,9 @@ public class DirectorDetailView extends DetailView {
     private StyledTextfield paddingAfterField;
     @Getter
     private CheckComboBox<String> selectCamerasDropDown;
-    
+    @Getter
+    private MenuButton selectCamerasButton;
+
     private HBox paddingBeforeBox;
     private HBox paddingAfterBox;
     
@@ -34,7 +42,7 @@ public class DirectorDetailView extends DetailView {
         initPaddingBefore();
         initPaddingAfter();
         initSelectCameras();
-        this.getChildren().add(directorItemsBox);  
+        this.getChildren().add(directorItemsBox);
     }
     
     /**
@@ -88,7 +96,16 @@ public class DirectorDetailView extends DetailView {
         selectCamerasDropDown.getItems().add("Test 2");
         directorItemsBox.getChildren().add(selectCamerasDropDown);
     }
-    
+
+    /**
+     * Init experimental dropdown menu to select cameras.
+     */
+    private void createSelectCamerasButton() {
+        selectCamerasButton = new MenuButton("Test");
+
+        directorItemsBox.getChildren().add(selectCamerasButton);
+    }
+
     @Override
     public void setVisible() {
         if (!getVisible()) {
@@ -100,6 +117,7 @@ public class DirectorDetailView extends DetailView {
             directorItemsBox.getChildren().clear();
             directorItemsBox.getChildren().addAll(paddingBeforeBox, paddingAfterBox,
                     selectCamerasDropDown);
+            createSelectCamerasButton();
             this.setVisibleForView(true);
         }
     }
