@@ -124,6 +124,14 @@ public class EditProjectModalView extends ModalView {
     private ArrayList<CameraTimeline> timelines;
 
     private boolean fillWithCurrentProjectInfo;
+    @Getter
+    private StyledButton addInstrumentButton;
+    @Getter
+    private StyledButton editInstrumentButton;
+    @Getter
+    private StyledButton deleteInstrumentButton;
+    @Getter
+    private StyledListview<HBox> instrumentList;
     
     private static final String BACKGROUND_COLOR_STRING = "-fx-background-color: ";
     
@@ -302,6 +310,29 @@ public class EditProjectModalView extends ModalView {
         content.setStyle(centerRightStyle);
 
         // add camera type
+        initCameraTypeAdd(content);
+
+        // add camera
+        initCameraAdd(content);
+
+        this.centerPane.getChildren().add(content);
+    }
+    
+    private void initInstrumentAdd(VBox content) {
+        addInstrumentButton = createButton("Add Instrument", true);
+        editInstrumentButton = createButton("Edit Instrument", true);
+        deleteInstrumentButton = createButton("Delte Instrument", true);
+        addInstrumentButton.setPrefWidth(buttonWidth);
+        editInstrumentButton.setPrefWidth(buttonWidth);
+        deleteInstrumentButton.setPrefWidth(buttonWidth);
+        HBox instrumentContent = new HBox(TweakingHelper.GENERAL_SPACING);
+        instrumentContent.getChildren().addAll(addInstrumentButton, editInstrumentButton,
+                deleteInstrumentButton);
+        instrumentList = new StyledListview<HBox>();
+        content.getChildren().addAll(instrumentContent, instrumentList);
+    }
+    
+    private void initCameraTypeAdd(VBox content) {
         addCameraTypeButton = createButton("Add Camera Type", true);
         editCameraTypeButton = createButton("Edit Camera Type", true);
         deleteCameraTypeButton = createButton("Delete Camera Type", true);
@@ -313,8 +344,9 @@ public class EditProjectModalView extends ModalView {
                 deleteCameraTypeButton);
         cameraTypeList = new StyledListview<HBox>();
         content.getChildren().addAll(cameraTypeContent, cameraTypeList);
-
-        // add camera
+    }
+    
+    private void initCameraAdd(VBox content) {
         addCameraButton = createButton("Add Camera", true);
         editCameraButton = createButton("Edit Camera", true);
         deleteCameraButton = createButton("Delete Camera", true);
@@ -325,8 +357,6 @@ public class EditProjectModalView extends ModalView {
         cameraContent.getChildren().addAll(addCameraButton, editCameraButton, deleteCameraButton);
         cameraList = new StyledListview<>();
         content.getChildren().addAll(cameraContent, cameraList);
-
-        this.centerPane.getChildren().add(content);
     }
     
     /**
