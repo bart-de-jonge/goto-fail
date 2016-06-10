@@ -74,7 +74,6 @@ public class DetailViewController {
         reInitForCameraBlock();
         initBeginPadding();
         initEndPadding();
-        initCamerasDropDown();
         initDropDown();
     }
     
@@ -191,16 +190,6 @@ public class DetailViewController {
     }
     
     /**
-     * Init the handlers for the camera selection drop down menu.
-     */
-    private void initCamerasDropDown() {
-        ((DirectorDetailView) detailView).getSelectCamerasDropDown()
-                                         .getCheckModel()
-                                         .getCheckedIndices()
-                                         .addListener(this::camerasDropdownChangeListener);
-    }
-    
-    /**
      * Change listener for the dropdown. Fires whenever a box is selected or deselected.
      * @param c The Change with information about what changed.
      */
@@ -256,7 +245,7 @@ public class DetailViewController {
         dShot.getTimelineIndices().add(index);
         DirectorShotBlock dShotBlock = ((DirectorShotBlock) manager.getActiveShotBlock());
         manager.getScriptingProject().getCameraTimelines().get(index).addShot(shot);
-        manager.getTimelineControl().initShotBlock(index, shot);
+        manager.getTimelineControl().initShotBlock(index, shot, false);
         manager.setActiveShotBlock(dShotBlock);
     }
 
@@ -425,36 +414,17 @@ public class DetailViewController {
                     .setText(detailView.formatDouble(shotBlock.getPaddingBefore()));
                 ((DirectorDetailView) detailView).getPaddingAfterField()
                     .setText(detailView.formatDouble(shotBlock.getPaddingAfter()));
-//                initDropDown(shotBlock);
                 activeBlock = shotBlock;
                 detailView.setVisible();
                 detailView.setVisible(true);
                 // Re-init the detail view with new data
                 manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
                 this.reInitForDirectorBlock();
-
             }
         } else {
             detailView.resetDetails();
             detailView.setInvisible();
         }
-    }
-    
-    /**
-     * Initialize the drop down menu.
-     * @param shotBlock the shotBlock to do that for
-     */
-    private void initDropDown(DirectorShotBlock shotBlock) {
-        Set<Integer> indices = shotBlock.getTimelineIndices();
-        ((DirectorDetailView) detailView).getSelectCamerasDropDown().getItems().clear();
-        manager.getScriptingProject().getCameras().forEach(camera -> {
-                ((DirectorDetailView) detailView).getSelectCamerasDropDown()
-                    .getItems().add(camera.getName());
-            });
-        indices.forEach(e -> {
-                ((DirectorDetailView) detailView).getSelectCamerasDropDown()
-                    .getCheckModel().check(e);
-            });
     }
 
     /**
@@ -462,8 +432,8 @@ public class DetailViewController {
      */
     private void initDropDown() {
         StyledMenuButton cameraButtons = ((DirectorDetailView) detailView).getSelectCamerasButton();
-        cameraButtons.setBorderColor(TweakingHelper.getBackgroundColor());
-        cameraButtons.setFillColor(TweakingHelper.getColor(0));
+        cameraButtons.setBorderColor(TweakingHelper.getColor(0));
+        cameraButtons.setFillColor(TweakingHelper.getBackgroundColor());
         activeBlockBoxes = new ArrayList<>();
 
         cameraButtons.showingProperty().addListener(new ChangeListener<Boolean>() {

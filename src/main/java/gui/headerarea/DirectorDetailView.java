@@ -24,8 +24,6 @@ public class DirectorDetailView extends DetailView {
     @Getter
     private StyledTextfield paddingAfterField;
     @Getter
-    private CheckComboBox<String> selectCamerasDropDown;
-    @Getter
     private StyledMenuButton selectCamerasButton;
 
     private HBox paddingBeforeBox;
@@ -42,7 +40,6 @@ public class DirectorDetailView extends DetailView {
         directorItemsBox.setSpacing(TweakingHelper.GENERAL_SPACING);
         initPaddingBefore();
         initPaddingAfter();
-        initSelectCameras();
         this.getChildren().add(directorItemsBox);
     }
     
@@ -87,23 +84,12 @@ public class DirectorDetailView extends DetailView {
         paddingAfterBox.setAlignment(Pos.CENTER);
         directorItemsBox.getChildren().add(paddingAfterBox);
     }
-    
-    /**
-     * Init the dropdown menu to select cameras.
-     */
-    private void initSelectCameras() {
-        selectCamerasDropDown = new CheckComboBox<>();
-        selectCamerasDropDown.getItems().add("Test");
-        selectCamerasDropDown.getItems().add("Test 2");
-        directorItemsBox.getChildren().add(selectCamerasDropDown);
-    }
 
     /**
      * Init experimental dropdown menu to select cameras.
      */
     private void createSelectCamerasButton() {
-        selectCamerasButton = new StyledMenuButton("Test");
-
+        selectCamerasButton = new StyledMenuButton("Edit Camera selection");
         directorItemsBox.getChildren().add(selectCamerasButton);
     }
 
@@ -116,8 +102,7 @@ public class DirectorDetailView extends DetailView {
             this.getItemBox().getChildren().addAll(getNameBox(), getDescriptionBox(),
                     getBeginCountBox(), getEndCountBox());
             directorItemsBox.getChildren().clear();
-            directorItemsBox.getChildren().addAll(paddingBeforeBox, paddingAfterBox,
-                    selectCamerasDropDown);
+            directorItemsBox.getChildren().addAll(paddingBeforeBox, paddingAfterBox);
             createSelectCamerasButton();
             this.setVisibleForView(true);
         }

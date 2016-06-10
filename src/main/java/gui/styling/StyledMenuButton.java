@@ -4,10 +4,12 @@ import gui.misc.TransitionData;
 import gui.misc.TransitionHelper;
 import gui.misc.TweakingHelper;
 import javafx.animation.Interpolator;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.effect.BlurType;
@@ -40,6 +42,12 @@ public class StyledMenuButton extends MenuButton {
     // Color of (blank) background. Becomes borderColor on click.
     // Can be set transparent?
     private Color fillColor = TweakingHelper.getBackgroundColor();
+
+    private String overridingStyle = "-fx-border-radius: 20;"
+                                    + "-fx-background-radius: 20;"
+            + "-fx-border-width: 1;"
+            + "-fx-border-style: solid outside;"
+            + "-fx-font-size: 14;";
 
     /*
      * Misc variables
@@ -84,12 +92,35 @@ public class StyledMenuButton extends MenuButton {
         this.styleProperty().bind(new SimpleStringProperty("-fx-background-color: ")
                 .concat(fillStringProperty).concat(";").concat("-fx-border-color: ")
                 .concat(borderStringProperty).concat(";").concat("-fx-text-fill: ")
-                .concat(borderStringProperty).concat(";"));
+                .concat(borderStringProperty).concat(";").concat("-fx-color: ")
+                .concat(fillStringProperty).concat(";").concat(overridingStyle));
 
         // add transitions
         this.transitionHelper = new TransitionHelper(this);
         initMouseOverTransitions();
         initMouseClickTransitions();
+
+        // Delayed slightly so at least Scene.show() is called. Because JAVAFX.
+        // I literally couldn't come up with this if I wanted to.
+        new java.util.Timer().schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        Node label = lookup(".label");
+                        try {
+                            label.styleProperty().bind(new SimpleStringProperty("-fx-text-fill: ")
+                                    .concat(borderStringProperty).concat(";"));
+                        } catch (NullPointerException e) {
+                            /*
+                                Do nothing
+                             */
+                        }
+                    }
+                });
+            }
+        }, 50);
     }
 
     /**
