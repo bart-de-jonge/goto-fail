@@ -1,4 +1,4 @@
-.button {
+.button, .menu-button {
     -fx-background-radius: 20;
 
     -fx-font-size: 14;
@@ -8,6 +8,6 @@
     -fx-border-style: solid outside;
 }
 
-.button:disabled {
+.button:disabled, .menu-button:disabled {
     -fx-opacity: 0.5;
 }

@@ -14,7 +14,9 @@ import gui.centerarea.ShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;
 import gui.headerarea.DetailView;
 import gui.headerarea.DirectorDetailView;
+import gui.misc.TweakingHelper;
 import gui.styling.StyledCheckbox;
+import gui.styling.StyledMenuButton;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
@@ -459,7 +461,9 @@ public class DetailViewController {
      * Initialize drop down menu.
      */
     private void initDropDown() {
-        MenuButton cameraButtons = ((DirectorDetailView) detailView).getSelectCamerasButton();
+        StyledMenuButton cameraButtons = ((DirectorDetailView) detailView).getSelectCamerasButton();
+        cameraButtons.setBorderColor(TweakingHelper.getBackgroundColor());
+        cameraButtons.setFillColor(TweakingHelper.getColor(0));
         activeBlockBoxes = new ArrayList<>();
 
         cameraButtons.showingProperty().addListener(new ChangeListener<Boolean>() {

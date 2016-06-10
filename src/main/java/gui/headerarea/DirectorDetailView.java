@@ -1,6 +1,7 @@
 package gui.headerarea;
 
 import gui.styling.StyledCheckbox;
+import gui.styling.StyledMenuButton;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -25,7 +26,7 @@ public class DirectorDetailView extends DetailView {
     @Getter
     private CheckComboBox<String> selectCamerasDropDown;
     @Getter
-    private MenuButton selectCamerasButton;
+    private StyledMenuButton selectCamerasButton;
 
     private HBox paddingBeforeBox;
     private HBox paddingAfterBox;
@@ -101,7 +102,7 @@ public class DirectorDetailView extends DetailView {
      * Init experimental dropdown menu to select cameras.
      */
     private void createSelectCamerasButton() {
-        selectCamerasButton = new MenuButton("Test");
+        selectCamerasButton = new StyledMenuButton("Test");
 
         directorItemsBox.getChildren().add(selectCamerasButton);
     }
