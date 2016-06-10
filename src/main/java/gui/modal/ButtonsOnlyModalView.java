@@ -25,11 +25,7 @@ public class ButtonsOnlyModalView extends ModalView {
     private static final int topAreaHeight = 80;
 
     // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: " + TweakingHelper.getColorString(0) + ";"
-            + "-fx-text-fill: white; -fx-font-size: 20;"
-            + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
-            + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: " + TweakingHelper.getColorString(1) + ";";
+    private String topStyle = ModalUtilities.constructDefaultModalTopStyle(20);
 
     // variables for the buttons
     private int buttonSpacing = 20;
@@ -72,10 +68,7 @@ public class ButtonsOnlyModalView extends ModalView {
         this.viewPane = new VBox();
 
         // force minimum size
-        getModalStage().setHeight(height);
-        getModalStage().setWidth(width);
-        getModalStage().setMinWidth(width);
-        getModalStage().setMinHeight(height);
+        forceBounds(height, width);
 
         // Add content
         initializeTitleLabel();
@@ -90,16 +83,7 @@ public class ButtonsOnlyModalView extends ModalView {
      * Initializes title area content and layout.
      */
     private void initializeTitleLabel() {
-        titleLabel = new Label("Test title, please ignore...");
-        titleLabel.setStyle(topStyle);
-        titleLabel.setAlignment(Pos.CENTER);
-        titleLabel.setPadding(new Insets(0, titlelabelOffsetFromLeft,
-                0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        titleLabel.setMinHeight(topAreaHeight);
-        titleLabel.setPrefHeight(topAreaHeight);
-        titleLabel.setMaxHeight(topAreaHeight);
-
+        titleLabel = ModalUtilities.constructTitleLabel(topStyle, topAreaHeight);
         this.viewPane.getChildren().add(titleLabel);
     }
 

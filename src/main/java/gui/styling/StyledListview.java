@@ -1,5 +1,6 @@
 package gui.styling;
 
+import gui.misc.TransitionData;
 import gui.misc.TransitionHelper;
 import gui.misc.TweakingHelper;
 import javafx.animation.Interpolator;
@@ -56,11 +57,8 @@ public class StyledListview<T> extends ListView {
 
         // add some transitions because cool and stuff
         transitionHelper = new TransitionHelper(this);
-        transitionHelper.addMouseOverTransition(innerShadow.radiusProperty(),
-                100, shadowTotalRadius, Interpolator.LINEAR);
-        transitionHelper.addMouseOverTransition(innerShadow.colorProperty(),
-                transitionMouseoverTime,  Color.rgb(0, 0, 0, 0),
-                Color.rgb(0, 0, 0, shadowOpacity), Interpolator.LINEAR);
+        transitionHelper.addDefaultMouseOverTransition(
+                innerShadow, shadowTotalRadius, transitionMouseoverTime, shadowOpacity);
 
         this.setStyle(style);
     }

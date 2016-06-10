@@ -29,11 +29,7 @@ public class DeleteCameraTypeWarningModalView extends ModalView {
     private static final int bottomAreaHeight = 60;
 
     // simple background styles of the three main areas.
-    private String topStyle = "-fx-background-color: " + TweakingHelper.getColorString(0) + ";"
-            + "-fx-text-fill: white; -fx-font-size: 20;"
-            + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
-            + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: " + TweakingHelper.getColorString(1) + ";";
+    private String topStyle = ModalUtilities.constructDefaultModalTopStyle(20);
     private String bottomStyle = "-fx-background-color: "
             + TweakingHelper.getColorString(0) + ";";
 
@@ -85,10 +81,7 @@ public class DeleteCameraTypeWarningModalView extends ModalView {
      * Initialize the view of this modal.
      */
     private void initView() {
-        getModalStage().setHeight(height);
-        getModalStage().setWidth(width);
-        getModalStage().setMinHeight(height);
-        getModalStage().setMinWidth(width);
+        forceBounds(height, width);
         
         this.viewPane = new VBox();
         
@@ -104,16 +97,9 @@ public class DeleteCameraTypeWarningModalView extends ModalView {
      * Initialize the title label.
      */
     private void initTitleLabel() {
-        titleLabel = new Label("Are you sure you want to delete this camera type?\n"
-            + "The following cameras will be deleted!");
-        titleLabel.setStyle(topStyle);
-        titleLabel.setAlignment(Pos.CENTER);
-        titleLabel.setPadding(new Insets(0, titlelabelOffsetFromLeft,
-                0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        titleLabel.setMinHeight(topAreaHeight);
-        titleLabel.setPrefHeight(topAreaHeight);
-        titleLabel.setMaxHeight(topAreaHeight);
+        titleLabel = ModalUtilities.constructTitleLabel(topStyle, topAreaHeight);
+        titleLabel.setText("Are you sure you want to delete this camera type?\n"
+                + "The following cameras will be deleted!");
         this.viewPane.getChildren().add(titleLabel);
     }
     
@@ -159,15 +145,7 @@ public class DeleteCameraTypeWarningModalView extends ModalView {
      * Initialize the buttons.
      */
     private void initButtons() {
-        HBox content = new HBox();
-        content.setSpacing(buttonSpacing);
-        content.setAlignment(Pos.CENTER_LEFT);
-        content.setMinHeight(bottomAreaHeight);
-        content.setPrefHeight(bottomAreaHeight);
-        content.setMaxHeight(bottomAreaHeight);
-        content.setStyle(bottomStyle);
-        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
-        content.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
+        HBox content = ModalUtilities.constructButtonPane();
         this.viewPane.getChildren().add(content);
 
         confirmButton = createButton("Confirm", false);

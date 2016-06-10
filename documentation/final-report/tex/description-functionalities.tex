@@ -1,0 +1,31 @@
+\section{Description of the developed functionalities}
+
+As explained before, we have created three different components in our software product. We will discuss the functionalities in separate sections for the different components
+
+\subsection*{Scripting application}
+\textbf{Creating and editing a project}\\
+It's possible to create a new project and enter the necessary information. This involves a name and description, as well as a "seconds per count" setting, which defines how long one count takes. It is also possible to add camera types, and cameras which use these types. On create, the right number of timelines are created so that it corresponds with the amount of cameras the user added. It is also possible to edit any of this information at any point, for example if a new camera is introduced, or a camera name should be changed.\\\\
+\textbf{Adding, editing and deleting camera shots}\\
+After a project has been created, it's possible to add camera shots. This can be done by filling in some data like name, start and end count. The shot is then displayed at the correct location in the view, with the information shown in the block as well. These blocks can be moved around by dragging and dropping, and can also easily be resized. The name and description can easily be edited in a tool bar in the application. Of course, you can also delete a shot.\\\\
+\textbf{Adding director shots and generating camera shots}\\
+It is also possible to add so called director shots. In these shots, you can enter a begin and end count, and the cameras that should take this shot. When you have created some director shots, it is possible to generate the camera shots automatically. This saves the director a lot of time, because he doesn't have to create all the camera shots himself.\\\\
+\textbf{Collision detection}
+A feature we have also implemented is collision detection. For a camera, it is possible to set a movement margin. This is the amount of seconds it takes for a camera to move to a new position. Then, when you have two shots in your timeline for the same camera, that either overlap or have a distance smaller than the movement margin, the shots will be highlighted red to indicate that this script is impossible to execute during the live production.\\\\
+\textbf{Loading and saving projects}\\
+Of course it should also be possible to save your projects so you can work on them later. This is done via an XML-writer that writes your project to a file. On application start, the project you last worked on is automatically loaded, but you can also load other projects.\\\\
+\textbf{Sending your script to the webserver}\\
+When you have finished your script, you can send it to the webserver just by clicking a single button. When you have done this, the script can be used in the live view.
+
+
+\subsection*{Live view}
+\textbf{User selection screen}\\
+In the user selection screen, a user can either select his name from a list if he/she has visited the website before, or create a new user account. Here you can fill in your role (director, camera operator or shot caller) and the cameras you control if you are a camera operator. This is all stored on the server, so the next time the user visits the application, all he has to do is click his name and he will be ready to go.\\\\
+\textbf{Camera operator view}\\
+In the camera operator view, the relevant timelines (that is, the ones that are operated by this camera operator) are shown, with the shots that were added in the scripting application. During the live production, the camera operator will see the current count by means of a red horizontal line. The camera operator can click shots to see more information about them.\\\\
+\textbf{Shot caller view}\\
+The shot caller view is mainly focused on advancing the count. For this there is a button that the score caller can click. The score caller can also see the current shot and the shot that is coming up next. It's also possible for the shot caller to select automatic advance mode, in which the count advances according to the "seconds per count" field set in the project.\\\\
+\textbf{Director view}\\
+Idk even kek\\\\
+
+
+\subsection*{Camera control center}

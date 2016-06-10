@@ -1,18 +1,25 @@
 package data;
 
+import java.util.ArrayList;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-
 /**
  * This class contains information about a Shot.
  */
 @XmlRootElement(name = "shot")
+@XmlAccessorType(XmlAccessType.PROPERTY)
 @Log4j2
 public abstract class Shot {
 
@@ -29,12 +36,15 @@ public abstract class Shot {
     private int instance;
 
     
+    @XmlElementWrapper(name = "instruments")
+    @XmlElement(name = "instrument")
+    private ArrayList<Instrument> instruments;
 
     // The start count of the Shot.
-    private DoubleProperty beginCount;
+    private SimpleDoubleProperty beginCount;
 
     // The end count of the Shot.
-    private DoubleProperty endCount;
+    private SimpleDoubleProperty endCount;
 
     // True if the shot is colliding with another Shot.
     @Getter @Setter
@@ -52,6 +62,7 @@ public abstract class Shot {
         beginCount = new SimpleDoubleProperty(0);
         endCount = new SimpleDoubleProperty(0);
         collidesWith = new ArrayList<>();
+        instruments = new ArrayList<>();
     }
 
     /**
@@ -73,6 +84,20 @@ public abstract class Shot {
         this.beginCount = new SimpleDoubleProperty(beginCount);
         this.endCount = new SimpleDoubleProperty(endCount);
         this.collidesWith = new ArrayList<>();
+        this.instruments = new ArrayList<>();
+    }
+    
+    @XmlTransient
+    public ArrayList<Instrument> getInstruments() {
+        return instruments;
+    }
+    
+    public void setInstruments(ArrayList<Instrument> instruments) {
+        this.instruments = instruments;
+    }
+    
+    public void addInstrument(Instrument instrument) {
+        this.instruments.add(instrument);
     }
 
     /**

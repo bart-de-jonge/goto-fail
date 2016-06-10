@@ -1,5 +1,11 @@
 package data;
 
+import java.util.ArrayList;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.EqualsAndHashCode;
@@ -12,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
  * Class to store information about cameras.
  */
 @XmlRootElement(name = "camera")
+@XmlAccessorType(XmlAccessType.FIELD)
 @EqualsAndHashCode
 @ToString
 @Log4j2
@@ -20,7 +27,7 @@ public class Camera implements Cloneable {
     // Name of the camera
     @Getter @Setter
     private String name;
-
+    
     // Description of the camera
     @Getter @Setter
     private String description;
@@ -28,6 +35,9 @@ public class Camera implements Cloneable {
     // Type of this camera
     @Getter @Setter
     private CameraType cameraType;
+    
+    @Getter @Setter
+    private String ip;
 
     // The movementMargin, the time it takes for the Camera to move to a new position
     // Defined in seconds
@@ -64,6 +74,7 @@ public class Camera implements Cloneable {
         Camera.incrementCounter();
         log.debug("Created new Camera(name={}, description={}, cameraType={}",
                 name, description, cameraType);
+        this.ip = "";
     }
     
     @Override

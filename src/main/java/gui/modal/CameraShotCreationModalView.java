@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import data.CameraTimeline;
+import data.Instrument;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledCheckbox;
@@ -30,14 +31,16 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
      */
 
     private List<CameraTimeline> cameraTimelines;
+    private ArrayList<Instrument> instruments;
 
     /**
      * Constructor with default modal size.
      * @param rootPane Pane to display modal on top of
      * @param cameraTimelines CameraTimelines to work with
      */
-    public CameraShotCreationModalView(RootPane rootPane, List<CameraTimeline> cameraTimelines) {
-        this(rootPane, cameraTimelines, width, height);
+    public CameraShotCreationModalView(RootPane rootPane, List<CameraTimeline> cameraTimelines,
+                                        ArrayList<Instrument> instruments) {
+        this(rootPane, cameraTimelines, instruments, width, height);
     }
 
     /**
@@ -46,11 +49,14 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
      * @param cameraTimelines CameraTimelines to work with
      * @param modalWidth Modal display width
      * @param modalHeight Modal display height
+     * @param instruments the instruments that can be used
      */
     public CameraShotCreationModalView(RootPane rootPane, List<CameraTimeline> cameraTimelines,
+                                       ArrayList<Instrument> instruments,
                                        int modalWidth, int modalHeight) {
         super(rootPane, modalWidth, modalHeight);
         this.cameraTimelines = cameraTimelines;
+        this.instruments = instruments;
         initializeCreationView();
     }
 
@@ -59,11 +65,7 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
      */
     private void initializeCreationView() {
         // force minimum size
-        getModalStage().setHeight(height);
-        getModalStage().setWidth(width);
-        getModalStage().setMinWidth(width);
-        getModalStage().setMinHeight(height);
-
+        forceBounds(height, width);
         // Create a new VBox for vertical layout
         this.rootPane = new VBox();
 
@@ -77,28 +79,16 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
         this.centerPane.setPrefHeight(TweakingHelper.GENERAL_SIZE);
         this.centerPane.setSpacing(40.0);
         this.rootPane.getChildren().add(centerPane);
+        
+        // add buttons at bottom.
+        initButtons();
 
         // actually add textfields and checkboxes
         initTextFields();
         initCamCheckBoxes();
 
-        // add buttons at bottom.
-        initButtons();
-
         super.setModalView(this.rootPane);
         super.displayModal();
-    }
-
-    /**
-     * Initialize all textfields, add them to a left-central VBox.
-     */
-    private void initTextFields() {
-        VBox content = getTextfieldBox();
-
-        initNameDescriptionFields(content);
-        initCountTextfields(content);
-
-        this.centerPane.getChildren().add(content);
     }
 
     /**
@@ -118,6 +108,19 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
         // add all to scene
         this.checkboxPane.getChildren().addAll(cameraCheckboxes);
         this.centerPane.getChildren().add(this.checkboxPane);
+    }
+    
+    /**
+     * Initialize all textfields, add them to a left-central VBox.
+     */
+    private void initTextFields() {
+        VBox content = getTextfieldBox();
+
+        initNameDescriptionFields(content);
+        initCountTextfields(content);
+        initInstrumentsDropdown(content, instruments);
+
+        this.centerPane.getChildren().add(content);
     }
 
    

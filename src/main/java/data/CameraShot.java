@@ -29,6 +29,9 @@ public class CameraShot extends Shot {
  // The instancenumber of the Shot.
     @Getter
     private int instance;
+    
+    @Getter @Setter
+    private int presetId;
    
     /**
      * Default constructor.
@@ -36,23 +39,22 @@ public class CameraShot extends Shot {
     public CameraShot() {
         super();
         this.instance = instanceCounter;
+        this.presetId = -1;
         CameraShot.incrementCounter();
     }
 
     /**
      * The constructor for the Shot.
-     * @param name the name of the Shot
-     * @param description the description of the Shot
-     * @param startCount the count the Shot starts
-     * @param endCount the count the Shot ends
+     * @param shotData the shot data
      * @param directorShot the parent DirectorShot
      */
-    public CameraShot(String name, String description,
-                      double startCount, double endCount, DirectorShot directorShot) {
-        super(name, description, startCount, endCount);
+    public CameraShot(GeneralShotData shotData, DirectorShot directorShot) {
+        super(shotData.getName(), shotData.getDescription(), 
+                shotData.getStartCount(), shotData.getEndCount());
         log.debug("Created new CameraShot");
         this.directorShot = directorShot;
         this.instance = instanceCounter;
+        this.presetId = -1;
         CameraShot.incrementCounter();
     }
 
@@ -61,7 +63,7 @@ public class CameraShot extends Shot {
      * @see #CameraShot(String, String, double, double, DirectorShot)
      */
     public CameraShot(String name, String description, double startCount, double endCount) {
-        this(name, description, startCount, endCount, null);
+        this(new GeneralShotData(name, description, startCount, endCount), null);
     }
 
     /**

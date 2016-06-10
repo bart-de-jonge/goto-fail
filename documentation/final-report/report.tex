@@ -1,0 +1,101 @@
+%%% LaTeX Template
+%%% This template is made for project reports
+%%%	You may adjust it to your own needs/purposes
+%%%
+%%% Copyright: http://www.howtotex.com/
+%%% Date: March 2011
+
+%%% Preamble
+\documentclass[paper=a4, fontsize=11pt]{article}	% Article class of KOMA-script with 11pt font and a4 format
+\usepackage[T1]{fontenc}
+\usepackage{fourier}
+
+\usepackage[english]{babel}															% English language/hyphenation
+\usepackage[protrusion=true,expansion=true]{microtype}				% Better typography
+\usepackage{amsmath,amsfonts,amsthm}										% Math packages
+\usepackage[pdftex]{graphicx}														% Enable pdflatex
+\usepackage{url}
+
+
+%%% Custom sectioning (sectsty package)
+\usepackage{sectsty}												% Custom sectioning (see below)
+\allsectionsfont{\centering \normalfont\scshape}	% Change font of al section commands
+
+
+%%% Custom headers/footers (fancyhdr package)
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\fancyhead{}														% No page header
+\fancyfoot[L]{}		% You may remove/edit this line 
+\fancyfoot[C]{}													% Empty
+\fancyfoot[R]{\thepage}									% Pagenumbering
+\renewcommand{\headrulewidth}{0pt}			% Remove header underlines
+\renewcommand{\footrulewidth}{0pt}				% Remove footer underlines
+\setlength{\headheight}{13.6pt}
+
+
+%%% Equation and float numbering
+\numberwithin{equation}{section}		% Equationnumbering: section.eq#
+\numberwithin{figure}{section}			% Figurenumbering: section.fig#
+\numberwithin{table}{section}				% Tablenumbering: section.tab#
+
+
+%%% Maketitle metadata
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} 	% Horizontal rule
+
+\title{
+		%\vspace{-1in} 	
+		\usefont{OT1}{bch}{b}{n}
+		\normalfont \normalsize \textsc{TU Delft Context Project 2016} \\ [25pt]
+		\horrule{0.5pt} \\[0.4cm]
+		\huge Final Report \\
+		\horrule{2pt} \\[0.5cm]
+}
+\author{
+		\normalfont 								\normalsize
+        Team: goto fail;\\\\[-3pt]		\normalsize
+        Alexander Geenen\\[-3pt] \normalsize
+        Mark van de Ruit\\[-3pt] \normalsize
+        Martijn Janssen\\[-3pt] \normalsize
+        Bart de Jonge\\[-3pt] \normalsize
+        Menno Oudshoorn\\\\[-3pt] \normalsize
+        Context: Multimedia Services\\\\[-3pt] \normalsize
+        \textit{Supervised by:}\\[-3pt] \normalsize
+        Valentine Mairet (Software Engineering TA)\\[-3pt] \normalsize
+        Alessio Bazzica (Context TA)\\[-3pt] \normalsize
+        Cynthia Liem (Context Supervisor)\\\\[3pt] \normalsize
+        \today
+}
+\date{}
+
+%For better margins
+\addtolength{\oddsidemargin}{-2.5cm}
+\addtolength{\evensidemargin}{-2.5cm}
+\addtolength{\textwidth}{5cm}
+
+
+
+%%% Begin document
+\begin{document}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+%chapters here
+\input{./tex/introduction}
+\newpage
+\input{./tex/overview-product}
+\newpage
+\input{./tex/reflection-product-process}
+\newpage
+\input{./tex/description-functionalities}
+\newpage
+\input{./tex/interaction-design}
+\newpage
+\input{./tex/evaluation}
+\newpage
+\input{./tex/outlook}
+
+%%% End document
+\end{document}

@@ -2,6 +2,7 @@ package control;
 
 import data.CameraShot;
 import data.DirectorShot;
+import data.GeneralShotData;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
 import gui.centerarea.ShotBlock;
@@ -123,8 +124,11 @@ public class ToolViewController {
             double cameraEnd = shot.getEndCount() + shot.getEndShotPadding();
 
             shot.getTimelineIndices().forEach(index -> {
-                    CameraShot subShot = new CameraShot(shot.getName(), shot.getDescription(),
-                                                    cameraStart, cameraEnd, shot);
+                    CameraShot subShot = new CameraShot(
+                                             new GeneralShotData(
+                                                shot.getName(), shot.getDescription(),
+                                                cameraStart, cameraEnd),
+                                             shot);
                     shot.addCameraShot(subShot);
                     this.controllerManager.getTimelineControl().addCameraShot(index, subShot);
                 });

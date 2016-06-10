@@ -42,21 +42,12 @@ public class TimelinesGridPane extends ScrollableGridPane {
     }
 
     /**
-     * Remove a CameraShotBlock from this gridpane.
-     * @param block the block to remove
-     */
-    public void removeCameraShotBlock(CameraShotBlock block) {
-        this.getChildren().remove(block.getTimetableBlock());
-    }
-
-    /**
      * Add snapping panes to grid. Also apply line separators to grid, once every few skips.
      */
     private void addPanes() {
         setPanes(new ArrayList<>());
-        int c;
         for (int i = 0; i < getNumberOfHorizontalGrids(); i++) {
-            c = 1;
+            int c = 1;
             for (int j = 0; j < getNumberOfVerticalGrids(); j++) {
                 SnappingPane pane = new SnappingPane(j, i);
                 this.add(pane, i, j);
@@ -71,5 +62,14 @@ public class TimelinesGridPane extends ScrollableGridPane {
             }
         }
     }
+    
+    /**
+     * Remove a CameraShotBlock from this gridpane.
+     * @param block the block to remove
+     */
+    public void removeCameraShotBlock(CameraShotBlock block) {
+        this.getChildren().remove(block.getTimetableBlock());
+    }
+
 
 }

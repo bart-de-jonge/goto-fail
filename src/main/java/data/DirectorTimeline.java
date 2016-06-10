@@ -51,29 +51,6 @@ public class DirectorTimeline extends Timeline {
     }
 
     /**
-     * {@code addShot} defaults to {@link DirectorShot}.
-     *
-     * @param name the name of the Shot to add
-     * @param description the description of the Shot
-     * @param startCount the start count of the Shot
-     * @param endCount the end count of the Shot
-     * @param frontPadding the additional time to record before the shot
-     * @param endPadding the additional time to record after the shot
-     * @param cameras the shots the final shot could end up in
-     * @return If no overlap is found, only the newly added shot will be returned. If any
-       colliding shots are found, all colliding shots will be returned. If any colliding
-       shots are found, the shot that was added will be the last one in the list.
-     * @see DirectorTimeline#addShot(DirectorShot)
-     */
-    public ArrayList<DirectorShot> addShot(String name, String description,
-                                           double startCount, double endCount,
-                                           double frontPadding, double endPadding,
-                                           List<Integer> cameras) {
-        return addShot(new DirectorShot(name, description, startCount, endCount,
-                frontPadding, endPadding, cameras));
-    }
-
-    /**
      * Adds a Shot to the Timeline. The Shot is inserted in a sorted manner. When a Shot is
      * inserted, the shots before the Shot have a lower start count of a lower end count. The
      * Shot after the inserted shot have a higher start count or end count. This method also checks

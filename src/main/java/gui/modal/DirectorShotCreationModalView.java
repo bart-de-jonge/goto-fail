@@ -1,12 +1,14 @@
 package gui.modal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import data.CameraTimeline;
+import data.Instrument;
 import gui.headerarea.DoubleTextField;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledCheckbox;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -35,6 +37,7 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
      */
 
     private List<CameraTimeline> cameraTimelines;
+    private ArrayList<Instrument> instruments;
 
     // General panes used
     @Getter
@@ -47,8 +50,9 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
      * @param rootPane Pane to display modal on top of
      * @param cameraTimelines Cameras in timeline
      */
-    public DirectorShotCreationModalView(RootPane rootPane, List<CameraTimeline> cameraTimelines) {
-        this(rootPane, cameraTimelines, width, height);
+    public DirectorShotCreationModalView(RootPane rootPane, List<CameraTimeline> cameraTimelines,
+                                         ArrayList<Instrument> instruments) {
+        this(rootPane, cameraTimelines, instruments, width, height);
     }
 
     /**
@@ -57,11 +61,14 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
      * @param cameraTimelines Cameras in timeline
      * @param modalWidth Modal display width
      * @param modalHeight Modal display height
+     * @param instruments the instruments that can be used
      */
     public DirectorShotCreationModalView(RootPane rootPane, List<CameraTimeline> cameraTimelines,
+                                 ArrayList<Instrument> instruments,
                                  int modalWidth, int modalHeight) {
         super(rootPane, modalWidth, modalHeight);
         this.cameraTimelines = cameraTimelines;
+        this.instruments = instruments;
         initializeCreationView();
     }
 
@@ -71,10 +78,8 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
     private void initializeCreationView() {
         
         // force minimum size
-        getModalStage().setHeight(height);
-        getModalStage().setWidth(width);
-        getModalStage().setMinWidth(width);
-        getModalStage().setMinHeight(height);
+        forceBounds(height, width);
+       
 
         // Create a new VBox for vertical layout
         this.rootPane = new VBox();
@@ -111,6 +116,7 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
         initNameDescriptionFields(content);
         initCountTextfields(content);
         initPaddingTextfields(content);
+        initInstrumentsDropdown(content, instruments);
 
         this.centerPane.getChildren().add(content);
     }
@@ -170,20 +176,4 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
         errText.setFill(Color.RED);
         this.rootPane.getChildren().add(this.rootPane.getChildren().size() - 1, errText);
     }
-
-    /**
-     * Builds a list of which cameras are in the shot.
-     * @return list of cameras in shot
-     */
-    public List<Integer> getCamerasInShot() {
-        List<Integer> camsInShot = new ArrayList<>();
-
-        for (int i = 0; i < cameraCheckboxes.size(); i++) {
-            if (cameraCheckboxes.get(i).isSelected()) {
-                camsInShot.add(i);
-            }
-        }
-        return camsInShot;
-    }
-
 }

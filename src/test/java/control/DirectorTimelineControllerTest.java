@@ -19,6 +19,7 @@ import org.testfx.framework.junit.ApplicationTest;
 import data.CameraShot;
 import data.DirectorShot;
 import data.DirectorTimeline;
+import data.GeneralShotData;
 import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
@@ -60,8 +61,8 @@ public class DirectorTimelineControllerTest extends ApplicationTest {
 
             List<Integer> cameraList = new ArrayList<>();
             cameraList.add(1);
-            directorTimelineController.addDirectorShot("Violas", "Left of conductor", 1, 2,
-                                                       0.5, 0.5, cameraList);
+            directorTimelineController.addDirectorShot(new DirectorShot(new GeneralShotData("Violas", "Left of conductor", 1, 2),
+                                                       0.5, 0.5, cameraList));
             latch[0].countDown();
         });
         latch[0].await();
@@ -142,8 +143,8 @@ public class DirectorTimelineControllerTest extends ApplicationTest {
 
             List<Integer> cameraList = new ArrayList<>();
             cameraList.add(1);
-            directorTimelineController.addDirectorShot("Violas", "Left of conductor", 1, 2,
-                                                       0.5, 0.5, cameraList);
+            directorTimelineController.addDirectorShot(new DirectorShot(new GeneralShotData("Violas", "Left of conductor", 1, 2),
+                                                       0.5, 0.5, cameraList));
 
             directorTimelineController.generateAllShots();
 

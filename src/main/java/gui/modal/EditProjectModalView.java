@@ -1,8 +1,11 @@
 package gui.modal;
 
+import java.util.ArrayList;
+
 import data.Camera;
 import data.CameraTimeline;
 import data.CameraType;
+import data.Instrument;
 import data.ScriptingProject;
 import gui.headerarea.DoubleTextField;
 import gui.misc.TweakingHelper;
@@ -10,7 +13,6 @@ import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledListview;
 import gui.styling.StyledTextfield;
-import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -32,20 +34,14 @@ public class EditProjectModalView extends ModalView {
 
     // preferred width and height of screen.
     private static final int width = 900;
-    private static final int height = 500;
+    private static final int height = 700;
 
     // variables for spacing
     private static final int topAreaHeight = 70;
     private static final int bottomAreaHeight = 60;
 
     // simple background styles of the three main areas.
-    private String topStyle = BACKGROUND_COLOR_STRING
-            + TweakingHelper.getColorString(0) + ";"
-            + "-fx-text-fill: white; -fx-font-size: 26;"
-            + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
-            + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: "
-            + TweakingHelper.getColorString(1) + ";";
+    private String topStyle = ModalUtilities.constructDefaultModalTopStyle(26);
     private String centerLeftStyle = BACKGROUND_COLOR_STRING
             + TweakingHelper.getBackgroundHighString() + ";";
     private String centerRightStyle = BACKGROUND_COLOR_STRING
@@ -128,8 +124,18 @@ public class EditProjectModalView extends ModalView {
     private ArrayList<Camera> cameras;
     @Getter
     private ArrayList<CameraTimeline> timelines;
+    @Getter
+    private ArrayList<Instrument> instruments;
 
     private boolean fillWithCurrentProjectInfo;
+    @Getter
+    private StyledButton addInstrumentButton;
+    @Getter
+    private StyledButton editInstrumentButton;
+    @Getter
+    private StyledButton deleteInstrumentButton;
+    @Getter
+    private StyledListview<HBox> instrumentList;
     
     private static final String BACKGROUND_COLOR_STRING = "-fx-background-color: ";
     
@@ -158,6 +164,7 @@ public class EditProjectModalView extends ModalView {
         this.cameras =  new ArrayList<>();
         this.cameraTypes = new ArrayList<>();
         this.timelines = new ArrayList<>();
+        this.instruments = new ArrayList<>();
 
         if (fillWithCurrentProjectInfo) {
             ArrayList<Camera> projectCameras = project.getCameras();
@@ -166,6 +173,8 @@ public class EditProjectModalView extends ModalView {
             projectTypes.forEach(e -> cameraTypes.add(e.clone()));
             ArrayList<CameraTimeline> projectTimelines = project.getCameraTimelines();
             projectTimelines.forEach(e -> timelines.add(e.clone()));
+            ArrayList<Instrument> projectInstruments = project.getInstruments();
+            projectInstruments.forEach(e -> instruments.add(e.clone()));
         }
         initializeView();
     }
@@ -176,10 +185,7 @@ public class EditProjectModalView extends ModalView {
     private void initializeView() {
 
         // force minimum size
-        getModalStage().setHeight(height);
-        getModalStage().setWidth(width);
-        getModalStage().setMinWidth(width);
-        getModalStage().setMinHeight(height);
+        forceBounds(height, width);
 
         // Create a new VBox for vertical layout.
         this.viewPane = new VBox();
@@ -218,24 +224,17 @@ public class EditProjectModalView extends ModalView {
         directorTimelineDescriptionField.setText(project.getDirectorTimeline().getDescription());
         initCameraTypeList(cameraTypeList);
         initCameraList(cameraList);
+        initInstrumentList(instrumentList);
     }
     
-
-
+    
     /**
      * Initialize title label.
      */
     private void initTitleLabel() {
-        titleLabel = new Label("");
+        titleLabel = ModalUtilities.constructTitleLabel(topStyle, topAreaHeight);
         titleLabel.setText( fillWithCurrentProjectInfo
                 ? "Edit the current project..." : "Create a new project...");
-        titleLabel.setStyle(topStyle);
-        titleLabel.setAlignment(Pos.CENTER_LEFT);
-        titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        titleLabel.setMinHeight(topAreaHeight);
-        titleLabel.setPrefHeight(topAreaHeight);
-        titleLabel.setMaxHeight(topAreaHeight);
         this.viewPane.getChildren().add(titleLabel);
     }
 
@@ -244,12 +243,9 @@ public class EditProjectModalView extends ModalView {
      * Initialize the fields.
      */
     private void initFields() {
-        VBox content = new VBox(TweakingHelper.GENERAL_SPACING);
+        VBox content = ModalUtilities.constructFieldsPane();
         content.setAlignment(Pos.CENTER_LEFT);
         content.setMinWidth(TEXT_AREA_MIN_WIDTH);
-        content.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
-        content.setPadding(new Insets(TweakingHelper.GENERAL_PADDING));
         content.setStyle(centerLeftStyle);
 
         initNameDescriptionFields(content);
@@ -321,6 +317,39 @@ public class EditProjectModalView extends ModalView {
         content.setStyle(centerRightStyle);
 
         // add camera type
+        initCameraTypeAdd(content);
+
+        // add camera
+        initCameraAdd(content);
+        
+        initInstrumentAdd(content);
+
+        this.centerPane.getChildren().add(content);
+    }
+    
+    /**
+     * Initialize the instrument add.
+     * @param content the content to put this in
+     */
+    private void initInstrumentAdd(VBox content) {
+        addInstrumentButton = createButton("Add Instrument", true);
+        editInstrumentButton = createButton("Edit Instrument", true);
+        deleteInstrumentButton = createButton("Delete Instrument", true);
+        addInstrumentButton.setPrefWidth(buttonWidth);
+        editInstrumentButton.setPrefWidth(buttonWidth);
+        deleteInstrumentButton.setPrefWidth(buttonWidth);
+        HBox instrumentContent = new HBox(TweakingHelper.GENERAL_SPACING);
+        instrumentContent.getChildren().addAll(addInstrumentButton, editInstrumentButton,
+                deleteInstrumentButton);
+        instrumentList = new StyledListview<HBox>();
+        content.getChildren().addAll(instrumentContent, instrumentList);
+    }
+    
+    /**
+     * Initialize the camera type add.
+     * @param content the content to put this in
+     */
+    private void initCameraTypeAdd(VBox content) {
         addCameraTypeButton = createButton("Add Camera Type", true);
         editCameraTypeButton = createButton("Edit Camera Type", true);
         deleteCameraTypeButton = createButton("Delete Camera Type", true);
@@ -332,8 +361,13 @@ public class EditProjectModalView extends ModalView {
                 deleteCameraTypeButton);
         cameraTypeList = new StyledListview<HBox>();
         content.getChildren().addAll(cameraTypeContent, cameraTypeList);
-
-        // add camera
+    }
+    
+    /**
+     * Initialize the camera add.
+     * @param content the content to put this in
+     */
+    private void initCameraAdd(VBox content) {
         addCameraButton = createButton("Add Camera", true);
         editCameraButton = createButton("Edit Camera", true);
         deleteCameraButton = createButton("Delete Camera", true);
@@ -344,15 +378,12 @@ public class EditProjectModalView extends ModalView {
         cameraContent.getChildren().addAll(addCameraButton, editCameraButton, deleteCameraButton);
         cameraList = new StyledListview<>();
         content.getChildren().addAll(cameraContent, cameraList);
-
-        this.centerPane.getChildren().add(content);
     }
     
     /**
      * Initialize the camera type list.
      * @param typeList the list that should be initiated.
      */
-
     private void initCameraTypeList(ListView<HBox> typeList) {
         typeList.setMinHeight(75);
         for (CameraType type: cameraTypes) {
@@ -379,18 +410,32 @@ public class EditProjectModalView extends ModalView {
     }
     
     /**
+     * Initialize the list of instruments.
+     * @param instrumentList the instruments to put in
+     */
+    private void initInstrumentList(ListView<HBox> instrumentList) {
+        System.out.println("Adding instruments");
+        System.out.println(project.getInstruments().size());
+        instrumentList.setMinHeight(75);
+        ArrayList<Instrument> instruments = project.getInstruments();
+        for (Instrument i : instruments) {
+            HBox box = new HBox();
+            if (i.getDescription().isEmpty()) {
+                box.getChildren().add(new Label(i.getName()));
+            } else {
+                box.getChildren().addAll(new Label(i.getName()), 
+                        new Label(" - "), new Label(i.getDescription()));
+            }
+            instrumentList.getItems().add(box);
+        }
+    }
+    
+    /**
      * Initialize the save/cancel buttons.
      */
     private void initButtons() {
         // setup button pane
-        this.buttonPane = new HBox();
-        this.buttonPane.setSpacing(buttonSpacing);
-        this.buttonPane.setAlignment(Pos.CENTER_LEFT);
-        this.buttonPane.setMinHeight(bottomAreaHeight);
-        this.buttonPane.setPrefHeight(bottomAreaHeight);
-        this.buttonPane.setMaxHeight(bottomAreaHeight);
-        this.buttonPane.setStyle(bottomStyle);
-        this.buttonPane.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
+        this.buttonPane = ModalUtilities.constructButtonPane();
         this.viewPane.getChildren().add(buttonPane);
 
         // Add cancel button

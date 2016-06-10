@@ -29,20 +29,14 @@ public class PreferencesModalView extends ModalView {
     protected static final int bottomAreaHeight = 60;
 
     // area styling
-    protected String topStyle = "-fx-background-color: "
-            + TweakingHelper.getColorString(0) + ";"
-            + "-fx-text-fill: white; -fx-font-size: 22;"
-            + "-fx-font-family: helvetica neue; -fx-font-weight: lighter;"
-            + "-fx-border-width: 0 0 10 0;"
-            + "-fx-border-color: "
-            + TweakingHelper.getColorString(1) + ";";
+    protected String topStyle = ModalUtilities.constructDefaultModalTopStyle(22);
     protected String centerStyle = "-fx-background-color: "
             + TweakingHelper.getBackgroundString() + ";";
     protected String bottomStyle = "-fx-background-color: "
             + TweakingHelper.getColorString(0) + ";";
 
     // variables for the buttons
-    private int buttonSpacing = 20;
+    private static final int buttonSpacing = 20;
 
     // variables for the title label
     private static final int titlelabelOffsetFromLeft = 20;
@@ -88,11 +82,7 @@ public class PreferencesModalView extends ModalView {
      */
     private void initializeView() {
         // force minimum size
-        getModalStage().setHeight(height);
-        getModalStage().setWidth(width);
-        getModalStage().setMinWidth(width);
-        getModalStage().setMinHeight(height);
-
+        forceBounds(height, width);
         // Create a new VBox for vertical layout
         this.viewPane = new VBox();
 
@@ -113,14 +103,8 @@ public class PreferencesModalView extends ModalView {
      * Init the title label.
      */
     private void initTitleLabel() {
-        titleLabel = new Label("Preferences");
-        titleLabel.setStyle(topStyle);
-        titleLabel.setAlignment(Pos.CENTER_LEFT);
-        titleLabel.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
-        titleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        titleLabel.setMinHeight(topAreaHeight);
-        titleLabel.setPrefHeight(topAreaHeight);
-        titleLabel.setMaxHeight(topAreaHeight);
+        titleLabel = ModalUtilities.constructTitleLabel(topStyle, topAreaHeight);
+        titleLabel.setText("Preferences");
         this.viewPane.getChildren().add(titleLabel);
     }
 
@@ -162,14 +146,7 @@ public class PreferencesModalView extends ModalView {
      */
     private void initButtons() {
         // setup button pane
-        this.buttonPane = new HBox();
-        this.buttonPane.setSpacing(buttonSpacing);
-        this.buttonPane.setAlignment(Pos.CENTER_LEFT);
-        this.buttonPane.setMinHeight(bottomAreaHeight);
-        this.buttonPane.setPrefHeight(bottomAreaHeight);
-        this.buttonPane.setMaxHeight(bottomAreaHeight);
-        this.buttonPane.setStyle(bottomStyle);
-        this.buttonPane.setPadding(new Insets(0, 0, 0, titlelabelOffsetFromLeft));
+        this.buttonPane = ModalUtilities.constructButtonPane();
         this.viewPane.getChildren().add(buttonPane);
 
         // Add cancel button
