@@ -105,20 +105,15 @@ public class StyledMenuButton extends MenuButton {
         new java.util.Timer().schedule(new java.util.TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        Node label = lookup(".label");
+                Platform.runLater(() -> {
                         try {
-                            label.styleProperty().bind(new SimpleStringProperty("-fx-text-fill: ")
+                            lookup(".label").styleProperty().bind(
+                                    new SimpleStringProperty("-fx-text-fill: ")
                                     .concat(borderStringProperty).concat(";"));
                         } catch (NullPointerException e) {
-                            /*
-                                Do nothing
-                             */
+                                /*  Do nothing */
                         }
-                    }
-                });
+                    });
             }
         }, 50);
     }

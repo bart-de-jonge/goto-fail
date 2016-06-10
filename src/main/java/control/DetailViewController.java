@@ -1,36 +1,28 @@
 package control;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+
 
 import data.Camera;
 import data.CameraShot;
 import data.DirectorShot;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
-import gui.centerarea.ShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;
 import gui.headerarea.DetailView;
 import gui.headerarea.DirectorDetailView;
 import gui.misc.TweakingHelper;
 import gui.styling.StyledCheckbox;
 import gui.styling.StyledMenuButton;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.control.CustomMenuItem;
-import javafx.scene.control.MenuButton;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
 import lombok.extern.log4j.Log4j2;
-
-import javax.swing.event.DocumentEvent;
-import javax.swing.text.Style;
 
 /**
  * Controller for the DetailView.
@@ -86,7 +78,8 @@ public class DetailViewController {
         ((DirectorDetailView) detailView).getPaddingBeforeField()
         .focusedProperty().addListener(this::beforePaddingFocusListener);
         
-        ((DirectorDetailView) detailView).getPaddingBeforeField().setOnKeyPressed(event -> {
+        ((DirectorDetailView) detailView).getPaddingBeforeField().setOnKeyPressed(
+            event -> {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     this.beforePaddingUpdateHelper();
                 }
@@ -122,7 +115,8 @@ public class DetailViewController {
             DirectorShot directorShot = ((DirectorShot) manager.getActiveShotBlock().getShot());
             
             directorShot.setFrontShotPadding(newVal);
-            directorShot.getCameraShots().forEach(e -> {
+            directorShot.getCameraShots().forEach(
+                e -> {
                     CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
                     shotBlock.setBeginCount(directorShot.getBeginCount() - newVal, true);
                     manager.getTimelineControl().modifyCameraShot(
@@ -141,7 +135,8 @@ public class DetailViewController {
     private void initEndPadding() {
         ((DirectorDetailView) detailView).getPaddingAfterField().focusedProperty()
         .addListener(this::afterPaddingFocusListener);
-        ((DirectorDetailView) detailView).getPaddingAfterField().setOnKeyPressed(event -> {
+        ((DirectorDetailView) detailView).getPaddingAfterField().setOnKeyPressed(
+            event -> {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     this.afterPaddingUpdateHelper();
                 }
@@ -175,7 +170,8 @@ public class DetailViewController {
             
             directorShotBlock.setPaddingAfter(newVal);
             ((DirectorShot) manager.getActiveShotBlock().getShot()).setEndShotPadding(newVal);
-            ((DirectorShot) manager.getActiveShotBlock().getShot()).getCameraShots().forEach(e -> {
+            ((DirectorShot) manager.getActiveShotBlock().getShot()).getCameraShots().forEach(
+                e -> {
                     CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
                     shotBlock.setEndCount(((DirectorShot) manager.getActiveShotBlock().getShot())
                             .getEndCount() + newVal, true);
@@ -438,25 +434,27 @@ public class DetailViewController {
 
         cameraButtons.showingProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            public void changed(ObservableValue<? extends Boolean> observable,
+                                Boolean oldValue, Boolean newValue) {
                 if (newValue) {
                     Set<Integer> indices = activeBlock.getTimelineIndices();
 
                     for (int i = 0; i < manager.getScriptingProject().getCameras().size(); i++) {
                         Camera camera = manager.getScriptingProject().getCameras().get(i);
                         int j = i;
-                        StyledCheckbox checkbox = new StyledCheckbox(camera.getName(), indices.contains(i));
+                        StyledCheckbox checkbox = new StyledCheckbox(camera.getName(),
+                                indices.contains(i));
                         activeBlockBoxes.add(checkbox);
                         CustomMenuItem item = new CustomMenuItem(checkbox);
                         item.setHideOnClick(false);
                         cameraButtons.getItems().add(item);
                         checkbox.setOnMouseClicked(e -> {
-                            if (checkbox.isSelected()) {
-                                cameraAddedInDropdown(j);
-                            } else {
-                                cameraDeletedInDropdown(j);
-                            }
-                        });
+                                if (checkbox.isSelected()) {
+                                    cameraAddedInDropdown(j);
+                                } else {
+                                    cameraDeletedInDropdown(j);
+                                }
+                            });
                     }
 
                 } else {
