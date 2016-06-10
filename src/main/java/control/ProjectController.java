@@ -334,6 +334,7 @@ public class ProjectController {
         try {
             temp = ScriptingProject.read(file);
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("previously opened file could not be found.");
         }
         if (temp == null) {

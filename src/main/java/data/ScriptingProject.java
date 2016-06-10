@@ -229,6 +229,7 @@ public class ScriptingProject {
             result.saved();
             return result;
         } catch (JAXBException e) {
+            e.printStackTrace();
             return null;
         }
     }
