@@ -1,8 +1,11 @@
 package gui.modal;
 
+import java.util.ArrayList;
+
 import data.Camera;
 import data.CameraTimeline;
 import data.CameraType;
+import data.Instrument;
 import data.ScriptingProject;
 import gui.headerarea.DoubleTextField;
 import gui.misc.TweakingHelper;
@@ -10,7 +13,6 @@ import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledListview;
 import gui.styling.StyledTextfield;
-import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -32,7 +34,7 @@ public class EditProjectModalView extends ModalView {
 
     // preferred width and height of screen.
     private static final int width = 900;
-    private static final int height = 500;
+    private static final int height = 700;
 
     // variables for spacing
     private static final int topAreaHeight = 70;
@@ -122,6 +124,8 @@ public class EditProjectModalView extends ModalView {
     private ArrayList<Camera> cameras;
     @Getter
     private ArrayList<CameraTimeline> timelines;
+    @Getter
+    private ArrayList<Instrument> instruments;
 
     private boolean fillWithCurrentProjectInfo;
     @Getter
@@ -160,6 +164,7 @@ public class EditProjectModalView extends ModalView {
         this.cameras =  new ArrayList<>();
         this.cameraTypes = new ArrayList<>();
         this.timelines = new ArrayList<>();
+        this.instruments = new ArrayList<>();
 
         if (fillWithCurrentProjectInfo) {
             ArrayList<Camera> projectCameras = project.getCameras();
@@ -168,6 +173,8 @@ public class EditProjectModalView extends ModalView {
             projectTypes.forEach(e -> cameraTypes.add(e.clone()));
             ArrayList<CameraTimeline> projectTimelines = project.getCameraTimelines();
             projectTimelines.forEach(e -> timelines.add(e.clone()));
+            ArrayList<Instrument> projectInstruments = project.getInstruments();
+            projectInstruments.forEach(e -> instruments.add(e.clone()));
         }
         initializeView();
     }
@@ -217,10 +224,10 @@ public class EditProjectModalView extends ModalView {
         directorTimelineDescriptionField.setText(project.getDirectorTimeline().getDescription());
         initCameraTypeList(cameraTypeList);
         initCameraList(cameraList);
+        initInstrumentList(instrumentList);
     }
     
-
-
+    
     /**
      * Initialize title label.
      */
@@ -314,6 +321,8 @@ public class EditProjectModalView extends ModalView {
 
         // add camera
         initCameraAdd(content);
+        
+        initInstrumentAdd(content);
 
         this.centerPane.getChildren().add(content);
     }
@@ -388,6 +397,25 @@ public class EditProjectModalView extends ModalView {
             cameraList.getItems().add(box);
         }
     }
+    
+    private void initInstrumentList(ListView<HBox> instrumentList) {
+        System.out.println("Adding instruments");
+        System.out.println(project.getInstruments().size());
+        instrumentList.setMinHeight(75);
+        ArrayList<Instrument> instruments = project.getInstruments();
+        for (Instrument i : instruments) {
+            HBox box = new HBox();
+            if (i.getDescription().isEmpty()) {
+                box.getChildren().add(new Label(i.getName()));
+            } else {
+                box.getChildren().addAll(new Label(i.getName()), new Label(" - "), new Label(i.getDescription()));
+            }
+            instrumentList.getItems().add(box);
+        }
+    }
+    
+
+
     
     /**
      * Initialize the save/cancel buttons.
