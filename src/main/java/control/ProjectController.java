@@ -28,10 +28,12 @@ import data.CameraTimeline;
 import data.CameraType;
 import data.DirectorShot;
 import data.DirectorTimeline;
+import data.Instrument;
 import data.ScriptingProject;
 import data.User;
 import gui.modal.AddCameraModalView;
 import gui.modal.AddCameraTypeModalView;
+import gui.modal.AddInstrumentModalView;
 import gui.modal.DeleteCameraTypeWarningModalView;
 import gui.modal.EditProjectModalView;
 import gui.modal.ErrorWhileUploadingModalView;
@@ -58,6 +60,7 @@ public class ProjectController {
     private EditProjectModalView editProjectModal;
     private AddCameraModalView cameraModal;
     private AddCameraTypeModalView cameraTypeModal;
+    private AddInstrumentModalView instrumentModal;
     @Setter
     private DeleteCameraTypeWarningModalView typeWarningModal;
     private ErrorWhileUploadingModalView errorModal;
@@ -262,6 +265,7 @@ public class ProjectController {
         project.setCameraTypes(editProjectModal.getCameraTypes());
         project.setCameras(editProjectModal.getCameras());
         project.setCameraTimelines(editProjectModal.getTimelines());
+        project.setInstruments(editProjectModal.getInstruments());
         return project;
     }
     
@@ -330,6 +334,7 @@ public class ProjectController {
         try {
             temp = ScriptingProject.read(file);
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("previously opened file could not be found.");
         }
         if (temp == null) {
@@ -511,6 +516,23 @@ public class ProjectController {
     private void addDirectorShotForLoad(DirectorShot shot) {
         controllerManager.getDirectorTimelineControl().initShotBlock(shot);
     }
+    
+    /**
+     * Handler for deleting an instrument.
+     * @param event the event for this handler
+     */
+    private void deleteInstrument(MouseEvent event) {
+        int selectedIndex = editProjectModal.getInstrumentList()
+                                            .getSelectionModel()
+                                            .getSelectedIndex();
+        if (selectedIndex != -1) {
+            editProjectModal.getInstrumentList().getItems().remove(selectedIndex);
+            editProjectModal.getInstruments().remove(selectedIndex);
+        } else {
+            editProjectModal.getTitleLabel().setText("Please select an instrument first");
+            editProjectModal.getTitleLabel().setTextFill(Color.RED);
+        }
+    }
 
    
     /**
@@ -634,28 +656,101 @@ public class ProjectController {
      * Init the button handlers for the edit project modal.
      */
     private void initHandlersForEditProjectModal() {
+        initGeneralHandlers();
+        editProjectModal.getApplyButton().setOnMouseClicked(this::applyEdit);
+    }
+    
+    /**
+     * Init handlers that are the same for edit and new project.
+     */
+    private void initGeneralHandlers() {
         editProjectModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
         editProjectModal.getEditCameraButton().setOnMouseClicked(this::editCamera);
         editProjectModal.getDeleteCameraButton().setOnMouseClicked(this::deleteCamera);
         editProjectModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);
         editProjectModal.getEditCameraTypeButton().setOnMouseClicked(this::editCameraType);
         editProjectModal.getDeleteCameraTypeButton().setOnMouseClicked(this::deleteCameraType);
+        editProjectModal.getAddInstrumentButton().setOnMouseClicked(this::addInstrument);
+        editProjectModal.getEditInstrumentButton().setOnMouseClicked(this::editInstrument);
+        editProjectModal.getDeleteInstrumentButton().setOnMouseClicked(this::deleteInstrument);
         editProjectModal.getCancelButton().setOnMouseClicked(this::cancel);
-        editProjectModal.getApplyButton().setOnMouseClicked(this::applyEdit);
     }
 
     /**
      * Init the button handlers for the new project modal.
      */
     private void initHandlersForNewProjectModal() {
-        editProjectModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
-        editProjectModal.getEditCameraButton().setOnMouseClicked(this::editCamera);
-        editProjectModal.getDeleteCameraButton().setOnMouseClicked(this::deleteCamera);
-        editProjectModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);
-        editProjectModal.getEditCameraTypeButton().setOnMouseClicked(this::editCameraType);
-        editProjectModal.getDeleteCameraTypeButton().setOnMouseClicked(this::deleteCameraType);
-        editProjectModal.getCancelButton().setOnMouseClicked(this::cancel);
+        initGeneralHandlers();
         editProjectModal.getApplyButton().setOnMouseClicked(this::applyNew);
+    }
+    
+    /**
+     * Handler for adding an instrument.
+     * @param event the event for this handler
+     */
+    private void addInstrument(MouseEvent event) {
+        instrumentModal = new AddInstrumentModalView(controllerManager.getRootPane());
+        instrumentModal.getAddInstrumentButton().setOnMouseClicked(this::instrumentAdded);
+        instrumentModal.getCancelButton().setOnMouseClicked(this::cancelAddInstrument);
+    }
+    
+    /**
+     * Handler for cancelling adding an instrument.
+     * @param event the event for this handler
+     */
+    private void cancelAddInstrument(MouseEvent event) {
+        instrumentModal.hideModal();
+    }
+    
+    /**
+     * Handler for editing an instrument.
+     * @param event the event for this handler
+     */
+    private void editInstrument(MouseEvent event) {
+        int selectedIndex = editProjectModal.getInstrumentList()
+                                            .getSelectionModel()
+                                            .getSelectedIndex();
+        if (selectedIndex != -1) {
+            instrumentModal = new AddInstrumentModalView(controllerManager.getRootPane(),
+                    editProjectModal.getInstruments().get(selectedIndex));
+            instrumentModal.getAddInstrumentButton()
+                           .setOnMouseClicked(e -> instrumentEdited(e, selectedIndex));
+            instrumentModal.getCancelButton().setOnMouseClicked(this::instrumentEditCancelled);
+        } else {
+            editProjectModal.getTitleLabel().setText("Please select an instrument to edit");
+            editProjectModal.getTitleLabel().setTextFill(Color.RED);
+        }
+    }
+    
+    /**
+     * Handler for when an instrument is actually edited.
+     * @param event the event for this handler
+     * @param selectedIndex the index of the instrument edited
+     */
+    private void instrumentEdited(MouseEvent event, int selectedIndex) {
+        if (this.validateInstrumentData()) {
+            instrumentModal.hideModal();
+            String name = instrumentModal.getNameField().getText();
+            String description = instrumentModal.getDescriptionField().getText();
+            editProjectModal.getInstruments().get(selectedIndex).setName(name);
+            editProjectModal.getInstruments().get(selectedIndex).setDescription(description);
+            HBox box = new HBox();
+            if (description.isEmpty()) {
+                box.getChildren().add(new Label(name));
+            } else {
+                box.getChildren().addAll(new Label(name), 
+                        new Label(NAME_DESC_SEPERATOR), new Label(description));
+            }
+            editProjectModal.getInstrumentList().getItems().set(selectedIndex, box);
+        }
+    }
+    
+    /**
+     * Handler for cancelling an instrument edit.
+     * @param event the event for this handler
+     */
+    private void instrumentEditCancelled(MouseEvent event) {
+        instrumentModal.hideModal();
     }
     
     /**
@@ -786,6 +881,45 @@ public class ProjectController {
      */
     private void cancelAddCamera(MouseEvent event) {
         cameraModal.hideModal();
+    }
+    
+    /**
+     * Handler for when an instrument is actually added.
+     * @param event the event for this handler
+     */
+    private void instrumentAdded(MouseEvent event) {
+        if (validateInstrumentData()) {
+            instrumentModal.hideModal();
+            String name = instrumentModal.getNameField().getText();
+            String description = instrumentModal.getDescriptionField().getText();
+            Instrument instrument = new Instrument(name, description);
+            editProjectModal.getInstruments().add(instrument);
+            HBox box = new HBox();
+            if (description.isEmpty()) {
+                box.getChildren().add(new Label(name));
+            } else {
+                box.getChildren().addAll(new Label(name), new Label(NAME_DESC_SEPERATOR),
+                        new Label(description));
+            }
+            editProjectModal.getInstrumentList().getItems().add(box);
+        }
+    }
+    
+    /**
+     * Validate the data from the instrument modal.
+     * @return true if the data is legit, false otherwise
+     */
+    private boolean validateInstrumentData() {
+        String errorString = "";
+        String name = instrumentModal.getNameField().getText();
+        if (name.isEmpty()) {
+            errorString = "Please enter an instrument name\n";
+        }
+        
+        instrumentModal.getTitleLabel().setText(errorString);
+        instrumentModal.getTitleLabel().setTextFill(Color.RED);
+        
+        return errorString.isEmpty();
     }
     
     /**
