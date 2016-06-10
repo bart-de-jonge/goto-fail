@@ -49,6 +49,12 @@ public class ScriptingProject {
     @XmlElementWrapper(name = "cameraList")
     @XmlElement(name = "camera")
     private ArrayList<Camera> cameras;
+    
+    // List of instruments that are available in this project
+    @Getter @Setter
+    @XmlElementWrapper(name = "instrumentList")
+    @XmlElement(name = "instrument")
+    private ArrayList<Instrument> instruments;
 
     // The director timeline of this project
     @Getter @Setter
@@ -100,8 +106,18 @@ public class ScriptingProject {
         this.directorTimeline = new DirectorTimeline(description, this);
         this.cameraTypes = new ArrayList<CameraType>();
         this.users = new ArrayList<User>();
+        this.instruments = new ArrayList<Instrument>();
         this.changed = true;
     }
+    
+    /**
+     * Add an instrument to this project.
+     * @param instrument the instrument to add
+     */
+    public void addInstrument(Instrument instrument) {
+        this.instruments.add(instrument);
+    }
+    
     
     /**
      * Add a user.
