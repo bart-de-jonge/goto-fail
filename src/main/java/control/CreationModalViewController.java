@@ -6,6 +6,7 @@ import data.GeneralShotData;
 import gui.modal.CameraShotCreationModalView;
 import gui.modal.DirectorShotCreationModalView;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.scene.control.CheckBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -123,16 +124,20 @@ public class CreationModalViewController {
     private void createCameraShot(MouseEvent event) {
         if (validateCameraShot()) {
             TimelineController timelineController = this.controllerManager.getTimelineControl();
+            
+            CameraShot shot = new CameraShot(
+                    cameraShotCreationModalView.getNameField().getText(),
+                    cameraShotCreationModalView.getDescriptionField().getText(),
+                Double.parseDouble(
+                        cameraShotCreationModalView.getStartField().getText()),
+                Double.parseDouble(
+                        cameraShotCreationModalView.getEndField().getText()));
+            cameraShotCreationModalView.getInstrumentsDropdown().getCheckModel().getCheckedIndices().forEach(e -> {
+                shot.addInstrument(this.controllerManager.getScriptingProject().getInstruments().get(e));
+            });
 
             cameraShotCreationModalView.getCamerasInShot().forEach(cameraIndex -> {
-                    timelineController.addCameraShot(cameraIndex,
-                            new CameraShot(
-                                cameraShotCreationModalView.getNameField().getText(),
-                                cameraShotCreationModalView.getDescriptionField().getText(),
-                            Double.parseDouble(
-                                    cameraShotCreationModalView.getStartField().getText()),
-                            Double.parseDouble(
-                                    cameraShotCreationModalView.getEndField().getText())));
+                    timelineController.addCameraShot(cameraIndex, shot);
                 });
 
             cameraShotCreationModalView.getModalStage().close();
@@ -213,7 +218,7 @@ public class CreationModalViewController {
         directorShotCreationModalView.getEndField().focusedProperty().addListener(
                 this::directorShotEndCountFocusHandler);
     }
-
+    
     /**
      * Handler for when enter is pressed on the startcount field in directorshot creation.
      * @param event - the keyevent
@@ -277,18 +282,23 @@ public class CreationModalViewController {
         if (validateDirectorShot()) {
             DirectorTimelineController directorTimelineController =
                     this.controllerManager.getDirectorTimelineControl();
-
-            directorTimelineController.addDirectorShot(
-                new DirectorShot(
+            
+            DirectorShot shot = new DirectorShot(
                     new GeneralShotData(
-                        directorShotCreationModalView.getNameField().getText(),
-                        directorShotCreationModalView.getDescriptionField().getText(),
-                        Double.parseDouble(directorShotCreationModalView.getStartField().getText()
-                    ),
-                Double.parseDouble(directorShotCreationModalView.getEndField().getText())),
-                Double.parseDouble(directorShotCreationModalView.getFrontPaddingField().getText()),
-                Double.parseDouble(directorShotCreationModalView.getEndPaddingField().getText()),
-                directorShotCreationModalView.getCamerasInShot()));
+                            directorShotCreationModalView.getNameField().getText(),
+                            directorShotCreationModalView.getDescriptionField().getText(),
+                            Double.parseDouble(directorShotCreationModalView.getStartField().getText()
+                        ),
+                    Double.parseDouble(directorShotCreationModalView.getEndField().getText())),
+                    Double.parseDouble(directorShotCreationModalView.getFrontPaddingField().getText()),
+                    Double.parseDouble(directorShotCreationModalView.getEndPaddingField().getText()),
+                    directorShotCreationModalView.getCamerasInShot());
+            
+            directorShotCreationModalView.getInstrumentsDropdown().getCheckModel().getCheckedIndices().forEach(e -> {
+                shot.addInstrument(this.controllerManager.getScriptingProject().getInstruments().get(e));
+            });
+
+            directorTimelineController.addDirectorShot(shot);
 
             // keep at end of if statement
             directorShotCreationModalView.getModalStage().close();
