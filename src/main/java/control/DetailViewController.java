@@ -78,8 +78,7 @@ public class DetailViewController {
         ((DirectorDetailView) detailView).getPaddingBeforeField()
         .focusedProperty().addListener(this::beforePaddingFocusListener);
         
-        ((DirectorDetailView) detailView).getPaddingBeforeField().setOnKeyPressed(
-            event -> {
+        ((DirectorDetailView) detailView).getPaddingBeforeField().setOnKeyPressed(event -> {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     this.beforePaddingUpdateHelper();
                 }
@@ -115,8 +114,7 @@ public class DetailViewController {
             DirectorShot directorShot = ((DirectorShot) manager.getActiveShotBlock().getShot());
             
             directorShot.setFrontShotPadding(newVal);
-            directorShot.getCameraShots().forEach(
-                e -> {
+            directorShot.getCameraShots().forEach(e -> {
                     CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
                     shotBlock.setBeginCount(directorShot.getBeginCount() - newVal, true);
                     manager.getTimelineControl().modifyCameraShot(
@@ -170,8 +168,7 @@ public class DetailViewController {
             
             directorShotBlock.setPaddingAfter(newVal);
             ((DirectorShot) manager.getActiveShotBlock().getShot()).setEndShotPadding(newVal);
-            ((DirectorShot) manager.getActiveShotBlock().getShot()).getCameraShots().forEach(
-                e -> {
+            ((DirectorShot) manager.getActiveShotBlock().getShot()).getCameraShots().forEach(e -> {
                     CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
                     shotBlock.setEndCount(((DirectorShot) manager.getActiveShotBlock().getShot())
                             .getEndCount() + newVal, true);
