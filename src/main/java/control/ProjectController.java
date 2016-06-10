@@ -634,28 +634,41 @@ public class ProjectController {
      * Init the button handlers for the edit project modal.
      */
     private void initHandlersForEditProjectModal() {
+        initGeneralHandlers();
+        editProjectModal.getApplyButton().setOnMouseClicked(this::applyEdit);
+    }
+    
+    private void initGeneralHandlers() {
         editProjectModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
         editProjectModal.getEditCameraButton().setOnMouseClicked(this::editCamera);
         editProjectModal.getDeleteCameraButton().setOnMouseClicked(this::deleteCamera);
         editProjectModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);
         editProjectModal.getEditCameraTypeButton().setOnMouseClicked(this::editCameraType);
         editProjectModal.getDeleteCameraTypeButton().setOnMouseClicked(this::deleteCameraType);
+        editProjectModal.getAddInstrumentButton().setOnMouseClicked(this::addInstrument);
+        editProjectModal.getEditInstrumentButton().setOnMouseClicked(this::editInstrument);
+        editProjectModal.getDeleteInstrumentButton().setOnMouseClicked(this::deleteInstrument);
         editProjectModal.getCancelButton().setOnMouseClicked(this::cancel);
-        editProjectModal.getApplyButton().setOnMouseClicked(this::applyEdit);
     }
 
     /**
      * Init the button handlers for the new project modal.
      */
     private void initHandlersForNewProjectModal() {
-        editProjectModal.getAddCameraButton().setOnMouseClicked(this::addCamera);
-        editProjectModal.getEditCameraButton().setOnMouseClicked(this::editCamera);
-        editProjectModal.getDeleteCameraButton().setOnMouseClicked(this::deleteCamera);
-        editProjectModal.getAddCameraTypeButton().setOnMouseClicked(this::addCameraType);
-        editProjectModal.getEditCameraTypeButton().setOnMouseClicked(this::editCameraType);
-        editProjectModal.getDeleteCameraTypeButton().setOnMouseClicked(this::deleteCameraType);
-        editProjectModal.getCancelButton().setOnMouseClicked(this::cancel);
+        initGeneralHandlers();
         editProjectModal.getApplyButton().setOnMouseClicked(this::applyNew);
+    }
+    
+    private void addInstrument(MouseEvent event) {
+        
+    }
+    
+    private void editInstrument(MouseEvent event) {
+        
+    }
+    
+    private void deleteInstrument(MouseEvent event) {
+        
     }
     
     /**
