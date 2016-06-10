@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.controlsfx.control.CheckComboBox;
 
+import data.Instrument;
 import gui.headerarea.DoubleTextField;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
@@ -167,6 +168,14 @@ public class ShotCreationModalView extends ModalView {
         endBox.setAlignment(Pos.CENTER_RIGHT);
 
         content.getChildren().addAll(startBox, endBox);
+    }
+    
+    protected void initInstrumentsDropdown(VBox content, ArrayList<Instrument> instruments) {
+        this.instrumentsDropdown = new CheckComboBox<>();
+        instruments.forEach(e -> {
+            instrumentsDropdown.getItems().add(e.getName());
+        });
+        content.getChildren().addAll(instrumentsDropdown);
     }
     
     /**

@@ -38,7 +38,8 @@ public class CreationModalViewController {
     public void showCameraCreationWindow() {
         cameraShotCreationModalView = new CameraShotCreationModalView(
                 this.controllerManager.getRootPane(),
-                this.controllerManager.getScriptingProject().getCameraTimelines());
+                this.controllerManager.getScriptingProject().getCameraTimelines(),
+                this.controllerManager.getScriptingProject().getInstruments());
 
         // Add mouse handlers
         cameraShotCreationModalView.getCreationButton().setOnMouseReleased(
@@ -191,7 +192,8 @@ public class CreationModalViewController {
     public void showDirectorCreationWindow() {
         directorShotCreationModalView = new DirectorShotCreationModalView(
                 this.controllerManager.getRootPane(),
-                this.controllerManager.getScriptingProject().getCameraTimelines());
+                this.controllerManager.getScriptingProject().getCameraTimelines(),
+                this.controllerManager.getScriptingProject().getInstruments());
 
         // add mouse handlers
         directorShotCreationModalView.getCancelButton().setOnMouseReleased(

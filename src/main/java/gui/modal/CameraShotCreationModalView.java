@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import data.CameraTimeline;
+import data.Instrument;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledCheckbox;
@@ -30,14 +31,16 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
      */
 
     private List<CameraTimeline> cameraTimelines;
+    private ArrayList<Instrument> instruments;
 
     /**
      * Constructor with default modal size.
      * @param rootPane Pane to display modal on top of
      * @param cameraTimelines CameraTimelines to work with
      */
-    public CameraShotCreationModalView(RootPane rootPane, List<CameraTimeline> cameraTimelines) {
-        this(rootPane, cameraTimelines, width, height);
+    public CameraShotCreationModalView(RootPane rootPane, List<CameraTimeline> cameraTimelines,
+                                        ArrayList<Instrument> instruments) {
+        this(rootPane, cameraTimelines, instruments, width, height);
     }
 
     /**
@@ -48,9 +51,11 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
      * @param modalHeight Modal display height
      */
     public CameraShotCreationModalView(RootPane rootPane, List<CameraTimeline> cameraTimelines,
+                                       ArrayList<Instrument> instruments,
                                        int modalWidth, int modalHeight) {
         super(rootPane, modalWidth, modalHeight);
         this.cameraTimelines = cameraTimelines;
+        this.instruments = instruments;
         initializeCreationView();
     }
 
@@ -112,6 +117,7 @@ public class CameraShotCreationModalView extends ShotCreationModalView {
 
         initNameDescriptionFields(content);
         initCountTextfields(content);
+        initInstrumentsDropdown(content, instruments);
 
         this.centerPane.getChildren().add(content);
     }

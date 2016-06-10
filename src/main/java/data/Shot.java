@@ -85,7 +85,6 @@ public abstract class Shot {
         this.endCount = new SimpleDoubleProperty(endCount);
         this.collidesWith = new ArrayList<>();
         this.instruments = new ArrayList<>();
-        this.instruments.add(new Instrument("Hai", "Hoi"));
     }
     
     @XmlTransient
