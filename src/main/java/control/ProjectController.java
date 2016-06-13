@@ -117,15 +117,12 @@ public class ProjectController {
             // Do something with response
             if (result) {
                 showSuccessModal();
-                System.out.println("Upload successful");
             } else {
                 showErrorModal();
-                System.out.println("Upload failed");
             }
 
         } catch (IOException e) {
             showErrorModal();
-            e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -334,7 +331,6 @@ public class ProjectController {
         try {
             temp = ScriptingProject.read(file);
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("previously opened file could not be found.");
         }
         if (temp == null) {
