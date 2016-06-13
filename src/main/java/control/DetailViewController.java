@@ -187,10 +187,34 @@ public class DetailViewController {
         }
     }
     
-    private void initInstrumentsDropdown() {
-        detailView.getInstrumentsDropdown().getCheckModel().getCheckedIndices().addListener(this::instrumentsDropdownChangeListener);
+    /**
+     * Initialize the instruments dropdown.
+     * @param shotBlock the shot block to do that for
+     */
+    private void initInstrumentsDropdown(ShotBlock shotBlock) {
+        log.error("Initing da dropdown");
+        ArrayList<Instrument> instruments = shotBlock.getInstruments();
+        detailView.getInstrumentsDropdown().getItems().clear();
+        detailView.setInstruments(manager.getScriptingProject().getInstruments());
+
+        shotBlock.getInstruments().forEach(instrument -> {
+                detailView.getInstrumentsDropdown().getCheckModel().check(instrument.getName());
+            });
     }
     
+    /**
+     * Initialize the instruments dropdown menu.
+     */
+    private void initInstrumentsDropdown() {
+        detailView.getInstrumentsDropdown().getCheckModel()
+                                           .getCheckedIndices()
+                                           .addListener(this::instrumentsDropdownChangeListener);
+    }
+    
+    /**
+     * Listener for changes in checked indices for instruments dropdown.
+     * @param c the change that happened
+     */
     private void instrumentsDropdownChangeListener(ListChangeListener.Change c) {
         Shot shot = manager.getActiveShotBlock().getShot();
         c.next();
@@ -201,19 +225,30 @@ public class DetailViewController {
         }
     }
     
+    /**
+     * Handler for a unchecked index in instrument dropdown.
+     * @param index the index that got unchecked
+     */
     private void instrumentDeletedInDropdown(int index) {
         ShotBlock shotBlock = manager.getActiveShotBlock();
-        shotBlock.getInstruments().remove(manager.getScriptingProject().getInstruments().get(index));
-        shotBlock.getShot().getInstruments().remove(manager.getScriptingProject().getInstruments().get(index));
-        shotBlock.getTimetableBlock().removeInstrument(manager.getScriptingProject().getInstruments().get(index));
+        shotBlock.getInstruments().remove(manager.getScriptingProject().getInstruments()
+                .get(index));
+        shotBlock.getShot().getInstruments().remove(manager.getScriptingProject()
+                .getInstruments().get(index));
+        shotBlock.getTimetableBlock().removeInstrument(manager.getScriptingProject()
+                .getInstruments().get(index));
         shotBlock.recompute();
     }
     
+    /**
+     * Handler for a checked index in instrument dropdown.
+     * @param index the index that got unchecked
+     */
     private void instrumentAddedInDropdown(int index) {
         ShotBlock shotBlock = manager.getActiveShotBlock();
         shotBlock.getInstruments().add(manager.getScriptingProject().getInstruments().get(index));
-        shotBlock.getTimetableBlock().addInstrument(manager.getScriptingProject().getInstruments().get(index));
-        //shotBlock.getShot().getInstruments().add(manager.getScriptingProject().getInstruments().get(index));
+        shotBlock.getTimetableBlock().addInstrument(manager.getScriptingProject()
+                .getInstruments().get(index));
         shotBlock.recompute();
     }
     
@@ -419,7 +454,6 @@ public class DetailViewController {
         if (manager.getActiveShotBlock() != null) {
             if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
                 detailView = new DetailView();
-                // set detail view variables
                 detailView.setDescription(manager.getActiveShotBlock().getDescription());
                 detailView.setName(manager.getActiveShotBlock().getName());
                 detailView.setBeginCount(manager.getActiveShotBlock().getBeginCount());
@@ -518,19 +552,5 @@ public class DetailViewController {
                 cameraDeletedInDropdown(i);
             }
         };
-    }
-    
-    private void initInstrumentsDropdown(ShotBlock shotBlock) {
-        log.error("Initing da dropdown");
-        ArrayList<Instrument> instruments = shotBlock.getInstruments();
-        detailView.getInstrumentsDropdown().getItems().clear();
-        detailView.setInstruments(manager.getScriptingProject().getInstruments());
-
-//        manager.getScriptingProject().getInstruments().forEach(instrument -> {
-//            detailView.getInstrumentsDropdown().getItems().add(instrument.getName());
-//        });
-        shotBlock.getInstruments().forEach(instrument -> {
-            detailView.getInstrumentsDropdown().getCheckModel().check(instrument.getName());
-        });
     }
 }

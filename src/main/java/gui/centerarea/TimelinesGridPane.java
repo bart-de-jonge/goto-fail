@@ -42,8 +42,9 @@ public class TimelinesGridPane extends ScrollableGridPane {
                         - block.getBeginCount()) * CountUtilities.NUMBER_OF_CELLS_PER_COUNT));
         block.getTimetableBlock().getInstrumentBox().getChildren().clear();
         block.getInstruments().forEach(e -> {
-            block.getTimetableBlock().getInstrumentBox().getChildren().add(new Label(e.getName()));
-        });
+                block.getTimetableBlock().getInstrumentBox().getChildren()
+                .add(new Label(e.getName()));
+            });
     }
 
     /**

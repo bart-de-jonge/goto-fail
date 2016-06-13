@@ -130,13 +130,17 @@ public class DetailView extends VBox {
         endCountField.setText(formatDouble(count));
     }
     
+    /**
+     * Set the instruments for this detail view.
+     * @param instruments the instruments to set
+     */
     public void setInstruments(ArrayList<Instrument> instruments) {
         System.out.println("Setting instruments");
         System.out.println("size is " + instruments.size());
         this.instrumentsDropdown.getItems().clear();
         instruments.forEach(e -> {
-            this.instrumentsDropdown.getItems().add(e.getName());
-        });
+                this.instrumentsDropdown.getItems().add(e.getName());
+            });
     }
 
     /**
@@ -151,6 +155,9 @@ public class DetailView extends VBox {
         itemBox.getChildren().add(beginCountBox);
     }
     
+    /**
+     * Initialize the instrument dropdown.
+     */
     private void initInstruments() {
         System.out.println("Initing New ComboCheckBox");
         instrumentsDropdown = new CheckComboBox<>();
@@ -205,7 +212,8 @@ public class DetailView extends VBox {
      * Initializes the detailview with no selected shot.
      */
     private void initInvisible() {
-        this.getChildren().removeAll(nameBox, descriptionBox, beginCountBox, endCountBox, instrumentsBox);
+        this.getChildren().removeAll(nameBox, descriptionBox, beginCountBox,
+                endCountBox, instrumentsBox);
         this.setPadding(new Insets(0));
         this.setSpacing(0);
         invisibleLabel = new Label("Select a shot to edit it.");
@@ -223,7 +231,8 @@ public class DetailView extends VBox {
             this.setSpacing(TweakingHelper.GENERAL_SPACING * 2);
             itemBox.getChildren().clear();
             itemBox.getChildren().remove(invisibleLabel);
-            itemBox.getChildren().addAll(nameBox, descriptionBox, beginCountBox, endCountBox, instrumentsBox);
+            itemBox.getChildren().addAll(nameBox, descriptionBox, beginCountBox,
+                    endCountBox, instrumentsBox);
             visible = true;
         }
     }
@@ -235,7 +244,8 @@ public class DetailView extends VBox {
         if (visible) {
             this.setPadding(new Insets(0));
             this.setSpacing(0);
-            itemBox.getChildren().removeAll(nameBox, descriptionBox, beginCountBox, endCountBox, instrumentsBox);
+            itemBox.getChildren().removeAll(nameBox, descriptionBox, beginCountBox,
+                    endCountBox, instrumentsBox);
             itemBox.getChildren().add(invisibleLabel);
             visible = false;
         }

@@ -121,13 +121,22 @@ public abstract class TimetableBlock extends Pane {
         this.rootCenterArea = pane;
     }
     
+    /**
+     * Add an instrument to this timetable block.
+     * @param instrument the instrument to add
+     */
     public void addInstrument(Instrument instrument) {
         this.instrumentBox.getChildren().add(new Label(instrument.getName()));
     }
     
+    /**
+     * Remove an instrument from this timetable block.
+     * @param instrument the instrument to remove
+     */
     public void removeInstrument(Instrument instrument) {
         for (int i = 0;i < instrumentBox.getChildren().size(); i++) {
-            if (((Label) instrumentBox.getChildren().get(i)).getText().equals(instrument.getName())) {
+            if (((Label) instrumentBox.getChildren().get(i)).getText()
+                    .equals(instrument.getName())) {
                 instrumentBox.getChildren().remove(i);
                 break;
             }
@@ -191,7 +200,6 @@ public abstract class TimetableBlock extends Pane {
         blurHelper = new BlurHelper(draggedPane);
         blurHelper.setOffset(new Point2D(8,8));
         addWithClipRegion(blurHelper.getImageView(), draggedPane);
-
         // dragged content rootCenterArea which mirrors
         // our content rootCenterArea, shown when dragging.
         draggedContentPane = new VBox() ;
@@ -283,6 +291,10 @@ public abstract class TimetableBlock extends Pane {
         return res;
     }
     
+    /**
+     * Initialize the instrument box.
+     * @param vbox the vbox to put it in
+     */
     private void initInstrumentBox(VBox vbox) {
         instrumentBox = new VBox(5);
         instrumentBox.maxWidthProperty().bind(this.widthProperty());
