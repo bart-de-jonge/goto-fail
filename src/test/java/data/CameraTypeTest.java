@@ -83,4 +83,21 @@ public class CameraTypeTest {
         assertTrue(type.canEqual(type2));
     }
 
+    @Test
+    public void toStringTest() {
+        assertEquals("CameraType(name=type-1, description=A test camera type, movementMargin=2.0)", type.toString());
+    }
+
+    @Test
+    public void defaultConstructor() {
+        CameraType myType = new CameraType();
+        assertEquals("", myType.getName());
+        assertEquals("", myType.getDescription());
+        assertEquals(-1, myType.getMovementMargin(), 0);
+    }
+
+    @Test
+    public void cloneTest() {
+        assertEquals(type, type.clone());
+    }
 }

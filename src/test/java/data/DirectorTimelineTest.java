@@ -19,6 +19,23 @@ public class DirectorTimelineTest {
     }
 
     @Test
+    public void getOverlappingShots() {
+        DirectorShot shot = new DirectorShot();
+        timeline.addShot(shot);
+        assertEquals(1, timeline.getOverlappingShots(shot).size());
+        assertTrue(timeline.getOverlappingShots(shot).contains(shot));
+    }
+
+    @Test
+    public void removeShot() {
+        DirectorShot shot = new DirectorShot();
+        timeline.addShot(shot);
+        assertTrue(timeline.getShots().contains(shot));
+        timeline.removeShot(shot);
+        assertFalse(timeline.getShots().contains(shot));
+    }
+
+    @Test
     public void getDescriptionTest() {
         assertEquals("A test director timeline", timeline.getDescription());
     }
