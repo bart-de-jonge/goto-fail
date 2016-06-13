@@ -118,7 +118,6 @@ public class RootHeaderArea extends VBox {
      */
     private Menu initFileMenu() {
         Menu fileMenu = new Menu("File");
-
         initializeLocalFileItems(fileMenu);
 
         MenuItem uploadItem = new MenuItem("Upload to webserver");
@@ -137,7 +136,7 @@ public class RootHeaderArea extends VBox {
                     rootPane.getPrimaryStage().close();
                 }
             });
-        fileMenu.getItems().addAll(quit, uploadItem);
+        fileMenu.getItems().addAll(uploadItem, quit);
         return fileMenu;
     }
 
