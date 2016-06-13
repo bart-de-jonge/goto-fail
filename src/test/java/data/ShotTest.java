@@ -3,9 +3,9 @@ package data;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import java.util.ArrayList;
+
+import static org.junit.Assert.*;
 
 /**
  * @author martijn
@@ -28,6 +28,42 @@ public class ShotTest {
         assertEquals("", shot.getName());
     }
 
+    @Test
+    public void getInstruments() {
+        Instrument instrument = new Instrument("name", "description");
+        shot1.addInstrument(instrument);
+        assertEquals(1, shot1.getInstruments().size());
+        assertTrue(shot1.getInstruments().contains(instrument));
+    }
+
+    @Test
+    public void setInstruments() {
+        ArrayList<Instrument> instruments = new ArrayList<>();
+        Instrument instrument = new Instrument("name", "description");
+        instruments.add(instrument);
+        shot1.setInstruments(instruments);
+        assertEquals(instruments, shot1.getInstruments());
+    }
+
+    @Test
+    public void addInstrument() {
+        ArrayList<Instrument> instruments = new ArrayList<>();
+        assertEquals(instruments, shot1.getInstruments());
+        Instrument instrument = new Instrument("name", "description");
+        shot1.addInstrument(instrument);
+        instruments.add(instrument);
+        assertEquals(instruments, shot1.getInstruments());
+    }
+
+    @Test
+    public void getBeginCountProperty() {
+        assertEquals(shot1.getBeginCount(), shot1.getBeginCountProperty().doubleValue(), 0);
+    }
+
+    @Test
+    public void getEndCountProperty() {
+        assertEquals(shot1.getEndCount(), shot1.getEndCountProperty().doubleValue(), 0);
+    }
     @Test
     public void getNameTest() {
         assertEquals("s1", shot1.getName());

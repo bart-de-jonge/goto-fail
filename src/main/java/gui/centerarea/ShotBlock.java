@@ -89,7 +89,6 @@ public abstract class ShotBlock {
         } catch (Exception e) {
             log.error("No valid timetableblock class, could not initialize timetableblock!");
             this.timetableBlock = null;
-            e.printStackTrace();
         }
     }
 

@@ -19,6 +19,23 @@ public class CameraTimelineTest {
     }
 
     @Test
+    public void toStringTest() {
+        assertEquals("CameraTimeline(camera=Camera(name=camera-1, description=A test camera, cameraType=CameraType(name=cameratype-1, description=A test cameratype, movementMargin=2.0), ip=, movementMargin=2.0, instance=" + timeline.getCamera().getInstance() + "), shots=[], instance=" + timeline.getInstance() + ")", timeline.toString());
+    }
+
+    @Test
+    public void getInstance() {
+        assertNotNull(timeline.getInstance());
+    }
+
+    @Test
+    public void cloneTest() {
+        CameraTimeline clone = timeline.clone();
+        assertEquals(timeline.getCamera(), clone.getCamera());
+        assertEquals(timeline.getShots(), clone.getShots());
+    }
+
+    @Test
     public void getCameraTest() {
         CameraType type = new CameraType("cameratype-1", "A test cameratype", 2.00);
         Camera camera = new Camera("camera-1", "A test camera", type);

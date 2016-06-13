@@ -414,8 +414,6 @@ public class EditProjectModalView extends ModalView {
      * @param instrumentList the instruments to put in
      */
     private void initInstrumentList(ListView<HBox> instrumentList) {
-        System.out.println("Adding instruments");
-        System.out.println(project.getInstruments().size());
         instrumentList.setMinHeight(75);
         ArrayList<Instrument> instruments = project.getInstruments();
         for (Instrument i : instruments) {

@@ -3,10 +3,8 @@ package data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @EqualsAndHashCode
-@ToString
 public class Instrument implements Cloneable {
     @Getter @Setter
     private String name;
