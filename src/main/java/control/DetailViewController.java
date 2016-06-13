@@ -192,7 +192,6 @@ public class DetailViewController {
      * @param shotBlock the shot block to do that for
      */
     private void initInstrumentsDropdown(ShotBlock shotBlock) {
-        log.error("Initing da dropdown");
         ArrayList<Instrument> instruments = shotBlock.getInstruments();
         detailView.getInstrumentsDropdown().getItems().clear();
         detailView.setInstruments(manager.getScriptingProject().getInstruments());
@@ -474,7 +473,6 @@ public class DetailViewController {
         detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
         initInstrumentsDropdown(manager.getActiveShotBlock());
         detailView.setVisible();
-        detailView.setVisible(true);
         // Re-init the detail view with new data
         manager.getRootPane().getRootHeaderArea().setDetailView(detailView);  
         manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
@@ -497,10 +495,8 @@ public class DetailViewController {
         ((DirectorDetailView) detailView).getPaddingAfterField()
             .setText(detailView.formatDouble(shotBlock.getPaddingAfter()));
         activeBlock = shotBlock;
-        //initDropDown(shotBlock);
         initInstrumentsDropdown(shotBlock);
         detailView.setVisible();
-        detailView.setVisible(true);
         // Re-init the detail view with new data
         manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
         this.reInitForDirectorBlock();

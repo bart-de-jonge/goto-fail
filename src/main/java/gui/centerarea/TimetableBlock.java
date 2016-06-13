@@ -135,8 +135,9 @@ public abstract class TimetableBlock extends Pane {
      */
     public void removeInstrument(Instrument instrument) {
         for (int i = 0;i < instrumentBox.getChildren().size(); i++) {
-            if (((Label) instrumentBox.getChildren().get(i)).getText()
-                    .equals(instrument.getName())) {
+            boolean equals = ((Label) instrumentBox.getChildren().get(i)).getText()
+                    .equals(instrument.getName());
+            if (equals) {
                 instrumentBox.getChildren().remove(i);
                 break;
             }

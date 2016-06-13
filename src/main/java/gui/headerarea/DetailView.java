@@ -135,8 +135,6 @@ public class DetailView extends VBox {
      * @param instruments the instruments to set
      */
     public void setInstruments(ArrayList<Instrument> instruments) {
-        System.out.println("Setting instruments");
-        System.out.println("size is " + instruments.size());
         this.instrumentsDropdown.getItems().clear();
         instruments.forEach(e -> {
                 this.instrumentsDropdown.getItems().add(e.getName());
@@ -159,7 +157,6 @@ public class DetailView extends VBox {
      * Initialize the instrument dropdown.
      */
     private void initInstruments() {
-        System.out.println("Initing New ComboCheckBox");
         instrumentsDropdown = new CheckComboBox<>();
         instrumentsBox = new HBox(TweakingHelper.GENERAL_SPACING);
         Label instrumentsLabel = new Label("Instruments:");
