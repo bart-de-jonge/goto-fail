@@ -3,7 +3,12 @@ package data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 
 /**
@@ -83,6 +88,10 @@ public class User {
         this.roleValue = role.getValue();
     }
 
+    /**
+     * Setter for the rolevalue. Seperate because role needs update as well.
+     * @param roleValue - the rolevalue to set
+     */
     public void setRoleValue(int roleValue) {
         this.roleValue = roleValue;
 
