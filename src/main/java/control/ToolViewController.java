@@ -74,7 +74,7 @@ public class ToolViewController {
                             boolean isTextField = 
                                     currentFocusClass.equals("gui.styling.StyledTextfield")
                                     ||
-                                    currentFocusClass.equals("gui.styling.TextField")
+                                    currentFocusClass.equals("javafx.scene.control.TextField")
                                     ||
                                     currentFocusClass.equals("gui.headerarea.DoubleTextField")
                                     ||
