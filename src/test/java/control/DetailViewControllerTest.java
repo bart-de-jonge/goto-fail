@@ -2,34 +2,26 @@ package control;
 
 import data.CameraShot;
 import gui.centerarea.CameraShotBlock;
-import gui.centerarea.ShotBlock;
-import gui.headerarea.DetailView;
+import gui.headerarea.DirectorDetailView;
 import gui.headerarea.DoubleTextField;
 import gui.root.RootHeaderArea;
 import gui.root.RootPane;
+import gui.styling.StyledMenuButton;
 import gui.styling.StyledTextfield;
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.junit.AfterClass;
+import org.controlsfx.control.CheckComboBox;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.testfx.framework.junit.ApplicationTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 /**
@@ -38,10 +30,9 @@ import static org.mockito.Mockito.*;
 public class DetailViewControllerTest extends ApplicationTest {
 
     private ControllerManager manager;
-    private DetailView detailView;
+    private DirectorDetailView detailView;
     private DetailViewController detailViewController;
-    private DoubleTextField beginCountField;
-    private DoubleTextField endCountField;
+    private DoubleTextField beginCountField, endCountField, paddingBeforeField, paddingAfterField;
 
     private Pane pane;
 
@@ -51,7 +42,7 @@ public class DetailViewControllerTest extends ApplicationTest {
         RootPane rootPane = Mockito.mock(RootPane.class);
         RootHeaderArea rootHeaderArea = Mockito.mock(RootHeaderArea.class);
 
-        detailView = Mockito.mock(DetailView.class);
+        detailView = Mockito.mock(DirectorDetailView.class);
         when(manager.getRootPane()).thenReturn(rootPane);
         when(rootPane.getRootHeaderArea()).thenReturn(rootHeaderArea);
         when(rootHeaderArea.getDetailView()).thenReturn(detailView);
@@ -59,13 +50,39 @@ public class DetailViewControllerTest extends ApplicationTest {
         // Add necessary fields
         beginCountField = new DoubleTextField("0");
         endCountField = new DoubleTextField("0");
+        paddingBeforeField = new DoubleTextField("0");
+        paddingAfterField = new DoubleTextField("0");
 
         when(detailView.getDescriptionField()).thenReturn(new StyledTextfield());
         when(detailView.getNameField()).thenReturn(new StyledTextfield());
         when(detailView.getBeginCountField()).thenReturn(beginCountField);
         when(detailView.getEndCountField()).thenReturn(endCountField);
+        when(detailView.getPaddingBeforeField()).thenReturn(paddingBeforeField);
+        when(detailView.getPaddingAfterField()).thenReturn(paddingAfterField);
+        when(detailView.getEndCountField()).thenReturn(endCountField);
+        when(detailView.getEndCountField()).thenReturn(endCountField);
+        when(detailView.getInstrumentsDropdown()).thenReturn(new CheckComboBox<>());
+        when(detailView.getSelectCamerasButton()).thenReturn(new StyledMenuButton());
 
         detailViewController = spy(new DetailViewController(manager));
+    }
+
+    @Test
+    public void reInitForCameraBlock() {
+        detailViewController.reInitForCameraBlock();
+
+        Mockito.verify(detailView, times(2)).getNameField();
+        Mockito.verify(detailView, times(2)).getDescriptionField();
+        Mockito.verify(detailView, times(4)).getBeginCountField();
+        Mockito.verify(detailView, times(4)).getEndCountField();
+    }
+
+    @Test
+    public void reInitForDirectorBlock() {
+        detailViewController.reInitForDirectorBlock();
+
+        Mockito.verify(detailView, times(2)).getPaddingBeforeField();
+        Mockito.verify(detailView, times(2)).getPaddingAfterField();
     }
 
     @Test
