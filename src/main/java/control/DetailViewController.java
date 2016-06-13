@@ -186,7 +186,7 @@ public class DetailViewController {
      * Initialize the instruments dropdown.
      * @param shotBlock the shot block to do that for
      */
-    private void initInstrumentsDropdown(ShotBlock shotBlock) {
+    protected void initInstrumentsDropdown(ShotBlock shotBlock) {
         ArrayList<Instrument> instruments = shotBlock.getInstruments();
         detailView.getInstrumentsDropdown().getItems().clear();
         detailView.setInstruments(manager.getScriptingProject().getInstruments());
@@ -209,7 +209,7 @@ public class DetailViewController {
      * Listener for changes in checked indices for instruments dropdown.
      * @param c the change that happened
      */
-    private void instrumentsDropdownChangeListener(ListChangeListener.Change c) {
+    protected void instrumentsDropdownChangeListener(ListChangeListener.Change c) {
         Shot shot = manager.getActiveShotBlock().getShot();
         c.next();
         if (c.wasAdded()) {

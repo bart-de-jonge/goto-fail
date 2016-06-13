@@ -2,8 +2,11 @@ package control;
 
 import data.CameraShot;
 import data.DirectorShot;
+import data.Instrument;
+import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
+import gui.centerarea.TimetableBlock;
 import gui.headerarea.DirectorDetailView;
 import gui.headerarea.DoubleTextField;
 import gui.root.RootHeaderArea;
@@ -13,6 +16,7 @@ import gui.styling.StyledTextfield;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -23,11 +27,11 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.testfx.framework.junit.ApplicationTest;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -71,6 +75,84 @@ public class DetailViewControllerTest extends ApplicationTest {
         when(detailView.getSelectCamerasButton()).thenReturn(new StyledMenuButton());
 
         detailViewController = spy(new DetailViewController(manager));
+    }
+
+    @Test
+    public void initInstrumentsDropdown() {
+        CameraShotBlock cameraShotBlock = Mockito.mock(CameraShotBlock.class);
+        ScriptingProject project = Mockito.mock(ScriptingProject.class);
+        ArrayList<Instrument> instruments = new ArrayList<>();
+        instruments.add(new Instrument("name", "description"));
+        when(cameraShotBlock.getInstruments()).thenReturn(instruments);
+        when(manager.getScriptingProject()).thenReturn(project);
+
+        detailViewController.initInstrumentsDropdown(cameraShotBlock);
+        Mockito.verify(detailView, times(2)).getInstrumentsDropdown();
+        Mockito.verify(detailView, times(1)).setInstruments(anyObject());
+    }
+
+    @Test
+    public void instrumentsDropdownChangeListenerRemoved() {
+        // Setup mocks
+        ListChangeListener.Change change = Mockito.mock(ListChangeListener.Change.class);
+        DirectorShot shot = Mockito.mock(DirectorShot.class);
+        DirectorShotBlock shotBlock = Mockito.mock(DirectorShotBlock.class);
+        ArrayList<Integer> changeList = new ArrayList<>(Arrays.asList(0));
+        ArrayList<Instrument> instrumentList1 = new ArrayList<>(Arrays.asList(new Instrument("name", "description")));
+        ArrayList<Instrument> instrumentList2 = new ArrayList<>(Arrays.asList(new Instrument("name", "description")));
+        ArrayList<Instrument> instrumentList3 = new ArrayList<>(Arrays.asList(new Instrument("name", "description")));
+        ScriptingProject project = Mockito.mock(ScriptingProject.class);
+        TimetableBlock timetableBlock = Mockito.mock(TimetableBlock.class);
+
+        // Mock all the methods
+        when(manager.getActiveShotBlock()).thenReturn(shotBlock);
+        when(project.getInstruments()).thenReturn(instrumentList1);
+        when(manager.getScriptingProject()).thenReturn(project);
+        when(shotBlock.getInstruments()).thenReturn(instrumentList2);
+        when(shotBlock.getShot()).thenReturn(shot);
+        when(shot.getInstruments()).thenReturn(instrumentList3);
+        when(shotBlock.getTimetableBlock()).thenReturn(timetableBlock);
+        when(change.getRemoved()).thenReturn(changeList);
+
+        // Call method under testing
+        detailViewController.instrumentsDropdownChangeListener(change);
+
+        // verify
+        assertFalse(instrumentList1.isEmpty());
+        assertTrue(instrumentList2.isEmpty());
+        assertTrue(instrumentList3.isEmpty());
+        Mockito.verify(shotBlock, times(1)).recompute();
+        Mockito.verify(timetableBlock, times(1)).removeInstrument(anyObject());
+    }
+
+    @Test
+    public void instrumentsDropdownChangeListenerAdded() {
+        // Setup mocks
+        ListChangeListener.Change change = Mockito.mock(ListChangeListener.Change.class);
+        DirectorShotBlock shotBlock = Mockito.mock(DirectorShotBlock.class);
+        ArrayList<Integer> changeList = new ArrayList<>(Arrays.asList(0));
+        ArrayList<Instrument> instrumentList1 = new ArrayList<>();
+        ArrayList<Instrument> instrumentList2 = new ArrayList<>(Arrays.asList(new Instrument("name", "description")));
+        ScriptingProject project = Mockito.mock(ScriptingProject.class);
+        TimetableBlock timetableBlock = Mockito.mock(TimetableBlock.class);
+
+        // Mock all the methods
+        when(manager.getActiveShotBlock()).thenReturn(shotBlock);
+        when(project.getInstruments()).thenReturn(instrumentList2);
+        when(manager.getScriptingProject()).thenReturn(project);
+        when(shotBlock.getInstruments()).thenReturn(instrumentList1);
+        when(shotBlock.getTimetableBlock()).thenReturn(timetableBlock);
+        when(change.getAddedSubList()).thenReturn(changeList);
+        when(change.wasAdded()).thenReturn(true);
+
+        // Call method under testing
+        detailViewController.instrumentsDropdownChangeListener(change);
+
+        // verify
+        assertEquals(1, instrumentList1.size());
+        assertEquals(1, instrumentList1.size());
+        Mockito.verify(shotBlock, times(1)).recompute();
+        Mockito.verify(timetableBlock, times(1)).addInstrument(anyObject());
     }
 
     private void setupPaddingUpdateHelperTests(DirectorShot shot, DirectorShotBlock shotBlock, TimelineController timelineController) {
@@ -172,7 +254,7 @@ public class DetailViewControllerTest extends ApplicationTest {
         verify(shot, times(1)).setEndCount(0);
     }
 
-    
+
     @Test
     public void activeBlockChangedActiveBlockNull() {
         detailViewController.activeBlockChanged();
