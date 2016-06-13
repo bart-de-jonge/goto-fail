@@ -304,7 +304,6 @@ public class ProjectController {
             RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),
                     editProjectModal.getTimelines().size(), false);
             controllerManager.getRootPane().reInitRootCenterArea(area);
-            reInitTimelines(project);
         }
     }
 
