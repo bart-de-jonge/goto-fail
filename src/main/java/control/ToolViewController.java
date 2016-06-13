@@ -80,12 +80,10 @@ public class ToolViewController {
                                     ||
                                     currentFocusClass.equals("gui.headerarea.NumberTextField");
                             System.out.println(isTextField);
-                            if (isTextField) {
-                                //event.consume();
-                            } else {
+                            if (!isTextField) {
                                 deleteActiveCameraShot();
                                 event.consume();
-                            }  
+                            } 
                         }
                     });
     }
