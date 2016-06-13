@@ -56,20 +56,23 @@ public class ToolViewController {
         }
         initializeKeyBindings();
     }
-
+    
     /**
-     * Initializes the keyboard bindings for certain tools.
+     * Initialize the delete key binding.
      */
-    private void initializeKeyBindings() {
-        
+    private void initDeleteKeyBinding() {
         // Add Delete Key Event Listener for deleting active shot
         this.controllerManager.getRootPane().getPrimaryStage()
                 .getScene().addEventFilter(KeyEvent.ANY, event -> {
                         if ((event.getCode() == KeyCode.DELETE)
                                 || (event.getCode() == KeyCode.BACK_SPACE
                                     && event.isShortcutDown())) {
-                            System.out.println(this.controllerManager.getRootPane().getPrimaryStage().getScene().getFocusOwner().getClass().getName());
-                            String currentFocusClass = this.controllerManager.getRootPane().getPrimaryStage().getScene().getFocusOwner().getClass().getName();
+                            System.out.println(this.controllerManager.getRootPane()
+                                               .getPrimaryStage().getScene()
+                                               .getFocusOwner().getClass().getName());
+                            String currentFocusClass = this.controllerManager.getRootPane()
+                                                                             .getPrimaryStage()
+                                               .getScene().getFocusOwner().getClass().getName();
                             
                             boolean isTextField = 
                                     currentFocusClass.equals("gui.styling.StyledTextfield")
@@ -85,11 +88,16 @@ public class ToolViewController {
                             } else {
                                 deleteActiveCameraShot();
                                 event.consume();
-                            }
-
-                            
+                            }  
                         }
                     });
+    }
+
+    /**
+     * Initializes the keyboard bindings for certain tools.
+     */
+    private void initializeKeyBindings() {
+        initDeleteKeyBinding();
         // Add New Director Shot Key Binding
         this.controllerManager.getRootPane().getPrimaryStage()
                 .getScene().getAccelerators()
