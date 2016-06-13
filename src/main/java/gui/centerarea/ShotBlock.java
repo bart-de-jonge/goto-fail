@@ -1,6 +1,7 @@
 package gui.centerarea;
 
 import control.CountUtilities;
+import data.Instrument;
 import data.Shot;
 import gui.misc.TweakingHelper;
 import gui.root.RootCenterArea;
@@ -11,6 +12,7 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 
 /**
  *      Abstract superclass for different kind of shots in the gui.
@@ -53,6 +55,9 @@ public abstract class ShotBlock {
     @Getter
     private boolean colliding;
     
+    @Getter
+    private ArrayList<Instrument> instruments;
+    
     private static String BACKGROUND_COLOR_STRING = "-fx-background-color: ";
 
     /**
@@ -70,6 +75,7 @@ public abstract class ShotBlock {
         this.beginCount = shot.getBeginCount();
         this.endCount = shot.getEndCount();
         this.shot = shot;
+        this.instruments = shot.getInstruments();
         this.colliding = false;
         this.tempBeginCount = -1;
         this.tempEndCount = -1;

@@ -3,6 +3,7 @@ package gui.centerarea;
 import java.util.ArrayList;
 
 import control.CountUtilities;
+import javafx.scene.control.Label;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -39,6 +40,10 @@ public class TimelinesGridPane extends ScrollableGridPane {
                 (int) Math.round(block.getBeginCount() * CountUtilities.NUMBER_OF_CELLS_PER_COUNT),
                 1, (int) Math.round((block.getEndCount()
                         - block.getBeginCount()) * CountUtilities.NUMBER_OF_CELLS_PER_COUNT));
+        block.getTimetableBlock().getInstrumentBox().getChildren().clear();
+        block.getInstruments().forEach(e -> {
+            block.getTimetableBlock().getInstrumentBox().getChildren().add(new Label(e.getName()));
+        });
     }
 
     /**

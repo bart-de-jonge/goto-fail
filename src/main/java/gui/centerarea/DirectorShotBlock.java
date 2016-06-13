@@ -1,8 +1,10 @@
 package gui.centerarea;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import data.DirectorShot;
+import data.Instrument;
 import gui.events.DirectorShotBlockUpdatedEvent;
 import gui.events.ShotblockUpdatedEvent;
 import gui.root.RootCenterArea;
@@ -27,6 +29,7 @@ public class DirectorShotBlock extends ShotBlock {
     
     @Getter @Setter
     private Set<Integer> timelineIndices;
+    
 
     // The directorGridpane the shot is in
     @Getter
