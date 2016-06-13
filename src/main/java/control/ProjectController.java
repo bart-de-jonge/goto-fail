@@ -978,6 +978,7 @@ public class ProjectController {
      */
     private void addCameraType(MouseEvent event) {
         cameraTypeModal = new AddCameraTypeModalView(controllerManager.getRootPane());
+        cameraTypeModal.getTitleLabel().setText("Add a camera type");
         cameraTypeModal.getAddCameraTypeButton().setOnMouseClicked(this::typeAdded);
         cameraTypeModal.getCancelButton().setOnMouseClicked(this::cancelAddCameraType);
     }
