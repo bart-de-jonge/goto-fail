@@ -1,7 +1,5 @@
 package control;
 
-
-
 import data.Camera;
 import data.CameraShot;
 import data.DirectorShot;
@@ -20,8 +18,10 @@ import java.util.Set;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
+import javafx.event.EventHandler;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -429,7 +429,16 @@ public class DetailViewController {
         cameraButtons.setFillColor(TweakingHelper.getBackgroundColor());
         activeBlockBoxes = new ArrayList<>();
 
-        cameraButtons.showingProperty().addListener(new ChangeListener<Boolean>() {
+        cameraButtons.showingProperty().addListener(createDropdownListener(cameraButtons));
+    }
+
+    /**
+     * Creates ChangeListener for the Dropdown checkboxes.
+     * @param cameraButtons the dropdown with checkboxes.
+     * @return the ChangeListener.
+     */
+    private ChangeListener<Boolean> createDropdownListener(StyledMenuButton cameraButtons) {
+        return new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable,
                                 Boolean oldValue, Boolean newValue) {
@@ -445,13 +454,8 @@ public class DetailViewController {
                         CustomMenuItem item = new CustomMenuItem(checkbox);
                         item.setHideOnClick(false);
                         cameraButtons.getItems().add(item);
-                        checkbox.setOnMouseClicked(e -> {
-                                if (checkbox.isSelected()) {
-                                    cameraAddedInDropdown(j);
-                                } else {
-                                    cameraDeletedInDropdown(j);
-                                }
-                            });
+
+                        checkbox.setOnMouseClicked(createDropdownHandler(checkbox, j));
                     }
 
                 } else {
@@ -459,7 +463,22 @@ public class DetailViewController {
                     cameraButtons.getItems().clear();
                 }
             }
-        });
+        };
+    }
 
+    /**
+     * Event handler for when a checkbox in the camera dropdown is clicked.
+     * @param box the checkbox that was clicked.
+     * @param i index of the checkbox.
+     * @return the Event Handler.
+     */
+    private EventHandler<MouseEvent> createDropdownHandler(StyledCheckbox box, int i) {
+        return e -> {
+            if (box.isSelected()) {
+                cameraAddedInDropdown(i);
+            } else {
+                cameraDeletedInDropdown(i);
+            }
+        };
     }
 }
