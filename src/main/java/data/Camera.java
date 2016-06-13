@@ -82,7 +82,6 @@ public class Camera implements Cloneable {
         try {
             super.clone();
         } catch (CloneNotSupportedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         Camera camera = new Camera(name, description, cameraType.clone());

@@ -18,6 +18,11 @@ public class CameraTest {
     }
 
     @Test
+    public void testClone() {
+        assertEquals(camera, camera.clone());
+    }
+
+    @Test
     public void resetMovementMarginTest() {
         camera.setMovementMargin(3.00);
         assertEquals(3.00, camera.getMovementMargin(), 0);
