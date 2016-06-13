@@ -30,7 +30,7 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
 
     // width and height of screen. 760 and 460 work very, very well.
     private static final int width = 760;
-    private static final int height = 460;
+    private static final int height = 550;
 
     /*
      * Other variables
