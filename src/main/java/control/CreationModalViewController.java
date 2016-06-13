@@ -132,11 +132,6 @@ public class CreationModalViewController {
                         cameraShotCreationModalView.getStartField().getText()),
                 Double.parseDouble(
                         cameraShotCreationModalView.getEndField().getText()));
-            cameraShotCreationModalView.getInstrumentsDropdown().getCheckModel()
-                .getCheckedIndices().forEach(e -> {
-                        shot.addInstrument(this.controllerManager.getScriptingProject()
-                                                                 .getInstruments().get(e));
-                    });
 
             cameraShotCreationModalView.getCamerasInShot().forEach(cameraIndex -> {
                     timelineController.addCameraShot(cameraIndex, shot);
@@ -297,9 +292,9 @@ public class CreationModalViewController {
                 directorShotCreationModalView.getCamerasInShot());
             
             directorShotCreationModalView.getInstrumentsInShot().forEach(e -> {
-                shot.addInstrument(this.controllerManager.getScriptingProject()
-                    .getInstruments().get(e));
-            });
+                    shot.addInstrument(this.controllerManager.getScriptingProject()
+                        .getInstruments().get(e));
+                });
 
             directorTimelineController.addDirectorShot(shot);
 

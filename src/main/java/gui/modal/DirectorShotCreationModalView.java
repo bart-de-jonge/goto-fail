@@ -125,7 +125,6 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
         initNameDescriptionFields(content);
         initCountTextfields(content);
         initPaddingTextfields(content);
-        initInstrumentsDropdown(content, instruments);
 
         this.centerPane.getChildren().add(content);
     }
@@ -161,20 +160,23 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
      * Initialize the checkboxes with labels for each camera, in a flowpane.
      */
     private void initCamCheckBoxes() {
+        styleCamCheckBoxes();
+
+        // add checkboxes
+        cameraCheckboxes = new ArrayList<>();
+        for (int i = 0; i < this.cameraTimelines.size(); i++) {
+            String checkBoxString = this.cameraTimelines.get(i).getCamera().getName();
+            StyledCheckbox checkBox = new StyledCheckbox(checkBoxString);
+            cameraCheckboxes.add(checkBox);
+        }
+
+        // title
+        Label label = new Label("Select cameras");
+
+        // add all to scene
+        this.checkboxPane.getChildren().addAll(cameraCheckboxes);
+
         if (cameraTimelines.size() > 0) {
-            Label label = new Label("Select cameras");
-            styleCamCheckBoxes();
-
-            // add checkboxes
-            cameraCheckboxes = new ArrayList<>();
-            for (int i = 0; i < this.cameraTimelines.size(); i++) {
-                String checkBoxString = this.cameraTimelines.get(i).getCamera().getName();
-                StyledCheckbox checkBox = new StyledCheckbox(checkBoxString);
-                cameraCheckboxes.add(checkBox);
-            }
-
-            // add all to scene
-            this.checkboxPane.getChildren().addAll(cameraCheckboxes);
             this.centerRightPane.getChildren().addAll(label, this.checkboxPane);
         }
     }
@@ -183,20 +185,23 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
      * Initialize the checkboxes with labels for each instrument, in a flowpane.
      */
     private void initInstrumentCheckBoxes() {
+        styleInstrumentCheckBoxes();
+
+        // add checkboxes
+        instrumentCheckboxes = new ArrayList<>();
+        for (int i = 0; i < this.instruments.size(); i++) {
+            String checkBoxString = this.instruments.get(i).getName();
+            StyledCheckbox checkbox = new StyledCheckbox(checkBoxString);
+            instrumentCheckboxes.add(checkbox);
+        }
+
+        // title
+        Label label = new Label("Select instruments");
+
+        // add all to scene
+        this.instrumentPane.getChildren().addAll(instrumentCheckboxes);
+
         if (instruments.size() > 0) {
-            Label label = new Label("Select instruments");
-            styleInstrumentCheckBoxes();
-
-            // add checkboxes
-            instrumentCheckboxes = new ArrayList<>();
-            for (int i = 0; i < this.instruments.size(); i++) {
-                String checkBoxString = this.instruments.get(i).getName();
-                StyledCheckbox checkbox = new StyledCheckbox(checkBoxString);
-                instrumentCheckboxes.add(checkbox);
-            }
-
-            // add all to scene
-            this.instrumentPane.getChildren().addAll(instrumentCheckboxes);
             this.centerRightPane.getChildren().addAll(label, this.instrumentPane);
         }
     }
