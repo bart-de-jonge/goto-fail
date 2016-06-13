@@ -447,7 +447,6 @@ public class DetailViewController {
 
                     for (int i = 0; i < manager.getScriptingProject().getCameras().size(); i++) {
                         Camera camera = manager.getScriptingProject().getCameras().get(i);
-                        int j = i;
                         StyledCheckbox checkbox = new StyledCheckbox(camera.getName(),
                                 indices.contains(i));
                         activeBlockBoxes.add(checkbox);
@@ -455,6 +454,7 @@ public class DetailViewController {
                         item.setHideOnClick(false);
                         cameraButtons.getItems().add(item);
 
+                        int j = i;
                         checkbox.setOnMouseClicked(createDropdownHandler(checkbox, j));
                     }
 
