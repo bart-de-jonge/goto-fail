@@ -1,14 +1,13 @@
 package data;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import control.ProjectController;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Created by Bart.
@@ -22,6 +21,62 @@ public class ScriptingProjectTest {
     @Before
     public void setUpTest() {
         project = new ScriptingProject("", "A test scripting project", 2);
+    }
+
+    @Test
+    public void removeOffsettedCameraBlocks() {
+        CameraType type = new CameraType("name", "descriptoin", 3);
+        Camera camera = new Camera("name", "description", type);
+        CameraTimeline timeline = new CameraTimeline(camera, project);
+        timeline.addShot(new CameraShot("name", "description", ProjectController.UNUSED_BLOCK_OFFSET, ProjectController.UNUSED_BLOCK_OFFSET + 1));
+        project.addCameraTimeline(timeline);
+        project.removeOffsettedCameraBlocks();
+        assertTrue(timeline.getShots().isEmpty());
+    }
+
+    @Test
+    public void getDistinctCameraTypes() {
+        CameraType type = new CameraType("name", "descriptoin", 3);
+        Camera camera = new Camera("name", "description", type);
+        CameraTimeline timeline = new CameraTimeline(camera, project);
+        project.addCameraTimeline(timeline);
+        project.addCamera(camera);
+        assertEquals(1, project.getDistinctCameraTypes().size());
+        assertTrue(project.getDistinctCameraTypes().contains(type));
+    }
+
+    @Test
+    public void addUser() {
+        User user = new User();
+        project.addUser(user);
+        assertEquals(1, project.getUsers().size());
+        assertEquals(user, project.getUsers().get(0));
+    }
+
+    @Test
+    public void addInstrument() {
+        Instrument instrument = new Instrument();
+        project.addInstrument(instrument);
+        assertEquals(1, project.getInstruments().size());
+        assertEquals(instrument, project.getInstruments().get(0));
+    }
+
+    @Test
+    public void setRes() {
+        ScriptingProject.setRes(5);
+        assertEquals(5, ScriptingProject.getRes());
+    }
+
+    @Test
+    public void getMaxInstance() {
+        CameraType type = new CameraType("name", "descriptoin", 3);
+        Camera camera = new Camera("name", "description", type);
+        CameraTimeline timeline = new CameraTimeline(camera, project);
+        project.addCameraTimeline(timeline);
+        project.getDirectorTimeline().addShot(new DirectorShot());
+        timeline.addShot(new CameraShot("name", "description", 1, 2));
+        timeline.addShot(new CameraShot("name", "description", 1, 2));
+        assertEquals(2, project.getMaxInstance());
     }
 
     @Test
