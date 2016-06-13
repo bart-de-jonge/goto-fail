@@ -67,18 +67,15 @@ public class ToolViewController {
                         if ((event.getCode() == KeyCode.DELETE)
                                 || (event.getCode() == KeyCode.BACK_SPACE
                                     && event.isShortcutDown())) {
-                            String currentFocusClass = this.controllerManager.getRootPane()
-                                                                             .getPrimaryStage()
-                                               .getScene().getFocusOwner().getClass().getName();
+                            String currentFocusClass = 
+                                    this.controllerManager.getRootPane().getPrimaryStage()
+                                        .getScene().getFocusOwner().getClass().getName();
                             
                             boolean isTextField = 
                                     currentFocusClass.equals("gui.styling.StyledTextfield")
-                                    ||
-                                    currentFocusClass.equals("javafx.scene.control.TextField")
-                                    ||
-                                    currentFocusClass.equals("gui.headerarea.DoubleTextField")
-                                    ||
-                                    currentFocusClass.equals("gui.headerarea.NumberTextField");
+                                    || currentFocusClass.equals("javafx.scene.control.TextField")
+                                    || currentFocusClass.equals("gui.headerarea.DoubleTextField")
+                                    || currentFocusClass.equals("gui.headerarea.NumberTextField");
                             System.out.println(isTextField);
                             if (!isTextField) {
                                 deleteActiveCameraShot();
