@@ -453,43 +453,57 @@ public class DetailViewController {
     public void activeBlockChanged() {
         if (manager.getActiveShotBlock() != null) {
             if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                detailView = new DetailView();
-                detailView.setDescription(manager.getActiveShotBlock().getDescription());
-                detailView.setName(manager.getActiveShotBlock().getName());
-                detailView.setBeginCount(manager.getActiveShotBlock().getBeginCount());
-                detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
-                initInstrumentsDropdown(manager.getActiveShotBlock());
-                detailView.setVisible();
-                detailView.setVisible(true);
-                // Re-init the detail view with new data
-                manager.getRootPane().getRootHeaderArea().setDetailView(detailView);  
-                manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
-                this.reInitForCameraBlock();
+                activeBlockChangedCamera();
             } else {
-                DirectorShotBlock shotBlock = (DirectorShotBlock) manager.getActiveShotBlock();
-                detailView = new DirectorDetailView();
-                // Set detail view variables
-                detailView.setDescription(shotBlock.getDescription());
-                detailView.setName(shotBlock.getName());
-                detailView.setBeginCount(shotBlock.getBeginCount());
-                detailView.setEndCount(shotBlock.getEndCount());
-                ((DirectorDetailView) detailView).getPaddingBeforeField()
-                    .setText(detailView.formatDouble(shotBlock.getPaddingBefore()));
-                ((DirectorDetailView) detailView).getPaddingAfterField()
-                    .setText(detailView.formatDouble(shotBlock.getPaddingAfter()));
-                activeBlock = shotBlock;
-                //initDropDown(shotBlock);
-                initInstrumentsDropdown(shotBlock);
-                detailView.setVisible();
-                detailView.setVisible(true);
-                // Re-init the detail view with new data
-                manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
-                this.reInitForDirectorBlock();
+                activeBlockChangedDirector();
             }
         } else {
             detailView.resetDetails();
             detailView.setInvisible();
         }
+    }
+    
+    /**
+     * Handler for when the active block is now a camera shot.
+     */
+    private void activeBlockChangedCamera() {
+        detailView = new DetailView();
+        detailView.setDescription(manager.getActiveShotBlock().getDescription());
+        detailView.setName(manager.getActiveShotBlock().getName());
+        detailView.setBeginCount(manager.getActiveShotBlock().getBeginCount());
+        detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
+        initInstrumentsDropdown(manager.getActiveShotBlock());
+        detailView.setVisible();
+        detailView.setVisible(true);
+        // Re-init the detail view with new data
+        manager.getRootPane().getRootHeaderArea().setDetailView(detailView);  
+        manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
+        this.reInitForCameraBlock();
+    }
+    
+    /**
+     * Handler for when the active block is now a director shot.
+     */
+    private void activeBlockChangedDirector() {
+        DirectorShotBlock shotBlock = (DirectorShotBlock) manager.getActiveShotBlock();
+        detailView = new DirectorDetailView();
+        // Set detail view variables
+        detailView.setDescription(shotBlock.getDescription());
+        detailView.setName(shotBlock.getName());
+        detailView.setBeginCount(shotBlock.getBeginCount());
+        detailView.setEndCount(shotBlock.getEndCount());
+        ((DirectorDetailView) detailView).getPaddingBeforeField()
+            .setText(detailView.formatDouble(shotBlock.getPaddingBefore()));
+        ((DirectorDetailView) detailView).getPaddingAfterField()
+            .setText(detailView.formatDouble(shotBlock.getPaddingAfter()));
+        activeBlock = shotBlock;
+        //initDropDown(shotBlock);
+        initInstrumentsDropdown(shotBlock);
+        detailView.setVisible();
+        detailView.setVisible(true);
+        // Re-init the detail view with new data
+        manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
+        this.reInitForDirectorBlock();
     }
 
     /**
