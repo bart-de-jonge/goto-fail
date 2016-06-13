@@ -29,7 +29,6 @@ public class DetailView extends VBox {
     protected static final String defaultEmptyString = "";
     protected static final String defaultEmptyNumber = "0";
 
-    
     private boolean visible = false;
     
     @Getter

@@ -38,8 +38,7 @@ public class DirectorGridPane extends ScrollableGridPane {
         block.getTimetableBlock().getInstrumentBox().getChildren().clear();
         
         block.getInstruments().forEach(e -> {
-                block.getTimetableBlock().getInstrumentBox().getChildren()
-                .add(new Label(e.getName()));
+                block.getTimetableBlock().addInstrument(e);
             });
         
     }

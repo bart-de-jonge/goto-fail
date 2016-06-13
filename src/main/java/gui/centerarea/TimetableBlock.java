@@ -126,7 +126,11 @@ public abstract class TimetableBlock extends Pane {
      * @param instrument the instrument to add
      */
     public void addInstrument(Instrument instrument) {
-        this.instrumentBox.getChildren().add(new Label(instrument.getName()));
+        Label label = new Label(instrument.getName());
+        label.getStyleClass().add("block_Text_Normal");
+        label.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(2) + ";");
+        System.out.println(label.getText());
+        this.instrumentBox.getChildren().add(label);
     }
     
     /**
@@ -176,6 +180,7 @@ public abstract class TimetableBlock extends Pane {
         countNormalLabel = initCountLabel(contentPane);
         descriptionNormalLabel = initDescriptionLabel(contentPane);
         descriptionNormalLabel.setWrapText(true);
+        initInstrumentBox(contentPane);
 
         addWithClipRegion(contentPane, this);
 
@@ -213,7 +218,7 @@ public abstract class TimetableBlock extends Pane {
         titleDraggedLabel = initTitleLabel(draggedContentPane);
         countDraggedLabel = initCountLabel(draggedContentPane);
         descriptionDraggedLabel = initCountLabel(draggedContentPane);
-        initInstrumentBox(contentPane);
+        initInstrumentBox(draggedContentPane);
         descriptionDraggedLabel.setWrapText(true);
 
         // dropshadow shown underneath dragged rootCenterArea
@@ -298,9 +303,7 @@ public abstract class TimetableBlock extends Pane {
      */
     private void initInstrumentBox(VBox vbox) {
         instrumentBox = new VBox(5);
-        instrumentBox.maxWidthProperty().bind(this.widthProperty());
-        instrumentBox.getStyleClass().add("block_Text_Normal");
-        instrumentBox.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(2) + ";");
+//        instrumentBox.maxWidthProperty().bind(this.widthProperty());
         vbox.getChildren().add(instrumentBox);
     }
 
