@@ -22,7 +22,7 @@ public class DetailView extends VBox {
 
     private String style = "-fx-background-color: "
             + TweakingHelper.getBackgroundHighString() + ";"
-            + "-fx-min-height: 100;"
+            + "-fx-padding: 10 5 10 5;"
             + "-fx-border-width: 0 0 1px 0;"
             + "-fx-border-color: rgba(0,0,0,0.40);";
 
@@ -193,9 +193,9 @@ public class DetailView extends VBox {
     private void initInvisible() {
         this.getChildren().removeAll(nameBox, descriptionBox, beginCountBox,
                 endCountBox, instrumentsBox);
-        this.setPadding(new Insets(0));
-        this.setSpacing(0);
         invisibleLabel = new Label("Select a shot to edit it.");
+        invisibleLabel.setPrefHeight(51.0);
+        invisibleLabel.setMinHeight(51.0);
         invisibleLabel.setAlignment(Pos.CENTER);
         invisibleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
     }
