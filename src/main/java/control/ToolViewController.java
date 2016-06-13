@@ -67,9 +67,6 @@ public class ToolViewController {
                         if ((event.getCode() == KeyCode.DELETE)
                                 || (event.getCode() == KeyCode.BACK_SPACE
                                     && event.isShortcutDown())) {
-                            System.out.println(this.controllerManager.getRootPane()
-                                               .getPrimaryStage().getScene()
-                                               .getFocusOwner().getClass().getName());
                             String currentFocusClass = this.controllerManager.getRootPane()
                                                                              .getPrimaryStage()
                                                .getScene().getFocusOwner().getClass().getName();
