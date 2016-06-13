@@ -478,7 +478,7 @@ public class DetailViewController {
                 ((DirectorDetailView) detailView).getPaddingAfterField()
                     .setText(detailView.formatDouble(shotBlock.getPaddingAfter()));
                 activeBlock = shotBlock;
-                initDropDown(shotBlock);
+                //initDropDown(shotBlock);
                 initInstrumentsDropdown(shotBlock);
                 detailView.setVisible();
                 detailView.setVisible(true);
