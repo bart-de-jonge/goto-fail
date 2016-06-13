@@ -1,7 +1,9 @@
 package control;
 
 import data.CameraShot;
+import data.DirectorShot;
 import gui.centerarea.CameraShotBlock;
+import gui.centerarea.DirectorShotBlock;
 import gui.headerarea.DirectorDetailView;
 import gui.headerarea.DoubleTextField;
 import gui.root.RootHeaderArea;
@@ -21,6 +23,10 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.testfx.framework.junit.ApplicationTest;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
@@ -65,6 +71,52 @@ public class DetailViewControllerTest extends ApplicationTest {
         when(detailView.getSelectCamerasButton()).thenReturn(new StyledMenuButton());
 
         detailViewController = spy(new DetailViewController(manager));
+    }
+
+    private void setupPaddingUpdateHelperTests(DirectorShot shot, DirectorShotBlock shotBlock, TimelineController timelineController) {
+        // Make mocks
+        CameraShot cameraShot = Mockito.mock(CameraShot.class);
+        CameraShotBlock cameraShotBlock = Mockito.mock(CameraShotBlock.class);
+
+        // Mock all the methods
+        when(shotBlock.getShot()).thenReturn(shot);
+        when(manager.getActiveShotBlock()).thenReturn(shotBlock);
+        when(manager.getTimelineControl()).thenReturn(timelineController);
+        when(shot.getCameraShots()).thenReturn(new HashSet<CameraShot>(Arrays.asList(cameraShot)));
+        when(shot.getBeginCount()).thenReturn(0.0);
+        when(timelineController.getShotBlockForShot(anyObject())).thenReturn(cameraShotBlock);
+    }
+
+    @Test
+    public void beforePaddingUpdateHelper() {
+        DirectorShotBlock shotBlock = Mockito.mock(DirectorShotBlock.class);
+        DirectorShot shot = Mockito.mock(DirectorShot.class);
+        TimelineController timelineController = Mockito.mock(TimelineController.class);
+        setupPaddingUpdateHelperTests(shot, shotBlock, timelineController);
+
+        // Call method under testing
+        detailViewController.beforePaddingUpdateHelper();
+
+        // Verify
+        assertEquals(0.0, shot.getFrontShotPadding(), 0);
+        assertEquals(0.0, shotBlock.getPaddingBefore(), 0);
+        Mockito.verify(timelineController, times(1)).recomputeAllCollisions();
+    }
+
+    @Test
+    public void afterPaddingUpdateHelper() {
+        DirectorShotBlock shotBlock = Mockito.mock(DirectorShotBlock.class);
+        DirectorShot shot = Mockito.mock(DirectorShot.class);
+        TimelineController timelineController = Mockito.mock(TimelineController.class);
+        setupPaddingUpdateHelperTests(shot, shotBlock, timelineController);
+
+        // Call method under testing
+        detailViewController.afterPaddingUpdateHelper();
+
+        // Verify
+        assertEquals(0.0, shot.getEndShotPadding(), 0);
+        assertEquals(0.0, shotBlock.getPaddingAfter(), 0);
+        Mockito.verify(timelineController, times(1)).recomputeAllCollisions();
     }
 
     @Test

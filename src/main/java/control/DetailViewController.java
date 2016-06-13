@@ -1,15 +1,6 @@
 package control;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import data.Camera;
-import data.CameraShot;
-import data.DirectorShot;
-import data.Instrument;
-import data.Shot;
+import data.*;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
 import gui.centerarea.ShotBlock;
@@ -27,6 +18,11 @@ import javafx.scene.control.CustomMenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import lombok.extern.log4j.Log4j2;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Controller for the DetailView.
@@ -106,7 +102,7 @@ public class DetailViewController {
     /**
      * Update method for the before padding field.
      */
-    private void beforePaddingUpdateHelper() {
+    protected void beforePaddingUpdateHelper() {
         if (manager.getActiveShotBlock() != null) {
             String newValue = CountUtilities.parseCountNumber(
                     ((DirectorDetailView) detailView).getPaddingBeforeField().getText());
@@ -128,7 +124,6 @@ public class DetailViewController {
                     manager.setActiveShotBlock(directorShotBlock);
                 });
             manager.getTimelineControl().recomputeAllCollisions();
-
         }
     }
     
@@ -162,7 +157,7 @@ public class DetailViewController {
     /**
      * Update method for the after padding.
      */
-    private void afterPaddingUpdateHelper() {
+    protected void afterPaddingUpdateHelper() {
         if (manager.getActiveShotBlock() != null) {
             String newValue = CountUtilities.parseCountNumber(
                     ((DirectorDetailView) detailView).getPaddingAfterField().getText());
