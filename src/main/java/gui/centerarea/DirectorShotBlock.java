@@ -29,7 +29,6 @@ public class DirectorShotBlock extends ShotBlock {
     
     @Getter @Setter
     private Set<Integer> timelineIndices;
-    
 
     // The directorGridpane the shot is in
     @Getter
@@ -87,7 +86,10 @@ public class DirectorShotBlock extends ShotBlock {
         this.paddingBefore = padding;
         ((DirectorTimetableBlock) this.getTimetableBlock())
             .getPaddingBeforeLabel().setText(
-                "Front P: " + Double.toString(padding));
+                "Front Padding: " + Double.toString(padding));
+        ((DirectorTimetableBlock) this.getTimetableBlock())
+                .getPaddingBeforeDraggedLabel().setText(
+                "Front Padding: " + Double.toString(padding));
     }
     
     /**
@@ -98,7 +100,10 @@ public class DirectorShotBlock extends ShotBlock {
         this.paddingAfter = padding;
         ((DirectorTimetableBlock) this.getTimetableBlock())
             .getPaddingAfterLabel().setText(
-                    "Back P: " + Double.toString(padding));
+                    "Back Padding: " + Double.toString(padding));
+        ((DirectorTimetableBlock) this.getTimetableBlock())
+                .getPaddingAfterDraggedLabel().setText(
+                "Back Padding: " + Double.toString(padding));
     }
     
     @Override

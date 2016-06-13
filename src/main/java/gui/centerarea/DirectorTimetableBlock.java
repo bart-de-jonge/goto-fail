@@ -15,6 +15,10 @@ public class DirectorTimetableBlock extends TimetableBlock {
     private Label paddingBeforeLabel;
     @Getter
     private Label paddingAfterLabel;
+    @Getter
+    private Label paddingBeforeDraggedLabel;
+    @Getter
+    private Label paddingAfterDraggedLabel;
 
     /**
      * Constructor for DirectorTimetableBlock class.
@@ -38,6 +42,7 @@ public class DirectorTimetableBlock extends TimetableBlock {
     void initNormalPane() {
         // Add width/height properties, title label, count label and description label
         super.initNormalPane();
+        super.addSeparator(this.getContentPane());
         paddingBeforeLabel = initFrontPaddingLabel(this.getContentPane());
         paddingAfterLabel = initEndPaddingLabel(this.getContentPane());
     }
@@ -48,7 +53,7 @@ public class DirectorTimetableBlock extends TimetableBlock {
      * @return the initialized label
      */
     private Label initFrontPaddingLabel(VBox vbox) {
-        Label res = new Label("Front P: " + Double.toString(
+        Label res = new Label("Front Padding: " + Double.toString(
                 (((DirectorShotBlock) this.getParentBlock()).getPaddingBefore())));
         res.maxWidthProperty().bind(super.widthProperty());
         res.getStyleClass().add("block_Text_Normal");
@@ -63,7 +68,7 @@ public class DirectorTimetableBlock extends TimetableBlock {
      * @return the initialized label
      */
     private Label initEndPaddingLabel(VBox vbox) {
-        Label res = new Label("Back P: " + Double.toString(
+        Label res = new Label("Back Padding: " + Double.toString(
                 (((DirectorShotBlock) this.getParentBlock()).getPaddingAfter())));
         res.maxWidthProperty().bind(super.widthProperty());
         res.getStyleClass().add("block_Text_Normal");
@@ -77,6 +82,9 @@ public class DirectorTimetableBlock extends TimetableBlock {
      */
     private void initDraggedPane() {
         super.initDraggedPane(getRootCenterArea().getDirectorAnchorPane());
+        super.addSeparator(this.getDraggedContentPane());
+        paddingBeforeDraggedLabel = initFrontPaddingLabel(this.getDraggedContentPane());
+        paddingAfterDraggedLabel = initEndPaddingLabel(this.getDraggedContentPane());
     }
 
     /**
