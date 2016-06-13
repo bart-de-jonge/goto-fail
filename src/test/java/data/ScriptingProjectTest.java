@@ -76,7 +76,7 @@ public class ScriptingProjectTest {
         DirectorShot directorShot = new DirectorShot();
         project.getDirectorTimeline().addShot(directorShot);
         CameraShot cameraShot = new CameraShot("name", "description", 1, 2);
-        timeline.addShot(new CameraShot("name", "description", 1, 2));
+        timeline.addShot(cameraShot);
         assertEquals(Math.max(directorShot.getInstance(), cameraShot.getInstance()), project.getMaxInstance());
     }
 
