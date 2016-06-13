@@ -133,6 +133,11 @@ public class CreationModalViewController {
                 Double.parseDouble(
                         cameraShotCreationModalView.getEndField().getText()));
 
+            cameraShotCreationModalView.getInstrumentsInShot().forEach(shotIndex -> {
+                shot.addInstrument(controllerManager.getScriptingProject()
+                        .getInstruments().get(shotIndex));
+            });
+
             cameraShotCreationModalView.getCamerasInShot().forEach(cameraIndex -> {
                     timelineController.addCameraShot(cameraIndex, shot);
                 });

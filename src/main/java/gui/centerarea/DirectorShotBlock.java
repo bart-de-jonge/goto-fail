@@ -29,7 +29,6 @@ public class DirectorShotBlock extends ShotBlock {
     
     @Getter @Setter
     private Set<Integer> timelineIndices;
-    
 
     // The directorGridpane the shot is in
     @Getter

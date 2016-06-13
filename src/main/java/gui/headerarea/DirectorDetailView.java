@@ -1,15 +1,8 @@
 package gui.headerarea;
 
-import gui.styling.StyledCheckbox;
-import gui.styling.StyledMenuButton;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.CustomMenuItem;
-import javafx.scene.control.MenuButton;
-import org.controlsfx.control.CheckComboBox;
 
 import gui.misc.TweakingHelper;
+import gui.styling.StyledMenuButton;
 import gui.styling.StyledTextfield;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -100,7 +93,7 @@ public class DirectorDetailView extends DetailView {
             this.setSpacing(TweakingHelper.GENERAL_SPACING * 2);
             this.getItemBox().getChildren().clear();
             this.getItemBox().getChildren().addAll(getNameBox(), getDescriptionBox(),
-                    getBeginCountBox(), getEndCountBox(), getInstrumentsDropdown());
+                    getBeginCountBox(), getEndCountBox());
             directorItemsBox.getChildren().clear();
             directorItemsBox.getChildren().addAll(paddingBeforeBox, paddingAfterBox);
             createSelectCamerasButton();

@@ -2,6 +2,7 @@ package gui.headerarea;
 
 import java.util.ArrayList;
 
+import gui.styling.StyledMenuButton;
 import org.controlsfx.control.CheckComboBox;
 
 import data.Instrument;
@@ -56,7 +57,7 @@ public class DetailView extends VBox {
     @Getter
     private DoubleTextField endCountField;
     @Getter
-    private CheckComboBox<String> instrumentsDropdown;
+    private StyledMenuButton selectInstrumentsButton;
 
     /**
      * Constructor.
@@ -72,9 +73,15 @@ public class DetailView extends VBox {
         initDescription();
         initBeginCount();
         initEndCount();
-        initInstruments();
+        createSelectInstrumentsButton();
         initInvisible();
         this.getChildren().add(itemBox);
+
+        this.setPadding(new Insets(0));
+        this.setSpacing(0);
+        itemBox.getChildren().removeAll(nameBox, descriptionBox, beginCountBox,
+                endCountBox, instrumentsBox, selectInstrumentsButton);
+        itemBox.getChildren().add(invisibleLabel);
     }
     
     public boolean getVisible() {
@@ -129,17 +136,6 @@ public class DetailView extends VBox {
     public void setEndCount(double count) {
         endCountField.setText(formatDouble(count));
     }
-    
-    /**
-     * Set the instruments for this detail view.
-     * @param instruments the instruments to set
-     */
-    public void setInstruments(ArrayList<Instrument> instruments) {
-        this.instrumentsDropdown.getItems().clear();
-        instruments.forEach(e -> {
-                this.instrumentsDropdown.getItems().add(e.getName());
-            });
-    }
 
     /**
      * Init the begincount part of the detailview.
@@ -151,19 +147,6 @@ public class DetailView extends VBox {
         beginCountBox.getChildren().addAll(specifierLabel, beginCountField);
         beginCountBox.setAlignment(Pos.CENTER);
         itemBox.getChildren().add(beginCountBox);
-    }
-    
-    /**
-     * Initialize the instrument dropdown.
-     */
-    private void initInstruments() {
-        instrumentsDropdown = new CheckComboBox<>();
-        instrumentsBox = new HBox(TweakingHelper.GENERAL_SPACING);
-        Label instrumentsLabel = new Label("Instruments:");
-        instrumentsBox.getChildren().addAll(instrumentsLabel, instrumentsDropdown);
-        instrumentsBox.setAlignment(Pos.CENTER);
-        itemBox.getChildren().add(instrumentsBox);
-        
     }
 
     /**
@@ -216,7 +199,6 @@ public class DetailView extends VBox {
         invisibleLabel = new Label("Select a shot to edit it.");
         invisibleLabel.setAlignment(Pos.CENTER);
         invisibleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
-        itemBox.getChildren().add(invisibleLabel);
     }
 
     /**
@@ -229,7 +211,8 @@ public class DetailView extends VBox {
             itemBox.getChildren().clear();
             itemBox.getChildren().remove(invisibleLabel);
             itemBox.getChildren().addAll(nameBox, descriptionBox, beginCountBox,
-                    endCountBox, instrumentsBox);
+                    endCountBox);
+            createSelectInstrumentsButton();
             visible = true;
         }
     }
@@ -241,8 +224,7 @@ public class DetailView extends VBox {
         if (visible) {
             this.setPadding(new Insets(0));
             this.setSpacing(0);
-            itemBox.getChildren().removeAll(nameBox, descriptionBox, beginCountBox,
-                    endCountBox, instrumentsBox);
+            itemBox.getChildren().clear();
             itemBox.getChildren().add(invisibleLabel);
             visible = false;
         }
@@ -256,5 +238,13 @@ public class DetailView extends VBox {
         this.descriptionField.setText(defaultEmptyString);
         this.beginCountField.setText(defaultEmptyNumber);
         this.endCountField.setText(defaultEmptyNumber);
+    }
+
+    /**
+     * Init experimental dropdown menu to select instruments.
+     */
+    private void createSelectInstrumentsButton() {
+        selectInstrumentsButton = new StyledMenuButton("Edit Instruments selection");
+        itemBox.getChildren().add(selectInstrumentsButton);
     }
 }
