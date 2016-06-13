@@ -1,8 +1,6 @@
 package control;
 
-import java.util.Iterator;
-import java.util.Set;
-
+import data.Camera;
 import data.CameraShot;
 import data.DirectorShot;
 import gui.centerarea.CameraShotBlock;
@@ -10,9 +8,20 @@ import gui.centerarea.DirectorShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;
 import gui.headerarea.DetailView;
 import gui.headerarea.DirectorDetailView;
+import gui.misc.TweakingHelper;
+import gui.styling.StyledCheckbox;
+import gui.styling.StyledMenuButton;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
+import javafx.event.EventHandler;
+import javafx.scene.control.CustomMenuItem;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -23,6 +32,9 @@ public class DetailViewController {
 
     private DetailView detailView;
     private ControllerManager manager;
+
+    private DirectorShotBlock activeBlock;
+    private List<StyledCheckbox> activeBlockBoxes;
 
     /**
      * Constructor.
@@ -54,7 +66,7 @@ public class DetailViewController {
         reInitForCameraBlock();
         initBeginPadding();
         initEndPadding();
-        initCamerasDropDown();
+        initDropDown();
     }
     
     /**
@@ -121,7 +133,8 @@ public class DetailViewController {
     private void initEndPadding() {
         ((DirectorDetailView) detailView).getPaddingAfterField().focusedProperty()
         .addListener(this::afterPaddingFocusListener);
-        ((DirectorDetailView) detailView).getPaddingAfterField().setOnKeyPressed(event -> {
+        ((DirectorDetailView) detailView).getPaddingAfterField().setOnKeyPressed(
+            event -> {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     this.afterPaddingUpdateHelper();
                 }
@@ -170,21 +183,10 @@ public class DetailViewController {
     }
     
     /**
-     * Init the handlers for the camera selection drop down menu.
-     */
-    private void initCamerasDropDown() {
-        ((DirectorDetailView) detailView).getSelectCamerasDropDown()
-                                         .getCheckModel()
-                                         .getCheckedIndices()
-                                         .addListener(this::camerasDropdownChangeListener);
-    }
-    
-    /**
      * Change listener for the dropdown. Fires whenever a box is selected or deselected.
      * @param c The Change with information about what changed.
      */
     private void camerasDropdownChangeListener(ListChangeListener.Change c) {
-        System.out.println("CHANGE LISTENER");
         DirectorShot shot = ((DirectorShot) manager.getActiveShotBlock().getShot());
         c.next();
         if (c.wasAdded()) {
@@ -236,7 +238,7 @@ public class DetailViewController {
         dShot.getTimelineIndices().add(index);
         DirectorShotBlock dShotBlock = ((DirectorShotBlock) manager.getActiveShotBlock());
         manager.getScriptingProject().getCameraTimelines().get(index).addShot(shot);
-        manager.getTimelineControl().initShotBlock(index, shot);
+        manager.getTimelineControl().initShotBlock(index, shot, false);
         manager.setActiveShotBlock(dShotBlock);
     }
 
@@ -405,34 +407,78 @@ public class DetailViewController {
                     .setText(detailView.formatDouble(shotBlock.getPaddingBefore()));
                 ((DirectorDetailView) detailView).getPaddingAfterField()
                     .setText(detailView.formatDouble(shotBlock.getPaddingAfter()));
-                initDropDown(shotBlock);
+                activeBlock = shotBlock;
                 detailView.setVisible();
                 detailView.setVisible(true);
                 // Re-init the detail view with new data
                 manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
                 this.reInitForDirectorBlock();
-
             }
         } else {
             detailView.resetDetails();
             detailView.setInvisible();
         }
     }
-    
+
     /**
-     * Initialize the drop down menu.
-     * @param shotBlock the shotBlock to do that for
+     * Initialize drop down menu.
      */
-    private void initDropDown(DirectorShotBlock shotBlock) {
-        Set<Integer> indices = shotBlock.getTimelineIndices();
-        ((DirectorDetailView) detailView).getSelectCamerasDropDown().getItems().clear();
-        manager.getScriptingProject().getCameras().forEach(camera -> {
-                ((DirectorDetailView) detailView).getSelectCamerasDropDown()
-                    .getItems().add(camera.getName());
-            });
-        indices.forEach(e -> {
-                ((DirectorDetailView) detailView).getSelectCamerasDropDown()
-                    .getCheckModel().check(e);
-            });
+    private void initDropDown() {
+        StyledMenuButton cameraButtons = ((DirectorDetailView) detailView).getSelectCamerasButton();
+        cameraButtons.setBorderColor(TweakingHelper.getColor(0));
+        cameraButtons.setFillColor(TweakingHelper.getBackgroundColor());
+        activeBlockBoxes = new ArrayList<>();
+
+        cameraButtons.showingProperty().addListener(createDropdownListener(cameraButtons));
+    }
+
+    /**
+     * Creates ChangeListener for the Dropdown checkboxes.
+     * @param cameraButtons the dropdown with checkboxes.
+     * @return the ChangeListener.
+     */
+    private ChangeListener<Boolean> createDropdownListener(StyledMenuButton cameraButtons) {
+        return new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable,
+                                Boolean oldValue, Boolean newValue) {
+                if (newValue) {
+                    Set<Integer> indices = activeBlock.getTimelineIndices();
+
+                    for (int i = 0; i < manager.getScriptingProject().getCameras().size(); i++) {
+                        Camera camera = manager.getScriptingProject().getCameras().get(i);
+                        StyledCheckbox checkbox = new StyledCheckbox(camera.getName(),
+                                indices.contains(i));
+                        activeBlockBoxes.add(checkbox);
+                        CustomMenuItem item = new CustomMenuItem(checkbox);
+                        item.setHideOnClick(false);
+                        cameraButtons.getItems().add(item);
+
+                        int j = i;
+                        checkbox.setOnMouseClicked(createDropdownHandler(checkbox, j));
+                    }
+
+                } else {
+                    activeBlockBoxes.clear();
+                    cameraButtons.getItems().clear();
+                }
+            }
+        };
+    }
+
+    /**
+     * Event handler for when a checkbox in the camera dropdown is clicked.
+     * @param box the checkbox that was clicked.
+     * @param i index of the checkbox.
+     * @return the Event Handler.
+     */
+    private EventHandler<MouseEvent> createDropdownHandler(StyledCheckbox box, int i) {
+        return e -> {
+            if (box.isSelected()) {
+                cameraAddedInDropdown(i);
+            } else {
+                cameraDeletedInDropdown(i);
+            }
+        };
     }
 }

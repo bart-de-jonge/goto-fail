@@ -28,8 +28,8 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
      * Tweakable styling variables.
      */
 
-    // width and height of screen. 680 and 430 work very, very well.
-    private static final int width = 680;
+    // width and height of screen. 760 and 460 work very, very well.
+    private static final int width = 760;
     private static final int height = 460;
 
     /*
@@ -96,7 +96,16 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
 
         // actually add textfields and checkboxes
         initTextfields();
+
+        // space for checkboxes, two rows
+        this.centerRightPane = new VBox();
+        this.centerRightPane.setAlignment(Pos.CENTER);
+        this.centerRightPane.setPrefHeight(TweakingHelper.GENERAL_SIZE);
+        this.centerRightPane.setSpacing(40.0);
+        this.centerPane.getChildren().add(centerRightPane);
+
         initCamCheckBoxes();
+        initInstrumentCheckBoxes();
 
         // add buttons at bottom.
         initButtons();
@@ -116,7 +125,6 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
         initNameDescriptionFields(content);
         initCountTextfields(content);
         initPaddingTextfields(content);
-        initInstrumentsDropdown(content, instruments);
 
         this.centerPane.getChildren().add(content);
     }
@@ -149,23 +157,54 @@ public class DirectorShotCreationModalView extends ShotCreationModalView {
     }
 
     /**
-     * Initialize the checkboxes with labels for each camera.
+     * Initialize the checkboxes with labels for each camera, in a flowpane.
      */
     private void initCamCheckBoxes() {
         styleCamCheckBoxes();
 
+        // add checkboxes
         cameraCheckboxes = new ArrayList<>();
-        for (int i = 0; i < cameraTimelines.size(); i++) {
+        for (int i = 0; i < this.cameraTimelines.size(); i++) {
             String checkBoxString = this.cameraTimelines.get(i).getCamera().getName();
             StyledCheckbox checkBox = new StyledCheckbox(checkBoxString);
             cameraCheckboxes.add(checkBox);
         }
 
+        // title
+        Label label = new Label("Select cameras");
+
+        // add all to scene
         this.checkboxPane.getChildren().addAll(cameraCheckboxes);
-        this.centerPane.getChildren().add(this.checkboxPane);
+
+        if (cameraTimelines.size() > 0) {
+            this.centerRightPane.getChildren().addAll(label, this.checkboxPane);
+        }
     }
 
-    
+    /**
+     * Initialize the checkboxes with labels for each instrument, in a flowpane.
+     */
+    private void initInstrumentCheckBoxes() {
+        styleInstrumentCheckBoxes();
+
+        // add checkboxes
+        instrumentCheckboxes = new ArrayList<>();
+        for (int i = 0; i < this.instruments.size(); i++) {
+            String checkBoxString = this.instruments.get(i).getName();
+            StyledCheckbox checkbox = new StyledCheckbox(checkBoxString);
+            instrumentCheckboxes.add(checkbox);
+        }
+
+        // title
+        Label label = new Label("Select instruments");
+
+        // add all to scene
+        this.instrumentPane.getChildren().addAll(instrumentCheckboxes);
+
+        if (instruments.size() > 0) {
+            this.centerRightPane.getChildren().addAll(label, this.instrumentPane);
+        }
+    }
 
     /**
      * Displays an error message in the view.
