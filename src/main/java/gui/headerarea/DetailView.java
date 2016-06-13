@@ -1,24 +1,21 @@
 package gui.headerarea;
 
-import java.util.ArrayList;
-
-import gui.styling.StyledMenuButton;
-import org.controlsfx.control.CheckComboBox;
-
-import data.Instrument;
 import gui.misc.TweakingHelper;
+import gui.styling.StyledMenuButton;
 import gui.styling.StyledTextfield;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 /**
  * The detail view is the view with details for shots.
  */
-public class DetailView extends VBox {
+public class DetailView extends FlowPane {
 
     private String style = "-fx-background-color: "
             + TweakingHelper.getBackgroundHighString() + ";"
@@ -30,9 +27,6 @@ public class DetailView extends VBox {
     protected static final String defaultEmptyNumber = "0";
 
     private boolean visible = false;
-    
-    @Getter
-    private HBox itemBox;
 
     @Getter
     Label invisibleLabel;
@@ -62,25 +56,29 @@ public class DetailView extends VBox {
      * Constructor.
      */
     public DetailView() {
-        itemBox = new HBox();
-        itemBox.setSpacing(TweakingHelper.GENERAL_SPACING);
+        this.setHgap(TweakingHelper.GENERAL_SPACING);
+        this.setVgap(TweakingHelper.GENERAL_SPACING);
         this.setStyle(style);
         this.setAlignment(Pos.CENTER);
         this.setPadding(new Insets(0));
-        this.setSpacing(TweakingHelper.GENERAL_SPACING * 2);
         initName();
         initDescription();
         initBeginCount();
         initEndCount();
         createSelectInstrumentsButton();
         initInvisible();
-        this.getChildren().add(itemBox);
 
         this.setPadding(new Insets(0));
-        this.setSpacing(0);
-        itemBox.getChildren().removeAll(nameBox, descriptionBox, beginCountBox,
-                endCountBox, instrumentsBox, selectInstrumentsButton);
-        itemBox.getChildren().add(invisibleLabel);
+
+        this.getChildren().clear();
+        this.getChildren().add(invisibleLabel);
+
+        this.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                System.out.println(newValue);
+            }
+        });
     }
     
     public boolean getVisible() {
@@ -145,7 +143,7 @@ public class DetailView extends VBox {
         Label specifierLabel = new Label("Start Count:");
         beginCountBox.getChildren().addAll(specifierLabel, beginCountField);
         beginCountBox.setAlignment(Pos.CENTER);
-        itemBox.getChildren().add(beginCountBox);
+        this.getChildren().add(beginCountBox);
     }
 
     /**
@@ -158,7 +156,7 @@ public class DetailView extends VBox {
         Label specifierLabel = new Label("End Count:");
         endCountBox.getChildren().addAll(specifierLabel, endCountField);
         endCountBox.setAlignment(Pos.CENTER);
-        itemBox.getChildren().add(endCountBox);
+        this.getChildren().add(endCountBox);
     }
 
     /**
@@ -171,7 +169,7 @@ public class DetailView extends VBox {
         Label specifierLabel = new Label("Name:");
         nameBox.getChildren().addAll(specifierLabel, nameField);
         nameBox.setAlignment(Pos.CENTER);
-        itemBox.getChildren().add(nameBox);
+        this.getChildren().add(nameBox);
     }
 
     /**
@@ -184,7 +182,7 @@ public class DetailView extends VBox {
         Label specifierLabel = new Label("Description:");
         descriptionBox.getChildren().addAll(specifierLabel, descriptionField);
         descriptionBox.setAlignment(Pos.CENTER);
-        itemBox.getChildren().add(descriptionBox);
+        this.getChildren().add(descriptionBox);
     }
 
     /**
@@ -194,10 +192,9 @@ public class DetailView extends VBox {
         this.getChildren().removeAll(nameBox, descriptionBox, beginCountBox,
                 endCountBox, instrumentsBox);
         invisibleLabel = new Label("Select a shot to edit it.");
-        invisibleLabel.setPrefHeight(51.0);
-        invisibleLabel.setMinHeight(51.0);
+        invisibleLabel.setPrefHeight(31);
+        invisibleLabel.setMinHeight(31);
         invisibleLabel.setAlignment(Pos.CENTER);
-        invisibleLabel.setPrefWidth(TweakingHelper.GENERAL_SIZE);
     }
 
     /**
@@ -205,12 +202,8 @@ public class DetailView extends VBox {
      */
     public void setVisible() {
         if (!visible) {
-            this.setPadding(new Insets(0, 0, 0, TweakingHelper.GENERAL_PADDING));
-            this.setSpacing(TweakingHelper.GENERAL_SPACING * 2);
-            itemBox.getChildren().clear();
-            itemBox.getChildren().remove(invisibleLabel);
-            itemBox.getChildren().addAll(nameBox, descriptionBox, beginCountBox,
-                    endCountBox);
+            this.getChildren().clear();
+            this.getChildren().addAll(nameBox, descriptionBox, beginCountBox, endCountBox);
             createSelectInstrumentsButton();
             visible = true;
         }
@@ -220,13 +213,15 @@ public class DetailView extends VBox {
      * Make content of the DetailView invisible.
      */
     public void setInvisible() {
+        System.out.println("shit");
+        System.out.println(this.getWidth());
         if (visible) {
-            this.setPadding(new Insets(0));
-            this.setSpacing(0);
-            itemBox.getChildren().clear();
-            itemBox.getChildren().add(invisibleLabel);
+            this.getChildren().clear();
+            this.getChildren().add(invisibleLabel);
             visible = false;
         }
+        System.out.println("shit");
+        System.out.println(this.getWidth());
     }
 
     /**
@@ -244,6 +239,6 @@ public class DetailView extends VBox {
      */
     private void createSelectInstrumentsButton() {
         selectInstrumentsButton = new StyledMenuButton("Edit Instruments selection");
-        itemBox.getChildren().add(selectInstrumentsButton);
+        this.getChildren().add(selectInstrumentsButton);
     }
 }
