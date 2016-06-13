@@ -25,7 +25,9 @@ import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -34,6 +36,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class DetailViewController {
 
+    @Getter
     private DetailView detailView;
     private ControllerManager manager;
 

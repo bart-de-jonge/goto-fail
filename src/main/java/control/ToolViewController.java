@@ -61,14 +61,33 @@ public class ToolViewController {
      * Initializes the keyboard bindings for certain tools.
      */
     private void initializeKeyBindings() {
+        
         // Add Delete Key Event Listener for deleting active shot
         this.controllerManager.getRootPane().getPrimaryStage()
-                .getScene().addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+                .getScene().addEventFilter(KeyEvent.ANY, event -> {
                         if ((event.getCode() == KeyCode.DELETE)
                                 || (event.getCode() == KeyCode.BACK_SPACE
                                     && event.isShortcutDown())) {
-                            deleteActiveCameraShot();
-                            event.consume();
+                            System.out.println(this.controllerManager.getRootPane().getPrimaryStage().getScene().getFocusOwner().getClass().getName());
+                            String currentFocusClass = this.controllerManager.getRootPane().getPrimaryStage().getScene().getFocusOwner().getClass().getName();
+                            
+                            boolean isTextField = 
+                                    currentFocusClass.equals("gui.styling.StyledTextfield")
+                                    ||
+                                    currentFocusClass.equals("gui.styling.TextField")
+                                    ||
+                                    currentFocusClass.equals("gui.headerarea.DoubleTextField")
+                                    ||
+                                    currentFocusClass.equals("gui.headerarea.NumberTextField");
+                            System.out.println(isTextField);
+                            if (isTextField) {
+                                //event.consume();
+                            } else {
+                                deleteActiveCameraShot();
+                                event.consume();
+                            }
+
+                            
                         }
                     });
         // Add New Director Shot Key Binding
