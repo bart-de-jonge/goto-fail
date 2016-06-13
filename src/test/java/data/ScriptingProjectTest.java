@@ -73,10 +73,11 @@ public class ScriptingProjectTest {
         Camera camera = new Camera("name", "description", type);
         CameraTimeline timeline = new CameraTimeline(camera, project);
         project.addCameraTimeline(timeline);
-        project.getDirectorTimeline().addShot(new DirectorShot());
+        DirectorShot directorShot = new DirectorShot();
+        project.getDirectorTimeline().addShot(directorShot);
+        CameraShot cameraShot = new CameraShot("name", "description", 1, 2);
         timeline.addShot(new CameraShot("name", "description", 1, 2));
-        timeline.addShot(new CameraShot("name", "description", 1, 2));
-        assertEquals(2, project.getMaxInstance());
+        assertEquals(Math.max(directorShot.getInstance(), cameraShot.getInstance()), project.getMaxInstance());
     }
 
     @Test
