@@ -296,11 +296,10 @@ public class CreationModalViewController {
                 Double.parseDouble(directorShotCreationModalView.getEndPaddingField().getText()),
                 directorShotCreationModalView.getCamerasInShot());
             
-            directorShotCreationModalView.getInstrumentsDropdown().getCheckModel()
-                .getCheckedIndices().forEach(e -> {
-                        shot.addInstrument(this.controllerManager.getScriptingProject()
-                            .getInstruments().get(e));
-                    });
+            directorShotCreationModalView.getInstrumentsInShot().forEach(e -> {
+                shot.addInstrument(this.controllerManager.getScriptingProject()
+                    .getInstruments().get(e));
+            });
 
             directorTimelineController.addDirectorShot(shot);
 
