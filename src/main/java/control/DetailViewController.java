@@ -494,20 +494,22 @@ public class DetailViewController {
      * Initialize drop down menu for camera instrument selection.
      */
     private void initCameraInstrumentDropdown() {
-        StyledMenuButton instrumentsButtons = ((DetailView) detailView).getSelectInstrumentsButton();
+        StyledMenuButton instrumentsButtons =
+                ((DetailView) detailView).getSelectInstrumentsButton();
         instrumentsButtons.setBorderColor(TweakingHelper.getColor(0));
         instrumentsButtons.setFillColor(TweakingHelper.getBackgroundColor());
         activeInstrumentBoxes = new ArrayList<>();
 
-        instrumentsButtons.showingProperty().addListener(createInstrumentsDropdownListener(instrumentsButtons));
+        instrumentsButtons.showingProperty().addListener(
+                createInstrumentsDropdownListener(instrumentsButtons));
     }
 
     /**
      * Creates ChangeListener for the Instruments Dropdown checkboxes.
-     * @param instrumentButtons the dropdown with checkboxes.
+     * @param buttons the dropdown with checkboxes.
      * @return the ChangeListener.
      */
-    private ChangeListener<Boolean> createInstrumentsDropdownListener(StyledMenuButton instrumentButtons) {
+    private ChangeListener<Boolean> createInstrumentsDropdownListener(StyledMenuButton buttons) {
         return new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable,
@@ -515,14 +517,16 @@ public class DetailViewController {
                 if (newValue) {
                     List<Instrument> instruments = activeCameraBlock.getInstruments();
 
-                    for (int i = 0; i < manager.getScriptingProject().getInstruments().size(); i++) {
-                        Instrument instrument = manager.getScriptingProject().getInstruments().get(i);
+                    for (int i = 0; i < manager.getScriptingProject().getInstruments().size();
+                         i++) {
+                        Instrument instrument = manager.getScriptingProject()
+                                .getInstruments().get(i);
                         StyledCheckbox checkbox = new StyledCheckbox(instrument.getName(),
                                 instruments.contains(instrument));
                         activeInstrumentBoxes.add(checkbox);
                         CustomMenuItem item = new CustomMenuItem(checkbox);
                         item.setHideOnClick(false);
-                        instrumentButtons.getItems().add(item);
+                        buttons.getItems().add(item);
 
                         int j = i;
                         checkbox.setOnMouseClicked(createInstrumentDropdownHandler(checkbox, j));
@@ -530,7 +534,7 @@ public class DetailViewController {
 
                 } else {
                     activeInstrumentBoxes.clear();
-                    instrumentButtons.getItems().clear();
+                    buttons.getItems().clear();
                 }
             }
         };
@@ -538,10 +542,10 @@ public class DetailViewController {
 
     /**
      * Creates ChangeListener for the Camera Dropdown checkboxes.
-     * @param cameraButtons the dropdown with checkboxes.
+     * @param buttons the dropdown with checkboxes.
      * @return the ChangeListener.
      */
-    private ChangeListener<Boolean> createCameraDropdownListener(StyledMenuButton cameraButtons) {
+    private ChangeListener<Boolean> createCameraDropdownListener(StyledMenuButton buttons) {
         return new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable,
@@ -556,7 +560,7 @@ public class DetailViewController {
                         activeCameraBoxes.add(checkbox);
                         CustomMenuItem item = new CustomMenuItem(checkbox);
                         item.setHideOnClick(false);
-                        cameraButtons.getItems().add(item);
+                        buttons.getItems().add(item);
 
                         int j = i;
                         checkbox.setOnMouseClicked(createCameraDropdownHandler(checkbox, j));
@@ -564,7 +568,7 @@ public class DetailViewController {
 
                 } else {
                     activeCameraBoxes.clear();
-                    cameraButtons.getItems().clear();
+                    buttons.getItems().clear();
                 }
             }
         };

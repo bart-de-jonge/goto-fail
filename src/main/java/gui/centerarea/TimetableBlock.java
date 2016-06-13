@@ -9,7 +9,6 @@ import gui.misc.TweakingHelper;
 import gui.root.RootCenterArea;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
-import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
@@ -33,7 +32,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 
-import java.awt.*;
 
 /**
  * Class that resembles a draggable, resizable block inside the timetable,
@@ -202,8 +200,6 @@ public abstract class TimetableBlock extends Pane {
     void initNormalPane() {
         setBlendMode(BlendMode.MULTIPLY);
 
-        // content rootCenterArea for our
-        // actual rootCenterArea, which holds content (text and stuff)
         contentPane = new VBox();
         contentPane.minWidthProperty().bind(widthProperty());
         contentPane.maxWidthProperty().bind(widthProperty());
@@ -236,15 +232,13 @@ public abstract class TimetableBlock extends Pane {
      * @param anchorPane the AnchorPane drag on
      */
     void initDraggedPane(AnchorPane anchorPane) {
-        // draggedPane itself
         draggedPane = new Pane();
         draggedPane.setVisible(false);
 
         blurHelper = new BlurHelper(draggedPane);
         blurHelper.setOffset(new Point2D(8,8));
         addWithClipRegion(blurHelper.getImageView(), draggedPane);
-        // dragged content rootCenterArea which mirrors
-        // our content rootCenterArea, shown when dragging.
+
         draggedContentPane = new VBox() ;
         draggedContentPane.minWidthProperty().bind(draggedPane.widthProperty());
         draggedContentPane.maxWidthProperty().bind(draggedPane.widthProperty());
@@ -254,12 +248,13 @@ public abstract class TimetableBlock extends Pane {
         // add some labels etc
         titleDraggedLabel = initTitleLabel(draggedContentPane);
         countDraggedLabel = initCountLabel(draggedContentPane);
+        addSeparator(draggedContentPane);
         descriptionDraggedLabel = initDescriptionLabel(draggedContentPane);
+        addSeparator(draggedContentPane);
         draggedInstrumentBox = new VBox();
         draggedContentPane.getChildren().add(draggedInstrumentBox);
         descriptionDraggedLabel.setWrapText(true);
 
-        // dropshadow shown underneath dragged rootCenterArea
         DropShadow ds = new DropShadow(15.0, 5.0, 5.0, Color.GRAY);
         this.getDraggedPane().setEffect(ds);
 
@@ -311,7 +306,7 @@ public abstract class TimetableBlock extends Pane {
      * Adds horizontal separator to specified area.
      * @param pane the pane to add to.
      */
-    private void addSeparator(Pane pane) {
+    protected void addSeparator(Pane pane) {
         Separator separator = new Separator(Orientation.HORIZONTAL);
         separator.setStyle("-fx-border-color: " + TweakingHelper.getColorString(2) + ";"
             + "-fx-border-width: 1px 0 0 0; -fx-background-color: transparent; -fx-skin: null;"
@@ -321,6 +316,11 @@ public abstract class TimetableBlock extends Pane {
         addEmptySpace(pane, 2);
     }
 
+    /**
+     * Adds empty vertical space of specified height to specified area.
+     * @param pane the pane to add to.
+     * @param height height of the space.
+     */
     private void addEmptySpace(Pane pane, int height) {
         Pane empty = new Pane();
         empty.setPrefHeight(height);

@@ -94,8 +94,6 @@ public class DirectorDetailView extends DetailView {
     
     @Override
     public void setInvisible() {
-        System.out.println("shit");
-        System.out.println(this.getWidth());
         if (getVisible()) {
             this.getChildren().clear();
             this.getChildren().add(invisibleLabel);

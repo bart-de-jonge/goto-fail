@@ -72,13 +72,6 @@ public class DetailView extends FlowPane {
 
         this.getChildren().clear();
         this.getChildren().add(invisibleLabel);
-
-        this.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                System.out.println(newValue);
-            }
-        });
     }
     
     public boolean getVisible() {
@@ -213,15 +206,11 @@ public class DetailView extends FlowPane {
      * Make content of the DetailView invisible.
      */
     public void setInvisible() {
-        System.out.println("shit");
-        System.out.println(this.getWidth());
         if (visible) {
             this.getChildren().clear();
             this.getChildren().add(invisibleLabel);
             visible = false;
         }
-        System.out.println("shit");
-        System.out.println(this.getWidth());
     }
 
     /**
