@@ -56,21 +56,40 @@ public class ToolViewController {
         }
         initializeKeyBindings();
     }
+    
+    /**
+     * Initialize the delete key binding.
+     */
+    private void initDeleteKeyBinding() {
+        // Add Delete Key Event Listener for deleting active shot
+        this.controllerManager.getRootPane().getPrimaryStage()
+                .getScene().addEventFilter(KeyEvent.ANY, event -> {
+                        if ((event.getCode() == KeyCode.DELETE)
+                                || (event.getCode() == KeyCode.BACK_SPACE
+                                    && event.isShortcutDown())) {
+                            String currentFocusClass = 
+                                    this.controllerManager.getRootPane().getPrimaryStage()
+                                        .getScene().getFocusOwner().getClass().getName();
+                            
+                            boolean isTextField = 
+                                    currentFocusClass.equals("gui.styling.StyledTextfield")
+                                    || currentFocusClass.equals("javafx.scene.control.TextField")
+                                    || currentFocusClass.equals("gui.headerarea.DoubleTextField")
+                                    || currentFocusClass.equals("gui.headerarea.NumberTextField");
+                            System.out.println(isTextField);
+                            if (!isTextField) {
+                                deleteActiveCameraShot();
+                                event.consume();
+                            } 
+                        }
+                    });
+    }
 
     /**
      * Initializes the keyboard bindings for certain tools.
      */
     private void initializeKeyBindings() {
-        // Add Delete Key Event Listener for deleting active shot
-        this.controllerManager.getRootPane().getPrimaryStage()
-                .getScene().addEventFilter(KeyEvent.KEY_RELEASED, event -> {
-                        if ((event.getCode() == KeyCode.DELETE)
-                                || (event.getCode() == KeyCode.BACK_SPACE
-                                    && event.isShortcutDown())) {
-                            deleteActiveCameraShot();
-                            event.consume();
-                        }
-                    });
+        initDeleteKeyBinding();
         // Add New Director Shot Key Binding
         this.controllerManager.getRootPane().getPrimaryStage()
                 .getScene().getAccelerators()

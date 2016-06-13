@@ -97,7 +97,6 @@ public class RootHeaderArea extends VBox {
                 try {
                     java.awt.Desktop.getDesktop().browse(java.net.URI.create("http://gotofail.net"));
                 } catch (Exception e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
             });
