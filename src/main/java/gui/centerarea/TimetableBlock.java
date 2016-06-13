@@ -1,9 +1,9 @@
 package gui.centerarea;
 
-import control.CountUtilities;
-
 import static gui.centerarea.TimetableBlock.DraggingTypes.Move;
 
+import control.CountUtilities;
+import data.Instrument;
 import gui.misc.BlurHelper;
 import gui.misc.TweakingHelper;
 import gui.root.RootCenterArea;
@@ -14,6 +14,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
@@ -63,6 +64,8 @@ public abstract class TimetableBlock extends Pane {
     private Label descriptionNormalLabel;
     @Getter
     private Label descriptionDraggedLabel;
+    @Getter
+    private VBox instrumentBox;
 
     /**
      * Misc variables.
@@ -116,6 +119,29 @@ public abstract class TimetableBlock extends Pane {
         this.thisBlock = this;
         this.parentBlock = parent;
         this.rootCenterArea = pane;
+    }
+    
+    /**
+     * Add an instrument to this timetable block.
+     * @param instrument the instrument to add
+     */
+    public void addInstrument(Instrument instrument) {
+        this.instrumentBox.getChildren().add(new Label(instrument.getName()));
+    }
+    
+    /**
+     * Remove an instrument from this timetable block.
+     * @param instrument the instrument to remove
+     */
+    public void removeInstrument(Instrument instrument) {
+        for (int i = 0;i < instrumentBox.getChildren().size(); i++) {
+            boolean equals = ((Label) instrumentBox.getChildren().get(i)).getText()
+                    .equals(instrument.getName());
+            if (equals) {
+                instrumentBox.getChildren().remove(i);
+                break;
+            }
+        }
     }
 
     /**
@@ -175,7 +201,6 @@ public abstract class TimetableBlock extends Pane {
         blurHelper = new BlurHelper(draggedPane);
         blurHelper.setOffset(new Point2D(8,8));
         addWithClipRegion(blurHelper.getImageView(), draggedPane);
-
         // dragged content rootCenterArea which mirrors
         // our content rootCenterArea, shown when dragging.
         draggedContentPane = new VBox() ;
@@ -188,6 +213,7 @@ public abstract class TimetableBlock extends Pane {
         titleDraggedLabel = initTitleLabel(draggedContentPane);
         countDraggedLabel = initCountLabel(draggedContentPane);
         descriptionDraggedLabel = initCountLabel(draggedContentPane);
+        initInstrumentBox(contentPane);
         descriptionDraggedLabel.setWrapText(true);
 
         // dropshadow shown underneath dragged rootCenterArea
@@ -264,6 +290,18 @@ public abstract class TimetableBlock extends Pane {
         res.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(2) + ";");
         vbox.getChildren().add(res);
         return res;
+    }
+    
+    /**
+     * Initialize the instrument box.
+     * @param vbox the vbox to put it in
+     */
+    private void initInstrumentBox(VBox vbox) {
+        instrumentBox = new VBox(5);
+        instrumentBox.maxWidthProperty().bind(this.widthProperty());
+        instrumentBox.getStyleClass().add("block_Text_Normal");
+        instrumentBox.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(2) + ";");
+        vbox.getChildren().add(instrumentBox);
     }
 
     /**

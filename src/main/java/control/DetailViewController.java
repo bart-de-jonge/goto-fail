@@ -1,20 +1,24 @@
 package control;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import data.Camera;
 import data.CameraShot;
 import data.DirectorShot;
+import data.Instrument;
+import data.Shot;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
+import gui.centerarea.ShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;
 import gui.headerarea.DetailView;
 import gui.headerarea.DirectorDetailView;
 import gui.misc.TweakingHelper;
 import gui.styling.StyledCheckbox;
 import gui.styling.StyledMenuButton;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
@@ -57,6 +61,7 @@ public class DetailViewController {
         initName();
         initBeginCount();
         initEndCount();
+        initInstrumentsDropdown();
     }
     
     /**
@@ -180,6 +185,70 @@ public class DetailViewController {
             manager.getTimelineControl().recomputeAllCollisions();
 
         }
+    }
+    
+    /**
+     * Initialize the instruments dropdown.
+     * @param shotBlock the shot block to do that for
+     */
+    private void initInstrumentsDropdown(ShotBlock shotBlock) {
+        ArrayList<Instrument> instruments = shotBlock.getInstruments();
+        detailView.getInstrumentsDropdown().getItems().clear();
+        detailView.setInstruments(manager.getScriptingProject().getInstruments());
+
+        shotBlock.getInstruments().forEach(instrument -> {
+                detailView.getInstrumentsDropdown().getCheckModel().check(instrument.getName());
+            });
+    }
+    
+    /**
+     * Initialize the instruments dropdown menu.
+     */
+    private void initInstrumentsDropdown() {
+        detailView.getInstrumentsDropdown().getCheckModel()
+                                           .getCheckedIndices()
+                                           .addListener(this::instrumentsDropdownChangeListener);
+    }
+    
+    /**
+     * Listener for changes in checked indices for instruments dropdown.
+     * @param c the change that happened
+     */
+    private void instrumentsDropdownChangeListener(ListChangeListener.Change c) {
+        Shot shot = manager.getActiveShotBlock().getShot();
+        c.next();
+        if (c.wasAdded()) {
+            instrumentAddedInDropdown((int) c.getAddedSubList().get(0));
+        } else {
+            instrumentDeletedInDropdown((int) c.getRemoved().get(0));
+        }
+    }
+    
+    /**
+     * Handler for a unchecked index in instrument dropdown.
+     * @param index the index that got unchecked
+     */
+    private void instrumentDeletedInDropdown(int index) {
+        ShotBlock shotBlock = manager.getActiveShotBlock();
+        shotBlock.getInstruments().remove(manager.getScriptingProject().getInstruments()
+                .get(index));
+        shotBlock.getShot().getInstruments().remove(manager.getScriptingProject()
+                .getInstruments().get(index));
+        shotBlock.getTimetableBlock().removeInstrument(manager.getScriptingProject()
+                .getInstruments().get(index));
+        shotBlock.recompute();
+    }
+    
+    /**
+     * Handler for a checked index in instrument dropdown.
+     * @param index the index that got unchecked
+     */
+    private void instrumentAddedInDropdown(int index) {
+        ShotBlock shotBlock = manager.getActiveShotBlock();
+        shotBlock.getInstruments().add(manager.getScriptingProject().getInstruments().get(index));
+        shotBlock.getTimetableBlock().addInstrument(manager.getScriptingProject()
+                .getInstruments().get(index));
+        shotBlock.recompute();
     }
     
     /**
@@ -383,41 +452,54 @@ public class DetailViewController {
     public void activeBlockChanged() {
         if (manager.getActiveShotBlock() != null) {
             if (manager.getActiveShotBlock() instanceof CameraShotBlock) {
-                detailView = new DetailView();
-                // set detail view variables
-                detailView.setDescription(manager.getActiveShotBlock().getDescription());
-                detailView.setName(manager.getActiveShotBlock().getName());
-                detailView.setBeginCount(manager.getActiveShotBlock().getBeginCount());
-                detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
-                detailView.setVisible();
-                detailView.setVisible(true);
-                // Re-init the detail view with new data
-                manager.getRootPane().getRootHeaderArea().setDetailView(detailView);  
-                manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
-                this.reInitForCameraBlock();
+                activeBlockChangedCamera();
             } else {
-                DirectorShotBlock shotBlock = (DirectorShotBlock) manager.getActiveShotBlock();
-                detailView = new DirectorDetailView();
-                // Set detail view variables
-                detailView.setDescription(shotBlock.getDescription());
-                detailView.setName(shotBlock.getName());
-                detailView.setBeginCount(shotBlock.getBeginCount());
-                detailView.setEndCount(shotBlock.getEndCount());
-                ((DirectorDetailView) detailView).getPaddingBeforeField()
-                    .setText(detailView.formatDouble(shotBlock.getPaddingBefore()));
-                ((DirectorDetailView) detailView).getPaddingAfterField()
-                    .setText(detailView.formatDouble(shotBlock.getPaddingAfter()));
-                activeBlock = shotBlock;
-                detailView.setVisible();
-                detailView.setVisible(true);
-                // Re-init the detail view with new data
-                manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
-                this.reInitForDirectorBlock();
+                activeBlockChangedDirector();
             }
         } else {
             detailView.resetDetails();
             detailView.setInvisible();
         }
+    }
+    
+    /**
+     * Handler for when the active block is now a camera shot.
+     */
+    private void activeBlockChangedCamera() {
+        detailView = new DetailView();
+        detailView.setDescription(manager.getActiveShotBlock().getDescription());
+        detailView.setName(manager.getActiveShotBlock().getName());
+        detailView.setBeginCount(manager.getActiveShotBlock().getBeginCount());
+        detailView.setEndCount(manager.getActiveShotBlock().getEndCount());
+        initInstrumentsDropdown(manager.getActiveShotBlock());
+        detailView.setVisible();
+        // Re-init the detail view with new data
+        manager.getRootPane().getRootHeaderArea().setDetailView(detailView);  
+        manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
+        this.reInitForCameraBlock();
+    }
+    
+    /**
+     * Handler for when the active block is now a director shot.
+     */
+    private void activeBlockChangedDirector() {
+        DirectorShotBlock shotBlock = (DirectorShotBlock) manager.getActiveShotBlock();
+        detailView = new DirectorDetailView();
+        // Set detail view variables
+        detailView.setDescription(shotBlock.getDescription());
+        detailView.setName(shotBlock.getName());
+        detailView.setBeginCount(shotBlock.getBeginCount());
+        detailView.setEndCount(shotBlock.getEndCount());
+        ((DirectorDetailView) detailView).getPaddingBeforeField()
+            .setText(detailView.formatDouble(shotBlock.getPaddingBefore()));
+        ((DirectorDetailView) detailView).getPaddingAfterField()
+            .setText(detailView.formatDouble(shotBlock.getPaddingAfter()));
+        activeBlock = shotBlock;
+        initInstrumentsDropdown(shotBlock);
+        detailView.setVisible();
+        // Re-init the detail view with new data
+        manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
+        this.reInitForDirectorBlock();
     }
 
     /**

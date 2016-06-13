@@ -129,6 +129,7 @@ public class ToolViewController {
                                                 shot.getName(), shot.getDescription(),
                                                 cameraStart, cameraEnd),
                                              shot);
+                    subShot.setInstruments(shot.getInstruments());
                     shot.addCameraShot(subShot);
                     this.controllerManager.getTimelineControl().addCameraShot(index, subShot);
                 });

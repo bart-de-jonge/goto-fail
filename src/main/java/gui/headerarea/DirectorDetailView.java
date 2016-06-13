@@ -100,7 +100,7 @@ public class DirectorDetailView extends DetailView {
             this.setSpacing(TweakingHelper.GENERAL_SPACING * 2);
             this.getItemBox().getChildren().clear();
             this.getItemBox().getChildren().addAll(getNameBox(), getDescriptionBox(),
-                    getBeginCountBox(), getEndCountBox());
+                    getBeginCountBox(), getEndCountBox(), getInstrumentsDropdown());
             directorItemsBox.getChildren().clear();
             directorItemsBox.getChildren().addAll(paddingBeforeBox, paddingAfterBox);
             createSelectCamerasButton();
