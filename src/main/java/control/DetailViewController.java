@@ -518,24 +518,10 @@ public class DetailViewController {
             public void changed(ObservableValue<? extends Boolean> observable,
                                 Boolean oldValue, Boolean newValue) {
                 if (newValue) {
-                    List<Instrument> instruments = activeCameraBlock.getInstruments();
-
-                    for (int i = 0; i < manager.getScriptingProject().getInstruments().size();
-                         i++) {
-                        Instrument instrument = manager.getScriptingProject()
-                                .getInstruments().get(i);
-                        StyledCheckbox checkbox = new StyledCheckbox(instrument.getName(),
-                                instruments.contains(instrument));
-                        activeInstrumentBoxes.add(checkbox);
-                        CustomMenuItem item = new CustomMenuItem(checkbox);
-                        item.setHideOnClick(false);
-                        buttons.getItems().add(item);
-
-                        int j = i;
-                        checkbox.setOnMouseClicked(createInstrumentDropdownHandler(checkbox, j));
-                    }
-
+                    // show the list and give it content
+                    instrumentsDropdownListenerHelper(buttons);
                 } else {
+                    // empty the list when not shown
                     activeInstrumentBoxes.clear();
                     buttons.getItems().clear();
                 }
@@ -554,27 +540,59 @@ public class DetailViewController {
             public void changed(ObservableValue<? extends Boolean> observable,
                                 Boolean oldValue, Boolean newValue) {
                 if (newValue) {
-                    Set<Integer> indices = activeDirectorBlock.getTimelineIndices();
-
-                    for (int i = 0; i < manager.getScriptingProject().getCameras().size(); i++) {
-                        Camera camera = manager.getScriptingProject().getCameras().get(i);
-                        StyledCheckbox checkbox = new StyledCheckbox(camera.getName(),
-                                indices.contains(i));
-                        activeCameraBoxes.add(checkbox);
-                        CustomMenuItem item = new CustomMenuItem(checkbox);
-                        item.setHideOnClick(false);
-                        buttons.getItems().add(item);
-
-                        int j = i;
-                        checkbox.setOnMouseClicked(createCameraDropdownHandler(checkbox, j));
-                    }
-
+                    // show the list and give it content
+                    cameraDropdownListenerHelper(buttons);
                 } else {
+                    // empty the list when not shown
                     activeCameraBoxes.clear();
                     buttons.getItems().clear();
                 }
             }
         };
+    }
+
+    /**
+     * Helper method for showing the Camera Dropdown.
+     * @param buttons the dropdown menu containing buttons.
+     */
+    private void cameraDropdownListenerHelper(StyledMenuButton buttons) {
+        // loop thourhgh all cameras for the active director block, when the list is shown
+        Set<Integer> indices = activeDirectorBlock.getTimelineIndices();
+        for (int i = 0; i < manager.getScriptingProject().getCameras().size(); i++) {
+            Camera camera = manager.getScriptingProject().getCameras().get(i);
+            // create and add checkbox for camera with on/off toggling loaded in.
+            StyledCheckbox checkbox = new StyledCheckbox(camera.getName(),
+                    indices.contains(i));
+            activeCameraBoxes.add(checkbox);
+            CustomMenuItem item = new CustomMenuItem(checkbox);
+            item.setHideOnClick(false);
+            buttons.getItems().add(item);
+            // add event handler for mouse clicks on the checkbox
+            checkbox.setOnMouseClicked(createCameraDropdownHandler(checkbox, i));
+        }
+    }
+
+    /**
+     * Helper method for showing the Instruments Dropdown.
+     * @param buttons the dropdown menu containing buttons.
+     */
+    private void instrumentsDropdownListenerHelper(StyledMenuButton buttons) {
+        // loop thourhgh all instruments for the active block, when the list is shown
+        List<Instrument> instruments = activeCameraBlock.getInstruments();
+        for (int i = 0; i < manager.getScriptingProject().getInstruments().size();
+             i++) {
+            Instrument instrument = manager.getScriptingProject()
+                    .getInstruments().get(i);
+            // create and add checkbox for instrument with on/off toggling loaded in.
+            StyledCheckbox checkbox = new StyledCheckbox(instrument.getName(),
+                    instruments.contains(instrument));
+            activeInstrumentBoxes.add(checkbox);
+            CustomMenuItem item = new CustomMenuItem(checkbox);
+            item.setHideOnClick(false);
+            buttons.getItems().add(item);
+            // add event handler for mouse clicks on the checkbox
+            checkbox.setOnMouseClicked(createInstrumentDropdownHandler(checkbox, i));
+        }
     }
 
     /**
