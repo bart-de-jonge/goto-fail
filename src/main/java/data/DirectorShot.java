@@ -1,16 +1,15 @@
 package data;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.xml.bind.annotation.XmlRootElement;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -22,7 +21,7 @@ import lombok.extern.log4j.Log4j2;
 public class DirectorShot extends Shot {
 
     // Counter that ensures no shots with duplicate numbers will be created.
-    @Setter
+    @Setter @Getter
     private static int instanceCounter = 0;
 
     @Getter @Setter

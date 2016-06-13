@@ -19,6 +19,25 @@ public class DirectorShotTest {
     }
 
     @Test
+    public void setBeginCount() {
+        shot.setBeginCount(0);
+        assertEquals(0, shot.getBeginCount(), 0);
+    }
+
+    @Test
+    public void setEndCount() {
+        shot.setEndCount(100);
+        assertEquals(100, shot.getEndCount(), 0);
+    }
+
+    @Test
+    public void setInstanceCounter() {
+        int instance = DirectorShot.getInstanceCounter();
+        DirectorShot.setInstanceCounter(instance + 1);
+        assertEquals(instance + 1, DirectorShot.getInstanceCounter());
+    }
+
+    @Test
     public void getDescriptionTest() {
         assertEquals("A test director shot", shot.getDescription());
     }
