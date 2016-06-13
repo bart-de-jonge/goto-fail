@@ -41,7 +41,7 @@ public class Camera implements Cloneable {
 
     // The movementMargin, the time it takes for the Camera to move to a new position
     // Defined in seconds
-    @Setter
+    @Getter @Setter
     private double movementMargin;
 
     // Counter that ensures no timelines with duplicate numbers will be created.
