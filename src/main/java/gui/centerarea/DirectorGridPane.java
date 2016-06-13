@@ -1,8 +1,9 @@
 package gui.centerarea;
 
-import control.CountUtilities;
-
 import java.util.ArrayList;
+
+import control.CountUtilities;
+import javafx.scene.control.Label;
 
 /**
  * Class that represents the grid pane in the scrollable director timeline.
@@ -34,6 +35,12 @@ public class DirectorGridPane extends ScrollableGridPane {
                 "Front P: " + Double.toString(block.getPaddingBefore()));
         ((DirectorTimetableBlock) block.getTimetableBlock()).getPaddingAfterLabel().setText(
                 "Back P: " + Double.toString(block.getPaddingAfter()));
+        block.getTimetableBlock().getInstrumentBox().getChildren().clear();
+        
+        block.getInstruments().forEach(e -> {
+                block.getTimetableBlock().getInstrumentBox().getChildren()
+                .add(new Label(e.getName()));
+            });
         
     }
 

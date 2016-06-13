@@ -1,5 +1,10 @@
 package gui.headerarea;
 
+import java.util.ArrayList;
+
+import org.controlsfx.control.CheckComboBox;
+
+import data.Instrument;
 import gui.misc.TweakingHelper;
 import gui.styling.StyledTextfield;
 import javafx.geometry.Insets;
@@ -39,6 +44,8 @@ public class DetailView extends VBox {
     HBox beginCountBox;
     @Getter
     HBox endCountBox;
+    @Getter
+    HBox instrumentsBox;
 
     @Getter
     private StyledTextfield nameField;
@@ -48,6 +55,8 @@ public class DetailView extends VBox {
     private DoubleTextField beginCountField;
     @Getter
     private DoubleTextField endCountField;
+    @Getter
+    private CheckComboBox<String> instrumentsDropdown;
 
     /**
      * Constructor.
@@ -63,6 +72,7 @@ public class DetailView extends VBox {
         initDescription();
         initBeginCount();
         initEndCount();
+        initInstruments();
         initInvisible();
         this.getChildren().add(itemBox);
     }
@@ -119,6 +129,17 @@ public class DetailView extends VBox {
     public void setEndCount(double count) {
         endCountField.setText(formatDouble(count));
     }
+    
+    /**
+     * Set the instruments for this detail view.
+     * @param instruments the instruments to set
+     */
+    public void setInstruments(ArrayList<Instrument> instruments) {
+        this.instrumentsDropdown.getItems().clear();
+        instruments.forEach(e -> {
+                this.instrumentsDropdown.getItems().add(e.getName());
+            });
+    }
 
     /**
      * Init the begincount part of the detailview.
@@ -130,6 +151,19 @@ public class DetailView extends VBox {
         beginCountBox.getChildren().addAll(specifierLabel, beginCountField);
         beginCountBox.setAlignment(Pos.CENTER);
         itemBox.getChildren().add(beginCountBox);
+    }
+    
+    /**
+     * Initialize the instrument dropdown.
+     */
+    private void initInstruments() {
+        instrumentsDropdown = new CheckComboBox<>();
+        instrumentsBox = new HBox(TweakingHelper.GENERAL_SPACING);
+        Label instrumentsLabel = new Label("Instruments:");
+        instrumentsBox.getChildren().addAll(instrumentsLabel, instrumentsDropdown);
+        instrumentsBox.setAlignment(Pos.CENTER);
+        itemBox.getChildren().add(instrumentsBox);
+        
     }
 
     /**
@@ -175,7 +209,8 @@ public class DetailView extends VBox {
      * Initializes the detailview with no selected shot.
      */
     private void initInvisible() {
-        this.getChildren().removeAll(nameBox, descriptionBox, beginCountBox, endCountBox);
+        this.getChildren().removeAll(nameBox, descriptionBox, beginCountBox,
+                endCountBox, instrumentsBox);
         this.setPadding(new Insets(0));
         this.setSpacing(0);
         invisibleLabel = new Label("Select a shot to edit it.");
@@ -193,7 +228,8 @@ public class DetailView extends VBox {
             this.setSpacing(TweakingHelper.GENERAL_SPACING * 2);
             itemBox.getChildren().clear();
             itemBox.getChildren().remove(invisibleLabel);
-            itemBox.getChildren().addAll(nameBox, descriptionBox, beginCountBox, endCountBox);
+            itemBox.getChildren().addAll(nameBox, descriptionBox, beginCountBox,
+                    endCountBox, instrumentsBox);
             visible = true;
         }
     }
@@ -205,7 +241,8 @@ public class DetailView extends VBox {
         if (visible) {
             this.setPadding(new Insets(0));
             this.setSpacing(0);
-            itemBox.getChildren().removeAll(nameBox, descriptionBox, beginCountBox, endCountBox);
+            itemBox.getChildren().removeAll(nameBox, descriptionBox, beginCountBox,
+                    endCountBox, instrumentsBox);
             itemBox.getChildren().add(invisibleLabel);
             visible = false;
         }

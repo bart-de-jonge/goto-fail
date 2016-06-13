@@ -505,7 +505,7 @@ public class ProjectController {
      */
     private void addCameraShotForLoad(int cameraIndex, CameraShot shot) {
         if (!(shot.getBeginCount() == UNUSED_BLOCK_OFFSET)) {
-            controllerManager.getTimelineControl().initShotBlock(cameraIndex, shot);
+            controllerManager.getTimelineControl().initShotBlock(cameraIndex, shot, true);
         }
     }
 

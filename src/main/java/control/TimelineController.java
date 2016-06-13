@@ -75,20 +75,23 @@ public class TimelineController {
                               .getCameraTimelines()
                               .get(cameraIndex)
                               .addShot(newShot);
-        initShotBlock(cameraIndex, newShot);
+        initShotBlock(cameraIndex, newShot, false);
     }
 
     /**
      * Display an existing (and linked) CameraShot in the view.
      * @param cameraIndex Index of the camera timeline
      * @param newShot CameraShot to display
+     * @param fromFile whether the shot is initialized from file, to prevent unwanted GUI changes.
      */
     protected void initShotBlock(int cameraIndex,
-                               CameraShot newShot) {
+                               CameraShot newShot, boolean fromFile) {
         CameraShotBlock shotBlock = new CameraShotBlock(
             cameraIndex, rootPane.getRootCenterArea(), this::shotChangedHandler, newShot);
 
-        controllerManager.setActiveShotBlock(shotBlock);
+        if (!fromFile) {
+            controllerManager.setActiveShotBlock(shotBlock);
+        }
         this.cameraShotBlocks.add(shotBlock);
         this.cameraShotBlockMap.put(newShot, shotBlock);
         controllerManager.getScriptingProject().changed();

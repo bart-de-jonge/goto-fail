@@ -1,17 +1,13 @@
 package gui.modal;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.controlsfx.control.CheckComboBox;
-
-import data.Instrument;
 import gui.headerarea.DoubleTextField;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledCheckbox;
 import gui.styling.StyledTextfield;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
@@ -55,7 +51,9 @@ public class ShotCreationModalView extends ModalView {
     
     protected VBox rootPane;
     protected HBox centerPane;
+    protected VBox centerRightPane;
     protected FlowPane checkboxPane;
+    protected FlowPane instrumentPane;
     protected HBox buttonPane;
     @Getter
     protected Label titleLabel;
@@ -70,7 +68,7 @@ public class ShotCreationModalView extends ModalView {
     @Getter
     protected DoubleTextField endField;
     
- // Buttons
+    // Buttons
     @Getter
     protected StyledButton creationButton;
     @Getter
@@ -78,7 +76,7 @@ public class ShotCreationModalView extends ModalView {
     @Getter
     protected List<StyledCheckbox> cameraCheckboxes;
     @Getter
-    protected CheckComboBox<String> instrumentsDropdown;
+    protected List<StyledCheckbox> instrumentCheckboxes;
     
     public ShotCreationModalView(RootPane rootPane, int width, int height) {
         super(rootPane, width, height);
@@ -115,7 +113,7 @@ public class ShotCreationModalView extends ModalView {
 
         content.getChildren().addAll(nameBox, descriptionBox);
     }
-    
+
     /**
      * Style the checkboxes for cameras.
      */
@@ -128,7 +126,20 @@ public class ShotCreationModalView extends ModalView {
         this.checkboxPane.setAlignment(Pos.CENTER);
         this.checkboxPane.setStyle(centerRightStyle);
     }
-    
+
+    /**
+     * Style the checkboxes for instruments.
+     */
+    protected void styleInstrumentCheckBoxes() {
+        this.instrumentPane = new FlowPane();
+        this.instrumentPane.setHgap(TweakingHelper.GENERAL_PADDING);
+        this.instrumentPane.setVgap(TweakingHelper.GENERAL_PADDING);
+        this.instrumentPane.setMinWidth(CAMERA_AREA_MIN_WIDTH);
+        this.instrumentPane.setPrefWidth(TweakingHelper.GENERAL_SIZE);
+        this.instrumentPane.setAlignment(Pos.CENTER);
+        this.instrumentPane.setStyle(centerRightStyle);
+    }
+
     /**
      * Initializes pane with buttons at bottom.
      */
@@ -171,19 +182,6 @@ public class ShotCreationModalView extends ModalView {
     }
     
     /**
-     * Initialize the dropdown with instruments.
-     * @param content the content to put the dropdown in
-     * @param instruments the instruments to put in the dropdown
-     */
-    protected void initInstrumentsDropdown(VBox content, ArrayList<Instrument> instruments) {
-        this.instrumentsDropdown = new CheckComboBox<>();
-        instruments.forEach(e -> {
-                instrumentsDropdown.getItems().add(e.getName());
-            });
-        content.getChildren().addAll(instrumentsDropdown);
-    }
-    
-    /**
      * Get the box containing the text fields.
      * @return the box containing the text fields
      */
@@ -192,6 +190,7 @@ public class ShotCreationModalView extends ModalView {
         content.setStyle(centerLeftStyle);
         content.setAlignment(Pos.CENTER_LEFT);
         content.setMinWidth(TEXT_AREA_MIN_WIDTH);
+        content.setPrefHeight(TweakingHelper.GENERAL_SIZE);
         return content;
     }
     
@@ -208,5 +207,20 @@ public class ShotCreationModalView extends ModalView {
             }
         }
         return camsInShot;
+    }
+
+    /**
+     * Builds a list of which instruments are in the shot.
+     * @return list of instruments in shot.
+     */
+    public List<Integer> getInstrumentsInShot() {
+        List<Integer> insInShot = new ArrayList<>();
+
+        for (int i = 0; i < instrumentCheckboxes.size(); i++) {
+            if (instrumentCheckboxes.get(i).isSelected()) {
+                insInShot.add(i);
+            }
+        }
+        return insInShot;
     }
 }
