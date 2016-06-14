@@ -139,7 +139,7 @@ public class CreationModalViewController {
                 });
 
             cameraShotCreationModalView.getCamerasInShot().forEach(cameraIndex -> {
-                    timelineController.addCameraShot(cameraIndex, shot);
+                    timelineController.addCameraShot(cameraIndex, shot.clone());
                 });
 
             cameraShotCreationModalView.getModalStage().close();
