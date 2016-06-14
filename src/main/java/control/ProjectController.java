@@ -55,15 +55,19 @@ public class ProjectController {
     
     @Getter
     private ControllerManager controllerManager;
-    
-    
+    @Getter
     private EditProjectModalView editProjectModal;
+    @Getter
     private AddCameraModalView cameraModal;
+    @Getter
     private AddCameraTypeModalView cameraTypeModal;
+    @Getter
     private AddInstrumentModalView instrumentModal;
     @Setter
     private DeleteCameraTypeWarningModalView typeWarningModal;
+    @Getter
     private ErrorWhileUploadingModalView errorModal;
+    @Getter
     private UploadSuccessModalView successModal;
 
     public static final int UNUSED_BLOCK_OFFSET = 4000000;
@@ -131,7 +135,7 @@ public class ProjectController {
     /**
      * Show the upload success modal.
      */
-    private void showSuccessModal() {
+    protected void showSuccessModal() {
         successModal = new UploadSuccessModalView(controllerManager.getRootPane());
         successModal.getCloseButton().setOnMouseClicked(this::successModalClose);
         successModal.getGoToWebsiteButton().setOnMouseClicked(this::goToWebsite);
@@ -160,7 +164,7 @@ public class ProjectController {
     /**
      * Show the upload error modal.
      */
-    private void showErrorModal() {
+    protected void showErrorModal() {
         errorModal = new ErrorWhileUploadingModalView(controllerManager.getRootPane());
         errorModal.getOkButton().setOnMouseClicked(this::errorModalOk);
     }
@@ -172,8 +176,6 @@ public class ProjectController {
     private void errorModalOk(MouseEvent event) {
         errorModal.hideModal();
     }
-    
-    
     
     /**
      * Save the current project state to file.
@@ -396,8 +398,6 @@ public class ProjectController {
         }
     }
 
-    
-
     /**
      * Overwrite most recent project path in config file.
      * @param project the project to write the path from
@@ -446,8 +446,7 @@ public class ProjectController {
         log.info("Adding loaded CameraShotBlocks");
         for (int i = 0; i < project.getCameraTimelines().size();i++) {
             CameraTimeline timeline = project.getCameraTimelines().get(i);
-            int amountShots = timeline.getShots().size();
-            for (int j = 0; j < amountShots;j++) {
+            for (int j = 0; j < timeline.getShots().size(); j++) {
                 CameraShot shot = timeline.getShots().get(j);
                 if (!addedBlocks.contains(shot.getInstance())) {
                     addCameraShotForLoad(i, shot);
@@ -1037,8 +1036,6 @@ public class ProjectController {
         
         return errorString.isEmpty();
     }
-    
-    
     
     /**
      * Validate the data entered by the user in the modal to create a project.

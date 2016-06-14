@@ -20,6 +20,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -116,7 +117,7 @@ public class EditProjectModalView extends ModalView {
     private Label titleLabel;
 
     // Misc
-    @Getter
+    @Getter @Setter
     private ScriptingProject project;
     @Getter
     private ArrayList<CameraType> cameraTypes;

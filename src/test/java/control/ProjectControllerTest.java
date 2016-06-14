@@ -3,6 +3,7 @@ package control;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,24 +11,30 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
+import data.*;
+import gui.modal.*;
+import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.internal.WhiteboxImpl;
 import org.testfx.framework.junit.ApplicationTest;
 
-import data.Camera;
-import data.CameraTimeline;
-import data.DirectorTimeline;
-import data.ScriptingProject;
-import gui.modal.DeleteCameraTypeWarningModalView;
-import gui.modal.EditProjectModalView;
-import gui.modal.StartupModalView;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import javafx.application.Platform;
@@ -36,11 +43,13 @@ import javafx.stage.Stage;
 
 @PrepareForTest(ProjectController.class)
 public class ProjectControllerTest extends ApplicationTest {
-    
+
     private ProjectController projectController;
     private ControllerManager controllerManager;
     private ScriptingProject project;
     private RootPane rootPane;
+    private UploadSuccessModalView successModal;
+    private ErrorWhileUploadingModalView errorModal;
 
     @Before
     public void setUp() throws Exception {
@@ -71,13 +80,22 @@ public class ProjectControllerTest extends ApplicationTest {
         Mockito.doNothing().when(projectController).saveAs();
         projectController.save();
         Mockito.verify(projectController).saveAs();
-        
+    }
+
+    @Test
+    public void saveAsTest() {
+        when(project.getFilePath()).thenReturn(null);
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        Platform.runLater(() -> {
+            projectController.saveAs();
+            latch[0].countDown();
+        });
+        Mockito.verify(controllerManager, times(0)).getScriptingProject();
     }
     
     @Test
     public void saveTestWithExistingFilePath() {
         when(project.getFilePath()).thenReturn("Kek");
-       // Mockito.doNothing().when(project).write();
         projectController.save();
         Mockito.verify(project).write();
     }
@@ -107,21 +125,41 @@ public class ProjectControllerTest extends ApplicationTest {
         }
         
         ArrayList<CameraTimeline> listMock = mock(ArrayList.class);
-        DirectorTimeline directorTimelineMock = mock(DirectorTimeline.class);
+        LinkedList<DirectorShot> directorListMock = mock(LinkedList.class);
+        LinkedList<CameraShot> cameraListMock = mock(LinkedList.class);
+        LinkedList<CameraShot> cameraList = new LinkedList<>();
+        cameraList.add(mock(CameraShot.class));
+        cameraList.add(mock(CameraShot.class));
+        cameraList.add(mock(CameraShot.class));
+        DirectorTimeline timeline = new DirectorTimeline("tet", project);
+        GeneralShotData shotData = new GeneralShotData("a", "b", 0.0, 10.0);
+        timeline.addShot(new DirectorShot(shotData, 0, 0, new ArrayList<Integer>()));
+        timeline.addShot(new DirectorShot(shotData, 0, 0, new ArrayList<Integer>()));
+
+        timeline.getShots().add(new DirectorShot(shotData, 0, 0, new ArrayList<Integer>()));
+        CameraShot shot = mock(CameraShot.class);
+
+        timeline.getShots().get(0).addCameraShot(shot);
+        timeline.getShots().get(1).addCameraShot(shot);
+
         when(listMock.size()).thenReturn(3);
         when(project.getCameraTimelines()).thenReturn(listMock);
-        when(project.getDirectorTimeline()).thenReturn(directorTimelineMock);
+        when(project.getDirectorTimeline()).thenReturn(timeline);
         File file = new File("src/test/files/general_test3.scp");
         TimelineController timelineController = mock(TimelineController.class);
+        DirectorTimelineController directorTimelineController = mock(DirectorTimelineController.class);
         when(controllerManager.getTimelineControl()).thenReturn(timelineController);
+        when(controllerManager.getDirectorTimelineControl()).thenReturn(directorTimelineController);
         Mockito.doNothing().when(rootPane).reInitRootCenterArea(Mockito.any());
         CameraTimeline timelineMock = mock(CameraTimeline.class);
         when(listMock.get(Mockito.anyInt())).thenReturn(timelineMock);
+        when(timelineMock.getShots()).thenReturn(cameraList);
         ArrayList<Camera> cameras = new ArrayList<Camera>();
         cameras.add(new Camera());
         cameras.add(new Camera());
         cameras.add(new Camera());
         when(project.getCameras()).thenReturn(cameras);
+
         projectController.load(file);
         
         PrintWriter writer = null;
@@ -138,6 +176,7 @@ public class ProjectControllerTest extends ApplicationTest {
         }
 
         verify(project, atLeastOnce()).getCameraTimelines();
+        verify(project, atLeastOnce()).getDirectorTimeline();
     }
     
     @Test
@@ -179,6 +218,234 @@ public class ProjectControllerTest extends ApplicationTest {
     public void start(Stage arg0) throws Exception {
         // TODO Auto-generated method stub
         
+    }
+
+    @Test
+    public void uploadToWebserverTest() {
+        when(project.getFilePath()).thenReturn(null);
+        Mockito.doNothing().when(projectController).saveAs();
+        when(project.getFilePath()).thenReturn("src/test/files/upload_test4.scp");
+        Mockito.doNothing().when(projectController).showErrorModal();
+
+        projectController.uploadToWebserver();
+
+        Mockito.verify(projectController).save();
+        Mockito.verify(projectController).showErrorModal();
+    }
+
+    @Test
+    public void testShowSuccessModal() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        Platform.runLater(() -> {
+            projectController.showSuccessModal();
+            latch[0].countDown();
+        });
+        latch[0].await();
+    }
+
+    @Test
+    public void testSuccessModalClose() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            projectController.showSuccessModal();
+            try {
+                WhiteboxImpl.invokeMethod(projectController, "successModalClose", mouseEvent);
+            } catch (Exception e) {
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+    }
+
+    @Test
+    public void testGoToWebsite() throws InterruptedException, IOException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        Platform.runLater(() -> {
+            projectController.showSuccessModal();
+            latch[0].countDown();
+        });
+        latch[0].await();
+        projectController.getSuccessModal().getGoToWebsiteButton().fire();
+    }
+
+    @Test
+    public void testShowErrorModal() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        Platform.runLater(() -> {
+            projectController.showErrorModal();
+            latch[0].countDown();
+        });
+        latch[0].await();
+    }
+
+    @Test
+    public void testErrorModalOk() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            projectController.showErrorModal();
+            try {
+                WhiteboxImpl.invokeMethod(projectController, "errorModalOk", mouseEvent);
+            } catch (Exception e) {
+            }
+            latch[0].countDown();
+        });
+    }
+
+    @Test
+    public void applyEditTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+
+        Platform.runLater(() -> {
+            projectController.getControllerManager().getScriptingProject().addCamera(
+                    new Camera("a", "b", new CameraType("a", "a", 1.0))
+            );
+
+            projectController.newProject();
+
+            Camera camera = new Camera("a", "b", new CameraType("a", "b", 1.0));
+
+            projectController.getEditProjectModal().getProject().getCameras().add(camera);
+
+            ScriptingProject project = new ScriptingProject("a", "b", 1.0);
+            project.getCameras().add(camera);
+            project.getCameraTimelines().add(new CameraTimeline(project.getCameras().get(0), project));
+
+
+            when(controllerManager.getScriptingProject()).thenReturn(project);
+
+            projectController.getEditProjectModal().setProject(project);
+            projectController.getEditProjectModal().getNameField().setText("a");
+            projectController.getEditProjectModal().getDescriptionField().setText("a");
+            projectController.getEditProjectModal().getSecondsPerCountField().setText("1.0");
+            projectController.getEditProjectModal().getDirectorTimelineDescriptionField().setText("a");
+            projectController.getEditProjectModal().getCameras().add(camera);
+            projectController.getEditProjectModal().getTimelines().add(
+                    new CameraTimeline(projectController.getEditProjectModal().getCameras().get(0), project)
+            );
+
+            try {
+                WhiteboxImpl.invokeMethod(projectController, "applyEdit", mouseEvent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        Mockito.verify(projectController).newProject();
+    }
+
+    @Test
+    public void applyNewTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+
+        Platform.runLater(() -> {
+            projectController.getControllerManager().getScriptingProject().addCamera(
+                    new Camera("a", "b", new CameraType("a", "a", 1.0))
+            );
+
+            projectController.newProject();
+
+            Camera camera = new Camera("a", "b", new CameraType("a", "b", 1.0));
+
+            projectController.getEditProjectModal().getProject().getCameras().add(camera);
+
+            ScriptingProject project = new ScriptingProject("a", "b", 1.0);
+            project.getCameras().add(camera);
+            project.getCameraTimelines().add(new CameraTimeline(project.getCameras().get(0), project));
+
+
+            when(controllerManager.getScriptingProject()).thenReturn(project);
+
+            projectController.getEditProjectModal().setProject(project);
+            projectController.getEditProjectModal().getNameField().setText("a");
+            projectController.getEditProjectModal().getDescriptionField().setText("a");
+            projectController.getEditProjectModal().getSecondsPerCountField().setText("1.0");
+            projectController.getEditProjectModal().getDirectorTimelineDescriptionField().setText("a");
+            projectController.getEditProjectModal().getCameras().add(camera);
+            projectController.getEditProjectModal().getTimelines().add(
+                    new CameraTimeline(projectController.getEditProjectModal().getCameras().get(0), project)
+            );
+
+            try {
+                WhiteboxImpl.invokeMethod(projectController, "applyNew", mouseEvent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        Mockito.verify(projectController, times(1)).newProject();
+    }
+
+    @Test
+    public void addCameraTypeCorrectTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        MouseEvent mouseEvent2 = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                projectController.getControllerManager().getScriptingProject().addCamera(
+                        new Camera("a", "b", new CameraType("a", "a", 1.0))
+                );
+                projectController.newProject();
+                WhiteboxImpl.invokeMethod(projectController, "addCameraType", mouseEvent);
+                projectController.getCameraTypeModal().getNameField().setText("a");
+                projectController.getCameraTypeModal().getDescriptionField().setText("b");
+                projectController.getCameraTypeModal().getMovementMarginField().setText("1.0");
+                WhiteboxImpl.invokeMethod(projectController, "typeAdded", mouseEvent2);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, atLeastOnce()).getCameraTypeModal();
+    }
+
+    @Test
+    public void addCameraTypeIncorrectTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        MouseEvent mouseEvent2 = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        MouseEvent mouseEvent3 = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                projectController.getControllerManager().getScriptingProject().addCamera(
+                        new Camera("a", "b", new CameraType("a", "a", 1.0))
+                );
+                projectController.newProject();
+                WhiteboxImpl.invokeMethod(projectController, "addCameraType", mouseEvent);
+                WhiteboxImpl.invokeMethod(projectController, "typeAdded", mouseEvent2);
+                WhiteboxImpl.invokeMethod(projectController, "cancelAddCameraType", mouseEvent3);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, never()).getCameraTypeModal();
+    }
+
+    @Test
+    public void addInstrumentCorrectTest() throws InterruptedException {
+
     }
 
 }
