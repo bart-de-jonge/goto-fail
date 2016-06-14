@@ -38,6 +38,7 @@
 	<configuration>
 		<excludes>
 			<exclude>gui/**/*</exclude>
+			<exclude>MainClass.*</exclude>
 		</excludes>
 	</configuration>
     <executions>
