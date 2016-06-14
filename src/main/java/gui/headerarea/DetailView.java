@@ -56,6 +56,7 @@ public class DetailView extends FlowPane {
      * Constructor.
      */
     public DetailView() {
+        this.setMinHeight(100);
         this.setHgap(TweakingHelper.GENERAL_SPACING);
         this.setVgap(TweakingHelper.GENERAL_SPACING);
         this.setStyle(style);
@@ -185,8 +186,8 @@ public class DetailView extends FlowPane {
         this.getChildren().removeAll(nameBox, descriptionBox, beginCountBox,
                 endCountBox, instrumentsBox);
         invisibleLabel = new Label("Select a shot to edit it.");
-        invisibleLabel.setPrefHeight(31);
-        invisibleLabel.setMinHeight(31);
+        invisibleLabel.setPrefHeight(50);
+        invisibleLabel.setMinHeight(50);
         invisibleLabel.setAlignment(Pos.CENTER);
     }
 
