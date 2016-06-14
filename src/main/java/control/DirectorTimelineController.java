@@ -1,21 +1,18 @@
 package control;
 
+import data.*;
+import gui.centerarea.DirectorShotBlock;
+import gui.events.DirectorShotBlockUpdatedEvent;
+import gui.root.RootPane;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
-import data.CameraShot;
-import data.DirectorShot;
-import data.DirectorTimeline;
-import data.GeneralShotData;
-import data.Shot;
-import gui.centerarea.DirectorShotBlock;
-import gui.events.DirectorShotBlockUpdatedEvent;
-import gui.root.RootPane;
-import lombok.Getter;
-import lombok.extern.log4j.Log4j2;
 
 
 /**
@@ -30,9 +27,11 @@ public class DirectorTimelineController {
     private final ControllerManager controllerManager;
 
     // List of all currently colliding DirectorShotBlocks
+    @Getter @Setter
     private ArrayList<DirectorShotBlock> overlappingShotBlocks;
 
     // Map of DirectorShots to their corresponding shot blocks
+    @Getter @Setter
     private Map<DirectorShot, DirectorShotBlock> directorShotBlockMap;
 
     /**
@@ -111,9 +110,6 @@ public class DirectorTimelineController {
             });
 
         controllerManager.setActiveShotBlock(changedBlock);
-
-        
-        
         
         log.error("Before check colissions");
         // check for collisions
@@ -185,6 +181,7 @@ public class DirectorTimelineController {
             ArrayList<Integer> instances = overlappingShots.stream().map(Shot::getInstance)
                     .collect(Collectors.toCollection(supplier));
             // Get CameraShotBlock
+
             this.directorShotBlockMap.values().stream().filter(
                 shotBlock -> instances.contains(shotBlock.getShotId()))
                 .forEach(shotBlock -> {
@@ -209,6 +206,7 @@ public class DirectorTimelineController {
      */
     private void removeOverlap(DirectorShotBlock directorShotBlock) {
         ArrayList<DirectorShotBlock> toRemove = new ArrayList<>();
+        System.out.println(overlappingShotBlocks);
         this.overlappingShotBlocks.stream()
                 .filter(shotBlock ->
                     shotBlock.getShot().getCollidesWith().isEmpty()).forEach(
