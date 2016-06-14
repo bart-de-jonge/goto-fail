@@ -1,5 +1,6 @@
 package control;
 
+import data.Instrument;
 import data.ScriptingProject;
 import gui.headerarea.DoubleTextField;
 import gui.modal.CameraShotCreationModalView;
@@ -10,7 +11,10 @@ import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.input.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.junit.Before;
 import org.junit.Test;
@@ -158,19 +162,24 @@ public class CreationModalViewControllerTest extends ApplicationTest {
 
     @Test
     public void createCameraShot() throws Exception {
+        // Setup necessary variables
         MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
                 false, false, false, false, false, false, false, false, false, false, null);
         setupCameraCreationModalView();
         final CameraShotCreationModalView[] modalView = new CameraShotCreationModalView[1];
         final TimelineController[] timelineController = new TimelineController[1];
 
+        ScriptingProject project = Mockito.mock(ScriptingProject.class);
+        when(manager.getScriptingProject()).thenReturn(project);
+        when(project.getInstruments()).thenReturn(new ArrayList<>(Arrays.asList(new Instrument("", ""))));
+
         final CountDownLatch[] latch = {new CountDownLatch(1)};
         Platform.runLater(() -> {
-
+            // More setup
             CreationModalViewController controller = spy(creationModalViewController);
             when(controller.validateCameraShot()).thenReturn(true);
-
             modalView[0] = spy(controller.getCameraShotCreationModalView());
+            when(modalView[0].getInstrumentsInShot()).thenReturn(new ArrayList<>(Arrays.asList(0)));
             controller.setCameraShotCreationModalView(modalView[0]);
             when(modalView[0].getCamerasInShot()).thenReturn(new ArrayList(Arrays.asList(1)));
 
@@ -358,6 +367,40 @@ public class CreationModalViewControllerTest extends ApplicationTest {
         });
 
         latch.await();
+    }
+
+    @Test
+    public void directorShotStartCountEnterHandler() throws InterruptedException {
+        setupDirectorCreationModalView();
+        KeyEvent event = new KeyEvent(KeyEvent.ANY, "", "", KeyCode.ENTER,
+                false, false, false, false);
+        creationModalViewController.directorShotStartCountEnterHandler(event);
+        tearDownDirectorCreationModalView();
+    }
+
+    @Test
+    public void directorShotEndCountEnterHandler() throws InterruptedException {
+        setupDirectorCreationModalView();
+        KeyEvent event = new KeyEvent(KeyEvent.ANY, "", "", KeyCode.ENTER,
+                false, false, false, false);
+        creationModalViewController.directorShotEndCountEnterHandler(event);
+        tearDownDirectorCreationModalView();
+    }
+
+    @Test
+    public void directorShotEndCountFocusHandler() throws InterruptedException {
+        setupDirectorCreationModalView();
+        ObservableValue value = Mockito.mock(ObservableValue.class);
+        creationModalViewController.directorShotEndCountFocusHandler(value, true, false);
+        tearDownDirectorCreationModalView();
+    }
+
+    @Test
+    public void directorShotStartCountFocusHandler() throws InterruptedException {
+        setupDirectorCreationModalView();
+        ObservableValue value = Mockito.mock(ObservableValue.class);
+        creationModalViewController.directorShotStartCountFocusHandler(value, true, false);
+        tearDownDirectorCreationModalView();
     }
 
     @Override
