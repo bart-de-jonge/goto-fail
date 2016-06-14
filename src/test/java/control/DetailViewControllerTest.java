@@ -86,6 +86,7 @@ public class DetailViewControllerTest extends ApplicationTest {
         Set<CameraShot> shotList = new HashSet<>(Arrays.asList(cameraShot1, cameraShot2));
         CameraShotBlock cameraShotBlock1 = Mockito.mock(CameraShotBlock.class);
         CameraShotBlock cameraShotBlock2 = Mockito.mock(CameraShotBlock.class);
+        DirectorTimelineController directorTimelineController = Mockito.mock(DirectorTimelineController.class);
 
         // Mock all the methods
         when(manager.getActiveShotBlock()).thenReturn(shotBlock);
@@ -94,6 +95,7 @@ public class DetailViewControllerTest extends ApplicationTest {
         when(shotBlock.getTimetableBlock()).thenReturn(timetableBlock);
         when(change.getRemoved()).thenReturn(changeList);
         when(manager.getTimelineControl()).thenReturn(timelineController);
+        when(manager.getDirectorTimelineControl()).thenReturn(directorTimelineController);
         when(shot.getCameraShots()).thenReturn(shotList);
         when(timelineController.getShotBlockForShot(cameraShot1)).thenReturn(cameraShotBlock1);
         when(timelineController.getShotBlockForShot(cameraShot2)).thenReturn(cameraShotBlock2);
@@ -123,6 +125,7 @@ public class DetailViewControllerTest extends ApplicationTest {
         ArrayList<CameraTimeline> timelines = new ArrayList<>();
         CameraTimeline timeline = Mockito.mock(CameraTimeline.class);
         timelines.add(timeline);
+        DirectorTimelineController directorTimelineController = Mockito.mock(DirectorTimelineController.class);
 
         // Mock all the methods
         when(manager.getActiveShotBlock()).thenReturn(shotBlock);
@@ -131,6 +134,7 @@ public class DetailViewControllerTest extends ApplicationTest {
         when(shotBlock.getTimetableBlock()).thenReturn(timetableBlock);
         when(change.getAddedSubList()).thenReturn(changeList);
         when(manager.getTimelineControl()).thenReturn(timelineController);
+        when(manager.getDirectorTimelineControl()).thenReturn(directorTimelineController);
         when(change.wasAdded()).thenReturn(true);
         when(project.getCameraTimelines()).thenReturn(timelines);
 
