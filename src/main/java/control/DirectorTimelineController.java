@@ -1,6 +1,10 @@
 package control;
 
-import data.*;
+import data.CameraShot;
+import data.DirectorShot;
+import data.DirectorTimeline;
+import data.GeneralShotData;
+import data.Shot;
 import gui.centerarea.DirectorShotBlock;
 import gui.events.DirectorShotBlockUpdatedEvent;
 import gui.root.RootPane;
