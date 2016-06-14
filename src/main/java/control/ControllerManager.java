@@ -148,9 +148,6 @@ public class ControllerManager {
      * @param event the WindowEvent for this handler
      */
     protected void handleOnClose(WindowEvent event) {
-        if(scriptingProject != null) {
-            System.out.println("hoi");
-        }
         if (scriptingProject != null && scriptingProject.isChanged()) {
             event.consume();
             initSaveModal();
