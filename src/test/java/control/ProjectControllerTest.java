@@ -50,6 +50,7 @@ public class ProjectControllerTest extends ApplicationTest {
     private RootPane rootPane;
     private UploadSuccessModalView successModal;
     private ErrorWhileUploadingModalView errorModal;
+    private EditProjectModalView editProjectModalView;
 
     @Before
     public void setUp() throws Exception {
@@ -392,8 +393,6 @@ public class ProjectControllerTest extends ApplicationTest {
         final CountDownLatch[] latch = {new CountDownLatch(1)};
         MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
                 false, false, false, false, false, false, false, false, false, false, null);
-        MouseEvent mouseEvent2 = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
-                false, false, false, false, false, false, false, false, false, false, null);
         Platform.runLater(() -> {
             try {
                 projectController.getControllerManager().getScriptingProject().addCamera(
@@ -404,7 +403,11 @@ public class ProjectControllerTest extends ApplicationTest {
                 projectController.getCameraTypeModal().getNameField().setText("a");
                 projectController.getCameraTypeModal().getDescriptionField().setText("b");
                 projectController.getCameraTypeModal().getMovementMarginField().setText("1.0");
-                WhiteboxImpl.invokeMethod(projectController, "typeAdded", mouseEvent2);
+                WhiteboxImpl.invokeMethod(projectController, "typeAdded", mouseEvent);
+
+                assertEquals("a", projectController.getEditProjectModal().getCameraTypes().get(0).getName());
+                assertEquals("b", projectController.getEditProjectModal().getCameraTypes().get(0).getDescription());
+                assert(projectController.getEditProjectModal().getCameraTypes().get(0).getMovementMargin() == 1.0);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -420,10 +423,6 @@ public class ProjectControllerTest extends ApplicationTest {
         final CountDownLatch[] latch = {new CountDownLatch(1)};
         MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
                 false, false, false, false, false, false, false, false, false, false, null);
-        MouseEvent mouseEvent2 = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
-                false, false, false, false, false, false, false, false, false, false, null);
-        MouseEvent mouseEvent3 = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
-                false, false, false, false, false, false, false, false, false, false, null);
         Platform.runLater(() -> {
             try {
                 projectController.getControllerManager().getScriptingProject().addCamera(
@@ -431,8 +430,8 @@ public class ProjectControllerTest extends ApplicationTest {
                 );
                 projectController.newProject();
                 WhiteboxImpl.invokeMethod(projectController, "addCameraType", mouseEvent);
-                WhiteboxImpl.invokeMethod(projectController, "typeAdded", mouseEvent2);
-                WhiteboxImpl.invokeMethod(projectController, "cancelAddCameraType", mouseEvent3);
+                WhiteboxImpl.invokeMethod(projectController, "typeAdded", mouseEvent);
+                WhiteboxImpl.invokeMethod(projectController, "cancelAddCameraType", mouseEvent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -444,8 +443,414 @@ public class ProjectControllerTest extends ApplicationTest {
     }
 
     @Test
-    public void addInstrumentCorrectTest() throws InterruptedException {
+    public void editCameraTypeTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                projectController.getControllerManager().getScriptingProject().addCamera(
+                        new Camera("a", "b", new CameraType("a", "a", 1.0))
+                );
+                projectController.newProject();
 
+                // add type
+                WhiteboxImpl.invokeMethod(projectController, "addCameraType", mouseEvent);
+                projectController.getCameraTypeModal().getNameField().setText("a");
+                projectController.getCameraTypeModal().getDescriptionField().setText("b");
+                projectController.getCameraTypeModal().getMovementMarginField().setText("1.0");
+                WhiteboxImpl.invokeMethod(projectController, "typeAdded", mouseEvent);
+
+                assertEquals("a", projectController.getEditProjectModal().getCameraTypes().get(0).getName());
+                assertEquals("b", projectController.getEditProjectModal().getCameraTypes().get(0).getDescription());
+
+                // non-selected edit type
+                WhiteboxImpl.invokeMethod(projectController, "editCameraType", mouseEvent);
+                projectController.getEditProjectModal().getCameras().add(new Camera("a", "b",
+                        projectController.getEditProjectModal().getCameraTypes().get(0)));
+
+                assertEquals("a", projectController.getEditProjectModal().getCameraTypes().get(0).getName());
+                assertEquals("b", projectController.getEditProjectModal().getCameraTypes().get(0).getDescription());
+
+                // edit type
+                projectController.getEditProjectModal().getCameraTypeList().getSelectionModel().select(0);
+                WhiteboxImpl.invokeMethod(projectController, "editCameraType", mouseEvent);
+                projectController.getCameraTypeModal().getNameField().setText("b");
+                projectController.getCameraTypeModal().getDescriptionField().setText("a");
+                projectController.getCameraTypeModal().getMovementMarginField().setText("2.0");
+                WhiteboxImpl.invokeMethod(projectController, "cameraTypeEdited", mouseEvent, 0);
+
+                assertEquals("b", projectController.getEditProjectModal().getCameraTypes().get(0).getName());
+                assertEquals("a", projectController.getEditProjectModal().getCameraTypes().get(0).getDescription());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, atLeastOnce()).getCameraTypeModal();
+    }
+
+    @Test
+    public void editCameraTypeCancelledTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                projectController.getControllerManager().getScriptingProject().addCamera(
+                        new Camera("a", "b", new CameraType("a", "a", 1.0))
+                );
+                projectController.newProject();
+
+                // add type
+                WhiteboxImpl.invokeMethod(projectController, "addCameraType", mouseEvent);
+                projectController.getCameraTypeModal().getNameField().setText("a");
+                projectController.getCameraTypeModal().getDescriptionField().setText("b");
+                projectController.getCameraTypeModal().getMovementMarginField().setText("1.0");
+                WhiteboxImpl.invokeMethod(projectController, "typeAdded", mouseEvent);
+
+                assertEquals("a", projectController.getEditProjectModal().getCameraTypes().get(0).getName());
+                assertEquals("b", projectController.getEditProjectModal().getCameraTypes().get(0).getDescription());
+
+                // edit type
+                projectController.getEditProjectModal().getCameraTypeList().getSelectionModel().select(0);
+                WhiteboxImpl.invokeMethod(projectController, "editCameraType", mouseEvent);
+                projectController.getCameraTypeModal().getNameField().setText("b");
+                projectController.getCameraTypeModal().getDescriptionField().setText("a");
+                projectController.getCameraTypeModal().getMovementMarginField().setText("2.0");
+                WhiteboxImpl.invokeMethod(projectController, "cameraTypeEditCancelled", mouseEvent);
+
+                assertEquals("a", projectController.getEditProjectModal().getCameraTypes().get(0).getName());
+                assertEquals("b", projectController.getEditProjectModal().getCameraTypes().get(0).getDescription());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, atLeastOnce()).getCameraTypeModal();
+    }
+
+
+    @Test
+    public void addInstrumentCorrectTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                projectController.newProject();
+                WhiteboxImpl.invokeMethod(projectController, "addInstrument", mouseEvent);
+                projectController.getInstrumentModal().getNameField().setText("a");
+                projectController.getInstrumentModal().getDescriptionField().setText("b");
+                WhiteboxImpl.invokeMethod(projectController, "instrumentAdded", mouseEvent);
+
+                assertEquals("a", projectController.getEditProjectModal().getInstruments().get(0).getName());
+                assertEquals("b", projectController.getEditProjectModal().getInstruments().get(0).getDescription());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, atLeastOnce()).getInstrumentModal();
+    }
+
+    @Test
+    public void addInstrumentIncorrectTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                projectController.newProject();
+                WhiteboxImpl.invokeMethod(projectController, "addInstrument", mouseEvent);
+                WhiteboxImpl.invokeMethod(projectController, "instrumentAdded", mouseEvent);
+                WhiteboxImpl.invokeMethod(projectController, "cancelAddInstrument", mouseEvent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, never()).getInstrumentModal();
+    }
+
+    @Test
+    public void editInstrumentTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                // add instrument
+                projectController.newProject();
+                WhiteboxImpl.invokeMethod(projectController, "addInstrument", mouseEvent);
+                projectController.getInstrumentModal().getNameField().setText("a");
+                projectController.getInstrumentModal().getDescriptionField().setText("b");
+                WhiteboxImpl.invokeMethod(projectController, "instrumentAdded", mouseEvent);
+
+                assertEquals("a", projectController.getEditProjectModal().getInstruments().get(0).getName());
+                assertEquals("b", projectController.getEditProjectModal().getInstruments().get(0).getDescription());
+
+                // non-selected edit instrument
+                WhiteboxImpl.invokeMethod(projectController, "editInstrument", mouseEvent);
+
+                assertEquals("a", projectController.getEditProjectModal().getInstruments().get(0).getName());
+                assertEquals("b", projectController.getEditProjectModal().getInstruments().get(0).getDescription());
+
+                // edit instrument
+                projectController.getEditProjectModal().getInstrumentList().getSelectionModel().select(0);
+                WhiteboxImpl.invokeMethod(projectController, "editInstrument", mouseEvent);
+                projectController.getInstrumentModal().getNameField().setText("b");
+                projectController.getInstrumentModal().getDescriptionField().setText("a");
+                WhiteboxImpl.invokeMethod(projectController, "instrumentEdited", mouseEvent, 0);
+
+                assertEquals("b", projectController.getEditProjectModal().getInstruments().get(0).getName());
+                assertEquals("a", projectController.getEditProjectModal().getInstruments().get(0).getDescription());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, atLeastOnce()).getInstrumentModal();
+    }
+
+    @Test
+    public void editInstrumentCancelledTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                // add instrument
+                projectController.newProject();
+                WhiteboxImpl.invokeMethod(projectController, "addInstrument", mouseEvent);
+                projectController.getInstrumentModal().getNameField().setText("a");
+                projectController.getInstrumentModal().getDescriptionField().setText("b");
+                WhiteboxImpl.invokeMethod(projectController, "instrumentAdded", mouseEvent);
+
+                assertEquals("a", projectController.getEditProjectModal().getInstruments().get(0).getName());
+                assertEquals("b", projectController.getEditProjectModal().getInstruments().get(0).getDescription());
+
+                // edit instrument
+                projectController.getEditProjectModal().getInstrumentList().getSelectionModel().select(0);
+                WhiteboxImpl.invokeMethod(projectController, "editInstrument", mouseEvent);
+                projectController.getInstrumentModal().getNameField().setText("b");
+                projectController.getInstrumentModal().getDescriptionField().setText("a");
+                WhiteboxImpl.invokeMethod(projectController, "instrumentEditCancelled", mouseEvent);
+
+                assertEquals("a", projectController.getEditProjectModal().getInstruments().get(0).getName());
+                assertEquals("b", projectController.getEditProjectModal().getInstruments().get(0).getDescription());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, atLeastOnce()).getInstrumentModal();
+    }
+
+    @Test
+    public void deleteInstrumentTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                // add instrument
+                projectController.newProject();
+                WhiteboxImpl.invokeMethod(projectController, "addInstrument", mouseEvent);
+                projectController.getInstrumentModal().getNameField().setText("a");
+                projectController.getInstrumentModal().getDescriptionField().setText("b");
+                WhiteboxImpl.invokeMethod(projectController, "instrumentAdded", mouseEvent);
+
+                assert(projectController.getEditProjectModal().getInstruments().size() == 1);
+
+                // wrong delete
+                WhiteboxImpl.invokeMethod(projectController, "deleteInstrument", mouseEvent);
+                assert(projectController.getEditProjectModal().getInstruments().size() == 1);
+
+                // correct delete
+                projectController.getEditProjectModal().getInstrumentList().getSelectionModel().select(0);
+                WhiteboxImpl.invokeMethod(projectController, "deleteInstrument", mouseEvent);
+                assert(projectController.getEditProjectModal().getInstruments().size() == 0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, atLeastOnce()).getInstrumentModal();
+    }
+
+    @Test
+    public void addCameraCorrectTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        MouseEvent mouseEvent2 = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                projectController.getControllerManager().getScriptingProject().addCamera(
+                        new Camera("a", "b", new CameraType("a", "a", 1.0))
+                );
+                projectController.newProject();
+                WhiteboxImpl.invokeMethod(projectController, "addCamera", mouseEvent);
+                projectController.getCameraModal().getCameraTypeList().add(new CameraType("a", "b", 1.0));
+                projectController.getCameraModal().getCameraTypes().getItems().add(mock(Panel.class));
+                projectController.getCameraModal().getCameraTypes().getSelectionModel().select(0);
+                projectController.getCameraModal().getNameField().setText("a");
+                projectController.getCameraModal().getDescriptionField().setText("b");
+                WhiteboxImpl.invokeMethod(projectController, "cameraAdded", mouseEvent2);
+
+                assertEquals("a", projectController.getEditProjectModal().getCameras().get(0).getName());
+                assertEquals("b", projectController.getEditProjectModal().getCameras().get(0).getDescription());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, atLeastOnce()).getCameraModal();
+    }
+
+    @Test
+    public void addCameraIncorrectTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        MouseEvent mouseEvent2 = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        MouseEvent mouseEvent3 = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                projectController.getControllerManager().getScriptingProject().addCamera(
+                        new Camera("a", "b", new CameraType("a", "a", 1.0))
+                );
+                projectController.newProject();
+                WhiteboxImpl.invokeMethod(projectController, "addCamera", mouseEvent);
+                WhiteboxImpl.invokeMethod(projectController, "cameraAdded", mouseEvent2);
+                WhiteboxImpl.invokeMethod(projectController, "cancelAddCamera", mouseEvent3);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, never()).getCameraModal();
+    }
+
+    @Test
+    public void editCameraTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                projectController.getControllerManager().getScriptingProject().addCamera(
+                        new Camera("a", "b", new CameraType("a", "a", 1.0))
+                );
+                projectController.newProject();
+
+                CameraType type = new CameraType("a", "b", 1.0);
+
+                // add camera
+                WhiteboxImpl.invokeMethod(projectController, "addCamera", mouseEvent);
+                projectController.getCameraModal().getCameraTypeList().add(type);
+                projectController.getCameraModal().getCameraTypes().getItems().add(mock(Panel.class));
+                projectController.getCameraModal().getCameraTypes().getSelectionModel().select(0);
+                projectController.getCameraModal().getNameField().setText("a");
+                projectController.getCameraModal().getDescriptionField().setText("b");
+                WhiteboxImpl.invokeMethod(projectController, "cameraAdded", mouseEvent);
+
+                assertEquals("a", projectController.getEditProjectModal().getCameras().get(0).getName());
+                assertEquals("b", projectController.getEditProjectModal().getCameras().get(0).getDescription());
+
+                // non-selected edit camera
+                WhiteboxImpl.invokeMethod(projectController, "editCamera", mouseEvent);
+
+                assertEquals("a", projectController.getEditProjectModal().getCameras().get(0).getName());
+                assertEquals("b", projectController.getEditProjectModal().getCameras().get(0).getDescription());
+
+                // edit camera
+                projectController.getEditProjectModal().getCameraList().getSelectionModel().select(0);
+                WhiteboxImpl.invokeMethod(projectController, "editCamera", mouseEvent);
+                projectController.getCameraModal().getNameField().setText("b");
+                projectController.getCameraModal().getDescriptionField().setText("a");
+                WhiteboxImpl.invokeMethod(projectController, "cameraEdited", mouseEvent, 0);
+
+                assertEquals("b", projectController.getEditProjectModal().getCameras().get(0).getName());
+                assertEquals("a", projectController.getEditProjectModal().getCameras().get(0).getDescription());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, atLeastOnce()).getCameraModal();
+    }
+
+    @Test
+    public void editCameraCancelledTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                projectController.getControllerManager().getScriptingProject().addCamera(
+                        new Camera("a", "b", new CameraType("a", "a", 1.0))
+                );
+                projectController.newProject();
+
+                CameraType type = new CameraType("a", "b", 1.0);
+
+                // add camera
+                WhiteboxImpl.invokeMethod(projectController, "addCamera", mouseEvent);
+                projectController.getCameraModal().getCameraTypeList().add(type);
+                projectController.getCameraModal().getCameraTypes().getItems().add(mock(Panel.class));
+                projectController.getCameraModal().getCameraTypes().getSelectionModel().select(0);
+                projectController.getCameraModal().getNameField().setText("a");
+                projectController.getCameraModal().getDescriptionField().setText("b");
+                WhiteboxImpl.invokeMethod(projectController, "cameraAdded", mouseEvent);
+
+                assertEquals("a", projectController.getEditProjectModal().getCameras().get(0).getName());
+                assertEquals("b", projectController.getEditProjectModal().getCameras().get(0).getDescription());
+
+                // edit camera
+                projectController.getEditProjectModal().getCameraList().getSelectionModel().select(0);
+                WhiteboxImpl.invokeMethod(projectController, "editCamera", mouseEvent);
+                projectController.getCameraModal().getNameField().setText("b");
+                projectController.getCameraModal().getDescriptionField().setText("a");
+                WhiteboxImpl.invokeMethod(projectController, "cameraEditCancelled", mouseEvent);
+
+                assertEquals("a", projectController.getEditProjectModal().getCameras().get(0).getName());
+                assertEquals("b", projectController.getEditProjectModal().getCameras().get(0).getDescription());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, atLeastOnce()).getCameraModal();
     }
 
 }
