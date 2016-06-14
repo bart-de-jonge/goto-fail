@@ -87,6 +87,7 @@ public class DirectorTimelineController {
      * @param event Camera shot change event.
      */
     public void shotChangedHandler(DirectorShotBlockUpdatedEvent event) {
+        log.error("Shot changed handler called for shot {}", event.getShotBlock().getShot().getName());
         if (event.getDirectorShotBlock().getBeginCount()
                 - event.getDirectorShotBlock().getPaddingBefore() < 0) {
             event.getDirectorShotBlock().moveAsCloseToTopAsPossible();
@@ -115,9 +116,10 @@ public class DirectorTimelineController {
         
         
         
-
+        log.error("Before check colissions");
         // check for collisions
         checkCollisions(changedBlock);
+        this.recomputeAllCollisions();
     
     }
 
@@ -166,6 +168,8 @@ public class DirectorTimelineController {
      * @param directorShotBlock - the shotblock to check collisions with
      */
     private void checkCollisions(DirectorShotBlock directorShotBlock) {
+        log.error("Checking colissions for shot block {}", directorShotBlock.getShot().getName());
+        log.error("Begin count is {}", directorShotBlock.getShot().getBeginCount());
         DirectorTimeline timeline = controllerManager.getScriptingProject()
                 .getDirectorTimeline();
 
@@ -179,6 +183,11 @@ public class DirectorTimelineController {
                             toRemove.add(shotBlock);
                         });
         this.overlappingShotBlocks.removeAll(toRemove);
+        directorShotBlock.getShot().getCollidesWith().forEach(shot -> {
+            shot.setColliding(false);
+            directorShotBlockMap.get(shot).recompute();
+            log.error("Setting false for {}", shot.getName());
+        });
 
         // Check for collisions
         ArrayList<DirectorShot> overlappingShots = timeline
@@ -200,9 +209,42 @@ public class DirectorTimelineController {
                     });
             // Make DirectorShotBlocks red
             for (DirectorShotBlock shotBlock : overlappingShotBlocks) {
+                log.error("Overlaps with {}", shotBlock.getName());
                 shotBlock.setColliding(true);
             }
+        } else {
+            resetColliding(directorShotBlock);
         }
+    }
+    
+    public void recomputeAllCollisions() {
+        this.directorShotBlockMap.keySet().forEach(shot -> {
+            this.checkCollisions(directorShotBlockMap.get(shot));
+        });
+    }
+    
+    private void resetColliding(DirectorShotBlock directorShotBlock) {
+        directorShotBlock.setColliding(false);
+        directorShotBlock.getShot().setColliding(false);
+        directorShotBlock.getShot().getCollidesWith().forEach(e -> {
+            DirectorShotBlock toReset = directorShotBlockMap.get(e);
+            if (toReset != null) {
+                this.checkCollisions(toReset);
+            }
+        });
+        removeCollisionFromDirectorShotBlock(directorShotBlock);
+        
+    }
+    
+    private void removeCollisionFromDirectorShotBlock(DirectorShotBlock directorShotBlock) {
+        ArrayList<Shot> toRemove = new ArrayList<>();
+        for (Shot shot : directorShotBlock.getShot().getCollidesWith()) {
+            toRemove.add(shot);
+            if (shot.getCollidesWith().contains(directorShotBlock.getShot())) {
+                shot.getCollidesWith().remove(directorShotBlock.getShot());
+            }
+        }
+        directorShotBlock.getShot().getCollidesWith().removeAll(toRemove);
     }
 
     /**
