@@ -47,7 +47,7 @@ public class PreferencesViewControllerTest extends ApplicationTest {
         when(controllerManager.getRootPane()).thenReturn(rootPane);
         when(controllerManager.getScriptingProject()).thenReturn(scriptingProject);
 
-        preferencesViewController = new PreferencesViewController(controllerManager);
+        preferencesViewController = spy(new PreferencesViewController(controllerManager));
     }
 
     @Test
@@ -89,11 +89,10 @@ public class PreferencesViewControllerTest extends ApplicationTest {
 
         final CountDownLatch[] latch = {new CountDownLatch(1)};
         Platform.runLater(() -> {
-            PreferencesViewController controller = spy(preferencesViewController);
             when(rootPane.getPrimaryStage()).thenReturn(stage);
 
             try {
-                WhiteboxImpl.invokeMethod(controller, "handleSavesaveButton", mouseEvent);
+                WhiteboxImpl.invokeMethod(preferencesViewController, "handleSavesaveButton", mouseEvent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -117,11 +116,10 @@ public class PreferencesViewControllerTest extends ApplicationTest {
 
         final CountDownLatch[] latch = {new CountDownLatch(1)};
         Platform.runLater(() -> {
-            PreferencesViewController controller = spy(preferencesViewController);
             when(rootPane.getPrimaryStage()).thenReturn(stage);
 
             try {
-                WhiteboxImpl.invokeMethod(controller, "handleNoSavesaveButton", mouseEvent);
+                WhiteboxImpl.invokeMethod(preferencesViewController, "handleNoSavesaveButton", mouseEvent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -133,6 +131,32 @@ public class PreferencesViewControllerTest extends ApplicationTest {
 
         tearDownReloadModalView();
         tearDownPreferencesModalView();
+    }
+
+    @Test
+    public void handleApplyButton() {
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1, false, false, false, false, false, false, false, false, false, false, null);
+        Mockito.doNothing().when(preferencesViewController).showReloadWindow();
+        preferencesViewController.handleApplyButton(mouseEvent);
+        Mockito.verify(preferencesViewController, times(1)).showReloadWindow();
+    }
+
+    @Test
+    public void handleCancelButton() {
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1, false, false, false, false, false, false, false, false, false, false, null);
+        PreferencesModalView modalView = Mockito.mock(PreferencesModalView.class);
+        preferencesViewController.setPreferencesModalView(modalView);
+        preferencesViewController.handleCancelButton(mouseEvent);
+        Mockito.verify(modalView, times(1)).hideModal();
+    }
+
+    @Test
+    public void handleCancelsaveButton() {
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1, false, false, false, false, false, false, false, false, false, false, null);
+        ReloadModalView modalView = Mockito.mock(ReloadModalView.class);
+        preferencesViewController.setReloadModalView(modalView);
+        preferencesViewController.handleCancelsaveButton(mouseEvent);
+        Mockito.verify(modalView, times(1)).hideModal();
     }
 
     private void setupPreferencesModalView() throws InterruptedException {
