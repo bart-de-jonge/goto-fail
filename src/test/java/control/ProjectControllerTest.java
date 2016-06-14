@@ -82,17 +82,6 @@ public class ProjectControllerTest extends ApplicationTest {
         projectController.save();
         Mockito.verify(projectController).saveAs();
     }
-
-    @Test
-    public void saveAsTest() {
-        when(project.getFilePath()).thenReturn(null);
-        final CountDownLatch[] latch = {new CountDownLatch(1)};
-        Platform.runLater(() -> {
-            projectController.saveAs();
-            latch[0].countDown();
-        });
-        Mockito.verify(controllerManager, times(0)).getScriptingProject();
-    }
     
     @Test
     public void saveTestWithExistingFilePath() {
@@ -198,7 +187,7 @@ public class ProjectControllerTest extends ApplicationTest {
         });
         latch[0].await();
     }
-    
+
     @Test
     public void confirmTypeDeleteTest() throws Exception {
        MouseEvent event = mock(MouseEvent.class);
@@ -303,11 +292,20 @@ public class ProjectControllerTest extends ApplicationTest {
                 false, false, false, false, false, false, false, false, false, false, null);
 
         Platform.runLater(() -> {
+
+            projectController.newProject();
+
+            // try to create/save the new project without any settings entered
+            try {
+                WhiteboxImpl.invokeMethod(projectController, "applyEdit", mouseEvent);
+                verify(projectController, never()).getControllerManager();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             projectController.getControllerManager().getScriptingProject().addCamera(
                     new Camera("a", "b", new CameraType("a", "a", 1.0))
             );
-
-            projectController.newProject();
 
             Camera camera = new Camera("a", "b", new CameraType("a", "b", 1.0));
 
@@ -316,7 +314,6 @@ public class ProjectControllerTest extends ApplicationTest {
             ScriptingProject project = new ScriptingProject("a", "b", 1.0);
             project.getCameras().add(camera);
             project.getCameraTimelines().add(new CameraTimeline(project.getCameras().get(0), project));
-
 
             when(controllerManager.getScriptingProject()).thenReturn(project);
 
@@ -330,16 +327,18 @@ public class ProjectControllerTest extends ApplicationTest {
                     new CameraTimeline(projectController.getEditProjectModal().getCameras().get(0), project)
             );
 
+            // try to create/save the new project again with correct settings entered
             try {
                 WhiteboxImpl.invokeMethod(projectController, "applyEdit", mouseEvent);
+                verify(projectController, atLeastOnce()).getControllerManager();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+
             latch[0].countDown();
         });
         latch[0].await();
-
-        Mockito.verify(projectController).newProject();
     }
 
     @Test
@@ -349,11 +348,19 @@ public class ProjectControllerTest extends ApplicationTest {
                 false, false, false, false, false, false, false, false, false, false, null);
 
         Platform.runLater(() -> {
+            projectController.newProject();
+
+            // try to create new project without any settings entered
+            try {
+                WhiteboxImpl.invokeMethod(projectController, "applyNew", mouseEvent);
+                verify(projectController, never()).getControllerManager();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             projectController.getControllerManager().getScriptingProject().addCamera(
                     new Camera("a", "b", new CameraType("a", "a", 1.0))
             );
-
-            projectController.newProject();
 
             Camera camera = new Camera("a", "b", new CameraType("a", "b", 1.0));
 
@@ -376,16 +383,17 @@ public class ProjectControllerTest extends ApplicationTest {
                     new CameraTimeline(projectController.getEditProjectModal().getCameras().get(0), project)
             );
 
+            // try again with settings entered
             try {
                 WhiteboxImpl.invokeMethod(projectController, "applyNew", mouseEvent);
+                verify(projectController, atLeastOnce()).getControllerManager();
             } catch (Exception e) {
                 e.printStackTrace();
             }
             latch[0].countDown();
         });
-        latch[0].await();
 
-        Mockito.verify(projectController, times(1)).newProject();
+        latch[0].await();
     }
 
     @Test
@@ -534,6 +542,102 @@ public class ProjectControllerTest extends ApplicationTest {
         verify(projectController, atLeastOnce()).getCameraTypeModal();
     }
 
+    @Test
+    public void deleteCameraTypeTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                // add instrument
+                projectController.newProject();
+
+                WhiteboxImpl.invokeMethod(projectController, "addCameraType", mouseEvent);
+                projectController.getCameraTypeModal().getNameField().setText("a");
+                projectController.getCameraTypeModal().getDescriptionField().setText("b");
+                projectController.getCameraTypeModal().getMovementMarginField().setText("1.0");
+                WhiteboxImpl.invokeMethod(projectController, "typeAdded", mouseEvent);
+
+                assert(projectController.getEditProjectModal().getCameraTypes().size() == 1);
+
+                // wrong delete
+                WhiteboxImpl.invokeMethod(projectController, "deleteCameraType", mouseEvent);
+                assert(projectController.getEditProjectModal().getCameraTypes().size() == 1);
+
+                // correct delete
+                projectController.getEditProjectModal().getCameraTypeList().getSelectionModel().select(0);
+                WhiteboxImpl.invokeMethod(projectController, "deleteCameraType", mouseEvent);
+                assert(projectController.getEditProjectModal().getCameraTypes().size() == 0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, atLeastOnce()).getCameraTypeModal();
+    }
+
+    @Test
+    public void deleteCameraTypeCoupledTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                projectController.newProject();
+
+                // add camera type
+                WhiteboxImpl.invokeMethod(projectController, "addCameraType", mouseEvent);
+                projectController.getCameraTypeModal().getNameField().setText("a");
+                projectController.getCameraTypeModal().getDescriptionField().setText("b");
+                projectController.getCameraTypeModal().getMovementMarginField().setText("1.0");
+                WhiteboxImpl.invokeMethod(projectController, "typeAdded", mouseEvent);
+
+                // add camera using said type
+                WhiteboxImpl.invokeMethod(projectController, "addCamera", mouseEvent);
+                projectController.getCameraModal().getCameraTypes().getSelectionModel().select(0);
+                projectController.getCameraModal().getNameField().setText("a");
+                projectController.getCameraModal().getDescriptionField().setText("b");
+                WhiteboxImpl.invokeMethod(projectController, "cameraAdded", mouseEvent);
+
+                assert(projectController.getEditProjectModal().getCameraTypes().size() == 1);
+                assert(projectController.getEditProjectModal().getCameras().size() == 1);
+                assertEquals(projectController.getEditProjectModal().getCameras().get(0).getCameraType(),
+                        projectController.getEditProjectModal().getCameraTypes().get(0));
+
+                // delete type
+                projectController.getEditProjectModal().getCameraTypeList().getSelectionModel().select(0);
+                WhiteboxImpl.invokeMethod(projectController, "deleteCameraType", mouseEvent);
+                assert(projectController.getEditProjectModal().getCameraTypes().size() == 1);
+
+                // cancel delete
+                WhiteboxImpl.invokeMethod(projectController, "cancelTypeDelete", mouseEvent);
+                assert(projectController.getEditProjectModal().getCameraTypes().size() == 1);
+
+                // delete type again
+                projectController.getEditProjectModal().getCameraTypeList().getSelectionModel().select(0);
+                WhiteboxImpl.invokeMethod(projectController, "deleteCameraType", mouseEvent);
+                assert(projectController.getEditProjectModal().getCameraTypes().size() == 1);
+
+                // confirm delete
+                ArrayList<Camera> tbd = new ArrayList<Camera>();
+                tbd.add(projectController.getEditProjectModal().getCameras().get(0));
+                WhiteboxImpl.invokeMethod(projectController, "confirmTypeDelete", mouseEvent,
+                        tbd, 0);
+
+                assert(projectController.getEditProjectModal().getCameraTypes().size() == 0);
+                assert(projectController.getEditProjectModal().getCameras().size() == 0);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, atLeastOnce()).getCameraTypeModal();
+    }
 
     @Test
     public void addInstrumentCorrectTest() throws InterruptedException {
@@ -732,10 +836,6 @@ public class ProjectControllerTest extends ApplicationTest {
         final CountDownLatch[] latch = {new CountDownLatch(1)};
         MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
                 false, false, false, false, false, false, false, false, false, false, null);
-        MouseEvent mouseEvent2 = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
-                false, false, false, false, false, false, false, false, false, false, null);
-        MouseEvent mouseEvent3 = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
-                false, false, false, false, false, false, false, false, false, false, null);
         Platform.runLater(() -> {
             try {
                 projectController.getControllerManager().getScriptingProject().addCamera(
@@ -743,8 +843,8 @@ public class ProjectControllerTest extends ApplicationTest {
                 );
                 projectController.newProject();
                 WhiteboxImpl.invokeMethod(projectController, "addCamera", mouseEvent);
-                WhiteboxImpl.invokeMethod(projectController, "cameraAdded", mouseEvent2);
-                WhiteboxImpl.invokeMethod(projectController, "cancelAddCamera", mouseEvent3);
+                WhiteboxImpl.invokeMethod(projectController, "cameraAdded", mouseEvent);
+                WhiteboxImpl.invokeMethod(projectController, "cancelAddCamera", mouseEvent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -843,6 +943,46 @@ public class ProjectControllerTest extends ApplicationTest {
                 assertEquals("a", projectController.getEditProjectModal().getCameras().get(0).getName());
                 assertEquals("b", projectController.getEditProjectModal().getCameras().get(0).getDescription());
 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(projectController, atLeastOnce()).getCameraModal();
+    }
+
+    @Test
+    public void deleteCameratTest() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        Platform.runLater(() -> {
+            try {
+                // add instrument
+                projectController.newProject();
+
+                CameraType type = new CameraType("a", "b", 1.0);
+
+                WhiteboxImpl.invokeMethod(projectController, "addCamera", mouseEvent);
+                projectController.getCameraModal().getCameraTypeList().add(type);
+                projectController.getCameraModal().getCameraTypes().getItems().add(mock(Panel.class));
+                projectController.getCameraModal().getCameraTypes().getSelectionModel().select(0);
+                projectController.getCameraModal().getNameField().setText("a");
+                projectController.getCameraModal().getDescriptionField().setText("b");
+                WhiteboxImpl.invokeMethod(projectController, "cameraAdded", mouseEvent);
+
+                assert(projectController.getEditProjectModal().getCameras().size() == 1);
+
+                // wrong delete
+                WhiteboxImpl.invokeMethod(projectController, "deleteCamera", mouseEvent);
+                assert(projectController.getEditProjectModal().getCameras().size() == 1);
+
+                // correct delete
+                projectController.getEditProjectModal().getCameraList().getSelectionModel().select(0);
+                WhiteboxImpl.invokeMethod(projectController, "deleteCamera", mouseEvent);
+                assert(projectController.getEditProjectModal().getCameras().size() == 0);
             } catch (Exception e) {
                 e.printStackTrace();
             }
