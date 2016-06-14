@@ -1,13 +1,21 @@
 package control;
 
+import java.beans.PropertyChangeEvent;
+
+import java.awt.KeyboardFocusManager;
+
 import data.ScriptingProject;
 import gui.centerarea.ShotBlock;
 import gui.modal.SaveModalView;
 import gui.root.RootPane;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.TextField;
 
 /**
  * Class wrapper for model management controllers.
@@ -55,6 +63,7 @@ public class ControllerManager {
         this.rootPane = rootPane;
         initializeControllers();
         initOnCloseOperation();
+        initTextFieldAutoSelect();
     }
 
     /**
@@ -92,6 +101,27 @@ public class ControllerManager {
         preferencesViewController = new PreferencesViewController(this);
         toolViewController = new ToolViewController(this);
         projectController = new ProjectController(this);
+    }
+    
+    private void initTextFieldAutoSelect() {
+        System.out.println("INITED");
+        rootPane.getPrimaryStage().getScene().focusOwnerProperty().addListener(this::focusChangeListener);
+    }
+    
+    private void focusChangeListener(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
+        if (newValue != null) {
+            System.out.println("CLASS NAME NEW VALUE " + newValue.getClass().getName());
+            String className = newValue.getClass().getName();
+            if (className.equals("gui.styling.StyledTextfield")
+                    || className.equals("gui.headerarea.NumberTextField")
+                    || className.equals("gui.headerarea.DoubleTextField")
+                    || className.equals("javafx.scene.control.TextField")) {
+                
+                Platform.runLater(() -> {
+                    ((TextField) newValue).selectAll();
+                });
+            }
+        }
     }
 
     /**
