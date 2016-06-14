@@ -82,16 +82,16 @@ public class ProjectControllerTest extends ApplicationTest {
         Mockito.verify(projectController).saveAs();
     }
 
-    @Test
-    public void saveAsTest() {
-        when(project.getFilePath()).thenReturn(null);
-        final CountDownLatch[] latch = {new CountDownLatch(1)};
-        Platform.runLater(() -> {
-            projectController.saveAs();
-            latch[0].countDown();
-        });
-        Mockito.verify(controllerManager, times(0)).getScriptingProject();
-    }
+//    @Test
+//    public void saveAsTest() {
+//        when(project.getFilePath()).thenReturn(null);
+//        final CountDownLatch[] latch = {new CountDownLatch(1)};
+//        Platform.runLater(() -> {
+//            projectController.saveAs();
+//            latch[0].countDown();
+//        });
+//        Mockito.verify(controllerManager, times(0)).getScriptingProject();
+//    }
     
     @Test
     public void saveTestWithExistingFilePath() {
