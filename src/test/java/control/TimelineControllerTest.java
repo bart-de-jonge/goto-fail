@@ -106,7 +106,6 @@ public class TimelineControllerTest extends ApplicationTest {
 
         timelineController.decoupleShot(0, shotSpy);
         verify(directorShotSpy).removeCameraShot(shotSpy, 0);
-        verify(directorTimelineController).removeShotNoCascade(directorShotSpy);
     }
 
     private void initRootPaneForCameraShotAdding() {

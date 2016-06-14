@@ -87,7 +87,6 @@ public class DirectorTimelineController {
      * @param event Camera shot change event.
      */
     public void shotChangedHandler(DirectorShotBlockUpdatedEvent event) {
-        log.error("Shot changed handler called for shot {}", event.getShotBlock().getShot().getName());
         if (event.getDirectorShotBlock().getBeginCount()
                 - event.getDirectorShotBlock().getPaddingBefore() < 0) {
             event.getDirectorShotBlock().moveAsCloseToTopAsPossible();
@@ -174,20 +173,7 @@ public class DirectorTimelineController {
                 .getDirectorTimeline();
 
         // Remove overlaps for non-colliding shotblocks
-        ArrayList<DirectorShotBlock> toRemove = new ArrayList<>();
-        this.overlappingShotBlocks.stream()
-                .filter(shotBlock ->
-                    shotBlock.getShot().getCollidesWith().isEmpty()).forEach(
-                        shotBlock -> {
-                            shotBlock.setColliding(false);
-                            toRemove.add(shotBlock);
-                        });
-        this.overlappingShotBlocks.removeAll(toRemove);
-        directorShotBlock.getShot().getCollidesWith().forEach(shot -> {
-            shot.setColliding(false);
-            directorShotBlockMap.get(shot).recompute();
-            log.error("Setting false for {}", shot.getName());
-        });
+        removeOverlap(directorShotBlock);
 
         // Check for collisions
         ArrayList<DirectorShot> overlappingShots = timeline
@@ -217,25 +203,57 @@ public class DirectorTimelineController {
         }
     }
     
-    public void recomputeAllCollisions() {
-        this.directorShotBlockMap.keySet().forEach(shot -> {
-            this.checkCollisions(directorShotBlockMap.get(shot));
-        });
+    /**
+     * Remove overlap from this director shot block.
+     * @param directorShotBlock the shot block to do this for.
+     */
+    private void removeOverlap(DirectorShotBlock directorShotBlock) {
+        ArrayList<DirectorShotBlock> toRemove = new ArrayList<>();
+        this.overlappingShotBlocks.stream()
+                .filter(shotBlock ->
+                    shotBlock.getShot().getCollidesWith().isEmpty()).forEach(
+                        shotBlock -> {
+                            shotBlock.setColliding(false);
+                            toRemove.add(shotBlock);
+                        });
+        this.overlappingShotBlocks.removeAll(toRemove);
+        directorShotBlock.getShot().getCollidesWith().forEach(shot -> {
+                shot.setColliding(false);
+                directorShotBlockMap.get(shot).recompute();
+                log.error("Setting false for {}", shot.getName());
+            });
     }
     
+    /**
+     * Recompute all the collisions in the director timeline.
+     */
+    public void recomputeAllCollisions() {
+        this.directorShotBlockMap.keySet().forEach(shot -> {
+                this.checkCollisions(directorShotBlockMap.get(shot));
+            });
+    }
+    
+    /**
+     * Reset the colliding status for a shot block.
+     * @param directorShotBlock the shot block to do that for
+     */
     private void resetColliding(DirectorShotBlock directorShotBlock) {
         directorShotBlock.setColliding(false);
         directorShotBlock.getShot().setColliding(false);
         directorShotBlock.getShot().getCollidesWith().forEach(e -> {
-            DirectorShotBlock toReset = directorShotBlockMap.get(e);
-            if (toReset != null) {
-                this.checkCollisions(toReset);
-            }
-        });
+                DirectorShotBlock toReset = directorShotBlockMap.get(e);
+                if (toReset != null) {
+                    this.checkCollisions(toReset);
+                }
+            });
         removeCollisionFromDirectorShotBlock(directorShotBlock);
         
     }
     
+    /**
+     * Remove collissions from a director shot block.
+     * @param directorShotBlock the block to do that for
+     */
     private void removeCollisionFromDirectorShotBlock(DirectorShotBlock directorShotBlock) {
         ArrayList<Shot> toRemove = new ArrayList<>();
         for (Shot shot : directorShotBlock.getShot().getCollidesWith()) {

@@ -73,7 +73,8 @@ public class CameraShot extends Shot implements Cloneable {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
-        CameraShot result = new CameraShot(getName(), getDescription(), getBeginCount(), getEndCount());
+        CameraShot result = new CameraShot(getName(), getDescription(),
+                getBeginCount(), getEndCount());
         result.setDirectorShot(getDirectorShot());
         result.setColliding(isColliding());
         result.setInstruments(getInstruments());

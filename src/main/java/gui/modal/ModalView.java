@@ -49,17 +49,23 @@ public abstract class ModalView {
         this.modalStage.initOwner(rootPane.getPrimaryStage());
     }
     
+    /**
+     * Initialize the handler for the auto text field select.
+     */
     private void initTextFieldAutoSelect() {
-        System.out.println(modalStage);
-        System.out.println(modalStage.getScene());
-        System.out.println(modalStage.getScene().focusOwnerProperty());
-        
         modalStage.getScene().focusOwnerProperty().addListener(this::focusChangeListener);
     }
     
-    private void focusChangeListener(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
+    /**
+     * Handler for auto text select.
+     Checks if the new selected Node is a text field, and selects text if needed
+     * @param observable the observable value
+     * @param oldValue the old node
+     * @param newValue the new node
+     */
+    private void focusChangeListener(ObservableValue<? extends Node> observable,
+            Node oldValue, Node newValue) {
         if (newValue != null) {
-            System.out.println("CLASS NAME NEW VALUE " + newValue.getClass().getName());
             String className = newValue.getClass().getName();
             if (className.equals("gui.styling.StyledTextfield")
                     || className.equals("gui.headerarea.NumberTextField")
@@ -67,8 +73,8 @@ public abstract class ModalView {
                     || className.equals("javafx.scene.control.TextField")) {
                 
                 Platform.runLater(() -> {
-                    ((TextField) newValue).selectAll();
-                });
+                        ((TextField) newValue).selectAll();
+                    });
             }
         }
     }
