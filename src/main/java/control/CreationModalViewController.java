@@ -139,7 +139,7 @@ public class CreationModalViewController {
                 });
 
             cameraShotCreationModalView.getCamerasInShot().forEach(cameraIndex -> {
-                    timelineController.addCameraShot(cameraIndex, shot);
+                    timelineController.addCameraShot(cameraIndex, shot.clone());
                 });
 
             cameraShotCreationModalView.getModalStage().close();
@@ -324,17 +324,6 @@ public class CreationModalViewController {
         }
 
         errorString = validateDirectorShotCounts(errorString);
-
-        boolean aCameraSelected = false;
-        for (CheckBox cb : directorShotCreationModalView.getCameraCheckboxes()) {
-            if (cb.isSelected()) {
-                aCameraSelected = true;
-            }
-        }
-
-        if (!aCameraSelected) {
-            errorString += "Please select at least one camera for this shot.";
-        }
 
         if (errorString.isEmpty()) {
             return true;

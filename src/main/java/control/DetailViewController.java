@@ -279,6 +279,8 @@ public class DetailViewController {
         manager.getTimelineControl().removeCameraShot(toRemove);
         dShot.getCameraShots().remove(toRemove);
         dShot.getTimelineIndices().remove(index);
+        manager.getTimelineControl().recomputeAllCollisions();
+        manager.getDirectorTimelineControl().recomputeAllCollisions();
     }
 
     /**
@@ -304,6 +306,8 @@ public class DetailViewController {
         manager.getScriptingProject().getCameraTimelines().get(index).addShot(shot);
         manager.getTimelineControl().initShotBlock(index, shot, false);
         manager.setActiveShotBlock(dShotBlock);
+        manager.getTimelineControl().recomputeAllCollisions();
+        manager.getDirectorTimelineControl().recomputeAllCollisions();
     }
 
     /**
