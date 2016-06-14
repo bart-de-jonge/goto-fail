@@ -39,17 +39,13 @@ public class DetailViewController {
     private DetailView detailView;
     private ControllerManager manager;
 
-    @Getter
-    @Setter
+    @Getter @Setter
     private DirectorShotBlock activeDirectorBlock;
-    @Getter
-    @Setter
+    @Getter @Setter
     private CameraShotBlock activeCameraBlock;
-    @Getter
-    @Setter
+    @Getter @Setter
     private List<StyledCheckbox> activeCameraBoxes;
-    @Getter
-    @Setter
+    @Getter @Setter
     private List<StyledCheckbox> activeInstrumentBoxes;
 
     /**
