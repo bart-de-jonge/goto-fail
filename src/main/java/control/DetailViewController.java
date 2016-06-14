@@ -1,10 +1,5 @@
 package control;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import data.Camera;
 import data.CameraShot;
 import data.DirectorShot;
@@ -19,16 +14,20 @@ import gui.headerarea.DirectorDetailView;
 import gui.misc.TweakingHelper;
 import gui.styling.StyledCheckbox;
 import gui.styling.StyledMenuButton;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Controller for the DetailView.
@@ -40,13 +39,18 @@ public class DetailViewController {
     private DetailView detailView;
     private ControllerManager manager;
 
+    @Getter @Setter
     private DirectorShotBlock activeDirectorBlock;
+    @Getter @Setter
     private CameraShotBlock activeCameraBlock;
+    @Getter @Setter
     private List<StyledCheckbox> activeCameraBoxes;
+    @Getter @Setter
     private List<StyledCheckbox> activeInstrumentBoxes;
 
     /**
      * Constructor.
+     *
      * @param manager - the controller manager this controller belongs to
      */
     public DetailViewController(ControllerManager manager) {
@@ -57,7 +61,7 @@ public class DetailViewController {
         initBeginCount();
         initEndCount();
     }
-    
+
     /**
      * Re-init the tool view for when a camera block is selected.
      */
@@ -68,7 +72,7 @@ public class DetailViewController {
         initEndCount();
         initCameraInstrumentDropdown();
     }
-    
+
     /**
      * Re-init the tool view for when a director block is selected.
      */
@@ -78,102 +82,103 @@ public class DetailViewController {
         initEndPadding();
         initDirectorCameraDropdown();
     }
-    
+
     /**
      * Initialize the handlers for the begin padding field.
      */
     private void initBeginPadding() {
         ((DirectorDetailView) detailView).getPaddingBeforeField()
-        .focusedProperty().addListener(this::beforePaddingFocusListener);
-        
+                .focusedProperty().addListener(this::beforePaddingFocusListener);
+
         ((DirectorDetailView) detailView).getPaddingBeforeField().setOnKeyPressed(event -> {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     this.beforePaddingUpdateHelper();
                 }
             });
     }
-    
+
     /**
      * Listener for focus change on before padding field.
+     *
      * @param observable the observable value
-     * @param oldValue If there was an old value
-     * @param newValue If there was a new value
+     * @param oldValue   If there was an old value
+     * @param newValue   If there was a new value
      */
-    private void beforePaddingFocusListener(ObservableValue<? extends Boolean> observable,
-                                 Boolean oldValue, Boolean newValue) {
+    protected void beforePaddingFocusListener(ObservableValue<? extends Boolean> observable,
+                                              Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             this.beforePaddingUpdateHelper();
         }
     }
-    
+
     /**
      * Update method for the before padding field.
      */
-    private void beforePaddingUpdateHelper() {
+    protected void beforePaddingUpdateHelper() {
         if (manager.getActiveShotBlock() != null) {
             String newValue = CountUtilities.parseCountNumber(
                     ((DirectorDetailView) detailView).getPaddingBeforeField().getText());
             ((DirectorDetailView) detailView).getPaddingBeforeField().setText(newValue);
             double newVal = Double.parseDouble(newValue);
-            DirectorShotBlock directorShotBlock = 
+            DirectorShotBlock directorShotBlock =
                     ((DirectorShotBlock) manager.getActiveShotBlock());
-            
+
             directorShotBlock.setPaddingBefore(newVal);
             DirectorShot directorShot = ((DirectorShot) manager.getActiveShotBlock().getShot());
-            
+
             directorShot.setFrontShotPadding(newVal);
             directorShot.getCameraShots().forEach(e -> {
                     CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
                     shotBlock.setBeginCount(directorShot.getBeginCount() - newVal, true);
                     manager.getTimelineControl().modifyCameraShot(
                             (CameraShotBlockUpdatedEvent) shotBlock.getShotBlockUpdatedEvent(),
-                                                          shotBlock);
+                            shotBlock);
                     manager.setActiveShotBlock(directorShotBlock);
                 });
             manager.getTimelineControl().recomputeAllCollisions();
-
         }
     }
-    
+
     /**
      * Initialize the handlers for end padding field.
      */
     private void initEndPadding() {
         ((DirectorDetailView) detailView).getPaddingAfterField().focusedProperty()
-        .addListener(this::afterPaddingFocusListener);
+                .addListener(this::afterPaddingFocusListener);
         ((DirectorDetailView) detailView).getPaddingAfterField().setOnKeyPressed(
-            event -> {
+                event -> {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     this.afterPaddingUpdateHelper();
                 }
             });
     }
-    
+
     /**
      * Listener for focus change on end padding field.
+     *
      * @param observable the observable value
-     * @param oldValue if there is an old value
-     * @param newValue if there is a new value
+     * @param oldValue   if there is an old value
+     * @param newValue   if there is a new value
      */
-    private void afterPaddingFocusListener(ObservableValue<? extends Boolean> observable,
-            Boolean oldValue, Boolean newValue) {
+    protected void afterPaddingFocusListener(ObservableValue<? extends Boolean> observable,
+                                             Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             this.afterPaddingUpdateHelper();
         }
     }
-    
+
     /**
      * Update method for the after padding.
      */
-    private void afterPaddingUpdateHelper() {
+    protected void afterPaddingUpdateHelper() {
         if (manager.getActiveShotBlock() != null) {
             String newValue = CountUtilities.parseCountNumber(
                     ((DirectorDetailView) detailView).getPaddingAfterField().getText());
             ((DirectorDetailView) detailView).getPaddingAfterField().setText(newValue);
             double newVal = Double.parseDouble(newValue);
-            DirectorShotBlock directorShotBlock = 
+            DirectorShotBlock directorShotBlock =
                     ((DirectorShotBlock) manager.getActiveShotBlock());
-            
+
             directorShotBlock.setPaddingAfter(newVal);
             ((DirectorShot) manager.getActiveShotBlock().getShot()).setEndShotPadding(newVal);
             ((DirectorShot) manager.getActiveShotBlock().getShot()).getCameraShots().forEach(e -> {
@@ -182,7 +187,7 @@ public class DetailViewController {
                             .getEndCount() + newVal, true);
                     manager.getTimelineControl().modifyCameraShot(
                             (CameraShotBlockUpdatedEvent) shotBlock.getShotBlockUpdatedEvent(),
-                                                          shotBlock);
+                            shotBlock);
                     manager.setActiveShotBlock(directorShotBlock);
                 });
             manager.getTimelineControl().recomputeAllCollisions();
@@ -192,9 +197,10 @@ public class DetailViewController {
 
     /**
      * Listener for changes in checked indices for instruments dropdown.
+     *
      * @param c the change that happened
      */
-    private void instrumentsDropdownChangeListener(ListChangeListener.Change c) {
+    protected void instrumentsDropdownChangeListener(ListChangeListener.Change c) {
         Shot shot = manager.getActiveShotBlock().getShot();
         c.next();
         if (c.wasAdded()) {
@@ -203,9 +209,10 @@ public class DetailViewController {
             instrumentDeletedInDropdown((int) c.getRemoved().get(0));
         }
     }
-    
+
     /**
      * Handler for a unchecked index in instrument dropdown.
+     *
      * @param index the index that got unchecked
      */
     private void instrumentDeletedInDropdown(int index) {
@@ -218,9 +225,10 @@ public class DetailViewController {
                 .getInstruments().get(index));
         shotBlock.recompute();
     }
-    
+
     /**
      * Handler for a checked index in instrument dropdown.
+     *
      * @param index the index that got unchecked
      */
     private void instrumentAddedInDropdown(int index) {
@@ -230,12 +238,13 @@ public class DetailViewController {
                 .getInstruments().get(index));
         shotBlock.recompute();
     }
-    
+
     /**
      * Change listener for the dropdown. Fires whenever a box is selected or deselected.
+     *
      * @param c The Change with information about what changed.
      */
-    private void camerasDropdownChangeListener(ListChangeListener.Change c) {
+    protected void camerasDropdownChangeListener(ListChangeListener.Change c) {
         DirectorShot shot = ((DirectorShot) manager.getActiveShotBlock().getShot());
         c.next();
         if (c.wasAdded()) {
@@ -244,9 +253,10 @@ public class DetailViewController {
             cameraDeletedInDropdown((int) c.getRemoved().get(0));
         }
     }
-    
+
     /**
      * Method for handling a deselect in the drop down.
+     *
      * @param index the index of the deselected camera.
      */
     private void cameraDeletedInDropdown(int index) {
@@ -268,22 +278,23 @@ public class DetailViewController {
         manager.getTimelineControl().recomputeAllCollisions();
         manager.getDirectorTimelineControl().recomputeAllCollisions();
     }
-    
+
     /**
      * Method for handling a select in the dropdown.
+     *
      * @param index the index of the camera that was selected.
      */
     private void cameraAddedInDropdown(int index) {
         CameraShot shot = new CameraShot();
         DirectorShot dShot = ((DirectorShot) manager.getActiveShotBlock().getShot());
-        
+
         // Set shot variables
         shot.setName(dShot.getName());
         shot.setDescription(dShot.getDescription());
         shot.setBeginCount(dShot.getBeginCount() - dShot.getFrontShotPadding());
         shot.setEndCount(dShot.getEndCount() + dShot.getEndShotPadding());
         shot.setDirectorShot(dShot);
-        
+
         // Add shot where needed
         dShot.getCameraShots().add(shot);
         dShot.getTimelineIndices().add(index);
@@ -303,7 +314,7 @@ public class DetailViewController {
                 .addListener(this::beginCountFocusListener);
 
         detailView.getBeginCountField().setOnKeyPressed(
-            event -> {
+                event -> {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     this.beginCountUpdateHelper();
                 }
@@ -312,9 +323,10 @@ public class DetailViewController {
 
     /**
      * Changelistener for when focus on begincountfield changes.
+     *
      * @param observable - the observable
-     * @param oldValue - the old value of focus
-     * @param newValue - the new value of focus
+     * @param oldValue   - the old value of focus
+     * @param newValue   - the new value of focus
      */
     void beginCountFocusListener(ObservableValue<? extends Boolean> observable,
                                  Boolean oldValue, Boolean newValue) {
@@ -348,7 +360,7 @@ public class DetailViewController {
                 .addListener(this::endCountFocusListener);
 
         detailView.getEndCountField().setOnKeyPressed(
-            event -> {
+                event -> {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     endCountUpdateHelper();
                 }
@@ -357,12 +369,13 @@ public class DetailViewController {
 
     /**
      * Changelistener for when focus on endcountfield changes.
+     *
      * @param observable - the observable
-     * @param oldValue - the old value of focus
-     * @param newValue - the new value of focus
+     * @param oldValue   - the old value of focus
+     * @param newValue   - the new value of focus
      */
     void endCountFocusListener(ObservableValue<? extends Boolean> observable,
-                                 Boolean oldValue, Boolean newValue) {
+                               Boolean oldValue, Boolean newValue) {
         // exiting focus
         if (!newValue) {
             this.endCountUpdateHelper();
@@ -396,12 +409,13 @@ public class DetailViewController {
 
     /**
      * Changelistener for when the text in descriptionfield changes.
+     *
      * @param observable - the observable
-     * @param oldValue - the old value of the field
-     * @param newValue - the new value of the field
+     * @param oldValue   - the old value of the field
+     * @param newValue   - the new value of the field
      */
     void descriptionTextChangedListener(ObservableValue<? extends String> observable,
-                               String oldValue, String newValue) {
+                                        String oldValue, String newValue) {
         if (manager.getActiveShotBlock() != null) {
             manager.getActiveShotBlock().setDescription(newValue);
             manager.getActiveShotBlock().getShot().setDescription(newValue);
@@ -418,12 +432,13 @@ public class DetailViewController {
 
     /**
      * Changelistener for when the text in namefield changes.
+     *
      * @param observable - the observable
-     * @param oldValue - the old value of the field
-     * @param newValue - the new value of the field
+     * @param oldValue   - the old value of the field
+     * @param newValue   - the new value of the field
      */
     void nameTextChangedListener(ObservableValue<? extends String> observable,
-                                        String oldValue, String newValue) {
+                                 String oldValue, String newValue) {
         if (manager.getActiveShotBlock() != null) {
             manager.getActiveShotBlock().setName(newValue);
             manager.getActiveShotBlock().getShot().setName(newValue);
@@ -445,7 +460,7 @@ public class DetailViewController {
             detailView.setInvisible();
         }
     }
-    
+
     /**
      * Handler for when the active block is now a camera shot.
      */
@@ -458,11 +473,10 @@ public class DetailViewController {
         activeCameraBlock = (CameraShotBlock) manager.getActiveShotBlock();
         detailView.setVisible();
         // Re-init the detail view with new data
-        manager.getRootPane().getRootHeaderArea().setDetailView(detailView);  
         manager.getRootPane().getRootHeaderArea().reInitHeaderBar(detailView);
         this.reInitForCameraBlock();
     }
-    
+
     /**
      * Handler for when the active block is now a director shot.
      */
@@ -475,9 +489,9 @@ public class DetailViewController {
         detailView.setBeginCount(shotBlock.getBeginCount());
         detailView.setEndCount(shotBlock.getEndCount());
         ((DirectorDetailView) detailView).getPaddingBeforeField()
-            .setText(detailView.formatDouble(shotBlock.getPaddingBefore()));
+                .setText(detailView.formatDouble(shotBlock.getPaddingBefore()));
         ((DirectorDetailView) detailView).getPaddingAfterField()
-            .setText(detailView.formatDouble(shotBlock.getPaddingAfter()));
+                .setText(detailView.formatDouble(shotBlock.getPaddingAfter()));
         activeDirectorBlock = shotBlock;
         detailView.setVisible();
         // Re-init the detail view with new data
@@ -494,7 +508,8 @@ public class DetailViewController {
         cameraButtons.setFillColor(TweakingHelper.getBackgroundColor());
         activeCameraBoxes = new ArrayList<>();
 
-        cameraButtons.showingProperty().addListener(createCameraDropdownListener(cameraButtons));
+        cameraButtons.showingProperty().addListener((observable, oldValue, newValue) ->
+                cameraDropdownListener(observable, oldValue, newValue, cameraButtons));
     }
 
     /**
@@ -507,56 +522,54 @@ public class DetailViewController {
         instrumentsButtons.setFillColor(TweakingHelper.getBackgroundColor());
         activeInstrumentBoxes = new ArrayList<>();
 
-        instrumentsButtons.showingProperty().addListener(
-                createInstrumentsDropdownListener(instrumentsButtons));
+        instrumentsButtons.showingProperty().addListener((observable, oldValue, newValue) ->
+                instrumentsDropdownListener(observable, oldValue, newValue, instrumentsButtons));
     }
 
     /**
      * Creates ChangeListener for the Instruments Dropdown checkboxes.
-     * @param buttons the dropdown with checkboxes.
-     * @return the ChangeListener.
+     *
+     * @param observable - the observable
+     * @param oldValue   - the old value
+     * @param newValue   - the new value
+     * @param buttons    - the buttons
      */
-    private ChangeListener<Boolean> createInstrumentsDropdownListener(StyledMenuButton buttons) {
-        return new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable,
-                                Boolean oldValue, Boolean newValue) {
-                if (newValue) {
-                    // show the list and give it content
-                    instrumentsDropdownListenerHelper(buttons);
-                } else {
-                    // empty the list when not shown
-                    activeInstrumentBoxes.clear();
-                    buttons.getItems().clear();
-                }
-            }
-        };
+    protected void instrumentsDropdownListener(ObservableValue<? extends Boolean> observable,
+                                               Boolean oldValue, Boolean newValue,
+                                               StyledMenuButton buttons) {
+        if (newValue) {
+            // show the list and give it content
+            instrumentsDropdownListenerHelper(buttons);
+        } else {
+            // empty the list when not shown
+            activeInstrumentBoxes.clear();
+            buttons.getItems().clear();
+        }
     }
 
     /**
      * Creates ChangeListener for the Camera Dropdown checkboxes.
-     * @param buttons the dropdown with checkboxes.
-     * @return the ChangeListener.
+     * @param observable - the observable
+     * @param oldValue - the old value
+     * @param newValue - the new avlue
+     * @param buttons - the buttons
      */
-    private ChangeListener<Boolean> createCameraDropdownListener(StyledMenuButton buttons) {
-        return new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable,
-                                Boolean oldValue, Boolean newValue) {
-                if (newValue) {
-                    // show the list and give it content
-                    cameraDropdownListenerHelper(buttons);
-                } else {
-                    // empty the list when not shown
-                    activeCameraBoxes.clear();
-                    buttons.getItems().clear();
-                }
-            }
-        };
+    protected void cameraDropdownListener(ObservableValue<? extends Boolean> observable,
+                                          Boolean oldValue, Boolean newValue,
+                                          StyledMenuButton buttons) {
+        if (newValue) {
+            // show the list and give it content
+            cameraDropdownListenerHelper(buttons);
+        } else {
+            // empty the list when not shown
+            activeCameraBoxes.clear();
+            buttons.getItems().clear();
+        }
     }
 
     /**
      * Helper method for showing the Camera Dropdown.
+     *
      * @param buttons the dropdown menu containing buttons.
      */
     private void cameraDropdownListenerHelper(StyledMenuButton buttons) {
@@ -565,7 +578,7 @@ public class DetailViewController {
         for (int i = 0; i < manager.getScriptingProject().getCameras().size(); i++) {
             Camera camera = manager.getScriptingProject().getCameras().get(i);
             // create and add checkbox for camera with on/off toggling loaded in.
-            StyledCheckbox checkbox = new StyledCheckbox(camera.getName(),
+            StyledCheckbox checkbox = getStyledCheckbox(camera.getName(),
                     indices.contains(i));
             activeCameraBoxes.add(checkbox);
             CustomMenuItem item = new CustomMenuItem(checkbox);
@@ -578,6 +591,7 @@ public class DetailViewController {
 
     /**
      * Helper method for showing the Instruments Dropdown.
+     *
      * @param buttons the dropdown menu containing buttons.
      */
     private void instrumentsDropdownListenerHelper(StyledMenuButton buttons) {
@@ -588,7 +602,7 @@ public class DetailViewController {
             Instrument instrument = manager.getScriptingProject()
                     .getInstruments().get(i);
             // create and add checkbox for instrument with on/off toggling loaded in.
-            StyledCheckbox checkbox = new StyledCheckbox(instrument.getName(),
+            StyledCheckbox checkbox = getStyledCheckbox(instrument.getName(),
                     instruments.contains(instrument));
             activeInstrumentBoxes.add(checkbox);
             CustomMenuItem item = new CustomMenuItem(checkbox);
@@ -599,10 +613,15 @@ public class DetailViewController {
         }
     }
 
+    protected StyledCheckbox getStyledCheckbox(String name, Boolean checked) {
+        return new StyledCheckbox(name, checked);
+    }
+
     /**
      * Event handler for when a checkbox in the camera dropdown is clicked.
+     *
      * @param box the checkbox that was clicked.
-     * @param i index of the checkbox.
+     * @param i   index of the checkbox.
      * @return the Event Handler.
      */
     private EventHandler<MouseEvent> createCameraDropdownHandler(StyledCheckbox box, int i) {
@@ -617,8 +636,9 @@ public class DetailViewController {
 
     /**
      * Event handler for when a checkbox in the instruments dropdown is clicked.
+     *
      * @param box the checkbox that was clicked.
-     * @param i index of the checkbox.
+     * @param i   index of the checkbox.
      * @return the Event Handler.
      */
     private EventHandler<MouseEvent> createInstrumentDropdownHandler(StyledCheckbox box, int i) {
