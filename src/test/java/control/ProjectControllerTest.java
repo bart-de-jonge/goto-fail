@@ -334,8 +334,7 @@ public class ProjectControllerTest extends ApplicationTest {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
+            
             latch[0].countDown();
         });
         latch[0].await();
