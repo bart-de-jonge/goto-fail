@@ -206,7 +206,6 @@ public class DirectorTimelineController {
      */
     private void removeOverlap(DirectorShotBlock directorShotBlock) {
         ArrayList<DirectorShotBlock> toRemove = new ArrayList<>();
-        System.out.println(overlappingShotBlocks);
         this.overlappingShotBlocks.stream()
                 .filter(shotBlock ->
                     shotBlock.getShot().getCollidesWith().isEmpty()).forEach(
