@@ -32,4 +32,4 @@ bin/git/init-hooks.sh
 ```
 
 ## Branch naming conventions
-As for the branch names we will be using during the project, the branch names are supposed to not have capital letters and no wierd punctuation or signs. The branch names are supposed to be simple and clear. The name should be descriptive of what will be implemented, added or fixed in the branch. Every word in the branch should be seperated by a '-'. Some examples of good names for branches would be: `feature-timeline-autoscroll`, `fix-timeline-word-wrap`.
+As for the branch names we will be using during the project, the branch names are supposed to not have capital letters and no weird punctuation or signs. The branch names are supposed to be simple and clear. The name should be descriptive of what will be implemented, added or fixed in the branch. Every word in the branch should be seperated by a '-'. Some examples of good names for branches would be: `feature-timeline-autoscroll`, `fix-timeline-word-wrap`.
