@@ -250,7 +250,7 @@ public class DetailViewController {
      * Change listener for the dropdown. Fires whenever a box is selected or deselected.
      * @param c The Change with information about what changed.
      */
-    private void camerasDropdownChangeListener(ListChangeListener.Change c) {
+    protected void camerasDropdownChangeListener(ListChangeListener.Change c) {
         DirectorShot shot = ((DirectorShot) manager.getActiveShotBlock().getShot());
         c.next();
         if (c.wasAdded()) {
@@ -259,7 +259,7 @@ public class DetailViewController {
             cameraDeletedInDropdown((int) c.getRemoved().get(0));
         }
     }
-    
+
     /**
      * Method for handling a deselect in the drop down.
      * @param index the index of the deselected camera.

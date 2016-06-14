@@ -1,9 +1,6 @@
 package control;
 
-import data.CameraShot;
-import data.DirectorShot;
-import data.Instrument;
-import data.ScriptingProject;
+import data.*;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
 import gui.centerarea.TimetableBlock;
@@ -30,6 +27,7 @@ import org.testfx.framework.junit.ApplicationTest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -89,6 +87,77 @@ public class DetailViewControllerTest extends ApplicationTest {
         detailViewController.initInstrumentsDropdown(cameraShotBlock);
         Mockito.verify(detailView, times(2)).getInstrumentsDropdown();
         Mockito.verify(detailView, times(1)).setInstruments(anyObject());
+    }
+
+    @Test
+    public void camerasDropdownChangeListenerRemoved() {
+        // Setup mocks
+        ListChangeListener.Change change = Mockito.mock(ListChangeListener.Change.class);
+        DirectorShot shot = Mockito.mock(DirectorShot.class);
+        DirectorShotBlock shotBlock = Mockito.mock(DirectorShotBlock.class);
+        ArrayList<Integer> changeList = new ArrayList<>(Arrays.asList(0));
+        ScriptingProject project = Mockito.mock(ScriptingProject.class);
+        TimetableBlock timetableBlock = Mockito.mock(TimetableBlock.class);
+        TimelineController timelineController = Mockito.mock(TimelineController.class);
+        CameraShot cameraShot1 = Mockito.mock(CameraShot.class);
+        CameraShot cameraShot2 = Mockito.mock(CameraShot.class);
+        Set<CameraShot> shotList = new HashSet<>(Arrays.asList(cameraShot1, cameraShot2));
+        CameraShotBlock cameraShotBlock1 = Mockito.mock(CameraShotBlock.class);
+        CameraShotBlock cameraShotBlock2 = Mockito.mock(CameraShotBlock.class);
+
+        // Mock all the methods
+        when(manager.getActiveShotBlock()).thenReturn(shotBlock);
+        when(manager.getScriptingProject()).thenReturn(project);
+        when(shotBlock.getShot()).thenReturn(shot);
+        when(shotBlock.getTimetableBlock()).thenReturn(timetableBlock);
+        when(change.getRemoved()).thenReturn(changeList);
+        when(manager.getTimelineControl()).thenReturn(timelineController);
+        when(shot.getCameraShots()).thenReturn(shotList);
+        when(timelineController.getShotBlockForShot(cameraShot1)).thenReturn(cameraShotBlock1);
+        when(timelineController.getShotBlockForShot(cameraShot2)).thenReturn(cameraShotBlock2);
+        when(cameraShotBlock1.getTimetableNumber()).thenReturn(100);
+
+        // Call method under testing
+        detailViewController.camerasDropdownChangeListener(change);
+
+        // verify
+        Mockito.verify(shot, times(1)).getTimelineIndices();
+        Mockito.verify(shot, times(2)).getCameraShots();
+        assertEquals(1, shotList.size());
+        assertTrue(shotList.contains(cameraShot1));
+        assertFalse(shotList.contains(cameraShot2));
+    }
+
+    @Test
+    public void camerasDropdownChangeListenerAdded() {
+        // Setup mocks
+        ListChangeListener.Change change = Mockito.mock(ListChangeListener.Change.class);
+        DirectorShot shot = Mockito.mock(DirectorShot.class);
+        DirectorShotBlock shotBlock = Mockito.mock(DirectorShotBlock.class);
+        ArrayList<Integer> changeList = new ArrayList<>(Arrays.asList(0));
+        ScriptingProject project = Mockito.mock(ScriptingProject.class);
+        TimetableBlock timetableBlock = Mockito.mock(TimetableBlock.class);
+        TimelineController timelineController = Mockito.mock(TimelineController.class);
+        ArrayList<CameraTimeline> timelines = new ArrayList<>();
+        CameraTimeline timeline = Mockito.mock(CameraTimeline.class);
+        timelines.add(timeline);
+
+        // Mock all the methods
+        when(manager.getActiveShotBlock()).thenReturn(shotBlock);
+        when(manager.getScriptingProject()).thenReturn(project);
+        when(shotBlock.getShot()).thenReturn(shot);
+        when(shotBlock.getTimetableBlock()).thenReturn(timetableBlock);
+        when(change.getAddedSubList()).thenReturn(changeList);
+        when(manager.getTimelineControl()).thenReturn(timelineController);
+        when(change.wasAdded()).thenReturn(true);
+        when(project.getCameraTimelines()).thenReturn(timelines);
+
+        // Call method under testing
+        detailViewController.camerasDropdownChangeListener(change);
+
+        // verify
+        Mockito.verify(timeline, times(1)).addShot(anyObject());
+        Mockito.verify(manager, times(1)).setActiveShotBlock(shotBlock);
     }
 
     @Test
