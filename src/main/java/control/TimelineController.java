@@ -315,9 +315,11 @@ public class TimelineController {
             ShotDecouplingModalView decouplingModalView = new ShotDecouplingModalView(
                     this.rootPane, shotBlock.getShot());
 
-            decouplingModalView.getCancelButton().setOnMouseReleased(e -> this.cancelButtonListener(decouplingModalView, shotBlock));
+            decouplingModalView.getCancelButton().setOnMouseReleased(e ->
+                    this.cancelButtonListener(decouplingModalView, shotBlock));
 
-            decouplingModalView.getConfirmButton().setOnMouseReleased(e -> this.confirmButtonListener(decouplingModalView, shotBlock, event));
+            decouplingModalView.getConfirmButton().setOnMouseReleased(e ->
+                    this.confirmButtonListener(decouplingModalView, shotBlock, event));
         } else {
             this.modifyCameraShot(event, shotBlock);
         }
@@ -328,7 +330,8 @@ public class TimelineController {
      * @param decouplingModalView - the decoupling modal view
      * @param shotBlock - the shotblock
      */
-    protected void cancelButtonListener(ShotDecouplingModalView decouplingModalView, CameraShotBlock shotBlock) {
+    protected void cancelButtonListener(
+            ShotDecouplingModalView decouplingModalView, CameraShotBlock shotBlock) {
         log.info("Shot decoupling cancelled.", shotBlock.getShot());
         decouplingModalView.hideModal();
         shotBlock.restorePreviousPosition();
@@ -340,7 +343,9 @@ public class TimelineController {
      * @param shotBlock - the shotblock
      * @param event - the camerashotblockupdatedevent
      */
-    protected void confirmButtonListener(ShotDecouplingModalView decouplingModalView, CameraShotBlock shotBlock, CameraShotBlockUpdatedEvent event) {
+    protected void confirmButtonListener(ShotDecouplingModalView decouplingModalView,
+                                         CameraShotBlock shotBlock,
+                                         CameraShotBlockUpdatedEvent event) {
         log.info("Shot decoupling confirmed.", shotBlock.getShot());
         decouplingModalView.hideModal();
         this.decoupleShot(event.getOldTimelineNumber(), shotBlock.getShot());
