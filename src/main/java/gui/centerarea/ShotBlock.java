@@ -89,7 +89,6 @@ public abstract class ShotBlock {
         } catch (Exception e) {
             log.error("No valid timetableblock class, could not initialize timetableblock!");
             this.timetableBlock = null;
-            e.printStackTrace();
         }
     }
 
@@ -242,16 +241,16 @@ public abstract class ShotBlock {
     public void setDescription(String description) {
         this.description = description;
 
-        timetableBlock.getDescriptionNormalLabel().setText(description);
-        timetableBlock.getDescriptionDraggedLabel().setText(description);
+        timetableBlock.getDescriptionNormalLabel().setText("Description: " + description);
+        timetableBlock.getDescriptionDraggedLabel().setText("Description: " + description);
     }
 
     /**
      * Helper function to redraw block counts.
      */
     private void redrawCounts() {
-        timetableBlock.getCountNormalLabel().setText(beginCount + " - " + endCount);
-        timetableBlock.getCountDraggedLabel().setText(beginCount + " - " + endCount);
+        timetableBlock.getCountNormalLabel().setText("Count: " + beginCount + " - " + endCount);
+        timetableBlock.getCountDraggedLabel().setText("Counnt: " + beginCount + " - " + endCount);
     }
 
     /**

@@ -131,3 +131,21 @@
     -fx-border-color: gray;
     -fx-border-width: 0px 0px 0px 0px;
 }
+
+.separator {
+    -fx-skin: null;
+}
+
+.separator:horizontal .line {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 0 0;
+    -fx-border-width: 0;
+    -fx-border-color: transparent;
+}
+
+.separator:vertical .line {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 0 0;
+    -fx-border-width: 0;
+    -fx-border-color: transparent;
+}

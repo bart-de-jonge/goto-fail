@@ -8,6 +8,7 @@ import gui.headerarea.DirectorDetailView;
 import gui.headerarea.DoubleTextField;
 import gui.root.RootHeaderArea;
 import gui.root.RootPane;
+import gui.styling.StyledCheckbox;
 import gui.styling.StyledMenuButton;
 import gui.styling.StyledTextfield;
 import javafx.beans.InvalidationListener;
@@ -18,16 +19,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.controlsfx.control.CheckComboBox;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.testfx.framework.junit.ApplicationTest;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -69,24 +66,9 @@ public class DetailViewControllerTest extends ApplicationTest {
         when(detailView.getPaddingAfterField()).thenReturn(paddingAfterField);
         when(detailView.getEndCountField()).thenReturn(endCountField);
         when(detailView.getEndCountField()).thenReturn(endCountField);
-        when(detailView.getInstrumentsDropdown()).thenReturn(new CheckComboBox<>());
         when(detailView.getSelectCamerasButton()).thenReturn(new StyledMenuButton());
 
         detailViewController = spy(new DetailViewController(manager));
-    }
-
-    @Test
-    public void initInstrumentsDropdown() {
-        CameraShotBlock cameraShotBlock = Mockito.mock(CameraShotBlock.class);
-        ScriptingProject project = Mockito.mock(ScriptingProject.class);
-        ArrayList<Instrument> instruments = new ArrayList<>();
-        instruments.add(new Instrument("name", "description"));
-        when(cameraShotBlock.getInstruments()).thenReturn(instruments);
-        when(manager.getScriptingProject()).thenReturn(project);
-
-        detailViewController.initInstrumentsDropdown(cameraShotBlock);
-        Mockito.verify(detailView, times(2)).getInstrumentsDropdown();
-        Mockito.verify(detailView, times(1)).setInstruments(anyObject());
     }
 
     @Test
@@ -246,7 +228,7 @@ public class DetailViewControllerTest extends ApplicationTest {
         setupPaddingUpdateHelperTests(shot, shotBlock, timelineController);
 
         // Call method under testing
-        detailViewController.beforePaddingUpdateHelper();
+        detailViewController.beforePaddingFocusListener(null, true, false);
 
         // Verify
         assertEquals(0.0, shot.getFrontShotPadding(), 0);
@@ -255,14 +237,14 @@ public class DetailViewControllerTest extends ApplicationTest {
     }
 
     @Test
-    public void afterPaddingUpdateHelper() {
+    public void afterPaddingFocusListener() {
         DirectorShotBlock shotBlock = Mockito.mock(DirectorShotBlock.class);
         DirectorShot shot = Mockito.mock(DirectorShot.class);
         TimelineController timelineController = Mockito.mock(TimelineController.class);
         setupPaddingUpdateHelperTests(shot, shotBlock, timelineController);
 
         // Call method under testing
-        detailViewController.afterPaddingUpdateHelper();
+        detailViewController.afterPaddingFocusListener(null, true, false);
 
         // Verify
         assertEquals(0.0, shot.getEndShotPadding(), 0);
@@ -272,6 +254,9 @@ public class DetailViewControllerTest extends ApplicationTest {
 
     @Test
     public void reInitForCameraBlock() {
+        StyledMenuButton menuButton = new StyledMenuButton();
+        when(detailView.getSelectInstrumentsButton()).thenReturn(menuButton);
+
         detailViewController.reInitForCameraBlock();
 
         Mockito.verify(detailView, times(2)).getNameField();
@@ -282,6 +267,8 @@ public class DetailViewControllerTest extends ApplicationTest {
 
     @Test
     public void reInitForDirectorBlock() {
+        StyledMenuButton menuButton = new StyledMenuButton();
+        when(detailView.getSelectInstrumentsButton()).thenReturn(menuButton);
         detailViewController.reInitForDirectorBlock();
 
         Mockito.verify(detailView, times(2)).getPaddingBeforeField();
@@ -464,6 +451,131 @@ public class DetailViewControllerTest extends ApplicationTest {
 
         verify(block, times(1)).setDescription("test newvalue");
         verify(shot, times(1)).setDescription("test newvalue");
+    }
+
+    @Test
+    public void activeBlockChangedCamera() {
+        // Setup mocks
+        CameraShotBlock shotBlock = Mockito.mock(CameraShotBlock.class);
+        RootPane rootPane = Mockito.mock(RootPane.class);
+        RootHeaderArea rootHeaderArea = Mockito.mock(RootHeaderArea.class);
+
+        // Mock all the methods
+        when(manager.getActiveShotBlock()).thenReturn(shotBlock);
+        when(manager.getRootPane()).thenReturn(rootPane);
+        when(rootPane.getRootHeaderArea()).thenReturn(rootHeaderArea);
+
+        // Call method under testing
+        detailViewController.activeBlockChanged();
+
+        // Verify all the things
+        Mockito.verify(detailViewController, times(1)).reInitForCameraBlock();
+        Mockito.verify(rootHeaderArea, times(1)).reInitHeaderBar(anyObject());
+    }
+
+    @Test
+    public void activeBlockChangedDirector() {
+        // Setup mocks
+        DirectorShotBlock shotBlock = Mockito.mock(DirectorShotBlock.class);
+        RootPane rootPane = Mockito.mock(RootPane.class);
+        RootHeaderArea rootHeaderArea = Mockito.mock(RootHeaderArea.class);
+
+        // Mock all the methods
+        when(manager.getActiveShotBlock()).thenReturn(shotBlock);
+        when(manager.getRootPane()).thenReturn(rootPane);
+        when(rootPane.getRootHeaderArea()).thenReturn(rootHeaderArea);
+
+        // Call method under testing
+        detailViewController.activeBlockChanged();
+
+        // Verify all the things
+        Mockito.verify(detailViewController, times(1)).reInitForDirectorBlock();
+        Mockito.verify(rootHeaderArea, times(1)).reInitHeaderBar(anyObject());
+    }
+
+    @Test
+    public void instrumentsDropdownListener() {
+        // Setup mocks
+        StyledMenuButton menuButton = new StyledMenuButton();
+        CameraShotBlock shotBlock = Mockito.mock(CameraShotBlock.class);
+        Instrument instrument = Mockito.mock(Instrument.class);
+        ArrayList<Instrument> instrumentList = new ArrayList<>(Arrays.asList(instrument));
+        ScriptingProject project = Mockito.mock(ScriptingProject.class);
+        List<StyledCheckbox> list = Mockito.mock(List.class);
+        StyledCheckbox checkbox = Mockito.mock(StyledCheckbox.class);
+
+        // Mock all the methods
+        when(shotBlock.getInstruments()).thenReturn(instrumentList);
+        detailViewController.setActiveCameraBlock(shotBlock);
+        detailViewController.setActiveInstrumentBoxes(list);
+        when(manager.getScriptingProject()).thenReturn(project);
+        when(project.getInstruments()).thenReturn(instrumentList);
+        doReturn(checkbox).when(detailViewController).getStyledCheckbox(anyString(), anyBoolean());
+
+        // Call method under testing
+        detailViewController.instrumentsDropdownListener(null, false, true, menuButton);
+
+        // Verify all the things
+        assertEquals(1, menuButton.getItems().size());
+        Mockito.verify(list, times(1)).add(checkbox);
+    }
+
+    @Test
+    public void instrumentsDropdownListenerFalse() {
+        // Setup mocks
+        StyledMenuButton menuButton = new StyledMenuButton();
+        List<StyledCheckbox> list = Mockito.mock(List.class);
+
+        // Mock all the methods
+        detailViewController.setActiveInstrumentBoxes(list);
+
+        // Call method under testing
+        detailViewController.instrumentsDropdownListener(null, true, false, menuButton);
+
+        // Verify all the things
+        Mockito.verify(list, times(1)).clear();
+    }
+
+    @Test
+    public void cameraDropdownListenerFalse() {
+        // Setup mocks
+        StyledMenuButton menuButton = new StyledMenuButton();
+        List<StyledCheckbox> list = Mockito.mock(List.class);
+
+        // Mock all the methods
+        detailViewController.setActiveCameraBoxes(list);
+
+        // Call method under testing
+        detailViewController.cameraDropdownListener(null, true, false, menuButton);
+
+        // Verify all the things
+        Mockito.verify(list, times(1)).clear();
+    }
+
+    @Test
+    public void camerasDropdownListener() {
+        // Setup mocks
+        StyledMenuButton menuButton = new StyledMenuButton();
+        DirectorShotBlock shotBlock = Mockito.mock(DirectorShotBlock.class);
+        Camera camera = Mockito.mock(Camera.class);
+        ArrayList<Camera> cameraList = new ArrayList<>(Arrays.asList(camera));
+        ScriptingProject project = Mockito.mock(ScriptingProject.class);
+        List<StyledCheckbox> list = Mockito.mock(List.class);
+        StyledCheckbox checkbox = Mockito.mock(StyledCheckbox.class);
+
+        // Mock all the methods
+        detailViewController.setActiveDirectorBlock(shotBlock);
+        detailViewController.setActiveCameraBoxes(list);
+        when(manager.getScriptingProject()).thenReturn(project);
+        when(project.getCameras()).thenReturn(cameraList);
+        doReturn(checkbox).when(detailViewController).getStyledCheckbox(anyString(), anyBoolean());
+
+        // Call method under testing
+        detailViewController.cameraDropdownListener(null, false, true, menuButton);
+
+        // Verify all the things
+        assertEquals(1, menuButton.getItems().size());
+        Mockito.verify(list, times(1)).add(checkbox);
     }
 
     @Override

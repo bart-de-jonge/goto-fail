@@ -117,15 +117,12 @@ public class ProjectController {
             // Do something with response
             if (result) {
                 showSuccessModal();
-                System.out.println("Upload successful");
             } else {
                 showErrorModal();
-                System.out.println("Upload failed");
             }
 
         } catch (IOException e) {
             showErrorModal();
-            e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -307,7 +304,6 @@ public class ProjectController {
             RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),
                     editProjectModal.getTimelines().size(), false);
             controllerManager.getRootPane().reInitRootCenterArea(area);
-            reInitTimelines(project);
         }
     }
 
@@ -334,7 +330,6 @@ public class ProjectController {
         try {
             temp = ScriptingProject.read(file);
         } catch (Exception e) {
-            e.printStackTrace();
             log.error("previously opened file could not be found.");
         }
         if (temp == null) {
@@ -982,6 +977,7 @@ public class ProjectController {
      */
     private void addCameraType(MouseEvent event) {
         cameraTypeModal = new AddCameraTypeModalView(controllerManager.getRootPane());
+        cameraTypeModal.getTitleLabel().setText("Add a camera type");
         cameraTypeModal.getAddCameraTypeButton().setOnMouseClicked(this::typeAdded);
         cameraTypeModal.getCancelButton().setOnMouseClicked(this::cancelAddCameraType);
     }

@@ -97,7 +97,6 @@ public class RootHeaderArea extends VBox {
                 try {
                     java.awt.Desktop.getDesktop().browse(java.net.URI.create("http://gotofail.net"));
                 } catch (Exception e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
             });
@@ -119,7 +118,6 @@ public class RootHeaderArea extends VBox {
      */
     private Menu initFileMenu() {
         Menu fileMenu = new Menu("File");
-
         initializeLocalFileItems(fileMenu);
 
         MenuItem uploadItem = new MenuItem("Upload to webserver");
@@ -138,7 +136,7 @@ public class RootHeaderArea extends VBox {
                     rootPane.getPrimaryStage().close();
                 }
             });
-        fileMenu.getItems().addAll(quit, uploadItem);
+        fileMenu.getItems().addAll(uploadItem, quit);
         return fileMenu;
     }
 
