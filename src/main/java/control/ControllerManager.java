@@ -1,13 +1,21 @@
 package control;
 
+import java.beans.PropertyChangeEvent;
+
+import java.awt.KeyboardFocusManager;
+
 import data.ScriptingProject;
 import gui.centerarea.ShotBlock;
 import gui.modal.SaveModalView;
 import gui.root.RootPane;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.TextField;
 
 /**
  * Class wrapper for model management controllers.
@@ -55,6 +63,7 @@ public class ControllerManager {
         this.rootPane = rootPane;
         initializeControllers();
         initOnCloseOperation();
+        initTextFieldAutoSelect();
     }
 
     /**
@@ -92,6 +101,37 @@ public class ControllerManager {
         preferencesViewController = new PreferencesViewController(this);
         toolViewController = new ToolViewController(this);
         projectController = new ProjectController(this);
+    }
+    
+    /**
+     * Init the handler for auto text select for text fields.
+     */
+    private void initTextFieldAutoSelect() {
+        rootPane.getPrimaryStage().getScene().focusOwnerProperty()
+            .addListener(this::focusChangeListener);
+    }
+    
+    /**
+     * Handler for auto text select.
+     Checks if the new selected Node is a text field, and selects text if needed
+     * @param observable the observable value
+     * @param oldValue the old node
+     * @param newValue the new node
+     */
+    private void focusChangeListener(ObservableValue<? extends Node> observable,
+            Node oldValue, Node newValue) {
+        if (newValue != null) {
+            String className = newValue.getClass().getName();
+            if (className.equals("gui.styling.StyledTextfield")
+                    || className.equals("gui.headerarea.NumberTextField")
+                    || className.equals("gui.headerarea.DoubleTextField")
+                    || className.equals("javafx.scene.control.TextField")) {
+                
+                Platform.runLater(() -> {
+                        ((TextField) newValue).selectAll();
+                    });
+            }
+        }
     }
 
     /**

@@ -76,7 +76,6 @@ public class ToolViewController {
                                     || currentFocusClass.equals("javafx.scene.control.TextField")
                                     || currentFocusClass.equals("gui.headerarea.DoubleTextField")
                                     || currentFocusClass.equals("gui.headerarea.NumberTextField");
-                            System.out.println(isTextField);
                             if (!isTextField) {
                                 deleteActiveCameraShot();
                                 event.consume();
