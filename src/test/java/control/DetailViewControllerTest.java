@@ -578,6 +578,39 @@ public class DetailViewControllerTest extends ApplicationTest {
         Mockito.verify(list, times(1)).add(checkbox);
     }
 
+    @Test
+    public void getDetailView() {
+        assertEquals(detailView, detailViewController.getDetailView());
+    }
+
+    @Test
+    public void getActiveDirectorBlock() {
+        DirectorShotBlock shotBlock = Mockito.mock(DirectorShotBlock.class);
+        detailViewController.setActiveDirectorBlock(shotBlock);
+        assertEquals(shotBlock, detailViewController.getActiveDirectorBlock());
+    }
+
+    @Test
+    public void getActiveCameraBlock() {
+        CameraShotBlock shotBlock = Mockito.mock(CameraShotBlock.class);
+        detailViewController.setActiveCameraBlock(shotBlock);
+        assertEquals(shotBlock, detailViewController.getActiveCameraBlock());
+    }
+
+    @Test
+    public void getActiveCameraBoxes() {
+        List<StyledCheckbox> list = Mockito.mock(List.class);
+        detailViewController.setActiveCameraBoxes(list);
+        assertEquals(list, detailViewController.getActiveCameraBoxes());
+    }
+
+    @Test
+    public void getActiveInstrumentBoxes() {
+        List<StyledCheckbox> list = Mockito.mock(List.class);
+        detailViewController.setActiveInstrumentBoxes(list);
+        assertEquals(list, detailViewController.getActiveInstrumentBoxes()git a);
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
 
