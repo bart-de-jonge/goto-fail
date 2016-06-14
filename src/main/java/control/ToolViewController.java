@@ -36,7 +36,7 @@ public class ToolViewController {
      * Initialize all tools in the toolbox. Adds the corresponding buttons to the views and sets up
      * the event handlers.
      */
-    private void initializeTools() {
+    protected void initializeTools() {
         // add handlers to toolbuttons
         toolView.getCameraBlockCreationTool().getButton().setOnMouseClicked(
                 event -> creationModalViewController.showCameraCreationWindow());

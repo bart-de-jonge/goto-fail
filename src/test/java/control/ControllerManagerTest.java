@@ -2,21 +2,42 @@ package control;
 
 import data.ScriptingProject;
 import gui.centerarea.CameraShotBlock;
+import gui.headerarea.DetailView;
+import gui.headerarea.ToolView;
+import gui.modal.SaveModalView;
+import gui.root.RootHeaderArea;
 import gui.root.RootPane;
+import gui.styling.StyledTextfield;
+import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.internal.WhiteboxImpl;
 import org.testfx.framework.junit.ApplicationTest;
 
+import java.util.Observable;
+import java.util.concurrent.CountDownLatch;
+
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
+import static org.powermock.api.support.membermodification.MemberMatcher.method;
+import static org.powermock.api.support.membermodification.MemberModifier.suppress;
 
 /**
  * @author goto fail;
  */
-@PrepareForTest(ControllerManager.class)
+@PrepareForTest({ControllerManager.class, ToolViewController.class})
 public class ControllerManagerTest extends ApplicationTest {
     ControllerManager controllerManager;
     private TimelineController timelineController;
@@ -88,24 +109,6 @@ public class ControllerManagerTest extends ApplicationTest {
         assertNull(controllerManager.getActiveShotBlock());
     }
 
-//    @Test
-//    public void updateWindowTitleTest() throws InterruptedException {
-    // Call method under test
-//        final CountDownLatch[] latch = {new CountDownLatch(1)};
-//        Platform.runLater(() -> {
-//            Stage primaryStage = Mockito.mock(Stage.class);
-//            when(rootpane.getPrimaryStage()).thenReturn(primaryStage);
-//            ScriptingProject scriptingProjectMock = Mockito.mock(ScriptingProject.class);
-//            when(scriptingProjectMock.getName()).thenReturn("I'M A TITLE!");
-//            controllerManager.setScriptingProject(scriptingProjectMock);
-//
-//            controllerManager.updateWindowTitle();
-//            latch[0].countDown();
-//            Mockito.verify(primaryStage).setTitle("I'M A TITLE");
-//        });
-//        latch[0].await();
-//    }
-
     @Test
     public void setActiveShotBlockTest() {
         CameraShotBlock shotBlockMock = mock(CameraShotBlock.class);
@@ -118,26 +121,130 @@ public class ControllerManagerTest extends ApplicationTest {
         verify(toolViewController).activeBlockChanged();
     }
 
-//    TODO: Fix the test conflicts w/ javafx issues
-//    @Test
-//    public void initOnCloseOperationTest() throws InterruptedException {
-//        Stage primaryStage = Mockito.mock(Stage.class);
-//        when(rootpane.getPrimaryStage()).thenReturn(primaryStage);
+    @Test
+    public void focusChangeListener() {
+        ObservableValue<Node> observableValue = Mockito.mock(ObservableValue.class);
+        Node oldNode = Mockito.mock(Node.class);
+        Node newNode = Mockito.mock(Node.class);
 
-        // Call method under test
-//        final CountDownLatch[] latch = {new CountDownLatch(1)};
-//        Platform.runLater(() -> {
-//
-//            try {
-//                WhiteboxImpl.invokeMethod(controllerManager, "initOnCloseOperation");
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//            latch[0].countDown();
-//        });
-//        latch[0].await();
-//
-//        Mockito.verify(primaryStage, times(1)).setOnCloseRequest(Matchers.anyObject());
-//    }
+        controllerManager.focusChangeListener(observableValue, oldNode, newNode);
+        Mockito.verify(controllerManager, times(0)).initOnCloseOperation();
+    }
+
+    @Test
+    public void focusChangeListenerNull() {
+        ObservableValue<Node> observableValue = Mockito.mock(ObservableValue.class);
+        controllerManager.focusChangeListener(observableValue, null, null);
+        Mockito.verify(controllerManager, times(0)).initOnCloseOperation();
+    }
+
+    @Test
+    public void initOnCloseOperation() {
+        Stage stage = Mockito.mock(Stage.class);
+        when(rootpane.getPrimaryStage()).thenReturn(stage);
+        controllerManager.initOnCloseOperation();
+        Mockito.verify(controllerManager, times(1)).initOnCloseOperation();
+    }
+
+    @Test
+    public void handleOnClose() {
+        WindowEvent event = Mockito.mock(WindowEvent.class);
+        ScriptingProject project = Mockito.mock(ScriptingProject.class);
+        controllerManager.setScriptingProject(project);
+        when(project.isChanged()).thenReturn(true);
+        Mockito.doNothing().when(controllerManager).initSaveModal();
+
+        controllerManager.handleOnClose(event);
+        Mockito.verify(controllerManager, times(1)).initSaveModal();
+    }
+
+    @Test
+    public void handleOnCloseProjectNull() {
+        WindowEvent event = Mockito.mock(WindowEvent.class);
+
+        controllerManager.handleOnClose(event);
+        Mockito.verify(controllerManager, times(0)).initSaveModal();
+    }
+
+    @Test
+    public void handleOnCloseProjectNotChanged() {
+        WindowEvent event = Mockito.mock(WindowEvent.class);
+        ScriptingProject project = Mockito.mock(ScriptingProject.class);
+        controllerManager.setScriptingProject(project);
+
+        controllerManager.handleOnClose(event);
+        Mockito.verify(controllerManager, times(0)).initSaveModal();
+    }
+
+    @Test
+    public void initSaveModal() throws InterruptedException {
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        Platform.runLater(() -> {
+
+            controllerManager.initSaveModal();
+
+            latch[0].countDown();
+        });
+        latch[0].await();
+        Mockito.verify(controllerManager, times(1)).initSaveModal();
+        assertNotNull(controllerManager.getSaveModal());
+    }
+
+    @Test
+    public void handleSave() {
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1, false, false, false, false, false, false, false, false, false, false, null);
+        SaveModalView saveModalView = Mockito.mock(SaveModalView.class);
+        controllerManager.setSaveModal(saveModalView);
+        Stage stage = Mockito.mock(Stage.class);
+        when(rootpane.getPrimaryStage()).thenReturn(stage);
+
+        controllerManager.handleSave(mouseEvent);
+
+        Mockito.verify(projectController, times(1)).save();
+        Mockito.verify(saveModalView, times(1)).hideModal();
+        Mockito.verify(stage, times(1)).close();
+    }
+
+    @Test
+    public void handleDontSave() {
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1, false, false, false, false, false, false, false, false, false, false, null);
+        SaveModalView saveModalView = Mockito.mock(SaveModalView.class);
+        controllerManager.setSaveModal(saveModalView);
+        Stage stage = Mockito.mock(Stage.class);
+        when(rootpane.getPrimaryStage()).thenReturn(stage);
+
+        controllerManager.handleDontSave(mouseEvent);
+
+        Mockito.verify(projectController, times(0)).save();
+        Mockito.verify(saveModalView, times(1)).hideModal();
+        Mockito.verify(stage, times(1)).close();
+    }
+
+    @Test
+    public void handleClose() {
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1, false, false, false, false, false, false, false, false, false, false, null);
+        SaveModalView saveModalView = Mockito.mock(SaveModalView.class);
+        controllerManager.setSaveModal(saveModalView);
+
+        controllerManager.handleCancel(mouseEvent);
+        Mockito.verify(projectController, times(0)).save();
+        Mockito.verify(saveModalView, times(1)).hideModal();
+    }
+
+    @Test
+    public void updateWindowTitle() {
+        Stage stage = Mockito.mock(Stage.class);
+        when(rootpane.getPrimaryStage()).thenReturn(stage);
+        ScriptingProject project = Mockito.mock(ScriptingProject.class);
+        doReturn(project).when(controllerManager).getScriptingProject();
+
+        controllerManager.updateWindowTitle();
+
+        Mockito.verify(project, times(1)).getName();
+    }
+
+    @After
+    public void validate() {
+        validateMockitoUsage();
+    }
 }
