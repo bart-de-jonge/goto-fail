@@ -1,6 +1,10 @@
 package control;
 
-import data.*;
+import data.Camera;
+import data.CameraShot;
+import data.DirectorShot;
+import data.Instrument;
+import data.Shot;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
 import gui.centerarea.ShotBlock;
@@ -91,10 +95,10 @@ public class DetailViewController {
                 .focusedProperty().addListener(this::beforePaddingFocusListener);
 
         ((DirectorDetailView) detailView).getPaddingBeforeField().setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.ENTER)) {
-                this.beforePaddingUpdateHelper();
-            }
-        });
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    this.beforePaddingUpdateHelper();
+                }
+            });
     }
 
     /**
@@ -128,13 +132,13 @@ public class DetailViewController {
 
             directorShot.setFrontShotPadding(newVal);
             directorShot.getCameraShots().forEach(e -> {
-                CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
-                shotBlock.setBeginCount(directorShot.getBeginCount() - newVal, true);
-                manager.getTimelineControl().modifyCameraShot(
-                        (CameraShotBlockUpdatedEvent) shotBlock.getShotBlockUpdatedEvent(),
-                        shotBlock);
-                manager.setActiveShotBlock(directorShotBlock);
-            });
+                    CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
+                    shotBlock.setBeginCount(directorShot.getBeginCount() - newVal, true);
+                    manager.getTimelineControl().modifyCameraShot(
+                            (CameraShotBlockUpdatedEvent) shotBlock.getShotBlockUpdatedEvent(),
+                            shotBlock);
+                    manager.setActiveShotBlock(directorShotBlock);
+                });
             manager.getTimelineControl().recomputeAllCollisions();
         }
     }
@@ -147,10 +151,10 @@ public class DetailViewController {
                 .addListener(this::afterPaddingFocusListener);
         ((DirectorDetailView) detailView).getPaddingAfterField().setOnKeyPressed(
                 event -> {
-                    if (event.getCode().equals(KeyCode.ENTER)) {
-                        this.afterPaddingUpdateHelper();
-                    }
-                });
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    this.afterPaddingUpdateHelper();
+                }
+            });
     }
 
     /**
@@ -182,14 +186,14 @@ public class DetailViewController {
             directorShotBlock.setPaddingAfter(newVal);
             ((DirectorShot) manager.getActiveShotBlock().getShot()).setEndShotPadding(newVal);
             ((DirectorShot) manager.getActiveShotBlock().getShot()).getCameraShots().forEach(e -> {
-                CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
-                shotBlock.setEndCount(((DirectorShot) manager.getActiveShotBlock().getShot())
-                        .getEndCount() + newVal, true);
-                manager.getTimelineControl().modifyCameraShot(
-                        (CameraShotBlockUpdatedEvent) shotBlock.getShotBlockUpdatedEvent(),
-                        shotBlock);
-                manager.setActiveShotBlock(directorShotBlock);
-            });
+                    CameraShotBlock shotBlock = manager.getTimelineControl().getShotBlockForShot(e);
+                    shotBlock.setEndCount(((DirectorShot) manager.getActiveShotBlock().getShot())
+                            .getEndCount() + newVal, true);
+                    manager.getTimelineControl().modifyCameraShot(
+                            (CameraShotBlockUpdatedEvent) shotBlock.getShotBlockUpdatedEvent(),
+                            shotBlock);
+                    manager.setActiveShotBlock(directorShotBlock);
+                });
             manager.getTimelineControl().recomputeAllCollisions();
 
         }
@@ -311,10 +315,10 @@ public class DetailViewController {
 
         detailView.getBeginCountField().setOnKeyPressed(
                 event -> {
-                    if (event.getCode().equals(KeyCode.ENTER)) {
-                        this.beginCountUpdateHelper();
-                    }
-                });
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    this.beginCountUpdateHelper();
+                }
+            });
     }
 
     /**
@@ -357,10 +361,10 @@ public class DetailViewController {
 
         detailView.getEndCountField().setOnKeyPressed(
                 event -> {
-                    if (event.getCode().equals(KeyCode.ENTER)) {
-                        endCountUpdateHelper();
-                    }
-                });
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    endCountUpdateHelper();
+                }
+            });
     }
 
     /**
@@ -504,7 +508,8 @@ public class DetailViewController {
         cameraButtons.setFillColor(TweakingHelper.getBackgroundColor());
         activeCameraBoxes = new ArrayList<>();
 
-        cameraButtons.showingProperty().addListener((observable, oldValue, newValue) -> cameraDropdownListener(observable, oldValue, newValue, cameraButtons));
+        cameraButtons.showingProperty().addListener((observable, oldValue, newValue) ->
+                cameraDropdownListener(observable, oldValue, newValue, cameraButtons));
     }
 
     /**
@@ -517,7 +522,8 @@ public class DetailViewController {
         instrumentsButtons.setFillColor(TweakingHelper.getBackgroundColor());
         activeInstrumentBoxes = new ArrayList<>();
 
-        instrumentsButtons.showingProperty().addListener((observable, oldValue, newValue) -> instrumentsDropdownListener(observable, oldValue, newValue, instrumentsButtons));
+        instrumentsButtons.showingProperty().addListener((observable, oldValue, newValue) ->
+                instrumentsDropdownListener(observable, oldValue, newValue, instrumentsButtons));
     }
 
     /**
@@ -528,7 +534,9 @@ public class DetailViewController {
      * @param newValue   - the new value
      * @param buttons    - the buttons
      */
-    protected void instrumentsDropdownListener(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue, StyledMenuButton buttons) {
+    protected void instrumentsDropdownListener(ObservableValue<? extends Boolean> observable,
+                                               Boolean oldValue, Boolean newValue,
+                                               StyledMenuButton buttons) {
         if (newValue) {
             // show the list and give it content
             instrumentsDropdownListenerHelper(buttons);
@@ -541,11 +549,14 @@ public class DetailViewController {
 
     /**
      * Creates ChangeListener for the Camera Dropdown checkboxes.
-     *
-     * @param buttons the dropdown with checkboxes.
-     * @return the ChangeListener.
+     * @param observable - the observable
+     * @param oldValue - the old value
+     * @param newValue - the new avlue
+     * @param buttons - the buttons
      */
-    protected void cameraDropdownListener(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue, StyledMenuButton buttons) {
+    protected void cameraDropdownListener(ObservableValue<? extends Boolean> observable,
+                                          Boolean oldValue, Boolean newValue,
+                                          StyledMenuButton buttons) {
         if (newValue) {
             // show the list and give it content
             cameraDropdownListenerHelper(buttons);

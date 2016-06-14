@@ -608,7 +608,7 @@ public class DetailViewControllerTest extends ApplicationTest {
     public void getActiveInstrumentBoxes() {
         List<StyledCheckbox> list = Mockito.mock(List.class);
         detailViewController.setActiveInstrumentBoxes(list);
-        assertEquals(list, detailViewController.getActiveInstrumentBoxes()git a);
+        assertEquals(list, detailViewController.getActiveInstrumentBoxes());
     }
 
     @Override
