@@ -1,6 +1,7 @@
 package control;
 
 
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,14 +32,13 @@ public class TimelineController {
     @Setter
     private RootPane rootPane;
 
-    // TODO: replace number of centerarea with xml data
-    @Setter
+    @Setter @Getter
     private int numTimelines;
 
     @Getter
     private ControllerManager controllerManager;
 
-    @Getter
+    @Getter @Setter
     // List of all camerashotblocks in this timelinecontroller
     private List<CameraShotBlock> cameraShotBlocks;
 
@@ -276,7 +276,7 @@ public class TimelineController {
      * Reset colliding status on camera shot block.
      * @param cameraShotBlock the shot block to do that on
      */
-    private void resetColliding(CameraShotBlock cameraShotBlock) {
+    protected void resetColliding(CameraShotBlock cameraShotBlock) {
         cameraShotBlock.setColliding(false);
         cameraShotBlock.getShot().setColliding(false);
         cameraShotBlock.getShot().getCollidesWith().forEach(e -> {
@@ -315,21 +315,41 @@ public class TimelineController {
             ShotDecouplingModalView decouplingModalView = new ShotDecouplingModalView(
                     this.rootPane, shotBlock.getShot());
 
-            decouplingModalView.getCancelButton().setOnMouseReleased(e -> {
-                    log.info("Shot decoupling cancelled.", shotBlock.getShot());
-                    decouplingModalView.hideModal();
-                    shotBlock.restorePreviousPosition();
-                });
+            decouplingModalView.getCancelButton().setOnMouseReleased(e ->
+                    this.cancelButtonListener(decouplingModalView, shotBlock));
 
-            decouplingModalView.getConfirmButton().setOnMouseReleased(e -> {
-                    log.info("Shot decoupling confirmed.", shotBlock.getShot());
-                    decouplingModalView.hideModal();
-                    this.decoupleShot(event.getOldTimelineNumber(), shotBlock.getShot());
-                    this.modifyCameraShot(event, shotBlock);
-                });
+            decouplingModalView.getConfirmButton().setOnMouseReleased(e ->
+                    this.confirmButtonListener(decouplingModalView, shotBlock, event));
         } else {
             this.modifyCameraShot(event, shotBlock);
         }
+    }
+
+    /**
+     * Listener for the cancelbutton.
+     * @param decouplingModalView - the decoupling modal view
+     * @param shotBlock - the shotblock
+     */
+    protected void cancelButtonListener(
+            ShotDecouplingModalView decouplingModalView, CameraShotBlock shotBlock) {
+        log.info("Shot decoupling cancelled.", shotBlock.getShot());
+        decouplingModalView.hideModal();
+        shotBlock.restorePreviousPosition();
+    }
+
+    /**
+     * Listener for the confirm button.
+     * @param decouplingModalView - the decoupling modal view
+     * @param shotBlock - the shotblock
+     * @param event - the camerashotblockupdatedevent
+     */
+    protected void confirmButtonListener(ShotDecouplingModalView decouplingModalView,
+                                         CameraShotBlock shotBlock,
+                                         CameraShotBlockUpdatedEvent event) {
+        log.info("Shot decoupling confirmed.", shotBlock.getShot());
+        decouplingModalView.hideModal();
+        this.decoupleShot(event.getOldTimelineNumber(), shotBlock.getShot());
+        this.modifyCameraShot(event, shotBlock);
     }
 
     /**
@@ -343,10 +363,6 @@ public class TimelineController {
         if (directorShot != null) {
             directorShot.removeCameraShot(shot, timelineIndex);
 
-            // Delete the director shot if it's the last remaining camera shot
-            if (directorShot.getCameraShots().isEmpty()) {
-                controllerManager.getDirectorTimelineControl().removeShotNoCascade(directorShot);
-            } 
             shot.setDirectorShot(null);
         }
     }

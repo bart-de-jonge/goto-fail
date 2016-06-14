@@ -1,5 +1,5 @@
 # Context project by goto fail;
-[![Build Status](https://travis-ci.org/bartdejonge1996/goto-fail.png)](https://travis-ci.org/bartdejonge1996/goto-fail) [![Coverage Status](https://coveralls.io/repos/github/bartdejonge1996/goto-fail/badge.svg?branch=coveralls)](https://coveralls.io/github/bartdejonge1996/goto-fail?branch=coveralls)
+[![Build Status](https://travis-ci.org/bartdejonge1996/goto-fail.png)](https://travis-ci.org/bartdejonge1996/goto-fail) [![Coverage Status](https://coveralls.io/repos/github/bartdejonge1996/goto-fail/badge.svg?branch=develop)](https://coveralls.io/github/bartdejonge1996/goto-fail?branch=develop)
 
 This is the Context project of the team 'goto fail;'. This project aims to improve the workflow and overall productivity of the scripting and production at 'Polycast'.
 
@@ -32,4 +32,4 @@ bin/git/init-hooks.sh
 ```
 
 ## Branch naming conventions
-As for the branch names we will be using during the project, the branch names are supposed to not have capital letters and no wierd punctuation or signs. The branch names are supposed to be simple and clear. The name should be descriptive of what will be implemented, added or fixed in the branch. Every word in the branch should be seperated by a '-'. Some examples of good names for branches would be: `feature-timeline-autoscroll`, `fix-timeline-word-wrap`.
+As for the branch names we will be using during the project, the branch names are supposed to not have capital letters and no weird punctuation or signs. The branch names are supposed to be simple and clear. The name should be descriptive of what will be implemented, added or fixed in the branch. Every word in the branch should be seperated by a '-'. Some examples of good names for branches would be: `feature-timeline-autoscroll`, `fix-timeline-word-wrap`.

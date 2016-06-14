@@ -1,13 +1,22 @@
 package control;
 
+import java.beans.PropertyChangeEvent;
+
+import java.awt.KeyboardFocusManager;
+
 import data.ScriptingProject;
 import gui.centerarea.ShotBlock;
 import gui.modal.SaveModalView;
 import gui.root.RootPane;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.TextField;
 
 /**
  * Class wrapper for model management controllers.
@@ -39,6 +48,7 @@ public class ControllerManager {
     @Getter
     private ShotBlock activeShotBlock;
 
+    @Getter @Setter
     private SaveModalView saveModal;
     // Placeholder project in lieu of XML loading
     @Getter
@@ -55,6 +65,7 @@ public class ControllerManager {
         this.rootPane = rootPane;
         initializeControllers();
         initOnCloseOperation();
+        initTextFieldAutoSelect();
     }
 
     /**
@@ -93,11 +104,42 @@ public class ControllerManager {
         toolViewController = new ToolViewController(this);
         projectController = new ProjectController(this);
     }
+    
+    /**
+     * Init the handler for auto text select for text fields.
+     */
+    private void initTextFieldAutoSelect() {
+        rootPane.getPrimaryStage().getScene().focusOwnerProperty()
+            .addListener(this::focusChangeListener);
+    }
+    
+    /**
+     * Handler for auto text select.
+     Checks if the new selected Node is a text field, and selects text if needed
+     * @param observable the observable value
+     * @param oldValue the old node
+     * @param newValue the new node
+     */
+    protected void focusChangeListener(ObservableValue<? extends Node> observable,
+            Node oldValue, Node newValue) {
+        if (newValue != null) {
+            String className = newValue.getClass().getName();
+            if (className.equals("gui.styling.StyledTextfield")
+                    || className.equals("gui.headerarea.NumberTextField")
+                    || className.equals("gui.headerarea.DoubleTextField")
+                    || className.equals("javafx.scene.control.TextField")) {
+                
+                Platform.runLater(() -> {
+                        ((TextField) newValue).selectAll();
+                    });
+            }
+        }
+    }
 
     /**
      * Set up a handler for when the close button is clicked.
      */
-    private void initOnCloseOperation() {
+    protected void initOnCloseOperation() {
         rootPane.getPrimaryStage().setOnCloseRequest(this::handleOnClose);
     }
 
@@ -105,7 +147,7 @@ public class ControllerManager {
      * Handler for the on close event.
      * @param event the WindowEvent for this handler
      */
-    private void handleOnClose(WindowEvent event) {
+    protected void handleOnClose(WindowEvent event) {
         if (scriptingProject != null && scriptingProject.isChanged()) {
             event.consume();
             initSaveModal();
@@ -126,7 +168,7 @@ public class ControllerManager {
      * Handle a click on the save button.
      * @param event the MouseEvent for this handler.
      */
-    private void handleSave(MouseEvent event) {
+    protected void handleSave(MouseEvent event) {
         projectController.save();
         saveModal.hideModal();
         rootPane.getPrimaryStage().close();
@@ -136,7 +178,7 @@ public class ControllerManager {
      * Handle a click on the don't save button.
      * @param event the MouseEvent for this handler
      */
-    private void handleDontSave(MouseEvent event) {
+    protected void handleDontSave(MouseEvent event) {
         rootPane.getPrimaryStage().close();
         saveModal.hideModal();
     }
@@ -145,7 +187,7 @@ public class ControllerManager {
      * Handle a click on the cancel button.
      * @param event the MouseEvent for this handler
      */
-    private void handleCancel(MouseEvent event) {
+    protected void handleCancel(MouseEvent event) {
         saveModal.hideModal();
     }
 

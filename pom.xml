@@ -38,6 +38,7 @@
 	<configuration>
 		<excludes>
 			<exclude>gui/**/*</exclude>
+			<exclude>MainClass.*</exclude>
 		</excludes>
 	</configuration>
     <executions>
@@ -229,6 +230,12 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20090211</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
