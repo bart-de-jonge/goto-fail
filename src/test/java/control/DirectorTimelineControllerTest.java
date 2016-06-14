@@ -109,30 +109,42 @@ public class DirectorTimelineControllerTest extends ApplicationTest {
 
     @Test
     public void shotChangedHandlerTest() {
+        // Generate all necessary mocks
         ScriptingProject scriptMock = Mockito.mock(ScriptingProject.class);
-        when(controllerManager.getScriptingProject()).thenReturn(scriptMock);
         DirectorShotBlock shotBlockMock = Mockito.mock(DirectorShotBlock.class);
+        DirectorShotBlock shotBlockMock2 = Mockito.mock(DirectorShotBlock.class);
         DirectorShot shotMock = Mockito.mock(DirectorShot.class);
+        DirectorShot shotMock2 = Mockito.mock(DirectorShot.class);
+        DirectorShotBlockUpdatedEvent event = Mockito.mock(DirectorShotBlockUpdatedEvent.class);
+        DirectorTimeline timeline = Mockito.mock(DirectorTimeline.class);
+        TimelineController timelineMock = Mockito.mock(TimelineController.class);
+        CameraShotBlock cameraShotBlock = Mockito.mock(CameraShotBlock.class);
+        ArrayList<CameraShotBlock> shotBlockList = new ArrayList<>(Arrays.asList(cameraShotBlock));
+
+        // Mock all the methods
         when(shotMock.getBeginCount()).thenReturn(0.0);
         when(shotMock.getEndCount()).thenReturn(1.0);
         when(shotBlockMock.getBeginCount()).thenReturn(0.0);
         when(shotBlockMock.getPaddingBefore()).thenReturn(1.0);
-        when(shotBlockMock.getShot()).thenReturn(shotMock);
-
-        DirectorShotBlockUpdatedEvent event = Mockito.mock(DirectorShotBlockUpdatedEvent.class);
         when(event.getDirectorShotBlock()).thenReturn(shotBlockMock);
-
-        DirectorTimeline timeline = Mockito.mock(DirectorTimeline.class);
+        when(controllerManager.getScriptingProject()).thenReturn(scriptMock);
+        when(shotBlockMock.getShot()).thenReturn(shotMock);
         when(scriptMock.getDirectorTimeline()).thenReturn(timeline);
-        TimelineController timelineMock = Mockito.mock(TimelineController.class);
         when(controllerManager.getTimelineControl()).thenReturn(timelineMock);
-
-        CameraShotBlock cameraShotBlock = Mockito.mock(CameraShotBlock.class);
-        ArrayList<CameraShotBlock> shotBlockList = new ArrayList<>(Arrays.asList(cameraShotBlock));
         when(timelineMock.getCameraShotBlocks()).thenReturn(shotBlockList);
+        when(shotMock.getCollidesWith()).thenReturn(new ArrayList<>(Arrays.asList(shotMock2)));
+        when(shotBlockMock2.getShot()).thenReturn(shotMock2);
 
+        // Hashmap setup
+        HashMap<DirectorShot, DirectorShotBlock> hashMap = new HashMap<>();
+        hashMap.put(shotMock, shotBlockMock);
+        hashMap.put(shotMock2, shotBlockMock2);
+        directorTimelineController.setDirectorShotBlockMap(hashMap);
+
+        // Call method under testing
         directorTimelineController.shotChangedHandler(event);
 
+        // Verify all the things
         verify(controllerManager).setActiveShotBlock(Mockito.any(ShotBlock.class));
         verify(scriptMock).changed();
     }
