@@ -67,6 +67,10 @@ public class ToolViewController {
                 event -> deleteEventFilter(event));
     }
 
+    /**
+     * Event filter for deleting shots.
+     * @param event - the keyevent
+     */
     protected void deleteEventFilter(KeyEvent event) {
         if ((event.getCode() == KeyCode.DELETE)
                 || (event.getCode() == KeyCode.BACK_SPACE
