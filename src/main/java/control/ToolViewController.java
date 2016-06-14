@@ -63,26 +63,35 @@ public class ToolViewController {
     private void initDeleteKeyBinding() {
         // Add Delete Key Event Listener for deleting active shot
         this.controllerManager.getRootPane().getPrimaryStage()
-                .getScene().addEventFilter(KeyEvent.ANY, event -> {
-                        if ((event.getCode() == KeyCode.DELETE)
-                                || (event.getCode() == KeyCode.BACK_SPACE
-                                    && event.isShortcutDown())) {
-                            String currentFocusClass = 
-                                    this.controllerManager.getRootPane().getPrimaryStage()
-                                        .getScene().getFocusOwner().getClass().getName();
-                            
-                            boolean isTextField = 
-                                    currentFocusClass.equals("gui.styling.StyledTextfield")
-                                    || currentFocusClass.equals("javafx.scene.control.TextField")
-                                    || currentFocusClass.equals("gui.headerarea.DoubleTextField")
-                                    || currentFocusClass.equals("gui.headerarea.NumberTextField");
-                            System.out.println(isTextField);
-                            if (!isTextField) {
-                                deleteActiveCameraShot();
-                                event.consume();
-                            } 
-                        }
-                    });
+                .getScene().addEventFilter(KeyEvent.ANY,
+                event -> deleteEventFilter(event));
+    }
+
+    /**
+     * Event filter for deleting shots.
+     * @param event - the keyevent
+     */
+    protected void deleteEventFilter(KeyEvent event) {
+        if ((event.getCode() == KeyCode.DELETE)
+                || (event.getCode() == KeyCode.BACK_SPACE
+                && event.isShortcutDown())) {
+            String currentFocusClass = this.getCurrentFocusClass();
+
+            boolean isTextField =
+                    currentFocusClass.equals("gui.styling.StyledTextfield")
+                            || currentFocusClass.equals("javafx.scene.control.TextField")
+                            || currentFocusClass.equals("gui.headerarea.DoubleTextField")
+                            || currentFocusClass.equals("gui.headerarea.NumberTextField");
+            if (!isTextField) {
+                deleteActiveCameraShot();
+                event.consume();
+            }
+        }
+    }
+
+    protected String getCurrentFocusClass() {
+        return this.controllerManager.getRootPane().getPrimaryStage()
+                        .getScene().getFocusOwner().getClass().getName();
     }
 
     /**
@@ -117,7 +126,7 @@ public class ToolViewController {
     /**
      * Deletes the active camera block.
      */
-    private void deleteActiveCameraShot() {
+    protected void deleteActiveCameraShot() {
         ShotBlock currentShot = this.controllerManager.getActiveShotBlock();
 
         if (currentShot instanceof CameraShotBlock) {

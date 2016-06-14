@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import javafx.beans.value.ObservableValue;
 
 /**
  * Class responsible for displaying a modal view for editing a project.
@@ -179,7 +180,7 @@ public class EditProjectModalView extends ModalView {
         }
         initializeView();
     }
-
+    
     /**
      * Initialize the view of this modal.
      */

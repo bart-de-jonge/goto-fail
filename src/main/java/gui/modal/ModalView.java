@@ -3,7 +3,11 @@ package gui.modal;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
+import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.layout.Pane;
@@ -44,6 +48,36 @@ public abstract class ModalView {
         this.modalStage.initModality(Modality.APPLICATION_MODAL);
         this.modalStage.initOwner(rootPane.getPrimaryStage());
     }
+    
+    /**
+     * Initialize the handler for the auto text field select.
+     */
+    private void initTextFieldAutoSelect() {
+        modalStage.getScene().focusOwnerProperty().addListener(this::focusChangeListener);
+    }
+    
+    /**
+     * Handler for auto text select.
+     Checks if the new selected Node is a text field, and selects text if needed
+     * @param observable the observable value
+     * @param oldValue the old node
+     * @param newValue the new node
+     */
+    private void focusChangeListener(ObservableValue<? extends Node> observable,
+            Node oldValue, Node newValue) {
+        if (newValue != null) {
+            String className = newValue.getClass().getName();
+            if (className.equals("gui.styling.StyledTextfield")
+                    || className.equals("gui.headerarea.NumberTextField")
+                    || className.equals("gui.headerarea.DoubleTextField")
+                    || className.equals("javafx.scene.control.TextField")) {
+                
+                Platform.runLater(() -> {
+                        ((TextField) newValue).selectAll();
+                    });
+            }
+        }
+    }
 
     /**
      * If a child view has been added then the modal view is shown.
@@ -55,6 +89,8 @@ public abstract class ModalView {
             this.modalStage.getScene().getAccelerators()
                     .put(new KeyCodeCombination(KeyCode.ESCAPE),
                          this::hideModal);
+            initTextFieldAutoSelect();
+
         }
     }
 

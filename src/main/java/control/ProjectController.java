@@ -355,6 +355,7 @@ public class ProjectController {
             CameraShot.setInstanceCounter(maxInstance + 1);
             DirectorShot.setInstanceCounter(maxInstance + 1);
             controllerManager.getScriptingProject().removeOffsettedCameraBlocks();
+            controllerManager.getScriptingProject().setChanged(false);
         }
     }
     
