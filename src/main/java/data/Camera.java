@@ -116,7 +116,7 @@ public class Camera implements Cloneable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null ||  !(o instanceof Camera)) {
             return false;
         }
 
@@ -128,17 +128,22 @@ public class Camera implements Cloneable {
         if (instance != camera.instance) {
             return false;
         }
-        if (name != null ? !name.equals(camera.name) : camera.name != null) {
+        if ((name != null && !name.equals(camera.name))
+                || (name == null && camera.name != null)) {
             return false;
         }
-        if (description != null ? !description.equals(camera.description)
-                : camera.description != null) {
+        if ((description != null && !description.equals(camera.description))
+                || (description == null && camera.description != null)) {
             return false;
         }
-        if (cameraType != null ? !cameraType.equals(camera.cameraType)
-                : camera.cameraType != null) {
+        if ((cameraType != null && !cameraType.equals(camera.cameraType))
+                || (cameraType == null && camera.cameraType != null)) {
             return false;
         }
-        return ip != null ? ip.equals(camera.ip) : camera.ip == null;
+        if (ip != null) {
+            return ip.equals(camera.ip);
+        } else {
+            return camera.ip == null;
+        }
     }
 }

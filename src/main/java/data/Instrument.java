@@ -42,17 +42,20 @@ public class Instrument implements Cloneable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || !(o instanceof Instrument)) {
             return false;
         }
 
         Instrument that = (Instrument) o;
 
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) {
+        if ((getName() != null && !getName().equals(that.getName()))
+                || (getName() == null && that.getName() != null)) {
             return false;
         }
-        return getDescription() != null ? getDescription().equals(that.getDescription())
-                : that.getDescription() == null;
-
+        if (getDescription() != null) {
+            return getDescription().equals(that.getDescription());
+        } else {
+            return that.getDescription() == null;
+        }
     }
 }
