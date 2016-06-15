@@ -3,7 +3,6 @@ package gui.headerarea;
 import gui.misc.TweakingHelper;
 import gui.styling.StyledMenuButton;
 import gui.styling.StyledTextfield;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;

@@ -201,7 +201,6 @@ public class DetailViewController {
      * @param c the change that happened
      */
     protected void instrumentsDropdownChangeListener(ListChangeListener.Change c) {
-        Shot shot = manager.getActiveShotBlock().getShot();
         c.next();
         if (c.wasAdded()) {
             instrumentAddedInDropdown((int) c.getAddedSubList().get(0));
@@ -245,7 +244,6 @@ public class DetailViewController {
      * @param c The Change with information about what changed.
      */
     protected void camerasDropdownChangeListener(ListChangeListener.Change c) {
-        DirectorShot shot = ((DirectorShot) manager.getActiveShotBlock().getShot());
         c.next();
         if (c.wasAdded()) {
             cameraAddedInDropdown((int) c.getAddedSubList().get(0));
@@ -260,7 +258,6 @@ public class DetailViewController {
      * @param index the index of the deselected camera.
      */
     private void cameraDeletedInDropdown(int index) {
-        DirectorShotBlock dShotBlock = ((DirectorShotBlock) manager.getActiveShotBlock());
         DirectorShot dShot = ((DirectorShot) manager.getActiveShotBlock().getShot());
         Iterator<CameraShot> iterator = dShot.getCameraShots().iterator();
         CameraShot toRemove = null;
