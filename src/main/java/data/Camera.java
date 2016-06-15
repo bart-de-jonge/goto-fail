@@ -1,13 +1,13 @@
 package data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Class to store information about cameras.
@@ -109,6 +109,23 @@ public class Camera implements Cloneable {
      */
     public static void incrementCounter() {
         instanceCounter++;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((cameraType == null) ? 0 : cameraType.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((ip == null) ? 0 : ip.hashCode());
+        long temp;
+        temp = Double.doubleToLongBits(movementMargin);
+        result = prime * result + (int) (temp ^ (temp >>> Integer.SIZE));
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
     }
 
     @Override

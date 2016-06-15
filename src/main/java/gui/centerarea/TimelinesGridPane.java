@@ -3,7 +3,6 @@ package gui.centerarea;
 import java.util.ArrayList;
 
 import control.CountUtilities;
-import javafx.scene.control.Label;
 import lombok.extern.log4j.Log4j2;
 
 /**

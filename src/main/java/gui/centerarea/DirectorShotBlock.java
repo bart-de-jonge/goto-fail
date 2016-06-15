@@ -1,10 +1,8 @@
 package gui.centerarea;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import data.DirectorShot;
-import data.Instrument;
 import gui.events.DirectorShotBlockUpdatedEvent;
 import gui.events.ShotblockUpdatedEvent;
 import gui.root.RootCenterArea;

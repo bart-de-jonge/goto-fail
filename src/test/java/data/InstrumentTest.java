@@ -103,4 +103,21 @@ public class InstrumentTest {
         this.instrument.setDescription(null);
         assertEquals(instrument, this.instrument);
     }
+    
+    @Test
+    public void hashCodeTestNothingNull() {
+        assertEquals(1528013392, instrument.hashCode());
+    }
+    
+    @Test
+    public void hashCodeTestNameNull() {
+        instrument.setName(null);
+        assertEquals(-1619982317, instrument.hashCode());
+    }
+    
+    @Test
+    public void hashCodeTestDescriptionNull() {
+        instrument.setDescription(null);
+        assertEquals(-1146970626, instrument.hashCode());
+    }
 }

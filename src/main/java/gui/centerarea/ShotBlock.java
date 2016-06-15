@@ -12,6 +12,7 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 /**
@@ -86,7 +87,8 @@ public abstract class ShotBlock {
                     .getConstructor(RootCenterArea.class, ShotBlock.class);
 
             this.setTimetableBlock((TimetableBlock) constructor.newInstance(rootCenterArea, this));
-        } catch (Exception e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+                | IllegalArgumentException | InvocationTargetException e) {
             log.error("No valid timetableblock class, could not initialize timetableblock!");
             this.timetableBlock = null;
         }
