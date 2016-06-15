@@ -1,10 +1,8 @@
 package data;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-@EqualsAndHashCode
 public class Instrument implements Cloneable {
     @Getter @Setter
     private String name;
@@ -39,4 +37,25 @@ public class Instrument implements Cloneable {
         return instrument;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || !(o instanceof Instrument)) {
+            return false;
+        }
+
+        Instrument that = (Instrument) o;
+
+        if ((getName() != null && !getName().equals(that.getName()))
+                || (getName() == null && that.getName() != null)) {
+            return false;
+        }
+        if (getDescription() != null) {
+            return getDescription().equals(that.getDescription());
+        } else {
+            return that.getDescription() == null;
+        }
+    }
 }
