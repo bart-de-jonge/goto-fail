@@ -94,4 +94,10 @@ public class CameraShotTest {
         shot.setInstance(cameraShot.getInstance());
         assertEquals(shot, cameraShot);
     }
+    
+    @Test
+    public void hashCodeTestDirectorShotNull() {
+        cameraShot.setDirectorShot(null);
+        assertEquals(960, cameraShot.hashCode());
+    }
 }

@@ -1,22 +1,18 @@
 package control;
 
-import java.beans.PropertyChangeEvent;
-
-import java.awt.KeyboardFocusManager;
-
 import data.ScriptingProject;
 import gui.centerarea.ShotBlock;
 import gui.modal.SaveModalView;
 import gui.root.RootPane;
+import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
-import javafx.application.Platform;
-import javafx.scene.Node;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.TextField;
 
 /**
  * Class wrapper for model management controllers.

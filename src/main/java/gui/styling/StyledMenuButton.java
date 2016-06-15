@@ -9,8 +9,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
@@ -111,7 +109,7 @@ public class StyledMenuButton extends MenuButton {
                                     new SimpleStringProperty("-fx-text-fill: ")
                                     .concat(borderStringProperty).concat(";"));
                         } catch (NullPointerException e) {
-                                /*  Do nothing */
+                            e.printStackTrace();
                         }
                     });
             }

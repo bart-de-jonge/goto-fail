@@ -1,10 +1,14 @@
 package control;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import data.Camera;
 import data.CameraShot;
 import data.DirectorShot;
 import data.Instrument;
-import data.Shot;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
 import gui.centerarea.ShotBlock;
@@ -23,11 +27,6 @@ import javafx.scene.input.MouseEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Controller for the DetailView.
@@ -201,7 +200,6 @@ public class DetailViewController {
      * @param c the change that happened
      */
     protected void instrumentsDropdownChangeListener(ListChangeListener.Change c) {
-        Shot shot = manager.getActiveShotBlock().getShot();
         c.next();
         if (c.wasAdded()) {
             instrumentAddedInDropdown((int) c.getAddedSubList().get(0));
@@ -245,7 +243,6 @@ public class DetailViewController {
      * @param c The Change with information about what changed.
      */
     protected void camerasDropdownChangeListener(ListChangeListener.Change c) {
-        DirectorShot shot = ((DirectorShot) manager.getActiveShotBlock().getShot());
         c.next();
         if (c.wasAdded()) {
             cameraAddedInDropdown((int) c.getAddedSubList().get(0));
@@ -260,7 +257,6 @@ public class DetailViewController {
      * @param index the index of the deselected camera.
      */
     private void cameraDeletedInDropdown(int index) {
-        DirectorShotBlock dShotBlock = ((DirectorShotBlock) manager.getActiveShotBlock());
         DirectorShot dShot = ((DirectorShot) manager.getActiveShotBlock().getShot());
         Iterator<CameraShot> iterator = dShot.getCameraShots().iterator();
         CameraShot toRemove = null;

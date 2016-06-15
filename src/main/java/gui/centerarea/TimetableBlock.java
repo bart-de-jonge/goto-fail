@@ -39,6 +39,9 @@ import lombok.Getter;
  * Highly volatile. Do not poke the dragging-dragon too much.
  */
 public abstract class TimetableBlock extends Pane {
+    
+    private static final String TEXT_FILL = "-fx-text-fill:";
+    private static final String BLOCK_TEXT_NORMAL = "block_Text_Normal";
 
     public enum DraggingTypes { Move, Resize_Top, Resize_Right, Resize_Bottom, Resize_Left }
 
@@ -142,14 +145,14 @@ public abstract class TimetableBlock extends Pane {
     private void addInstrumentLabel(Instrument instrument, VBox box) {
         if (box.getChildren().size() == 0) {
             Label title = new Label("Instruments:");
-            title.getStyleClass().add("block_Text_Normal");
-            title.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(2) + ";");
+            title.getStyleClass().add(BLOCK_TEXT_NORMAL);
+            title.setStyle(TEXT_FILL + TweakingHelper.getColorString(2) + ";");
             box.getChildren().add(title);
         }
 
         Label label = new Label("   " + instrument.getName());
-        label.getStyleClass().add("block_Text_Normal");
-        label.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(2) + ";");
+        label.getStyleClass().add(BLOCK_TEXT_NORMAL);
+        label.setStyle(TEXT_FILL + TweakingHelper.getColorString(2) + ";");
         box.getChildren().add(label);
     }
     
@@ -339,7 +342,7 @@ public abstract class TimetableBlock extends Pane {
         Label res = new Label(parentBlock.getName());
         res.maxWidthProperty().bind(this.widthProperty());
         res.getStyleClass().add("block_Text_Title");
-        res.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(1) + ";");
+        res.setStyle(TEXT_FILL + TweakingHelper.getColorString(1) + ";");
         vbox.getChildren().add(res);
         return res;
     }
@@ -352,8 +355,8 @@ public abstract class TimetableBlock extends Pane {
     private Label initDescriptionLabel(VBox vbox) {
         Label res = new Label("Description: " + parentBlock.getDescription());
         res.maxWidthProperty().bind(this.widthProperty());
-        res.getStyleClass().add("block_Text_Normal");
-        res.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(2) + ";");
+        res.getStyleClass().add(BLOCK_TEXT_NORMAL);
+        res.setStyle(TEXT_FILL + TweakingHelper.getColorString(2) + ";");
         vbox.getChildren().add(res);
         return res;
     }
@@ -367,8 +370,8 @@ public abstract class TimetableBlock extends Pane {
         String labelText = parentBlock.getBeginCount() + " - " + parentBlock.getEndCount();
         Label res = new Label("Count: " + labelText);
         res.maxWidthProperty().bind(this.widthProperty());
-        res.getStyleClass().add("block_Text_Normal");
-        res.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(2) + ";");
+        res.getStyleClass().add(BLOCK_TEXT_NORMAL);
+        res.setStyle(TEXT_FILL + TweakingHelper.getColorString(2) + ";");
         vbox.getChildren().add(res);
         return res;
     }

@@ -7,7 +7,6 @@ import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
@@ -30,11 +29,6 @@ public class DeleteCameraTypeWarningModalView extends ModalView {
 
     // simple background styles of the three main areas.
     private String topStyle = ModalUtilities.constructDefaultModalTopStyle(20);
-    private String bottomStyle = "-fx-background-color: "
-            + TweakingHelper.getColorString(0) + ";";
-
-    // variables for the buttons
-    private int buttonSpacing = 20;
 
     // variables for the title label
     private static final int titlelabelOffsetFromLeft = 20;
