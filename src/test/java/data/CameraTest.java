@@ -248,4 +248,37 @@ public class CameraTest {
 
         assertEquals(camera2, camera);
     }
+    
+    @Test
+    public void hashCodeTestCameraTypeNull() {
+        camera.setIp("someIP");
+        camera.setCameraType(null);
+        assertEquals(183130876, camera.hashCode());
+    }
+    
+    @Test
+    public void hashCodeTestDescriptionNull() {
+        camera.setIp("someIP");
+        camera.setDescription(null);
+        assertEquals(472240207, camera.hashCode());
+    }
+    
+    @Test
+    public void hashCodeTestIpNull() {
+        camera.setIp(null);
+        assertEquals(161422885, camera.hashCode());
+    }
+    
+    @Test
+    public void hashCodeTestNameNull() {
+        camera.setIp("someIP");
+        camera.setName(null);
+        assertEquals(1814839501, camera.hashCode());
+    }
+    
+    @Test
+    public void hashCodeTestNothingNull() {
+        camera.setIp("someIP");
+        assertEquals(1665079836, camera.hashCode());
+    }
 }

@@ -131,4 +131,21 @@ public class CameraTypeTest {
         CameraType type2 = new CameraType("type-1", "A test camera type", 3);
         assertNotEquals(type2, type);
     }
+    
+    @Test
+    public void hashCodeTestNothingNull() {
+        assertEquals(-122272765, type.hashCode());
+    }
+    
+    @Test
+    public void hashCodeTestNameNull() {
+        type.setName(null);
+        assertEquals(736531877, type.hashCode());
+    }
+    
+    @Test
+    public void hashCodeTestDescriptionNull() {
+        type.setDescription(null);
+        assertEquals(-1932516675, type.hashCode());
+    }
 }
