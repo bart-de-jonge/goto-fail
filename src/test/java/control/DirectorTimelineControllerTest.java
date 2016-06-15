@@ -20,9 +20,7 @@ import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @PrepareForTest({DirectorTimelineController.class,ShotBlock.class,DirectorShotBlock.class})
 public class DirectorTimelineControllerTest extends ApplicationTest {
@@ -65,7 +63,7 @@ public class DirectorTimelineControllerTest extends ApplicationTest {
         cameraList.add(1);
         DirectorShot shotToAdd = spy(new DirectorShot(new GeneralShotData("Violas", "Left of conductor", 1, 2),
                 0.5, 0.5, cameraList));
-        when(shotToAdd.getCollidesWith()).thenReturn(new ArrayList<Shot>(Arrays.asList(shot1)));
+        when(shotToAdd.getCollidesWith()).thenReturn(new ArrayList<>(Arrays.asList(shot1)));
 
         final CountDownLatch[] latch = {new CountDownLatch(1)};
         Platform.runLater(() -> {
@@ -104,11 +102,10 @@ public class DirectorTimelineControllerTest extends ApplicationTest {
         latch[0].await();
 
         verify(controllerManager).setActiveShotBlock(Mockito.any(ShotBlock.class));
-        verify(timeline).addShot(Mockito.any(DirectorShot.class));
     }
 
     @Test
-    public void shotChangedHandlerTest() {
+    public void shotChangedHandlerTestFrontPadding() {
         // Generate all necessary mocks
         ScriptingProject scriptMock = Mockito.mock(ScriptingProject.class);
         DirectorShotBlock shotBlockMock = Mockito.mock(DirectorShotBlock.class);
@@ -150,6 +147,82 @@ public class DirectorTimelineControllerTest extends ApplicationTest {
     }
 
     @Test
+    public void shotChangedHandlerTest() {
+        // Generate all necessary mocks
+        ScriptingProject scriptMock = Mockito.mock(ScriptingProject.class);
+        DirectorShotBlock shotBlockMock = Mockito.mock(DirectorShotBlock.class);
+        DirectorShotBlock shotBlockMock2 = Mockito.mock(DirectorShotBlock.class);
+        DirectorShot shotMock = Mockito.mock(DirectorShot.class);
+        DirectorShot shotMock2 = Mockito.mock(DirectorShot.class);
+        DirectorShotBlockUpdatedEvent event = Mockito.mock(DirectorShotBlockUpdatedEvent.class);
+        DirectorTimeline timeline = Mockito.mock(DirectorTimeline.class);
+        TimelineController timelineMock = Mockito.mock(TimelineController.class);
+        CameraShotBlock cameraShotBlock = Mockito.mock(CameraShotBlock.class);
+        ArrayList<CameraShotBlock> shotBlockList = new ArrayList<>(Arrays.asList(cameraShotBlock));
+
+        // Mock all the methods
+        when(shotMock.getBeginCount()).thenReturn(0.0);
+        when(shotMock.getEndCount()).thenReturn(1.0);
+        when(shotBlockMock.getBeginCount()).thenReturn(0.0);
+        when(shotBlockMock.getPaddingBefore()).thenReturn(0.0);
+        when(event.getDirectorShotBlock()).thenReturn(shotBlockMock);
+        when(controllerManager.getScriptingProject()).thenReturn(scriptMock);
+        when(shotBlockMock.getShot()).thenReturn(shotMock);
+        when(scriptMock.getDirectorTimeline()).thenReturn(timeline);
+        when(controllerManager.getTimelineControl()).thenReturn(timelineMock);
+        when(timelineMock.getCameraShotBlocks()).thenReturn(shotBlockList);
+        when(shotMock.getCollidesWith()).thenReturn(new ArrayList<>(Arrays.asList(shotMock2)));
+        when(shotBlockMock2.getShot()).thenReturn(shotMock2);
+
+        // Hashmap setup
+        HashMap<DirectorShot, DirectorShotBlock> hashMap = new HashMap<>();
+        hashMap.put(shotMock, shotBlockMock);
+        hashMap.put(shotMock2, shotBlockMock2);
+        directorTimelineController.setDirectorShotBlockMap(hashMap);
+
+        // Call method under testing
+        directorTimelineController.shotChangedHandler(event);
+
+        // Verify all the things
+        verify(controllerManager).setActiveShotBlock(Mockito.any(ShotBlock.class));
+        verify(scriptMock).changed();
+    }
+
+    @Test
+    public void shotChangedHandlerTestToResetNull() {
+        // Generate all necessary mocks
+        ScriptingProject scriptMock = Mockito.mock(ScriptingProject.class);
+        DirectorShotBlock shotBlockMock = Mockito.mock(DirectorShotBlock.class);
+        DirectorShotBlock shotBlockMock2 = Mockito.mock(DirectorShotBlock.class);
+        DirectorShot shotMock = Mockito.mock(DirectorShot.class);
+        DirectorShot shotMock2 = Mockito.mock(DirectorShot.class);
+        DirectorShotBlockUpdatedEvent event = Mockito.mock(DirectorShotBlockUpdatedEvent.class);
+        DirectorTimeline timeline = Mockito.mock(DirectorTimeline.class);
+        TimelineController timelineMock = Mockito.mock(TimelineController.class);
+        CameraShotBlock cameraShotBlock = Mockito.mock(CameraShotBlock.class);
+        ArrayList<CameraShotBlock> shotBlockList = new ArrayList<>(Arrays.asList(cameraShotBlock));
+
+        // Mock all the methods
+        when(shotMock.getBeginCount()).thenReturn(0.0);
+        when(shotMock.getEndCount()).thenReturn(1.0);
+        when(shotBlockMock.getBeginCount()).thenReturn(0.0);
+        when(shotBlockMock.getPaddingBefore()).thenReturn(0.0);
+        when(event.getDirectorShotBlock()).thenReturn(shotBlockMock);
+        when(controllerManager.getScriptingProject()).thenReturn(scriptMock);
+        when(shotBlockMock.getShot()).thenReturn(shotMock);
+        when(scriptMock.getDirectorTimeline()).thenReturn(timeline);
+        when(controllerManager.getTimelineControl()).thenReturn(timelineMock);
+        when(timelineMock.getCameraShotBlocks()).thenReturn(shotBlockList);
+
+        // Call method under testing
+        directorTimelineController.shotChangedHandler(event);
+
+        // Verify all the things
+        verify(controllerManager).setActiveShotBlock(Mockito.any(ShotBlock.class));
+        verify(scriptMock).changed();
+    }
+
+    @Test
     public void removeShotTest() throws Exception {
         ScriptingProject scriptSpy = spy(new ScriptingProject("Project", "", 2));
         when(controllerManager.getScriptingProject()).thenReturn(scriptSpy);
@@ -175,6 +248,65 @@ public class DirectorTimelineControllerTest extends ApplicationTest {
 
         verify(shotMock).getCameraShots();
         verify(timelineControllerMock).removeCameraShot(cameraShotMock);
+        Mockito.verify(shotBlockMock, times(1)).removeFromView();
+        Mockito.verify(controllerManager, times(1)).setActiveShotBlock(null);
+    }
+
+    @Test
+    public void removeShotTestOtherShotBlock() throws Exception {
+        ScriptingProject scriptSpy = spy(new ScriptingProject("Project", "", 2));
+        when(controllerManager.getScriptingProject()).thenReturn(scriptSpy);
+
+        DirectorShotBlock shotBlockMock = Mockito.mock(DirectorShotBlock.class);
+        DirectorShotBlock shotBlockMock2 = Mockito.mock(DirectorShotBlock.class);
+        when(controllerManager.getActiveShotBlock()).thenReturn(shotBlockMock);
+
+        DirectorShot shotMock = Mockito.mock(DirectorShot.class);
+        when(shotBlockMock.getShot()).thenReturn(shotMock);
+
+        CameraShot cameraShotMock = Mockito.mock(CameraShot.class);
+        Set<CameraShot> cameraShots = new HashSet<>();
+        cameraShots.add(cameraShotMock);
+        when(shotMock.getCameraShots()).thenReturn(cameraShots);
+
+        TimelineController timelineControllerMock = Mockito.mock(TimelineController.class);
+        when(controllerManager.getTimelineControl()).thenReturn(timelineControllerMock);
+
+        HashMap<DirectorShot, DirectorShotBlock> hashMap = new HashMap<>();
+        hashMap.put(shotMock, shotBlockMock2);
+        directorTimelineController.setDirectorShotBlockMap(hashMap);
+        directorTimelineController.removeShot(shotBlockMock);
+
+        verify(shotMock).getCameraShots();
+        verify(timelineControllerMock).removeCameraShot(cameraShotMock);
+        Mockito.verify(shotBlockMock2, times(1)).removeFromView();
+        Mockito.verify(controllerManager, times(0)).setActiveShotBlock(null);
+    }
+
+    @Test
+    public void removeShotTestShotBlockNull() throws Exception {
+        ScriptingProject scriptSpy = spy(new ScriptingProject("Project", "", 2));
+        when(controllerManager.getScriptingProject()).thenReturn(scriptSpy);
+
+        DirectorShotBlock shotBlockMock = Mockito.mock(DirectorShotBlock.class);
+        when(controllerManager.getActiveShotBlock()).thenReturn(shotBlockMock);
+
+        DirectorShot shotMock = Mockito.mock(DirectorShot.class);
+        when(shotBlockMock.getShot()).thenReturn(shotMock);
+
+        CameraShot cameraShotMock = Mockito.mock(CameraShot.class);
+        Set<CameraShot> cameraShots = new HashSet<>();
+        cameraShots.add(cameraShotMock);
+        when(shotMock.getCameraShots()).thenReturn(cameraShots);
+
+        TimelineController timelineControllerMock = Mockito.mock(TimelineController.class);
+        when(controllerManager.getTimelineControl()).thenReturn(timelineControllerMock);
+        directorTimelineController.removeShot(shotBlockMock);
+
+        verify(shotMock).getCameraShots();
+        verify(timelineControllerMock).removeCameraShot(cameraShotMock);
+        Mockito.verify(shotBlockMock, times(0)).removeFromView();
+        Mockito.verify(controllerManager, times(0)).setActiveShotBlock(null);
     }
 
     @Test

@@ -113,6 +113,43 @@ public class DetailViewControllerTest extends ApplicationTest {
     }
 
     @Test
+    public void camerasDropdownChangeListenerRemoved2() {
+        // Setup mocks
+        ListChangeListener.Change change = Mockito.mock(ListChangeListener.Change.class);
+        DirectorShot shot = Mockito.mock(DirectorShot.class);
+        DirectorShotBlock shotBlock = Mockito.mock(DirectorShotBlock.class);
+        ArrayList<Integer> changeList = new ArrayList<>(Arrays.asList(5));
+        ScriptingProject project = Mockito.mock(ScriptingProject.class);
+        TimetableBlock timetableBlock = Mockito.mock(TimetableBlock.class);
+        TimelineController timelineController = Mockito.mock(TimelineController.class);
+        CameraShot cameraShot1 = Mockito.mock(CameraShot.class);
+        Set<CameraShot> shotList = new HashSet<>(Arrays.asList(cameraShot1));
+        CameraShotBlock cameraShotBlock1 = Mockito.mock(CameraShotBlock.class);
+        DirectorTimelineController directorTimelineController = Mockito.mock(DirectorTimelineController.class);
+
+        // Mock all the methods
+        when(manager.getActiveShotBlock()).thenReturn(shotBlock);
+        when(manager.getScriptingProject()).thenReturn(project);
+        when(shotBlock.getShot()).thenReturn(shot);
+        when(shotBlock.getTimetableBlock()).thenReturn(timetableBlock);
+        when(change.getRemoved()).thenReturn(changeList);
+        when(manager.getTimelineControl()).thenReturn(timelineController);
+        when(manager.getDirectorTimelineControl()).thenReturn(directorTimelineController);
+        when(shot.getCameraShots()).thenReturn(shotList);
+        when(timelineController.getShotBlockForShot(cameraShot1)).thenReturn(cameraShotBlock1);
+        when(cameraShotBlock1.getTimetableNumber()).thenReturn(100);
+
+        // Call method under testing
+        detailViewController.camerasDropdownChangeListener(change);
+
+        // verify
+        Mockito.verify(shot, times(1)).getTimelineIndices();
+        Mockito.verify(shot, times(2)).getCameraShots();
+        assertEquals(1, shotList.size());
+        assertTrue(shotList.contains(cameraShot1));
+    }
+
+    @Test
     public void camerasDropdownChangeListenerAdded() {
         // Setup mocks
         ListChangeListener.Change change = Mockito.mock(ListChangeListener.Change.class);
@@ -241,6 +278,33 @@ public class DetailViewControllerTest extends ApplicationTest {
     }
 
     @Test
+    public void beforePaddingUpdateHelperFalse() {
+        DirectorShotBlock shotBlock = Mockito.mock(DirectorShotBlock.class);
+        DirectorShot shot = Mockito.mock(DirectorShot.class);
+        TimelineController timelineController = Mockito.mock(TimelineController.class);
+        setupPaddingUpdateHelperTests(shot, shotBlock, timelineController);
+
+        // Call method under testing
+        detailViewController.beforePaddingFocusListener(null, false, true);
+
+        // Verify
+        assertEquals(0.0, shot.getFrontShotPadding(), 0);
+        assertEquals(0.0, shotBlock.getPaddingBefore(), 0);
+        Mockito.verify(timelineController, times(0)).recomputeAllCollisions();
+    }
+
+    @Test
+    public void beforePaddingUpdateHelperNull() {
+        TimelineController timelineController = Mockito.mock(TimelineController.class);
+
+        // Call method under testing
+        detailViewController.beforePaddingFocusListener(null, true, false);
+
+        // Verify
+        Mockito.verify(timelineController, times(0)).recomputeAllCollisions();
+    }
+
+    @Test
     public void afterPaddingFocusListener() {
         DirectorShotBlock shotBlock = Mockito.mock(DirectorShotBlock.class);
         DirectorShot shot = Mockito.mock(DirectorShot.class);
@@ -254,6 +318,31 @@ public class DetailViewControllerTest extends ApplicationTest {
         assertEquals(0.0, shot.getEndShotPadding(), 0);
         assertEquals(0.0, shotBlock.getPaddingAfter(), 0);
         Mockito.verify(timelineController, times(1)).recomputeAllCollisions();
+    }
+
+    @Test
+    public void afterPaddingFocusListenerFalse() {
+        DirectorShotBlock shotBlock = Mockito.mock(DirectorShotBlock.class);
+        DirectorShot shot = Mockito.mock(DirectorShot.class);
+        TimelineController timelineController = Mockito.mock(TimelineController.class);
+        setupPaddingUpdateHelperTests(shot, shotBlock, timelineController);
+
+        // Call method under testing
+        detailViewController.afterPaddingFocusListener(null, false, true);
+
+        // Verify
+        Mockito.verify(timelineController, times(0)).recomputeAllCollisions();
+    }
+
+    @Test
+    public void afterPaddingFocusListenerNull() {
+        TimelineController timelineController = Mockito.mock(TimelineController.class);
+
+        // Call method under testing
+        detailViewController.afterPaddingFocusListener(null, true, false);
+
+        // Verify
+        Mockito.verify(timelineController, times(0)).recomputeAllCollisions();
     }
 
     @Test
@@ -356,6 +445,73 @@ public class DetailViewControllerTest extends ApplicationTest {
     }
 
     @Test
+    public void beginCountFocusedPropertyNull() {
+        CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
+        CameraShot shot = Mockito.mock(CameraShot.class);
+        when(block.getShot()).thenReturn(shot);
+
+        detailViewController.beginCountFocusListener(new ObservableValue<Boolean>() {
+            @Override
+            public void addListener(ChangeListener<? super Boolean> listener) {
+            }
+
+            @Override
+            public void removeListener(ChangeListener<? super Boolean> listener) {
+            }
+
+            @Override
+            public Boolean getValue() {
+                return null;
+            }
+
+            @Override
+            public void addListener(InvalidationListener listener) {
+            }
+
+            @Override
+            public void removeListener(InvalidationListener listener) {
+            }
+        }, true, false);
+
+        verify(block, times(0)).setBeginCount(0);
+        verify(shot, times(0)).setBeginCount(0);
+    }
+
+    @Test
+    public void beginCountFocusedPropertyFalse() {
+        CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
+        CameraShot shot = Mockito.mock(CameraShot.class);
+        when(manager.getActiveShotBlock()).thenReturn(block);
+        when(block.getShot()).thenReturn(shot);
+
+        detailViewController.beginCountFocusListener(new ObservableValue<Boolean>() {
+            @Override
+            public void addListener(ChangeListener<? super Boolean> listener) {
+            }
+
+            @Override
+            public void removeListener(ChangeListener<? super Boolean> listener) {
+            }
+
+            @Override
+            public Boolean getValue() {
+                return null;
+            }
+
+            @Override
+            public void addListener(InvalidationListener listener) {
+            }
+
+            @Override
+            public void removeListener(InvalidationListener listener) {
+            }
+        }, false, true);
+
+        verify(block, times(0)).setBeginCount(0);
+        verify(shot, times(0)).setBeginCount(0);
+    }
+
+    @Test
     public void endCountFocusedProperty() {
         CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
         CameraShot shot = Mockito.mock(CameraShot.class);
@@ -387,6 +543,73 @@ public class DetailViewControllerTest extends ApplicationTest {
 
         verify(block, times(1)).setEndCount(0);
         verify(shot, times(1)).setEndCount(0);
+    }
+
+    @Test
+    public void endCountFocusedPropertyNull() {
+        CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
+        CameraShot shot = Mockito.mock(CameraShot.class);
+        when(block.getShot()).thenReturn(shot);
+
+        detailViewController.endCountFocusListener(new ObservableValue<Boolean>() {
+            @Override
+            public void addListener(ChangeListener<? super Boolean> listener) {
+            }
+
+            @Override
+            public void removeListener(ChangeListener<? super Boolean> listener) {
+            }
+
+            @Override
+            public Boolean getValue() {
+                return null;
+            }
+
+            @Override
+            public void addListener(InvalidationListener listener) {
+            }
+
+            @Override
+            public void removeListener(InvalidationListener listener) {
+            }
+        }, true, false);
+
+        verify(block, times(0)).setEndCount(0);
+        verify(shot, times(0)).setEndCount(0);
+    }
+
+    @Test
+    public void endCountFocusedPropertyFalse() {
+        CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
+        CameraShot shot = Mockito.mock(CameraShot.class);
+        when(manager.getActiveShotBlock()).thenReturn(block);
+        when(block.getShot()).thenReturn(shot);
+
+        detailViewController.endCountFocusListener(new ObservableValue<Boolean>() {
+            @Override
+            public void addListener(ChangeListener<? super Boolean> listener) {
+            }
+
+            @Override
+            public void removeListener(ChangeListener<? super Boolean> listener) {
+            }
+
+            @Override
+            public Boolean getValue() {
+                return null;
+            }
+
+            @Override
+            public void addListener(InvalidationListener listener) {
+            }
+
+            @Override
+            public void removeListener(InvalidationListener listener) {
+            }
+        }, false, true);
+
+        verify(block, times(0)).setEndCount(0);
+        verify(shot, times(0)).setEndCount(0);
     }
 
     @Test
@@ -424,6 +647,39 @@ public class DetailViewControllerTest extends ApplicationTest {
     }
 
     @Test
+    public void nameFieldTextPropertyNull() {
+        CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
+        CameraShot shot = Mockito.mock(CameraShot.class);
+        when(block.getShot()).thenReturn(shot);
+
+        detailViewController.nameTextChangedListener(new ObservableValue<String>() {
+            @Override
+            public void addListener(ChangeListener<? super String> listener) {
+            }
+
+            @Override
+            public void removeListener(ChangeListener<? super String> listener) {
+            }
+
+            @Override
+            public String getValue() {
+                return null;
+            }
+
+            @Override
+            public void addListener(InvalidationListener listener) {
+            }
+
+            @Override
+            public void removeListener(InvalidationListener listener) {
+            }
+        }, "", "test newvalue");
+
+        verify(block, times(0)).setName("test newvalue");
+        verify(shot, times(0)).setName("test newvalue");
+    }
+
+    @Test
     public void descriptionFieldTextProperty() {
         CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
         CameraShot shot = Mockito.mock(CameraShot.class);
@@ -455,6 +711,39 @@ public class DetailViewControllerTest extends ApplicationTest {
 
         verify(block, times(1)).setDescription("test newvalue");
         verify(shot, times(1)).setDescription("test newvalue");
+    }
+
+    @Test
+    public void descriptionFieldTextPropertyNull() {
+        CameraShotBlock block = Mockito.mock(CameraShotBlock.class);
+        CameraShot shot = Mockito.mock(CameraShot.class);
+        when(block.getShot()).thenReturn(shot);
+
+        detailViewController.descriptionTextChangedListener(new ObservableValue<String>() {
+            @Override
+            public void addListener(ChangeListener<? super String> listener) {
+            }
+
+            @Override
+            public void removeListener(ChangeListener<? super String> listener) {
+            }
+
+            @Override
+            public String getValue() {
+                return null;
+            }
+
+            @Override
+            public void addListener(InvalidationListener listener) {
+            }
+
+            @Override
+            public void removeListener(InvalidationListener listener) {
+            }
+        }, "", "test newvalue");
+
+        verify(block, times(0)).setDescription("test newvalue");
+        verify(shot, times(0)).setDescription("test newvalue");
     }
 
     @Test
