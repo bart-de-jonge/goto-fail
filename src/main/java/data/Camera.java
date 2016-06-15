@@ -1,25 +1,19 @@
 package data;
 
-import java.util.ArrayList;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Class to store information about cameras.
  */
 @XmlRootElement(name = "camera")
 @XmlAccessorType(XmlAccessType.FIELD)
-@EqualsAndHashCode
 @ToString
 @Log4j2
 public class Camera implements Cloneable {
@@ -115,5 +109,41 @@ public class Camera implements Cloneable {
      */
     public static void incrementCounter() {
         instanceCounter++;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null ||  !(o instanceof Camera)) {
+            return false;
+        }
+
+        Camera camera = (Camera) o;
+
+        if (Double.compare(camera.getMovementMargin(), getMovementMargin()) != 0) {
+            return false;
+        }
+        if (instance != camera.instance) {
+            return false;
+        }
+        if ((name != null && !name.equals(camera.name))
+                || (name == null && camera.name != null)) {
+            return false;
+        }
+        if ((description != null && !description.equals(camera.description))
+                || (description == null && camera.description != null)) {
+            return false;
+        }
+        if ((cameraType != null && !cameraType.equals(camera.cameraType))
+                || (cameraType == null && camera.cameraType != null)) {
+            return false;
+        }
+        if (ip != null) {
+            return ip.equals(camera.ip);
+        } else {
+            return camera.ip == null;
+        }
     }
 }

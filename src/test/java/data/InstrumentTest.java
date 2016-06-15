@@ -3,8 +3,6 @@ package data;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.Assert.*;
 
 /**
@@ -42,17 +40,6 @@ public class InstrumentTest {
     }
 
     @Test
-    public void hashCodeTest() throws Exception {
-        assertEquals(26067734, instrument.hashCode());
-    }
-
-    @Test
-    public void canEqual() throws Exception {
-        assertTrue(instrument.canEqual(new Instrument("alskdfjasdf", "laksdfjaskldjf")));
-        assertFalse(instrument.canEqual(new ArrayList<Integer>()));
-    }
-
-    @Test
     public void getName() throws Exception {
         assertEquals("testName", instrument.getName());
     }
@@ -67,5 +54,53 @@ public class InstrumentTest {
         Instrument myInstrument = new Instrument();
         assertEquals("", myInstrument.getName());
         assertEquals("", myInstrument.getDescription());
+    }
+
+    @Test
+    public void testEqualsNull() {
+        assertNotEquals(this.instrument, null);
+    }
+
+    @Test
+    public void testEqualsOtherClass() {
+        assertNotEquals(this.instrument, "");
+    }
+
+    @Test
+    public void testEqualsName() {
+        Instrument instrument = new Instrument("testNameasdf", "test description");
+        assertNotEquals(instrument, this.instrument);
+    }
+
+    @Test
+    public void testEqualsNameNull() {
+        Instrument instrument = new Instrument(null, "test description");
+        assertNotEquals(instrument, this.instrument);
+    }
+
+    @Test
+    public void testEqualsNameBotNull() {
+        Instrument instrument = new Instrument(null, "test description");
+        this.instrument.setName(null);
+        assertEquals(instrument, this.instrument);
+    }
+
+    @Test
+    public void testEqualsDescription() {
+        Instrument instrument = new Instrument("testName", "test descasdfasdfription");
+        assertNotEquals(instrument, this.instrument);
+    }
+
+    @Test
+    public void testEqualsDescriptionNull() {
+        Instrument instrument = new Instrument("testName", null);
+        assertNotEquals(instrument, this.instrument);
+    }
+
+    @Test
+    public void testEqualsDescriptionBotNull() {
+        Instrument instrument = new Instrument("testName", null);
+        this.instrument.setDescription(null);
+        assertEquals(instrument, this.instrument);
     }
 }

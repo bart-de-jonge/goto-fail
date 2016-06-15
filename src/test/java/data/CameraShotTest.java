@@ -88,4 +88,10 @@ public class CameraShotTest {
         assertEquals(directorShot, cameraShot.getDirectorShot());
     }
 
+    @Test
+    public void testClone() {
+        CameraShot shot = cameraShot.clone();
+        shot.setInstance(cameraShot.getInstance());
+        assertEquals(shot, cameraShot);
+    }
 }
