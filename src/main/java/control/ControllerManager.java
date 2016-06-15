@@ -13,6 +13,7 @@ import javafx.stage.WindowEvent;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
@@ -47,6 +48,7 @@ public class ControllerManager {
     @Getter
     private ShotBlock activeShotBlock;
 
+    @Getter @Setter
     private SaveModalView saveModal;
     // Placeholder project in lieu of XML loading
     @Getter
@@ -118,7 +120,7 @@ public class ControllerManager {
      * @param oldValue the old node
      * @param newValue the new node
      */
-    private void focusChangeListener(ObservableValue<? extends Node> observable,
+    protected void focusChangeListener(ObservableValue<? extends Node> observable,
             Node oldValue, Node newValue) {
         if (newValue != null) {
             String className = newValue.getClass().getName();
@@ -137,7 +139,7 @@ public class ControllerManager {
     /**
      * Set up a handler for when the close button is clicked.
      */
-    private void initOnCloseOperation() {
+    protected void initOnCloseOperation() {
         rootPane.getPrimaryStage().setOnCloseRequest(this::handleOnClose);
     }
 
@@ -145,7 +147,7 @@ public class ControllerManager {
      * Handler for the on close event.
      * @param event the WindowEvent for this handler
      */
-    private void handleOnClose(WindowEvent event) {
+    protected void handleOnClose(WindowEvent event) {
         if (scriptingProject != null && scriptingProject.isChanged()) {
             event.consume();
             initSaveModal();
@@ -166,7 +168,7 @@ public class ControllerManager {
      * Handle a click on the save button.
      * @param event the MouseEvent for this handler.
      */
-    private void handleSave(MouseEvent event) {
+    protected void handleSave(MouseEvent event) {
         projectController.save();
         saveModal.hideModal();
         rootPane.getPrimaryStage().close();
@@ -176,7 +178,7 @@ public class ControllerManager {
      * Handle a click on the don't save button.
      * @param event the MouseEvent for this handler
      */
-    private void handleDontSave(MouseEvent event) {
+    protected void handleDontSave(MouseEvent event) {
         rootPane.getPrimaryStage().close();
         saveModal.hideModal();
     }
@@ -185,7 +187,7 @@ public class ControllerManager {
      * Handle a click on the cancel button.
      * @param event the MouseEvent for this handler
      */
-    private void handleCancel(MouseEvent event) {
+    protected void handleCancel(MouseEvent event) {
         saveModal.hideModal();
     }
 

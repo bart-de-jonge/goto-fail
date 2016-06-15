@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 
 import data.*;
 import gui.centerarea.TimelinesGridPane;
+import gui.modal.ShotDecouplingModalView;
 import gui.root.RootCenterArea;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -25,9 +26,8 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
-
-import java.util.ArrayList;
 
 /**
  * @author alex
@@ -68,6 +68,16 @@ public class TimelineControllerTest extends ApplicationTest {
 
     @Test
     public void shotChangedLengthTest() {
+        timelineController.shotChangedHandler(
+                new CameraShotBlockUpdatedEvent(shotBlock, 0)
+        );
+
+        assertEquals(2.0, shot.getEndCount(), 0);
+    }
+
+    @Test
+    public void shotChangedWithBlocks() {
+        timelineController.setCameraShotBlocks(new ArrayList<>(Arrays.asList(shotBlock)));
         timelineController.shotChangedHandler(
                 new CameraShotBlockUpdatedEvent(shotBlock, 0)
         );
@@ -265,6 +275,26 @@ public class TimelineControllerTest extends ApplicationTest {
     }
 
     @Test
+    public void checkCollisionsRemovingCollidesWith() throws InterruptedException {
+        CameraShot shot = Mockito.mock(CameraShot.class);
+        CameraShot shot2 = Mockito.mock(CameraShot.class);
+
+        CameraShotBlock shotBlock = Mockito.mock(CameraShotBlock.class);
+        CameraShotBlock shotBlock2 = Mockito.mock(CameraShotBlock.class);
+        when(shotBlock.getShot()).thenReturn(shot);
+        ArrayList shotList = new ArrayList<>(Collections.singletonList(shot2));
+        when(shot.getCollidesWith()).thenReturn(shotList);
+        doReturn(shotBlock2).when(timelineController).getShotBlockForShot(shot2);
+        when(shotBlock2.getShot()).thenReturn(shot2);
+        // Call method under test
+        timelineController.resetColliding(shotBlock);
+
+        // Do verifications
+        assertTrue(shotList.isEmpty());
+        Mockito.verify(shotBlock, times(1)).setColliding(false);
+    }
+
+    @Test
     public void removeCollisionFromCameraShotBlock() {
         CameraShot shot = new CameraShot("name", "description", 2.0, 4.0);
         CameraShot shot2 = new CameraShot("name2", "description2", 2.0, 5.0);
@@ -302,6 +332,87 @@ public class TimelineControllerTest extends ApplicationTest {
 
         // Do verifications
         Mockito.verify(shotBlock, times(3)).getShot();
+    }
+
+    @Test
+    public void decoupleAndModifyFalse() throws InterruptedException {
+        CameraShot shot = Mockito.mock(CameraShot.class);
+        CameraShotBlock shotBlock = Mockito.mock(CameraShotBlock.class);
+        when(shotBlock.getShot()).thenReturn(shot);
+        DirectorShot directorShot = Mockito.mock(DirectorShot.class);
+        when(shot.getDirectorShot()).thenReturn(directorShot);
+        CameraShotBlockUpdatedEvent event = Mockito.mock(CameraShotBlockUpdatedEvent.class);
+        when(event.getCameraShotBlock()).thenReturn(shotBlock);
+        when(shotBlock.getBeginCount()).thenReturn(5.0);
+        when(shot.getBeginCount()).thenReturn(5.0);
+
+
+        // Call method under test
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        Platform.runLater(() -> {
+            timelineController.decoupleAndModify(event, shotBlock);
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        // Do verifications
+        Mockito.verify(shotBlock, times(10)).getShot();
+    }
+
+    @Test
+    public void setNumTimelines() {
+        timelineController.setNumTimelines(5);
+        assertEquals(5, timelineController.getNumTimelines());
+    }
+
+    @Test
+    public void getShotBlockForShotNull() {
+        CameraShot shot = Mockito.mock(CameraShot.class);
+        assertNull(timelineController.getShotBlockForShot(shot));
+    }
+
+    @Test
+    public void getShotBlockForShot() {
+        CameraShot shot = Mockito.mock(CameraShot.class);
+        CameraShotBlock shotBlock = Mockito.mock(CameraShotBlock.class);
+        when(shot.getInstance()).thenReturn(5);
+        when(shotBlock.getShot()).thenReturn(shot);
+        timelineController.setCameraShotBlocks(Arrays.asList(shotBlock));
+        assertEquals(shotBlock, timelineController.getShotBlockForShot(shot));
+    }
+
+    @Test
+    public void recomputeAllCollisions() {
+        Mockito.doNothing().when(timelineController).checkCollisions(anyInt(), anyObject());
+        CameraShotBlock shotBlock = Mockito.mock(CameraShotBlock.class);
+        timelineController.setCameraShotBlocks(Arrays.asList(shotBlock));
+        when(shotBlock.getTimetableNumber()).thenReturn(0);
+
+        timelineController.recomputeAllCollisions();
+        Mockito.verify(timelineController, times(1)).checkCollisions(0, shotBlock);
+    }
+
+    @Test
+    public void cancelButtonListener() {
+        ShotDecouplingModalView view = Mockito.mock(ShotDecouplingModalView.class);
+        timelineController.cancelButtonListener(view, shotBlock);
+        Mockito.verify(shotBlock, times(1)).restorePreviousPosition();
+        Mockito.verify(view, times(1)).hideModal();
+    }
+
+    @Test
+    public void confirmButtonListener() {
+        ShotDecouplingModalView view = Mockito.mock(ShotDecouplingModalView.class);
+        CameraShotBlockUpdatedEvent event = Mockito.mock(CameraShotBlockUpdatedEvent.class);
+        when(event.getOldTimelineNumber()).thenReturn(5);
+        Mockito.doNothing().when(timelineController).decoupleShot(anyInt(), anyObject());
+        Mockito.doNothing().when(timelineController).modifyCameraShot(anyObject(), anyObject());
+        CameraShot shot = Mockito.mock(CameraShot.class);
+        when(shotBlock.getShot()).thenReturn(shot);
+
+        timelineController.confirmButtonListener(view, shotBlock, event);
+        Mockito.verify(timelineController, times(1)).decoupleShot(5, shot);
+        Mockito.verify(timelineController, times(1)).modifyCameraShot(event, shotBlock);
     }
 
     @Override
