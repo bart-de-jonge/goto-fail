@@ -124,7 +124,7 @@ public class Camera implements Cloneable {
         result = prime * result + ((ip == null) ? 0 : ip.hashCode());
         long temp;
         temp = Double.doubleToLongBits(movementMargin);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + (int) (temp ^ (temp >>> Integer.SIZE));
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }

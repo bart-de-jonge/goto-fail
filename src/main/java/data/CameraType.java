@@ -74,7 +74,7 @@ public class CameraType implements Cloneable {
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         long temp;
         temp = Double.doubleToLongBits(movementMargin);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + (int) (temp ^ (temp >>> Integer.SIZE));
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }

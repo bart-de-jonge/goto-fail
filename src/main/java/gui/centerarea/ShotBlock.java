@@ -87,8 +87,8 @@ public abstract class ShotBlock {
                     .getConstructor(RootCenterArea.class, ShotBlock.class);
 
             this.setTimetableBlock((TimetableBlock) constructor.newInstance(rootCenterArea, this));
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-                IllegalArgumentException | InvocationTargetException e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+                | IllegalArgumentException | InvocationTargetException e) {
             log.error("No valid timetableblock class, could not initialize timetableblock!");
             this.timetableBlock = null;
         }
