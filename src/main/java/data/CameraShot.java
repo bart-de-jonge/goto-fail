@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -87,6 +88,19 @@ public class CameraShot extends Shot implements Cloneable {
      */
     public static void incrementCounter() {
         instanceCounter++;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((directorShot == null) ? 0 : directorShot.hashCode());
+        result = prime * result + instance;
+        result = prime * result + presetId;
+        return result;
     }
 
     @Override

@@ -1,10 +1,14 @@
 package control;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import data.Camera;
 import data.CameraShot;
 import data.DirectorShot;
 import data.Instrument;
-import data.Shot;
 import gui.centerarea.CameraShotBlock;
 import gui.centerarea.DirectorShotBlock;
 import gui.centerarea.ShotBlock;
@@ -23,11 +27,6 @@ import javafx.scene.input.MouseEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Controller for the DetailView.

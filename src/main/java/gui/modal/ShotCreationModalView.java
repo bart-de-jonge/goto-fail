@@ -30,8 +30,6 @@ public class ShotCreationModalView extends ModalView {
             + TweakingHelper.getBackgroundHighString() + ";";
     protected String centerRightStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.getBackgroundString() + ";";
-    protected String bottomStyle = BACKGROUND_STYLE_STRING
-            + TweakingHelper.getColorString(0) + ";";
 
     // variables for the Create and Cancel buttons
     protected static final int buttonWidth = 90;

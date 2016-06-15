@@ -23,6 +23,7 @@
         <exclude name="ExcessivePublicCount"/>
         <exclude name="TooManyFields"/>
         <exclude name="TooManyMethods"/>
+		<exclude name="NPathComplexity"/>
 
     </rule>
     <rule ref="rulesets/java/braces.xml"/>

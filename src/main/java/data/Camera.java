@@ -111,6 +111,24 @@ public class Camera implements Cloneable {
         instanceCounter++;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((cameraType == null) ? 0 : cameraType.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + instance;
+        result = prime * result + ((ip == null) ? 0 : ip.hashCode());
+        long temp;
+        temp = Double.doubleToLongBits(movementMargin);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

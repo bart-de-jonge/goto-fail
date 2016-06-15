@@ -18,15 +18,11 @@ public class CameraModificationModalView extends ModalView {
     protected String topStyle = ModalUtilities.constructDefaultModalTopStyle(22);
     protected String centerStyle = "-fx-background-color: "
             + TweakingHelper.getBackgroundString() + ";";
-    protected String bottomStyle = "-fx-background-color: "
-            + TweakingHelper.getColorString(0) + ";";
     
     protected static final int buttonWidth = 90;
     protected static final int buttonHeight = 25;
     protected static final int buttonSpacing = 20;
     
-    // variables for the title label
-    protected int titlelabelOffsetFromLeft = 20;
     
     @Getter
     protected StyledTextfield nameField;
