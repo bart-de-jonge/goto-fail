@@ -1,19 +1,13 @@
 package data;
 
-import java.util.ArrayList;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+
+import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
 
 /**
  * This class contains information about a Shot.
@@ -76,8 +70,6 @@ public abstract class Shot {
     public Shot(String name, String description, double beginCount, double endCount) {
         log.debug("Adding Shot(name={}, description={}, beginCount={}, endCount={})",
                  name, description, beginCount, endCount);
-
-        assert (beginCount <= endCount);
 
         this.name = name;
         this.description = description;
