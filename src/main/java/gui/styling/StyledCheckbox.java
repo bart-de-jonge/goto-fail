@@ -106,6 +106,14 @@ public class StyledCheckbox extends CheckBox {
     }
 
     /**
+     * Get selected value of checkbox.
+     * @return - the boolean
+     */
+    public boolean getSelected() {
+        return this.isSelected();
+    }
+
+    /**
      * Initialization helper function.
      */
     private void init() {

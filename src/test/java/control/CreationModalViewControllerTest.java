@@ -6,6 +6,7 @@ import gui.headerarea.DoubleTextField;
 import gui.modal.CameraShotCreationModalView;
 import gui.modal.DirectorShotCreationModalView;
 import gui.root.RootPane;
+import gui.styling.StyledCheckbox;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
@@ -52,7 +53,7 @@ public class CreationModalViewControllerTest extends ApplicationTest {
 
         directorTimelineController = Mockito.mock(DirectorTimelineController.class);
 
-        creationModalViewController = new CreationModalViewController(manager);
+        creationModalViewController = spy(new CreationModalViewController(manager));
     }
 
     @Test
@@ -88,6 +89,20 @@ public class CreationModalViewControllerTest extends ApplicationTest {
     }
 
     @Test
+    public void cameraShotStartCountEnterHandlerOtherKeycode() throws Exception {
+        KeyEvent keyEvent = new KeyEvent(KeyEvent.ANY, "", "", KeyCode.SPACE,
+                false, false, false, false);
+
+        setupCameraCreationModalView();
+
+        DoubleTextField startField = creationModalViewController.getCameraShotCreationModalView().getStartField();
+        startField.setText("5.70");
+        WhiteboxImpl.invokeMethod(creationModalViewController, "cameraShotStartCountEnterHandler", keyEvent);
+        assertEquals("5.70", startField.getText());
+        tearDownCameraCreationModalView();
+    }
+
+    @Test
     public void cameraShotEndCountEnterHandler() throws Exception {
         KeyEvent keyEvent = new KeyEvent(KeyEvent.ANY, "", "", KeyCode.ENTER,
                 false, false, false, false);
@@ -98,6 +113,21 @@ public class CreationModalViewControllerTest extends ApplicationTest {
         endField.setText("4.2");
         WhiteboxImpl.invokeMethod(creationModalViewController, "cameraShotEndCountEnterHandler", keyEvent);
         assertEquals("4.25", endField.getText());
+
+        tearDownCameraCreationModalView();
+    }
+
+    @Test
+    public void cameraShotEndCountEnterHandlerOtherKeycode() throws Exception {
+        KeyEvent keyEvent = new KeyEvent(KeyEvent.ANY, "", "", KeyCode.SPACE,
+                false, false, false, false);
+
+        setupCameraCreationModalView();
+
+        DoubleTextField endField = creationModalViewController.getCameraShotCreationModalView().getEndField();
+        endField.setText("4.2");
+        WhiteboxImpl.invokeMethod(creationModalViewController, "cameraShotEndCountEnterHandler", keyEvent);
+        assertEquals("4.2", endField.getText());
 
         tearDownCameraCreationModalView();
     }
@@ -132,6 +162,35 @@ public class CreationModalViewControllerTest extends ApplicationTest {
     }
 
     @Test
+    public void cameraShotStartCountFocusHandlerFalse() throws Exception {
+        setupCameraCreationModalView();
+
+        DoubleTextField startField = creationModalViewController.getCameraShotCreationModalView().getStartField();
+        startField.setText("5.70");
+        WhiteboxImpl.invokeMethod(creationModalViewController, "cameraShotStartCountFocusHandler", new ObservableValue<Boolean>() {
+            @Override
+            public void addListener(InvalidationListener listener) {
+            }
+            @Override
+            public void removeListener(InvalidationListener listener) {
+            }
+            @Override
+            public void addListener(ChangeListener<? super Boolean> listener) {
+            }
+            @Override
+            public void removeListener(ChangeListener<? super Boolean> listener) {
+            }
+            @Override
+            public Boolean getValue() {
+                return null;
+            }
+        }, false, true);
+        assertEquals("5.70", startField.getText());
+
+        tearDownCameraCreationModalView();
+    }
+
+    @Test
     public void cameraShotEndCountFocusHandler() throws Exception {
         setupCameraCreationModalView();
 
@@ -161,6 +220,35 @@ public class CreationModalViewControllerTest extends ApplicationTest {
     }
 
     @Test
+    public void cameraShotEndCountFocusHandlerFalse() throws Exception {
+        setupCameraCreationModalView();
+
+        DoubleTextField endField = creationModalViewController.getCameraShotCreationModalView().getEndField();
+        endField.setText("5.70");
+        WhiteboxImpl.invokeMethod(creationModalViewController, "cameraShotEndCountFocusHandler", new ObservableValue<Boolean>() {
+            @Override
+            public void addListener(InvalidationListener listener) {
+            }
+            @Override
+            public void removeListener(InvalidationListener listener) {
+            }
+            @Override
+            public void addListener(ChangeListener<? super Boolean> listener) {
+            }
+            @Override
+            public void removeListener(ChangeListener<? super Boolean> listener) {
+            }
+            @Override
+            public Boolean getValue() {
+                return null;
+            }
+        }, false, true);
+        assertEquals("5.70", endField.getText());
+
+        tearDownCameraCreationModalView();
+    }
+
+    @Test
     public void createCameraShot() throws Exception {
         // Setup necessary variables
         MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
@@ -176,7 +264,7 @@ public class CreationModalViewControllerTest extends ApplicationTest {
         final CountDownLatch[] latch = {new CountDownLatch(1)};
         Platform.runLater(() -> {
             // More setup
-            CreationModalViewController controller = spy(creationModalViewController);
+            CreationModalViewController controller = creationModalViewController;
             when(controller.validateCameraShot()).thenReturn(true);
             modalView[0] = spy(controller.getCameraShotCreationModalView());
             when(modalView[0].getInstrumentsInShot()).thenReturn(new ArrayList<>(Arrays.asList(0)));
@@ -200,6 +288,27 @@ public class CreationModalViewControllerTest extends ApplicationTest {
         verify(modalView[0], times(1)).getModalStage();
 
         tearDownCameraCreationModalView();
+    }
+
+    @Test
+    public void createCameraShotNoValidate() throws Exception {
+        // Setup necessary variables
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+
+        doReturn(false).when(creationModalViewController).validateCameraShot();
+
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        Platform.runLater(() -> {
+
+            try {
+                WhiteboxImpl.invokeMethod(creationModalViewController, "createCameraShot", mouseEvent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
     }
 
     @Test
@@ -229,7 +338,6 @@ public class CreationModalViewControllerTest extends ApplicationTest {
         tearDownCameraCreationModalView();
     }
 
-    // TODO find way to test positive side (mock checkboxes?)
     @Test
     public void validateCameraShotFalse() throws InterruptedException {
         setupCameraCreationModalView();
@@ -255,6 +363,36 @@ public class CreationModalViewControllerTest extends ApplicationTest {
     }
 
     @Test
+    public void validateCameraShotTrue() throws InterruptedException {
+        setupCameraCreationModalView();
+
+        CameraShotCreationModalView modalView = spy(creationModalViewController.getCameraShotCreationModalView());
+        modalView.getDescriptionField().setText("description");
+        modalView.getNameField().setText("name");
+        modalView.getStartField().setText("2");
+        modalView.getEndField().setText("5");
+        creationModalViewController.setCameraShotCreationModalView(modalView);
+
+        StyledCheckbox checkbox1 = Mockito.mock(StyledCheckbox.class);
+        StyledCheckbox checkbox2 = Mockito.mock(StyledCheckbox.class);
+        when(modalView.getCameraCheckboxes()).thenReturn(new ArrayList<>(Arrays.asList(checkbox1, checkbox2)));
+        doReturn(true).when(checkbox1).getSelected();
+
+        final boolean[] result = new boolean[1];
+
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        Platform.runLater(() -> {
+            result[0] = creationModalViewController.validateCameraShot();
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        assertTrue(result[0]);
+
+        tearDownCameraCreationModalView();
+    }
+
+    @Test
     public void showDirectorCreationWindow() throws InterruptedException {
         setupDirectorCreationModalView();
 
@@ -275,7 +413,7 @@ public class CreationModalViewControllerTest extends ApplicationTest {
         final CountDownLatch[] latch = {new CountDownLatch(1)};
         Platform.runLater(() -> {
 
-            CreationModalViewController controller = spy(creationModalViewController);
+            CreationModalViewController controller = creationModalViewController;
             when(controller.validateDirectorShot()).thenReturn(true);
             when(manager.getDirectorTimelineControl()).thenReturn(directorTimelineController);
 
@@ -293,12 +431,39 @@ public class CreationModalViewControllerTest extends ApplicationTest {
         latch[0].await();
 
         verify(modalView[0], times(1)).getModalStage();
-        // TODO: add more tests when functionality is added
-
         tearDownDirectorCreationModalView();
     }
 
-    // TODO find way to test positive side (mock checkboxes?)
+    @Test
+    public void createDirectorShotNoValidate() throws InterruptedException {
+        MouseEvent mouseEvent = new MouseEvent(MouseEvent.ANY, 2, 3, 4, 5, MouseButton.PRIMARY, 1,
+                false, false, false, false, false, false, false, false, false, false, null);
+        setupDirectorCreationModalView();
+        final DirectorShotCreationModalView[] modalView = new DirectorShotCreationModalView[1];
+
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        Platform.runLater(() -> {
+
+            CreationModalViewController controller = creationModalViewController;
+            when(controller.validateDirectorShot()).thenReturn(false);
+
+            modalView[0] = spy(controller.getDirectorShotCreationModalView());
+            controller.setDirectorShotCreationModalView(modalView[0]);
+            when(modalView[0].getCamerasInShot()).thenReturn(new ArrayList(Arrays.asList(1)));
+
+            try {
+                WhiteboxImpl.invokeMethod(controller, "createDirectorShot", mouseEvent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        verify(modalView[0], times(0)).getModalStage();
+        tearDownDirectorCreationModalView();
+    }
+
     @Test
     public void validateDirecorShotFalse() throws InterruptedException {
         setupDirectorCreationModalView();
@@ -307,6 +472,58 @@ public class CreationModalViewControllerTest extends ApplicationTest {
         modalView.getDescriptionField().setText("description");
         modalView.getNameField().setText("name");
         modalView.getStartField().setText("15");
+        modalView.getEndField().setText("5");
+        modalView.getFrontPaddingField().setText("-2");
+        modalView.getFrontPaddingField().setText("-2");
+
+        final boolean[] result = new boolean[1];
+
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        Platform.runLater(() -> {
+            result[0] = creationModalViewController.validateDirectorShot();
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        assertFalse(result[0]);
+
+        tearDownDirectorCreationModalView();
+    }
+
+    @Test
+    public void validateDirecorShotFalseOtherBranch() throws InterruptedException {
+        setupDirectorCreationModalView();
+
+        DirectorShotCreationModalView modalView = creationModalViewController.getDirectorShotCreationModalView();
+        modalView.getDescriptionField().setText("description");
+        modalView.getNameField().setText("name");
+        modalView.getStartField().setText("15");
+        modalView.getEndField().setText("5");
+        modalView.getFrontPaddingField().setText("2");
+        modalView.getEndPaddingField().setText("-2");
+
+        final boolean[] result = new boolean[1];
+
+        final CountDownLatch[] latch = {new CountDownLatch(1)};
+        Platform.runLater(() -> {
+            result[0] = creationModalViewController.validateDirectorShot();
+            latch[0].countDown();
+        });
+        latch[0].await();
+
+        assertFalse(result[0]);
+
+        tearDownDirectorCreationModalView();
+    }
+
+    @Test
+    public void validateDirecorShotTrue() throws InterruptedException {
+        setupDirectorCreationModalView();
+
+        DirectorShotCreationModalView modalView = creationModalViewController.getDirectorShotCreationModalView();
+        modalView.getDescriptionField().setText("description");
+        modalView.getNameField().setText("name");
+        modalView.getStartField().setText("2");
         modalView.getEndField().setText("5");
         modalView.getFrontPaddingField().setText("2");
         modalView.getFrontPaddingField().setText("2");
@@ -320,7 +537,7 @@ public class CreationModalViewControllerTest extends ApplicationTest {
         });
         latch[0].await();
 
-        assertFalse(result[0]);
+        assertTrue(result[0]);
 
         tearDownDirectorCreationModalView();
     }
@@ -379,9 +596,27 @@ public class CreationModalViewControllerTest extends ApplicationTest {
     }
 
     @Test
+    public void directorShotStartCountEnterHandlerOtherKeyCode() throws InterruptedException {
+        setupDirectorCreationModalView();
+        KeyEvent event = new KeyEvent(KeyEvent.ANY, "", "", KeyCode.SPACE,
+                false, false, false, false);
+        creationModalViewController.directorShotStartCountEnterHandler(event);
+        tearDownDirectorCreationModalView();
+    }
+
+    @Test
     public void directorShotEndCountEnterHandler() throws InterruptedException {
         setupDirectorCreationModalView();
         KeyEvent event = new KeyEvent(KeyEvent.ANY, "", "", KeyCode.ENTER,
+                false, false, false, false);
+        creationModalViewController.directorShotEndCountEnterHandler(event);
+        tearDownDirectorCreationModalView();
+    }
+
+    @Test
+    public void directorShotEndCountEnterHandlerOtherKeyCode() throws InterruptedException {
+        setupDirectorCreationModalView();
+        KeyEvent event = new KeyEvent(KeyEvent.ANY, "", "", KeyCode.SPACE,
                 false, false, false, false);
         creationModalViewController.directorShotEndCountEnterHandler(event);
         tearDownDirectorCreationModalView();
@@ -396,10 +631,26 @@ public class CreationModalViewControllerTest extends ApplicationTest {
     }
 
     @Test
+    public void directorShotEndCountFocusHandlerFalse() throws InterruptedException {
+        setupDirectorCreationModalView();
+        ObservableValue value = Mockito.mock(ObservableValue.class);
+        creationModalViewController.directorShotEndCountFocusHandler(value, false, true);
+        tearDownDirectorCreationModalView();
+    }
+
+    @Test
     public void directorShotStartCountFocusHandler() throws InterruptedException {
         setupDirectorCreationModalView();
         ObservableValue value = Mockito.mock(ObservableValue.class);
         creationModalViewController.directorShotStartCountFocusHandler(value, true, false);
+        tearDownDirectorCreationModalView();
+    }
+
+    @Test
+    public void directorShotStartCountFocusHandlerFalse() throws InterruptedException {
+        setupDirectorCreationModalView();
+        ObservableValue value = Mockito.mock(ObservableValue.class);
+        creationModalViewController.directorShotStartCountFocusHandler(value, false, true);
         tearDownDirectorCreationModalView();
     }
 

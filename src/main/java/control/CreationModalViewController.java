@@ -5,8 +5,8 @@ import data.DirectorShot;
 import data.GeneralShotData;
 import gui.modal.CameraShotCreationModalView;
 import gui.modal.DirectorShotCreationModalView;
+import gui.styling.StyledCheckbox;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.CheckBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -158,8 +158,8 @@ public class CreationModalViewController {
         String errorString = "";
 
         boolean aCameraSelected = false;
-        for (CheckBox cb : cameraShotCreationModalView.getCameraCheckboxes()) {
-            if (cb.isSelected()) {
+        for (StyledCheckbox cb : cameraShotCreationModalView.getCameraCheckboxes()) {
+            if (cb.getSelected()) {
                 aCameraSelected = true;
             }
         }
