@@ -66,14 +66,24 @@ public class CameraType implements Cloneable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         CameraType that = (CameraType) o;
 
-        if (Double.compare(that.getMovementMargin(), getMovementMargin()) != 0) return false;
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
-        return getDescription() != null ? getDescription().equals(that.getDescription()) : that.getDescription() == null;
+        if (Double.compare(that.getMovementMargin(), getMovementMargin()) != 0) {
+            return false;
+        }
+        if (getName() != null ? !getName().equals(that.getName())
+                : that.getName() != null) {
+            return false;
+        }
+        return getDescription() != null ? getDescription().equals(that.getDescription())
+                : that.getDescription() == null;
 
     }
 }

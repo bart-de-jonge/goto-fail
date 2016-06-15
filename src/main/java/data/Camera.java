@@ -113,16 +113,32 @@ public class Camera implements Cloneable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Camera camera = (Camera) o;
 
-        if (Double.compare(camera.getMovementMargin(), getMovementMargin()) != 0) return false;
-        if (instance != camera.instance) return false;
-        if (name != null ? !name.equals(camera.name) : camera.name != null) return false;
-        if (description != null ? !description.equals(camera.description) : camera.description != null) return false;
-        if (cameraType != null ? !cameraType.equals(camera.cameraType) : camera.cameraType != null) return false;
+        if (Double.compare(camera.getMovementMargin(), getMovementMargin()) != 0) {
+            return false;
+        }
+        if (instance != camera.instance) {
+            return false;
+        }
+        if (name != null ? !name.equals(camera.name) : camera.name != null) {
+            return false;
+        }
+        if (description != null ? !description.equals(camera.description)
+                : camera.description != null) {
+            return false;
+        }
+        if (cameraType != null ? !cameraType.equals(camera.cameraType)
+                : camera.cameraType != null) {
+            return false;
+        }
         return ip != null ? ip.equals(camera.ip) : camera.ip == null;
     }
 }
