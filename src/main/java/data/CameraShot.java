@@ -97,7 +97,6 @@ public class CameraShot extends Shot implements Cloneable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((directorShot == null) ? 0 : directorShot.hashCode());
-        result = prime * result + instance;
         result = prime * result + presetId;
         return result;
     }

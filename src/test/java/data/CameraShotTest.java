@@ -98,6 +98,6 @@ public class CameraShotTest {
     @Test
     public void hashCodeTestDirectorShotNull() {
         cameraShot.setDirectorShot(null);
-        assertEquals(29790, cameraShot.hashCode());
+        assertEquals(960, cameraShot.hashCode());
     }
 }
