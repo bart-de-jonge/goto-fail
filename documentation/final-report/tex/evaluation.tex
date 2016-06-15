@@ -1,1 +1,21 @@
 \section{Evaluation of the functional modules, the product, and the failure analysis}
+
+In this section, we will evaluate the three functional modules and the product as a whole. We will also explore where our product may fail to meet the initial requirements. Possible improvements will be discussed in the next chapter.\\
+
+\subsection{The scripting application}
+When looking at the initial requirements (which can be found in Appendix A), we can conclude that all but one of the must have requirements have been implemented. The only requirement that was not implemented is "Ability to change the size of a timeline, relative to number of counts". Due to performance issues when making the timelines very long, we currently have a fixed timeline length. All the should have requirements have been implemented as well, but we changed the idea of the director shots a little. Instead of specifying possible cameras to use, the director can just specify whatever cameras to use, and the generate the camera timelines automatically. This saves him a lot of time adding the seperate camera shots. Unfortunately, because of time issues, we have not implemented any of the could have or won't have features. Instead, we focused on the more important features and implementing them as complete and bug free as possible.
+
+\subsection{The web application}
+Just like for the scripting application, we have missed one must-have requirement: "Ability for the director to edit the timeline during play". We eventually chose not to implement this because it would greatly complicate the web application backend. Also, it would cause a lot of duplication because all the functionality from the scripting application would have to be rewritten for the web application, in a different language.\\
+This has as effect that we also did not complete the should-have requirement "Warnings for possible problems when the director edits the timeline during recording, such as collisions". We also did not implement automatic timeline speed, because this proved to be functionality that does not work in practice, as the speed of the concert is never exactly known and/or stable. Therefore, we stayed with manual advancing of the timeline. Instead of highlighting the cameras that a certain camera operator is operating, we have created a user selection screen in which a camera operator can choose which cameras he operates. Then, only these cameras will be shown. This way, we minimize the redundant information on the screen for any given camera operator.\\
+We also implemented all could-have requirements. Overall, we are happy with the end-result. We are really only missing one feature that was in the initial plan, and what we have works well and looks really good too.
+
+\subsection{The camera control center}
+Unfortunately, this is the part that is finished the least. It is possible to create presets, and recall them, as well as moving the cameras around. However, this was not yet linked with the web application, so the automatic recall functionality is not there at this point. Unfortunately, we aimed a little too high at the start of the project, creating three fully functional modules. Because of that, we shifted focus on getting the scripting application and live view really done, because we rather had two great applications than three half-finished ones.\\
+Looking at the initial requirements, we're missing the two must-haves that have to do with automatic recalling. We were able to get a low-quality preview of the camera you are operating, and the possibility to move/zoom the cameras.\\
+Possible improvements in this part will be discussed in the next chapter.
+
+\subsection*{The product as a whole}
+Looking at how the functional modules work together, we can say that the integration between the scripting application and the web application is really great. It is very easy to send the created script to the web application, and all the different live views are directly initialized.\\
+Unfortunately, the preset module is, at the moment, not really linked with the other two modules.\\
+Overall, we are really happy with the final product, and think it can greatly improve the workflow at PolyCast and possibly other recording companies as well.
