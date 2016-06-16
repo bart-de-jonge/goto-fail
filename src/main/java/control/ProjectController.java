@@ -521,9 +521,12 @@ public class ProjectController {
                                             .getSelectionModel()
                                             .getSelectedIndex();
         if (selectedIndex != -1) {
+            Instrument instrument = editProjectModal.getInstruments().get(selectedIndex);
+            this.controllerManager.getTimelineControl().removeInstrumentFromAllShots(instrument);
+            this.controllerManager.getDirectorTimelineControl().removeInstrumentFromAllShots(instrument);
             editProjectModal.getInstrumentList().getItems().remove(selectedIndex);
             editProjectModal.getInstruments().remove(selectedIndex);
-        } else {
+           } else {
             editProjectModal.getTitleLabel().setText("Please select an instrument first");
             editProjectModal.getTitleLabel().setTextFill(Color.RED);
         }
