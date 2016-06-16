@@ -26,7 +26,6 @@ public class ModalUtilities {
         buttonPane.setMinHeight(BOTTOM_AREA_HEIGHT);
         buttonPane.setPrefHeight(BOTTOM_AREA_HEIGHT);
         buttonPane.setMaxHeight(BOTTOM_AREA_HEIGHT);
-        buttonPane.setStyle(BOTTOM_STYLE);
         buttonPane.setPadding(new Insets(0, TITLE_LABEL_OFFSET_FROM_LEFT,
                 0, TITLE_LABEL_OFFSET_FROM_LEFT));
         return buttonPane;

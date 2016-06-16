@@ -9,7 +9,7 @@ import lombok.Getter;
 
 public class AddInstrumentModalView extends CameraModificationModalView {
 
-    private static final int WIDTH = 400;
+    private static final int WIDTH = 450;
     private static final int HEIGHT = 300;
     
     @Getter

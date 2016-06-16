@@ -34,7 +34,7 @@ public class EditProjectModalView extends ModalView {
      */
 
     // preferred width and height of screen.
-    private static final int width = 900;
+    private static final int width = 980;
     private static final int height = 700;
 
     // variables for spacing
@@ -435,6 +435,7 @@ public class EditProjectModalView extends ModalView {
     private void initButtons() {
         // setup button pane
         this.buttonPane = ModalUtilities.constructButtonPane();
+        this.buttonPane.setStyle(bottomStyle);
         this.viewPane.getChildren().add(buttonPane);
 
         // Add cancel button

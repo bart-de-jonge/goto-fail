@@ -21,7 +21,7 @@ public class AddCameraTypeModalView extends CameraModificationModalView {
      */
 
     // width and height of screen. 450 and 300 work very, very well.
-    private static final int width = 400;
+    private static final int width = 450;
     private static final int height = 300;
 
     /*
