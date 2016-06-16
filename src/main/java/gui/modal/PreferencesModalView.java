@@ -32,6 +32,8 @@ public class PreferencesModalView extends ModalView {
     protected String topStyle = ModalUtilities.constructDefaultModalTopStyle(22);
     protected String centerStyle = "-fx-background-color: "
             + TweakingHelper.getBackgroundString() + ";";
+    protected String bottomStyle = "-fx-background-color: "
+            + TweakingHelper.getColorString(0) + ";";
     
     // variables for the buttons
     private static final int buttonSpacing = 20;
@@ -145,6 +147,7 @@ public class PreferencesModalView extends ModalView {
     private void initButtons() {
         // setup button pane
         this.buttonPane = ModalUtilities.constructButtonPane();
+        this.buttonPane.setStyle(bottomStyle);
         this.viewPane.getChildren().add(buttonPane);
 
         // Add cancel button

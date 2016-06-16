@@ -30,6 +30,8 @@ public class ShotCreationModalView extends ModalView {
             + TweakingHelper.getBackgroundHighString() + ";";
     protected String centerRightStyle = BACKGROUND_STYLE_STRING
             + TweakingHelper.getBackgroundString() + ";";
+    protected String bottomStyle = "-fx-background-color: "
+            + TweakingHelper.getColorString(0) + ";";
 
     // variables for the Create and Cancel buttons
     protected static final int buttonWidth = 90;
@@ -144,6 +146,7 @@ public class ShotCreationModalView extends ModalView {
     protected void initButtons() {
         // setup button pane
         this.buttonPane = ModalUtilities.constructButtonPane();
+        this.buttonPane.setStyle(bottomStyle);
         this.rootPane.getChildren().add(buttonPane);
 
         // Add cancel button

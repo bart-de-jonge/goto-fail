@@ -435,6 +435,7 @@ public class EditProjectModalView extends ModalView {
     private void initButtons() {
         // setup button pane
         this.buttonPane = ModalUtilities.constructButtonPane();
+        this.buttonPane.setStyle(bottomStyle);
         this.viewPane.getChildren().add(buttonPane);
 
         // Add cancel button
