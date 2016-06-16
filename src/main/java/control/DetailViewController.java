@@ -592,6 +592,7 @@ public class DetailViewController {
      * @param buttons the dropdown menu containing buttons.
      */
     private void instrumentsDropdownListenerHelper(StyledMenuButton buttons) {
+        System.out.println("IS THIS CALLED?");
         // loop thourhgh all instruments for the active block, when the list is shown
         List<Instrument> instruments = activeCameraBlock.getInstruments();
         for (int i = 0; i < manager.getScriptingProject().getInstruments().size();
