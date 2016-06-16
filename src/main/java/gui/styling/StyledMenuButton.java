@@ -104,13 +104,9 @@ public class StyledMenuButton extends MenuButton {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                        try {
-                            lookup(".label").styleProperty().bind(
-                                    new SimpleStringProperty("-fx-text-fill: ")
-                                    .concat(borderStringProperty).concat(";"));
-                        } catch (NullPointerException e) {
-                            e.printStackTrace();
-                        }
+                        lookup(".label").styleProperty().bind(
+                                new SimpleStringProperty("-fx-text-fill: ")
+                                .concat(borderStringProperty).concat(";"));
                     });
             }
         }, 50);
