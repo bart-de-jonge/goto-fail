@@ -523,10 +523,11 @@ public class ProjectController {
         if (selectedIndex != -1) {
             Instrument instrument = editProjectModal.getInstruments().get(selectedIndex);
             this.controllerManager.getTimelineControl().removeInstrumentFromAllShots(instrument);
-            this.controllerManager.getDirectorTimelineControl().removeInstrumentFromAllShots(instrument);
+            this.controllerManager.getDirectorTimelineControl()
+                .removeInstrumentFromAllShots(instrument);
             editProjectModal.getInstrumentList().getItems().remove(selectedIndex);
             editProjectModal.getInstruments().remove(selectedIndex);
-           } else {
+        } else {
             editProjectModal.getTitleLabel().setText("Please select an instrument first");
             editProjectModal.getTitleLabel().setTextFill(Color.RED);
         }
@@ -913,7 +914,8 @@ public class ProjectController {
         if (name.isEmpty()) {
             errorString = "Please enter an instrument name\n";
         }
-        List<Instrument> existing = editProjectModal.getInstruments().stream().filter(e -> !e.getName().equals(name)).collect(Collectors.toList());
+        List<Instrument> existing = editProjectModal.getInstruments().stream()
+                    .filter(e -> !e.getName().equals(name)).collect(Collectors.toList());
         if (!(existing.size() == editProjectModal.getInstruments().size())) {
             errorString = "Please use a distinct instrument name\n";
         }

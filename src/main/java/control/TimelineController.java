@@ -78,13 +78,17 @@ public class TimelineController {
         initShotBlock(cameraIndex, newShot, false);
     }
     
+    /**
+     * Remove an instrument from all camera shots.
+     * @param instrument the instrument to remove
+     */
     public void removeInstrumentFromAllShots(Instrument instrument) {
         this.cameraShotBlocks.forEach(shotBlock -> {
-            shotBlock.getInstruments().remove(instrument);
-            shotBlock.getShot().getInstruments().remove(instrument);
-            shotBlock.getTimetableBlock().removeInstrument(instrument);
-            shotBlock.recompute();
-        });
+                shotBlock.getInstruments().remove(instrument);
+                shotBlock.getShot().getInstruments().remove(instrument);
+                shotBlock.getTimetableBlock().removeInstrument(instrument);
+                shotBlock.recompute();
+            });
         
     }
 

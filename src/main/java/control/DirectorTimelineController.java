@@ -66,14 +66,18 @@ public class DirectorTimelineController {
         initShotBlock(shot);
     }
     
+    /**
+     * Remove a instrument from all director shots.
+     * @param instrument the instrument to remove
+     */
     public void removeInstrumentFromAllShots(Instrument instrument) {
         this.directorShotBlockMap.keySet().forEach(e -> {
-            ShotBlock shotBlock = this.directorShotBlockMap.get(e);
-            shotBlock.getInstruments().remove(instrument);
-            shotBlock.getShot().getInstruments().remove(instrument);
-            shotBlock.getTimetableBlock().removeInstrument(instrument);
-            shotBlock.recompute();
-        });
+                ShotBlock shotBlock = this.directorShotBlockMap.get(e);
+                shotBlock.getInstruments().remove(instrument);
+                shotBlock.getShot().getInstruments().remove(instrument);
+                shotBlock.getTimetableBlock().removeInstrument(instrument);
+                shotBlock.recompute();
+            });
     }
 
     /**
