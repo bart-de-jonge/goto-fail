@@ -290,6 +290,7 @@ public class DetailViewController {
         shot.setBeginCount(dShot.getBeginCount() - dShot.getFrontShotPadding());
         shot.setEndCount(dShot.getEndCount() + dShot.getEndShotPadding());
         shot.setDirectorShot(dShot);
+        shot.setInstruments(dShot.getInstruments());
 
         // Add shot where needed
         dShot.getCameraShots().add(shot);

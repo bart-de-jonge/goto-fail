@@ -84,7 +84,7 @@ public class DirectorDetailView extends DetailView {
         if (!getVisible()) {
             this.getChildren().clear();
             this.getChildren().addAll(getNameBox(), getDescriptionBox(),
-                    getBeginCountBox(), getEndCountBox(),
+                    getBeginCountBox(), getEndCountBox(), this.getSelectInstrumentsButton(),
                     paddingBeforeBox, paddingAfterBox);
             createSelectCamerasButton();
             this.setVisibleForView(true);
