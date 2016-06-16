@@ -1,23 +1,24 @@
 package control;
 
-import data.CameraShot;
-import data.DirectorShot;
-import data.DirectorTimeline;
-import data.GeneralShotData;
-import data.Shot;
-import gui.centerarea.DirectorShotBlock;
-import gui.events.DirectorShotBlockUpdatedEvent;
-import gui.root.RootPane;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.log4j.Log4j2;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import data.CameraShot;
+import data.DirectorShot;
+import data.DirectorTimeline;
+import data.GeneralShotData;
+import data.Instrument;
+import data.Shot;
+import gui.centerarea.DirectorShotBlock;
+import gui.centerarea.ShotBlock;
+import gui.events.DirectorShotBlockUpdatedEvent;
+import gui.root.RootPane;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * Controller for the DirectorTimeline.
@@ -62,6 +63,20 @@ public class DirectorTimelineController {
                 .getDirectorTimeline()
                 .addShot(shot);
         initShotBlock(shot);
+    }
+    
+    /**
+     * Remove a instrument from all director shots.
+     * @param instrument the instrument to remove
+     */
+    public void removeInstrumentFromAllShots(Instrument instrument) {
+        this.directorShotBlockMap.keySet().forEach(e -> {
+                ShotBlock shotBlock = this.directorShotBlockMap.get(e);
+                shotBlock.getInstruments().remove(instrument);
+                shotBlock.getShot().getInstruments().remove(instrument);
+                shotBlock.getTimetableBlock().removeInstrument(instrument);
+                shotBlock.recompute();
+            });
     }
 
     /**

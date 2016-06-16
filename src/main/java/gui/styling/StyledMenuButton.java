@@ -109,7 +109,7 @@ public class StyledMenuButton extends MenuButton {
                                     new SimpleStringProperty("-fx-text-fill: ")
                                     .concat(borderStringProperty).concat(";"));
                         } catch (NullPointerException e) {
-                            e.printStackTrace();
+                            // do nothing
                         }
                     });
             }

@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import data.CameraShot;
 import data.CameraTimeline;
 import data.DirectorShot;
+import data.Instrument;
 import data.Shot;
 import gui.centerarea.CameraShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;
@@ -75,6 +76,19 @@ public class TimelineController {
                               .get(cameraIndex)
                               .addShot(newShot);
         initShotBlock(cameraIndex, newShot, false);
+    }
+    
+    /**
+     * Remove an instrument from all camera shots.
+     * @param instrument the instrument to remove
+     */
+    public void removeInstrumentFromAllShots(Instrument instrument) {
+        this.cameraShotBlocks.forEach(shotBlock -> {
+                shotBlock.getInstruments().remove(instrument);
+                shotBlock.getShot().getInstruments().remove(instrument);
+                shotBlock.getTimetableBlock().removeInstrument(instrument);
+                shotBlock.recompute();
+            });
     }
 
     /**
