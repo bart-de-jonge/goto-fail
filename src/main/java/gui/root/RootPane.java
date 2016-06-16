@@ -21,8 +21,8 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class RootPane extends Application {
 
-    private int minimumResolutionX = 640;
-    private int minimumResolutionY = 480;
+    private int minimumResolutionX = 1050;
+    private int minimumResolutionY = 600;
     private int startingResolutionX = 1280;
     private int startingResolutionY = 800;
     
