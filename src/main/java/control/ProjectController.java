@@ -913,6 +913,10 @@ public class ProjectController {
         if (name.isEmpty()) {
             errorString = "Please enter an instrument name\n";
         }
+        List<Instrument> existing = editProjectModal.getInstruments().stream().filter(e -> !e.getName().equals(name)).collect(Collectors.toList());
+        if (!(existing.size() == editProjectModal.getInstruments().size())) {
+            errorString = "Please use a distinct instrument name\n";
+        }
         
         instrumentModal.getTitleLabel().setText(errorString);
         instrumentModal.getTitleLabel().setTextFill(Color.RED);
