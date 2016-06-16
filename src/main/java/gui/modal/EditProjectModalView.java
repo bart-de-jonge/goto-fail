@@ -34,7 +34,7 @@ public class EditProjectModalView extends ModalView {
      */
 
     // preferred width and height of screen.
-    private static final int width = 900;
+    private static final int width = 980;
     private static final int height = 700;
 
     // variables for spacing
