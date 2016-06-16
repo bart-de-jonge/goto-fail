@@ -89,7 +89,6 @@ public class TimelineController {
                 shotBlock.getTimetableBlock().removeInstrument(instrument);
                 shotBlock.recompute();
             });
-        
     }
 
     /**
