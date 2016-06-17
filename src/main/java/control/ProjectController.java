@@ -71,7 +71,6 @@ public class ProjectController {
     private UploadSuccessModalView successModal;
 
     public static final int UNUSED_BLOCK_OFFSET = 4000000;
-    private static final String NAME_DESC_SEPERATOR = " - ";
     
     // Upload variables
     // Todo: replace with popup or something like that for user
@@ -734,12 +733,8 @@ public class ProjectController {
             editProjectModal.getInstruments().get(selectedIndex).setName(name);
             editProjectModal.getInstruments().get(selectedIndex).setDescription(description);
             HBox box = new HBox();
-            if (description.isEmpty()) {
-                box.getChildren().add(new Label(name));
-            } else {
-                box.getChildren().addAll(new Label(name), 
-                        new Label(NAME_DESC_SEPERATOR), new Label(description));
-            }
+            box.getChildren().add(new Label(editProjectModal.getInstruments()
+                       .get(selectedIndex).constructModalString()));
             editProjectModal.getInstrumentList().getItems().set(selectedIndex, box);
         }
     }
@@ -788,8 +783,8 @@ public class ProjectController {
             editProjectModal.getCameras().get(selectedIndex).setDescription(description);
             editProjectModal.getCameras().get(selectedIndex).setCameraType(type);
             HBox box = new HBox();
-            box.getChildren().addAll(new Label(name), new Label(NAME_DESC_SEPERATOR),
-                    new Label(description));
+            box.getChildren().addAll(new Label(editProjectModal.getCameras()
+                    .get(selectedIndex).constructModalString()));
             editProjectModal.getCameraList().getItems().set(selectedIndex, box);
         }
     }
@@ -849,8 +844,8 @@ public class ProjectController {
             
             editProjectModal.getCameraTypes().set(selectedIndex, type);
             HBox box = new HBox();
-            box.getChildren().addAll(new Label(name), new Label(NAME_DESC_SEPERATOR),
-                    new Label(description));
+            box.getChildren().add(new Label(editProjectModal.getCameraTypes()
+                    .get(selectedIndex).constructModalString()));
             editProjectModal.getCameraTypeList().getItems().set(selectedIndex, box);
         }
     }
@@ -894,12 +889,7 @@ public class ProjectController {
             Instrument instrument = new Instrument(name, description);
             editProjectModal.getInstruments().add(instrument);
             HBox box = new HBox();
-            if (description.isEmpty()) {
-                box.getChildren().add(new Label(name));
-            } else {
-                box.getChildren().addAll(new Label(name), new Label(NAME_DESC_SEPERATOR),
-                        new Label(description));
-            }
+            box.getChildren().add(new Label(instrument.constructModalString()));
             editProjectModal.getInstrumentList().getItems().add(box);
         }
     }
@@ -942,8 +932,7 @@ public class ProjectController {
             Camera camera = new Camera(name, description, type);
             editProjectModal.getCameras().add(camera);
             HBox box = new HBox();
-            box.getChildren().addAll(new Label(name), new Label(NAME_DESC_SEPERATOR), 
-                    new Label(description));
+            box.getChildren().add(new Label(camera.constructModalString()));
             editProjectModal.getCameraList().getItems().add(box);
             // add timeline
             CameraTimeline timeline = new CameraTimeline(camera, null);
@@ -1008,8 +997,7 @@ public class ProjectController {
             CameraType type = new CameraType(name, description, movementMargin);
             editProjectModal.getCameraTypes().add(type);
             HBox box = new HBox();
-            box.getChildren().addAll(new Label(name), new Label(NAME_DESC_SEPERATOR),
-                    new Label(description));
+            box.getChildren().add(new Label(type.constructModalString()));
             editProjectModal.getCameraTypeList().getItems().add(box);
         }
     }
