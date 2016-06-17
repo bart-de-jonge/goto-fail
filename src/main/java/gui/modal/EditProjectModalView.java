@@ -1,7 +1,11 @@
 package gui.modal;
 
 import control.ProjectController;
-import data.*;
+import data.Camera;
+import data.CameraTimeline;
+import data.CameraType;
+import data.Instrument;
+import data.ScriptingProject;
 import gui.headerarea.DoubleTextField;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;

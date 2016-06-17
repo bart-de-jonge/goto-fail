@@ -1,7 +1,6 @@
 package gui.modal;
 
-import java.util.List;
-
+import control.ProjectController;
 import data.Camera;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
@@ -12,6 +11,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
+
+import java.util.List;
 
 public class DeleteCameraTypeWarningModalView extends ModalView {
 
@@ -117,8 +118,10 @@ public class DeleteCameraTypeWarningModalView extends ModalView {
         boolean even = false;
         for (int i = 0; i < camerasToShow.size(); i++) {
             HBox cameraBox = new HBox();
-            cameraBox.getChildren().add(
-                    new Label(camerasToShow.get(i).constructModalString()));
+            cameraBox.getChildren().add(new Label(
+                    ProjectController.constructModalString(
+                            camerasToShow.get(i).getName(),
+                            camerasToShow.get(i).getDescription())));
 
             if (even) {
                 cameraBox.setStyle("-fx-background-color: rgb(245,245,245);");

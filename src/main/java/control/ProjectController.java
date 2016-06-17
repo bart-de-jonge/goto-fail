@@ -1,8 +1,22 @@
 package control;
 
 
-import data.*;
-import gui.modal.*;
+import data.Camera;
+import data.CameraShot;
+import data.CameraTimeline;
+import data.CameraType;
+import data.DirectorShot;
+import data.DirectorTimeline;
+import data.Instrument;
+import data.ScriptingProject;
+import data.User;
+import gui.modal.AddCameraModalView;
+import gui.modal.AddCameraTypeModalView;
+import gui.modal.AddInstrumentModalView;
+import gui.modal.DeleteCameraTypeWarningModalView;
+import gui.modal.EditProjectModalView;
+import gui.modal.ErrorWhileUploadingModalView;
+import gui.modal.UploadSuccessModalView;
 import gui.root.RootCenterArea;
 import gui.root.RootPane;
 import javafx.scene.control.Label;
@@ -25,7 +39,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -1060,6 +1074,8 @@ public class ProjectController {
 
     /**
      * Construct string to display this camera in a modal.
+     * @param name - the name to be included in the modal string
+     * @param description - the description to be included in the modal string
      * @return the correct string
      */
     public static String constructModalString(String name, String description) {
