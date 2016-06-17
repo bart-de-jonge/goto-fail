@@ -14,6 +14,9 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Represents a stylized menu button.
  */
@@ -33,6 +36,9 @@ public class StyledMenuButton extends MenuButton {
     // transitions
     private int mouseOverDuration = 100;
     private int mouseClickDuration = 75;
+
+    // styling timer
+    Timer timer;
 
     // colors
     // Color of normal borders and text. Becomes fillColor on click.
@@ -100,20 +106,28 @@ public class StyledMenuButton extends MenuButton {
 
         // Delayed slightly so at least Scene.show() is called. Because JAVAFX.
         // I literally couldn't come up with this if I wanted to.
-        new java.util.Timer().schedule(new java.util.TimerTask() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> {
-                        try {
-                            lookup(".label").styleProperty().bind(
-                                    new SimpleStringProperty("-fx-text-fill: ")
+                try {
+                    lookup(".label").styleProperty().bind(
+                            new SimpleStringProperty("-fx-text-fill: ")
                                     .concat(borderStringProperty).concat(";"));
-                        } catch (NullPointerException e) {
-                            // do nothing
-                        }
-                    });
+                } catch (NullPointerException e) {
+                    // do nothing, gui isn't ready yet.
+                }
+                killTimer();
             }
         }, 50);
+    }
+
+    /**
+     * Kills styling timer so it will never accidentally run in the background.
+     */
+    private void killTimer() {
+        timer.cancel();
+        timer.purge();
     }
 
     /**
