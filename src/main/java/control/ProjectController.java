@@ -1,27 +1,6 @@
 package control;
 
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import data.Camera;
 import data.CameraShot;
 import data.CameraTimeline;
@@ -49,6 +28,26 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 public class ProjectController {
@@ -71,7 +70,6 @@ public class ProjectController {
     private UploadSuccessModalView successModal;
 
     public static final int UNUSED_BLOCK_OFFSET = 4000000;
-    private static final String NAME_DESC_SEPERATOR = " - ";
     
     // Upload variables
     // Todo: replace with popup or something like that for user
@@ -734,12 +732,9 @@ public class ProjectController {
             editProjectModal.getInstruments().get(selectedIndex).setName(name);
             editProjectModal.getInstruments().get(selectedIndex).setDescription(description);
             HBox box = new HBox();
-            if (description.isEmpty()) {
-                box.getChildren().add(new Label(name));
-            } else {
-                box.getChildren().addAll(new Label(name), 
-                        new Label(NAME_DESC_SEPERATOR), new Label(description));
-            }
+            Instrument instrument = editProjectModal.getInstruments().get(selectedIndex);
+            box.getChildren().add(new Label(constructModalString(
+                    instrument.getName(), instrument.getDescription())));
             editProjectModal.getInstrumentList().getItems().set(selectedIndex, box);
         }
     }
@@ -788,8 +783,9 @@ public class ProjectController {
             editProjectModal.getCameras().get(selectedIndex).setDescription(description);
             editProjectModal.getCameras().get(selectedIndex).setCameraType(type);
             HBox box = new HBox();
-            box.getChildren().addAll(new Label(name), new Label(NAME_DESC_SEPERATOR),
-                    new Label(description));
+            Camera camera = editProjectModal.getCameras().get(selectedIndex);
+            box.getChildren().addAll(new Label(constructModalString(
+                    camera.getName(), camera.getDescription())));
             editProjectModal.getCameraList().getItems().set(selectedIndex, box);
         }
     }
@@ -849,8 +845,9 @@ public class ProjectController {
             
             editProjectModal.getCameraTypes().set(selectedIndex, type);
             HBox box = new HBox();
-            box.getChildren().addAll(new Label(name), new Label(NAME_DESC_SEPERATOR),
-                    new Label(description));
+            CameraType cameraType = editProjectModal.getCameraTypes().get(selectedIndex);
+            box.getChildren().add(new Label(constructModalString(
+                    cameraType.getName(), cameraType.getDescription())));
             editProjectModal.getCameraTypeList().getItems().set(selectedIndex, box);
         }
     }
@@ -894,12 +891,8 @@ public class ProjectController {
             Instrument instrument = new Instrument(name, description);
             editProjectModal.getInstruments().add(instrument);
             HBox box = new HBox();
-            if (description.isEmpty()) {
-                box.getChildren().add(new Label(name));
-            } else {
-                box.getChildren().addAll(new Label(name), new Label(NAME_DESC_SEPERATOR),
-                        new Label(description));
-            }
+            box.getChildren().add(new Label(constructModalString(
+                    instrument.getName(), instrument.getDescription())));
             editProjectModal.getInstrumentList().getItems().add(box);
         }
     }
@@ -942,8 +935,8 @@ public class ProjectController {
             Camera camera = new Camera(name, description, type);
             editProjectModal.getCameras().add(camera);
             HBox box = new HBox();
-            box.getChildren().addAll(new Label(name), new Label(NAME_DESC_SEPERATOR), 
-                    new Label(description));
+            box.getChildren().add(new Label(constructModalString(
+                    camera.getName(), camera.getDescription())));
             editProjectModal.getCameraList().getItems().add(box);
             // add timeline
             CameraTimeline timeline = new CameraTimeline(camera, null);
@@ -958,17 +951,12 @@ public class ProjectController {
     private boolean validateCameraData() {
         String errorString = "";
         String name = cameraModal.getNameField().getText();
-        String description = cameraModal.getDescriptionField().getText();
         int selectedIndex = cameraModal.getCameraTypes().getSelectionModel().getSelectedIndex();
 
         if (selectedIndex == -1) {
             errorString = "Please select a camera type\n";
         }
-        
-        if (description.isEmpty()) {
-            errorString = "Please enter a camera description\n";
-        }
-
+       
         if (name.isEmpty()) {
             errorString = "Please enter a camera name\n";
         }
@@ -1013,8 +1001,8 @@ public class ProjectController {
             CameraType type = new CameraType(name, description, movementMargin);
             editProjectModal.getCameraTypes().add(type);
             HBox box = new HBox();
-            box.getChildren().addAll(new Label(name), new Label(NAME_DESC_SEPERATOR),
-                    new Label(description));
+            box.getChildren().add(new Label(constructModalString(
+                    type.getName(), type.getDescription())));
             editProjectModal.getCameraTypeList().getItems().add(box);
         }
     }
@@ -1026,17 +1014,12 @@ public class ProjectController {
     private boolean validateCameraTypeData() {
         String errorString = "";
         String name = cameraTypeModal.getNameField().getText();
-        String description = cameraTypeModal.getDescriptionField().getText();
         String movementMargin = cameraTypeModal.getMovementMarginField().getText();
 
         if (movementMargin.isEmpty()) {
             errorString = "Please enter a movement margin\n";
         }
-
-        if (description.isEmpty()) {
-            errorString = "Please enter a description\n";
-        }
-
+       
         if (name.isEmpty()) {
             errorString = "Please enter a name\n";
         }
@@ -1054,21 +1037,10 @@ public class ProjectController {
     private boolean validateProjectData() {
         String errorString = "";
 
-        String directorTimelineDescription = editProjectModal.getDirectorTimelineDescriptionField()
-                                                            .getText();
-        if (directorTimelineDescription.isEmpty()) {
-            errorString = "Please enter a director timeline description\n";
-        }
-
         String secondsPerCount = editProjectModal.getSecondsPerCountField()
                 .getText();
         if (secondsPerCount.isEmpty()) {
             errorString = "Please enter the seconds per count\n";
-        }
-
-        String description = editProjectModal.getDescriptionField().getText();
-        if (description.isEmpty()) {
-            errorString = "Please enter a project description\n";
         }
 
         String name = editProjectModal.getNameField().getText();
@@ -1100,4 +1072,18 @@ public class ProjectController {
         controllerManager.getRootPane().closeStartupScreen();
     }
 
+    /**
+     * Construct string to display this camera in a modal.
+     * @param name - the name to be included in the modal string
+     * @param description - the description to be included in the modal string
+     * @return the correct string
+     */
+    public static String constructModalString(String name, String description) {
+        String res = "";
+        res += name;
+        if (!description.isEmpty()) {
+            res += " - " + description;
+        }
+        return res;
+    }
 }

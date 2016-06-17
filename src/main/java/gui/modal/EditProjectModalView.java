@@ -1,7 +1,6 @@
 package gui.modal;
 
-import java.util.ArrayList;
-
+import control.ProjectController;
 import data.Camera;
 import data.CameraTimeline;
 import data.CameraType;
@@ -22,6 +21,8 @@ import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+
+import java.util.ArrayList;
 
 /**
  * Class responsible for displaying a modal view for editing a project.
@@ -389,8 +390,8 @@ public class EditProjectModalView extends ModalView {
         typeList.setMinHeight(75);
         for (CameraType type: cameraTypes) {
             HBox box = new HBox();
-            box.getChildren().addAll(
-                    new Label(type.getName()), new Label(" - "), new Label(type.getDescription()));
+            box.getChildren().add(new Label(ProjectController.constructModalString(
+                    type.getName(), type.getDescription())));
             typeList.getItems().add(box);
         }
     }
@@ -404,8 +405,8 @@ public class EditProjectModalView extends ModalView {
         ArrayList<Camera> cameras = project.getCameras();
         for (Camera c: cameras) {
             HBox box = new HBox();
-            box.getChildren().addAll(
-                    new Label(c.getName()), new Label(" - "), new Label(c.getDescription()));
+            box.getChildren().add(new Label(ProjectController.constructModalString(
+                    c.getName(), c.getDescription())));
             cameraList.getItems().add(box);
         }
     }
@@ -419,12 +420,8 @@ public class EditProjectModalView extends ModalView {
         ArrayList<Instrument> instruments = project.getInstruments();
         for (Instrument i : instruments) {
             HBox box = new HBox();
-            if (i.getDescription().isEmpty()) {
-                box.getChildren().add(new Label(i.getName()));
-            } else {
-                box.getChildren().addAll(new Label(i.getName()), 
-                        new Label(" - "), new Label(i.getDescription()));
-            }
+            box.getChildren().add(new Label(ProjectController.constructModalString(
+                    i.getName(), i.getDescription())));
             instrumentList.getItems().add(box);
         }
     }
