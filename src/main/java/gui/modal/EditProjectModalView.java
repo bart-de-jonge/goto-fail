@@ -1,12 +1,7 @@
 package gui.modal;
 
-import java.util.ArrayList;
-
-import data.Camera;
-import data.CameraTimeline;
-import data.CameraType;
-import data.Instrument;
-import data.ScriptingProject;
+import control.ProjectController;
+import data.*;
 import gui.headerarea.DoubleTextField;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
@@ -22,6 +17,8 @@ import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+
+import java.util.ArrayList;
 
 /**
  * Class responsible for displaying a modal view for editing a project.
@@ -389,7 +386,8 @@ public class EditProjectModalView extends ModalView {
         typeList.setMinHeight(75);
         for (CameraType type: cameraTypes) {
             HBox box = new HBox();
-            box.getChildren().add(new Label(type.constructModalString()));
+            box.getChildren().add(new Label(ProjectController.constructModalString(
+                    type.getName(), type.getDescription())));
             typeList.getItems().add(box);
         }
     }
@@ -403,7 +401,8 @@ public class EditProjectModalView extends ModalView {
         ArrayList<Camera> cameras = project.getCameras();
         for (Camera c: cameras) {
             HBox box = new HBox();
-            box.getChildren().add(new Label(c.constructModalString()));
+            box.getChildren().add(new Label(ProjectController.constructModalString(
+                    c.getName(), c.getDescription())));
             cameraList.getItems().add(box);
         }
     }
@@ -417,7 +416,8 @@ public class EditProjectModalView extends ModalView {
         ArrayList<Instrument> instruments = project.getInstruments();
         for (Instrument i : instruments) {
             HBox box = new HBox();
-            box.getChildren().add(new Label(i.constructModalString()));
+            box.getChildren().add(new Label(ProjectController.constructModalString(
+                    i.getName(), i.getDescription())));
             instrumentList.getItems().add(box);
         }
     }

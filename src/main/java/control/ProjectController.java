@@ -1,43 +1,8 @@
 package control;
 
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import data.Camera;
-import data.CameraShot;
-import data.CameraTimeline;
-import data.CameraType;
-import data.DirectorShot;
-import data.DirectorTimeline;
-import data.Instrument;
-import data.ScriptingProject;
-import data.User;
-import gui.modal.AddCameraModalView;
-import gui.modal.AddCameraTypeModalView;
-import gui.modal.AddInstrumentModalView;
-import gui.modal.DeleteCameraTypeWarningModalView;
-import gui.modal.EditProjectModalView;
-import gui.modal.ErrorWhileUploadingModalView;
-import gui.modal.UploadSuccessModalView;
+import data.*;
+import gui.modal.*;
 import gui.root.RootCenterArea;
 import gui.root.RootPane;
 import javafx.scene.control.Label;
@@ -49,6 +14,26 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 public class ProjectController {
@@ -733,8 +718,9 @@ public class ProjectController {
             editProjectModal.getInstruments().get(selectedIndex).setName(name);
             editProjectModal.getInstruments().get(selectedIndex).setDescription(description);
             HBox box = new HBox();
-            box.getChildren().add(new Label(editProjectModal.getInstruments()
-                       .get(selectedIndex).constructModalString()));
+            Instrument instrument = editProjectModal.getInstruments().get(selectedIndex);
+            box.getChildren().add(new Label(constructModalString(
+                    instrument.getName(), instrument.getDescription())));
             editProjectModal.getInstrumentList().getItems().set(selectedIndex, box);
         }
     }
@@ -783,8 +769,9 @@ public class ProjectController {
             editProjectModal.getCameras().get(selectedIndex).setDescription(description);
             editProjectModal.getCameras().get(selectedIndex).setCameraType(type);
             HBox box = new HBox();
-            box.getChildren().addAll(new Label(editProjectModal.getCameras()
-                    .get(selectedIndex).constructModalString()));
+            Camera camera = editProjectModal.getCameras().get(selectedIndex);
+            box.getChildren().addAll(new Label(constructModalString(
+                    camera.getName(), camera.getDescription())));
             editProjectModal.getCameraList().getItems().set(selectedIndex, box);
         }
     }
@@ -844,8 +831,9 @@ public class ProjectController {
             
             editProjectModal.getCameraTypes().set(selectedIndex, type);
             HBox box = new HBox();
-            box.getChildren().add(new Label(editProjectModal.getCameraTypes()
-                    .get(selectedIndex).constructModalString()));
+            CameraType cameraType = editProjectModal.getCameraTypes().get(selectedIndex);
+            box.getChildren().add(new Label(constructModalString(
+                    cameraType.getName(), cameraType.getDescription())));
             editProjectModal.getCameraTypeList().getItems().set(selectedIndex, box);
         }
     }
@@ -889,7 +877,8 @@ public class ProjectController {
             Instrument instrument = new Instrument(name, description);
             editProjectModal.getInstruments().add(instrument);
             HBox box = new HBox();
-            box.getChildren().add(new Label(instrument.constructModalString()));
+            box.getChildren().add(new Label(constructModalString(
+                    instrument.getName(), instrument.getDescription())));
             editProjectModal.getInstrumentList().getItems().add(box);
         }
     }
@@ -932,7 +921,8 @@ public class ProjectController {
             Camera camera = new Camera(name, description, type);
             editProjectModal.getCameras().add(camera);
             HBox box = new HBox();
-            box.getChildren().add(new Label(camera.constructModalString()));
+            box.getChildren().add(new Label(constructModalString(
+                    camera.getName(), camera.getDescription())));
             editProjectModal.getCameraList().getItems().add(box);
             // add timeline
             CameraTimeline timeline = new CameraTimeline(camera, null);
@@ -997,7 +987,8 @@ public class ProjectController {
             CameraType type = new CameraType(name, description, movementMargin);
             editProjectModal.getCameraTypes().add(type);
             HBox box = new HBox();
-            box.getChildren().add(new Label(type.constructModalString()));
+            box.getChildren().add(new Label(constructModalString(
+                    type.getName(), type.getDescription())));
             editProjectModal.getCameraTypeList().getItems().add(box);
         }
     }
@@ -1067,4 +1058,16 @@ public class ProjectController {
         controllerManager.getRootPane().closeStartupScreen();
     }
 
+    /**
+     * Construct string to display this camera in a modal.
+     * @return the correct string
+     */
+    public static String constructModalString(String name, String description) {
+        String res = "";
+        res += name;
+        if (!description.isEmpty()) {
+            res += " - " + description;
+        }
+        return res;
+    }
 }

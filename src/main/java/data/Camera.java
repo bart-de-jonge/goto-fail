@@ -1,13 +1,13 @@
 package data;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Class to store information about cameras.
@@ -162,18 +162,5 @@ public class Camera implements Cloneable {
         } else {
             return camera.ip == null;
         }
-    }
-    
-    /**
-     * Construct string to display this camera in a modal.
-     * @return the correct string
-     */
-    public String constructModalString() {
-        String res = "";
-        res += this.name;
-        if (!description.isEmpty()) {
-            res += " - " + this.description;
-        }
-        return res;
     }
 }
