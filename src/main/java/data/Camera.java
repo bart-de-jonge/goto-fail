@@ -163,4 +163,13 @@ public class Camera implements Cloneable {
             return camera.ip == null;
         }
     }
+    
+    public String constructModalString() {
+        String res = "";
+        res += this.name;
+        if (!description.isEmpty()) {
+            res += " - " + this.description;
+        }
+        return res;
+    }
 }

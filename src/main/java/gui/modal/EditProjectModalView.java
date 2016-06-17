@@ -389,8 +389,7 @@ public class EditProjectModalView extends ModalView {
         typeList.setMinHeight(75);
         for (CameraType type: cameraTypes) {
             HBox box = new HBox();
-            box.getChildren().addAll(
-                    new Label(type.getName()), new Label(" - "), new Label(type.getDescription()));
+            box.getChildren().add(new Label(type.constructModalString()));
             typeList.getItems().add(box);
         }
     }
@@ -404,8 +403,7 @@ public class EditProjectModalView extends ModalView {
         ArrayList<Camera> cameras = project.getCameras();
         for (Camera c: cameras) {
             HBox box = new HBox();
-            box.getChildren().addAll(
-                    new Label(c.getName()), new Label(" - "), new Label(c.getDescription()));
+            box.getChildren().add(new Label(c.constructModalString()));
             cameraList.getItems().add(box);
         }
     }
@@ -419,12 +417,7 @@ public class EditProjectModalView extends ModalView {
         ArrayList<Instrument> instruments = project.getInstruments();
         for (Instrument i : instruments) {
             HBox box = new HBox();
-            if (i.getDescription().isEmpty()) {
-                box.getChildren().add(new Label(i.getName()));
-            } else {
-                box.getChildren().addAll(new Label(i.getName()), 
-                        new Label(" - "), new Label(i.getDescription()));
-            }
+            box.getChildren().add(new Label(i.constructModalString()));
             instrumentList.getItems().add(box);
         }
     }

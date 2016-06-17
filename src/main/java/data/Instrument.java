@@ -70,4 +70,13 @@ public class Instrument implements Cloneable {
             return that.getDescription() == null;
         }
     }
+    
+    public String constructModalString() {
+        String res = "";
+        res += this.name;
+        if (!description.isEmpty()) {
+            res += " - " + this.description;
+        }
+        return res;
+    }
 }

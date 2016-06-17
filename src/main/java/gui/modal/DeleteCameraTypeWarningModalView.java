@@ -117,11 +117,8 @@ public class DeleteCameraTypeWarningModalView extends ModalView {
         boolean even = false;
         for (int i = 0; i < camerasToShow.size(); i++) {
             HBox cameraBox = new HBox();
-            cameraBox.getChildren().addAll(
-                    new Label(camerasToShow.get(i).getName()),
-                    new Label(" - "),
-                    new Label(camerasToShow.get(i).getDescription())
-            );
+            cameraBox.getChildren().add(
+                    new Label(camerasToShow.get(i).constructModalString()));
 
             if (even) {
                 cameraBox.setStyle("-fx-background-color: rgb(245,245,245);");
