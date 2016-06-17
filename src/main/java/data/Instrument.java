@@ -71,6 +71,10 @@ public class Instrument implements Cloneable {
         }
     }
     
+    /**
+     * Construct string to display this instrument in a modal.
+     * @return the correct string
+     */
     public String constructModalString() {
         String res = "";
         res += this.name;

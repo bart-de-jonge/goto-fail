@@ -104,6 +104,10 @@ public class CameraType implements Cloneable {
         }
     }
     
+    /**
+     * Construct string to display this camera type in a modal.
+     * @return the correct string
+     */
     public String constructModalString() {
         String res = "";
         res += this.name;

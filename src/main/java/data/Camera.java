@@ -164,6 +164,10 @@ public class Camera implements Cloneable {
         }
     }
     
+    /**
+     * Construct string to display this camera in a modal.
+     * @return the correct string
+     */
     public String constructModalString() {
         String res = "";
         res += this.name;
