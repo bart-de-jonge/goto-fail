@@ -958,17 +958,12 @@ public class ProjectController {
     private boolean validateCameraData() {
         String errorString = "";
         String name = cameraModal.getNameField().getText();
-        String description = cameraModal.getDescriptionField().getText();
         int selectedIndex = cameraModal.getCameraTypes().getSelectionModel().getSelectedIndex();
 
         if (selectedIndex == -1) {
             errorString = "Please select a camera type\n";
         }
-        
-        if (description.isEmpty()) {
-            errorString = "Please enter a camera description\n";
-        }
-
+       
         if (name.isEmpty()) {
             errorString = "Please enter a camera name\n";
         }
@@ -1026,17 +1021,12 @@ public class ProjectController {
     private boolean validateCameraTypeData() {
         String errorString = "";
         String name = cameraTypeModal.getNameField().getText();
-        String description = cameraTypeModal.getDescriptionField().getText();
         String movementMargin = cameraTypeModal.getMovementMarginField().getText();
 
         if (movementMargin.isEmpty()) {
             errorString = "Please enter a movement margin\n";
         }
-
-        if (description.isEmpty()) {
-            errorString = "Please enter a description\n";
-        }
-
+       
         if (name.isEmpty()) {
             errorString = "Please enter a name\n";
         }
@@ -1054,21 +1044,10 @@ public class ProjectController {
     private boolean validateProjectData() {
         String errorString = "";
 
-        String directorTimelineDescription = editProjectModal.getDirectorTimelineDescriptionField()
-                                                            .getText();
-        if (directorTimelineDescription.isEmpty()) {
-            errorString = "Please enter a director timeline description\n";
-        }
-
         String secondsPerCount = editProjectModal.getSecondsPerCountField()
                 .getText();
         if (secondsPerCount.isEmpty()) {
             errorString = "Please enter the seconds per count\n";
-        }
-
-        String description = editProjectModal.getDescriptionField().getText();
-        if (description.isEmpty()) {
-            errorString = "Please enter a project description\n";
         }
 
         String name = editProjectModal.getNameField().getText();
