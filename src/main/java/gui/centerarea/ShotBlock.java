@@ -1,6 +1,7 @@
 package gui.centerarea;
 
 import control.CountUtilities;
+import data.Instrument;
 import data.Shot;
 import gui.misc.TweakingHelper;
 import gui.root.RootCenterArea;
@@ -11,6 +12,8 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 /**
  *      Abstract superclass for different kind of shots in the gui.
@@ -53,6 +56,9 @@ public abstract class ShotBlock {
     @Getter
     private boolean colliding;
     
+    @Getter
+    private ArrayList<Instrument> instruments;
+    
     private static String BACKGROUND_COLOR_STRING = "-fx-background-color: ";
 
     /**
@@ -70,6 +76,7 @@ public abstract class ShotBlock {
         this.beginCount = shot.getBeginCount();
         this.endCount = shot.getEndCount();
         this.shot = shot;
+        this.instruments = shot.getInstruments();
         this.colliding = false;
         this.tempBeginCount = -1;
         this.tempEndCount = -1;
@@ -80,10 +87,10 @@ public abstract class ShotBlock {
                     .getConstructor(RootCenterArea.class, ShotBlock.class);
 
             this.setTimetableBlock((TimetableBlock) constructor.newInstance(rootCenterArea, this));
-        } catch (Exception e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+                | IllegalArgumentException | InvocationTargetException e) {
             log.error("No valid timetableblock class, could not initialize timetableblock!");
             this.timetableBlock = null;
-            e.printStackTrace();
         }
     }
 
@@ -236,16 +243,16 @@ public abstract class ShotBlock {
     public void setDescription(String description) {
         this.description = description;
 
-        timetableBlock.getDescriptionNormalLabel().setText(description);
-        timetableBlock.getDescriptionDraggedLabel().setText(description);
+        timetableBlock.getDescriptionNormalLabel().setText("Description: " + description);
+        timetableBlock.getDescriptionDraggedLabel().setText("Description: " + description);
     }
 
     /**
      * Helper function to redraw block counts.
      */
     private void redrawCounts() {
-        timetableBlock.getCountNormalLabel().setText(beginCount + " - " + endCount);
-        timetableBlock.getCountDraggedLabel().setText(beginCount + " - " + endCount);
+        timetableBlock.getCountNormalLabel().setText("Count: " + beginCount + " - " + endCount);
+        timetableBlock.getCountDraggedLabel().setText("Counnt: " + beginCount + " - " + endCount);
     }
 
     /**

@@ -1,9 +1,7 @@
 package gui.styling;
 
-import gui.misc.TransitionData;
 import gui.misc.TransitionHelper;
 import gui.misc.TweakingHelper;
-import javafx.animation.Interpolator;
 import javafx.scene.control.ListView;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.InnerShadow;

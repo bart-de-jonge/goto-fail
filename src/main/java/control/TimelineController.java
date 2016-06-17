@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import data.CameraShot;
 import data.CameraTimeline;
 import data.DirectorShot;
+import data.Instrument;
 import data.Shot;
 import gui.centerarea.CameraShotBlock;
 import gui.events.CameraShotBlockUpdatedEvent;
@@ -31,14 +32,13 @@ public class TimelineController {
     @Setter
     private RootPane rootPane;
 
-    // TODO: replace number of centerarea with xml data
-    @Setter
+    @Setter @Getter
     private int numTimelines;
 
     @Getter
     private ControllerManager controllerManager;
 
-    @Getter
+    @Getter @Setter
     // List of all camerashotblocks in this timelinecontroller
     private List<CameraShotBlock> cameraShotBlocks;
 
@@ -75,20 +75,36 @@ public class TimelineController {
                               .getCameraTimelines()
                               .get(cameraIndex)
                               .addShot(newShot);
-        initShotBlock(cameraIndex, newShot);
+        initShotBlock(cameraIndex, newShot, false);
+    }
+    
+    /**
+     * Remove an instrument from all camera shots.
+     * @param instrument the instrument to remove
+     */
+    public void removeInstrumentFromAllShots(Instrument instrument) {
+        this.cameraShotBlocks.forEach(shotBlock -> {
+                shotBlock.getInstruments().remove(instrument);
+                shotBlock.getShot().getInstruments().remove(instrument);
+                shotBlock.getTimetableBlock().removeInstrument(instrument);
+                shotBlock.recompute();
+            });
     }
 
     /**
      * Display an existing (and linked) CameraShot in the view.
      * @param cameraIndex Index of the camera timeline
      * @param newShot CameraShot to display
+     * @param fromFile whether the shot is initialized from file, to prevent unwanted GUI changes.
      */
     protected void initShotBlock(int cameraIndex,
-                               CameraShot newShot) {
+                               CameraShot newShot, boolean fromFile) {
         CameraShotBlock shotBlock = new CameraShotBlock(
             cameraIndex, rootPane.getRootCenterArea(), this::shotChangedHandler, newShot);
 
-        controllerManager.setActiveShotBlock(shotBlock);
+        if (!fromFile) {
+            controllerManager.setActiveShotBlock(shotBlock);
+        }
         this.cameraShotBlocks.add(shotBlock);
         this.cameraShotBlockMap.put(newShot, shotBlock);
         controllerManager.getScriptingProject().changed();
@@ -273,7 +289,7 @@ public class TimelineController {
      * Reset colliding status on camera shot block.
      * @param cameraShotBlock the shot block to do that on
      */
-    private void resetColliding(CameraShotBlock cameraShotBlock) {
+    protected void resetColliding(CameraShotBlock cameraShotBlock) {
         cameraShotBlock.setColliding(false);
         cameraShotBlock.getShot().setColliding(false);
         cameraShotBlock.getShot().getCollidesWith().forEach(e -> {
@@ -312,21 +328,41 @@ public class TimelineController {
             ShotDecouplingModalView decouplingModalView = new ShotDecouplingModalView(
                     this.rootPane, shotBlock.getShot());
 
-            decouplingModalView.getCancelButton().setOnMouseReleased(e -> {
-                    log.info("Shot decoupling cancelled.", shotBlock.getShot());
-                    decouplingModalView.hideModal();
-                    shotBlock.restorePreviousPosition();
-                });
+            decouplingModalView.getCancelButton().setOnMouseReleased(e ->
+                    this.cancelButtonListener(decouplingModalView, shotBlock));
 
-            decouplingModalView.getConfirmButton().setOnMouseReleased(e -> {
-                    log.info("Shot decoupling confirmed.", shotBlock.getShot());
-                    decouplingModalView.hideModal();
-                    this.decoupleShot(event.getOldTimelineNumber(), shotBlock.getShot());
-                    this.modifyCameraShot(event, shotBlock);
-                });
+            decouplingModalView.getConfirmButton().setOnMouseReleased(e ->
+                    this.confirmButtonListener(decouplingModalView, shotBlock, event));
         } else {
             this.modifyCameraShot(event, shotBlock);
         }
+    }
+
+    /**
+     * Listener for the cancelbutton.
+     * @param decouplingModalView - the decoupling modal view
+     * @param shotBlock - the shotblock
+     */
+    protected void cancelButtonListener(
+            ShotDecouplingModalView decouplingModalView, CameraShotBlock shotBlock) {
+        log.info("Shot decoupling cancelled.", shotBlock.getShot());
+        decouplingModalView.hideModal();
+        shotBlock.restorePreviousPosition();
+    }
+
+    /**
+     * Listener for the confirm button.
+     * @param decouplingModalView - the decoupling modal view
+     * @param shotBlock - the shotblock
+     * @param event - the camerashotblockupdatedevent
+     */
+    protected void confirmButtonListener(ShotDecouplingModalView decouplingModalView,
+                                         CameraShotBlock shotBlock,
+                                         CameraShotBlockUpdatedEvent event) {
+        log.info("Shot decoupling confirmed.", shotBlock.getShot());
+        decouplingModalView.hideModal();
+        this.decoupleShot(event.getOldTimelineNumber(), shotBlock.getShot());
+        this.modifyCameraShot(event, shotBlock);
     }
 
     /**
@@ -340,10 +376,6 @@ public class TimelineController {
         if (directorShot != null) {
             directorShot.removeCameraShot(shot, timelineIndex);
 
-            // Delete the director shot if it's the last remaining camera shot
-            if (directorShot.getCameraShots().isEmpty()) {
-                controllerManager.getDirectorTimelineControl().removeShotNoCascade(directorShot);
-            } 
             shot.setDirectorShot(null);
         }
     }

@@ -36,7 +36,7 @@ public class ToolViewController {
      * Initialize all tools in the toolbox. Adds the corresponding buttons to the views and sets up
      * the event handlers.
      */
-    private void initializeTools() {
+    protected void initializeTools() {
         // add handlers to toolbuttons
         toolView.getCameraBlockCreationTool().getButton().setOnMouseClicked(
                 event -> creationModalViewController.showCameraCreationWindow());
@@ -56,21 +56,49 @@ public class ToolViewController {
         }
         initializeKeyBindings();
     }
+    
+    /**
+     * Initialize the delete key binding.
+     */
+    private void initDeleteKeyBinding() {
+        // Add Delete Key Event Listener for deleting active shot
+        this.controllerManager.getRootPane().getPrimaryStage()
+                .getScene().addEventFilter(KeyEvent.ANY,
+                event -> deleteEventFilter(event));
+    }
+
+    /**
+     * Event filter for deleting shots.
+     * @param event - the keyevent
+     */
+    protected void deleteEventFilter(KeyEvent event) {
+        if ((event.getCode() == KeyCode.DELETE)
+                || (event.getCode() == KeyCode.BACK_SPACE
+                && event.isShortcutDown())) {
+            String currentFocusClass = this.getCurrentFocusClass();
+
+            boolean isTextField =
+                    currentFocusClass.equals("gui.styling.StyledTextfield")
+                            || currentFocusClass.equals("javafx.scene.control.TextField")
+                            || currentFocusClass.equals("gui.headerarea.DoubleTextField")
+                            || currentFocusClass.equals("gui.headerarea.NumberTextField");
+            if (!isTextField) {
+                deleteActiveCameraShot();
+                event.consume();
+            }
+        }
+    }
+
+    protected String getCurrentFocusClass() {
+        return this.controllerManager.getRootPane().getPrimaryStage()
+                        .getScene().getFocusOwner().getClass().getName();
+    }
 
     /**
      * Initializes the keyboard bindings for certain tools.
      */
     private void initializeKeyBindings() {
-        // Add Delete Key Event Listener for deleting active shot
-        this.controllerManager.getRootPane().getPrimaryStage()
-                .getScene().addEventFilter(KeyEvent.KEY_RELEASED, event -> {
-                        if ((event.getCode() == KeyCode.DELETE)
-                                || (event.getCode() == KeyCode.BACK_SPACE
-                                    && event.isShortcutDown())) {
-                            deleteActiveCameraShot();
-                            event.consume();
-                        }
-                    });
+        initDeleteKeyBinding();
         // Add New Director Shot Key Binding
         this.controllerManager.getRootPane().getPrimaryStage()
                 .getScene().getAccelerators()
@@ -98,7 +126,7 @@ public class ToolViewController {
     /**
      * Deletes the active camera block.
      */
-    private void deleteActiveCameraShot() {
+    protected void deleteActiveCameraShot() {
         ShotBlock currentShot = this.controllerManager.getActiveShotBlock();
 
         if (currentShot instanceof CameraShotBlock) {
@@ -129,6 +157,7 @@ public class ToolViewController {
                                                 shot.getName(), shot.getDescription(),
                                                 cameraStart, cameraEnd),
                                              shot);
+                    subShot.setInstruments(shot.getInstruments());
                     shot.addCameraShot(subShot);
                     this.controllerManager.getTimelineControl().addCameraShot(index, subShot);
                 });

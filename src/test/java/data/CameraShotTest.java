@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Created by Bart.
@@ -15,6 +16,25 @@ public class CameraShotTest {
     @Before
     public void initializeTest() {
         cameraShot = new CameraShot("camerashot-1", "some-description", 1, 2);
+    }
+
+    @Test
+    public void instanceCounter() {
+        int instanceCounter = CameraShot.getInstanceCounter();
+        CameraShot.setInstanceCounter(++instanceCounter);
+        assertEquals(instanceCounter, CameraShot.getInstanceCounter());
+    }
+
+    @Test
+    public void setPresetId() {
+        assertEquals(-1, cameraShot.getPresetId());
+        cameraShot.setPresetId(2);
+        assertEquals(2, cameraShot.getPresetId());
+    }
+
+    @Test
+    public void testEqualsFalse() {
+        assertFalse(cameraShot.equals(new ArrayList<Integer>()));
     }
 
     @Test
@@ -68,4 +88,16 @@ public class CameraShotTest {
         assertEquals(directorShot, cameraShot.getDirectorShot());
     }
 
+    @Test
+    public void testClone() {
+        CameraShot shot = cameraShot.clone();
+        shot.setInstance(cameraShot.getInstance());
+        assertEquals(shot, cameraShot);
+    }
+    
+    @Test
+    public void hashCodeTestDirectorShotNull() {
+        cameraShot.setDirectorShot(null);
+        assertEquals(960, cameraShot.hashCode());
+    }
 }

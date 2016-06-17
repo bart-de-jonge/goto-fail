@@ -1,19 +1,21 @@
 package gui.centerarea;
 
-import control.CountUtilities;
-
 import static gui.centerarea.TimetableBlock.DraggingTypes.Move;
 
+import control.CountUtilities;
+import data.Instrument;
 import gui.misc.BlurHelper;
 import gui.misc.TweakingHelper;
 import gui.root.RootCenterArea;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
+import javafx.geometry.Orientation;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
@@ -30,12 +32,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import lombok.Getter;
 
+
 /**
  * Class that resembles a draggable, resizable block inside the timetable,
  * whose sole purpose is to display information.
  * Highly volatile. Do not poke the dragging-dragon too much.
  */
 public abstract class TimetableBlock extends Pane {
+    
+    private static final String TEXT_FILL = "-fx-text-fill:";
+    private static final String BLOCK_TEXT_NORMAL = "block_Text_Normal";
 
     public enum DraggingTypes { Move, Resize_Top, Resize_Right, Resize_Bottom, Resize_Left }
 
@@ -63,6 +69,10 @@ public abstract class TimetableBlock extends Pane {
     private Label descriptionNormalLabel;
     @Getter
     private Label descriptionDraggedLabel;
+    @Getter
+    private VBox instrumentBox;
+    @Getter
+    private VBox draggedInstrumentBox;
 
     /**
      * Misc variables.
@@ -117,6 +127,62 @@ public abstract class TimetableBlock extends Pane {
         this.parentBlock = parent;
         this.rootCenterArea = pane;
     }
+    
+    /**
+     * Add an instrument to this timetable block.
+     * @param instrument the instrument to add
+     */
+    public void addInstrument(Instrument instrument) {
+        addInstrumentLabel(instrument, instrumentBox);
+        addInstrumentLabel(instrument, draggedInstrumentBox);
+    }
+
+    /**
+     * Add a label to a specific content box.
+     * @param instrument the instrument whose label to add.
+     * @param box the box to add to.
+     */
+    private void addInstrumentLabel(Instrument instrument, VBox box) {
+        if (box.getChildren().size() == 0) {
+            Label title = new Label("Instruments:");
+            title.getStyleClass().add(BLOCK_TEXT_NORMAL);
+            title.setStyle(TEXT_FILL + TweakingHelper.getColorString(2) + ";");
+            box.getChildren().add(title);
+        }
+
+        Label label = new Label("   " + instrument.getName());
+        label.getStyleClass().add(BLOCK_TEXT_NORMAL);
+        label.setStyle(TEXT_FILL + TweakingHelper.getColorString(2) + ";");
+        box.getChildren().add(label);
+    }
+    
+    /**
+     * Remove an instrument from this timetable block.
+     * @param instrument the instrument to remove
+     */
+    public void removeInstrument(Instrument instrument) {
+        removeInstrumentLabel(instrument, instrumentBox);
+        removeInstrumentLabel(instrument, draggedInstrumentBox);
+    }
+
+    /**
+     * Remove a label from a specific content box.
+     * @param instrument the instrument whose label to remove.
+     * @param box the box to remove from.
+     */
+    private void removeInstrumentLabel(Instrument instrument, VBox box) {
+        for (int i = 0;i < box.getChildren().size(); i++) {
+            boolean equals = ((Label) box.getChildren().get(i)).getText()
+                    .equals("   " + instrument.getName());
+            if (equals) {
+                box.getChildren().remove(i);
+                break;
+            }
+        }
+        if (box.getChildren().size() == 1) {
+            box.getChildren().clear();
+        }
+    }
 
     /**
      * Inits the necessary eventhandlers for this block.
@@ -137,8 +203,6 @@ public abstract class TimetableBlock extends Pane {
     void initNormalPane() {
         setBlendMode(BlendMode.MULTIPLY);
 
-        // content rootCenterArea for our
-        // actual rootCenterArea, which holds content (text and stuff)
         contentPane = new VBox();
         contentPane.minWidthProperty().bind(widthProperty());
         contentPane.maxWidthProperty().bind(widthProperty());
@@ -148,9 +212,12 @@ public abstract class TimetableBlock extends Pane {
         // add some labels etc
         titleNormalLabel = initTitleLabel(contentPane);
         countNormalLabel = initCountLabel(contentPane);
+        addSeparator(contentPane);
         descriptionNormalLabel = initDescriptionLabel(contentPane);
         descriptionNormalLabel.setWrapText(true);
-
+        addSeparator(contentPane);
+        instrumentBox = new VBox();
+        contentPane.getChildren().add(instrumentBox);
         addWithClipRegion(contentPane, this);
 
         this.getStyleClass().add("block_Background");
@@ -168,7 +235,6 @@ public abstract class TimetableBlock extends Pane {
      * @param anchorPane the AnchorPane drag on
      */
     void initDraggedPane(AnchorPane anchorPane) {
-        // draggedPane itself
         draggedPane = new Pane();
         draggedPane.setVisible(false);
 
@@ -176,8 +242,6 @@ public abstract class TimetableBlock extends Pane {
         blurHelper.setOffset(new Point2D(8,8));
         addWithClipRegion(blurHelper.getImageView(), draggedPane);
 
-        // dragged content rootCenterArea which mirrors
-        // our content rootCenterArea, shown when dragging.
         draggedContentPane = new VBox() ;
         draggedContentPane.minWidthProperty().bind(draggedPane.widthProperty());
         draggedContentPane.maxWidthProperty().bind(draggedPane.widthProperty());
@@ -187,10 +251,13 @@ public abstract class TimetableBlock extends Pane {
         // add some labels etc
         titleDraggedLabel = initTitleLabel(draggedContentPane);
         countDraggedLabel = initCountLabel(draggedContentPane);
-        descriptionDraggedLabel = initCountLabel(draggedContentPane);
+        addSeparator(draggedContentPane);
+        descriptionDraggedLabel = initDescriptionLabel(draggedContentPane);
+        addSeparator(draggedContentPane);
+        draggedInstrumentBox = new VBox();
+        draggedContentPane.getChildren().add(draggedInstrumentBox);
         descriptionDraggedLabel.setWrapText(true);
 
-        // dropshadow shown underneath dragged rootCenterArea
         DropShadow ds = new DropShadow(15.0, 5.0, 5.0, Color.GRAY);
         this.getDraggedPane().setEffect(ds);
 
@@ -239,6 +306,34 @@ public abstract class TimetableBlock extends Pane {
     }
 
     /**
+     * Adds horizontal separator to specified area.
+     * @param pane the pane to add to.
+     */
+    protected void addSeparator(Pane pane) {
+        Separator separator = new Separator(Orientation.HORIZONTAL);
+        separator.setStyle("-fx-border-color: " + TweakingHelper.getColorString(2) + ";"
+            + "-fx-border-width: 1px 0 0 0; -fx-background-color: transparent; -fx-skin: null;"
+            + "-fx-opacity: 0.25;");
+        addEmptySpace(pane, 2);
+        pane.getChildren().add(separator);
+        addEmptySpace(pane, 2);
+    }
+
+    /**
+     * Adds empty vertical space of specified height to specified area.
+     * @param pane the pane to add to.
+     * @param height height of the space.
+     */
+    private void addEmptySpace(Pane pane, int height) {
+        Pane empty = new Pane();
+        empty.setPrefHeight(height);
+        empty.setMinHeight(height);
+        empty.setMaxHeight(height);
+        empty.setStyle("-fx-background-color: transparent;");
+        pane.getChildren().add(empty);
+    }
+
+    /**
      * Helper function to add title labels to panes.
      * @param vbox rootCenterArea to add this label to
      * @return the label in question.
@@ -247,7 +342,7 @@ public abstract class TimetableBlock extends Pane {
         Label res = new Label(parentBlock.getName());
         res.maxWidthProperty().bind(this.widthProperty());
         res.getStyleClass().add("block_Text_Title");
-        res.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(1) + ";");
+        res.setStyle(TEXT_FILL + TweakingHelper.getColorString(1) + ";");
         vbox.getChildren().add(res);
         return res;
     }
@@ -258,10 +353,10 @@ public abstract class TimetableBlock extends Pane {
      * @return - the label in question
      */
     private Label initDescriptionLabel(VBox vbox) {
-        Label res = new Label(parentBlock.getDescription());
+        Label res = new Label("Description: " + parentBlock.getDescription());
         res.maxWidthProperty().bind(this.widthProperty());
-        res.getStyleClass().add("block_Text_Normal");
-        res.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(2) + ";");
+        res.getStyleClass().add(BLOCK_TEXT_NORMAL);
+        res.setStyle(TEXT_FILL + TweakingHelper.getColorString(2) + ";");
         vbox.getChildren().add(res);
         return res;
     }
@@ -273,10 +368,10 @@ public abstract class TimetableBlock extends Pane {
      */
     private Label initCountLabel(VBox vbox) {
         String labelText = parentBlock.getBeginCount() + " - " + parentBlock.getEndCount();
-        Label res = new Label(labelText);
+        Label res = new Label("Count: " + labelText);
         res.maxWidthProperty().bind(this.widthProperty());
-        res.getStyleClass().add("block_Text_Normal");
-        res.setStyle("-fx-text-fill:" + TweakingHelper.getColorString(2) + ";");
+        res.getStyleClass().add(BLOCK_TEXT_NORMAL);
+        res.setStyle(TEXT_FILL + TweakingHelper.getColorString(2) + ";");
         vbox.getChildren().add(res);
         return res;
     }

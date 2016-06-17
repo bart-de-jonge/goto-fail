@@ -4,7 +4,6 @@ import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import gui.styling.StyledTextfield;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -26,8 +25,6 @@ public class CameraModificationModalView extends ModalView {
     protected static final int buttonHeight = 25;
     protected static final int buttonSpacing = 20;
     
-    // variables for the title label
-    protected int titlelabelOffsetFromLeft = 20;
     
     @Getter
     protected StyledTextfield nameField;
@@ -95,6 +92,7 @@ public class CameraModificationModalView extends ModalView {
      */
     protected HBox initHBoxForButtons() {
         HBox content = ModalUtilities.constructButtonPane();
+        content.setStyle(bottomStyle);
         this.viewPane.getChildren().add(content);
         return content;
     }

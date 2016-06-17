@@ -1,18 +1,17 @@
 package data;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.stream.Collectors;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 /**
  * Class to store information about a camera timeline.
@@ -68,7 +67,6 @@ public class CameraTimeline extends Timeline implements Cloneable {
         try {
             super.clone();
         } catch (CloneNotSupportedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         CameraTimeline timeline = new CameraTimeline(camera.clone(), getProject());

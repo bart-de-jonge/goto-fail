@@ -1,11 +1,10 @@
 package data;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import control.ProjectController;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.extern.log4j.Log4j2;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -16,13 +15,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import control.ProjectController;
-import data.User.Role;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.extern.log4j.Log4j2;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Class to store top-level properties of a scripting project.
@@ -150,7 +147,7 @@ public class ScriptingProject {
      * @return the maximum instance used so far
      */
     public int getMaxInstance() {
-        int res = Integer.MIN_VALUE;
+        setRes(Integer.MIN_VALUE);
         directorTimeline.getShots().forEach(shot -> {
                 if (shot.getInstance() > getRes()) {
                     setRes(shot.getInstance());
@@ -159,12 +156,12 @@ public class ScriptingProject {
         for (int i = 0;i < cameraTimelines.size();i++) {
             CameraTimeline timeline = cameraTimelines.get(i);
             for (int j = 0;j < timeline.getShots().size();j++) {
-                if (timeline.getShots().get(j).getInstance() > res) {
-                    res = timeline.getShots().get(j).getInstance();
+                if (timeline.getShots().get(j).getInstance() > getRes()) {
+                    setRes(timeline.getShots().get(j).getInstance());
                 }
             }
         }
-        return res;
+        return getRes();
     }
     
     /**
@@ -196,7 +193,6 @@ public class ScriptingProject {
             saved();
             return true;
         } catch (JAXBException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -229,7 +225,6 @@ public class ScriptingProject {
             result.saved();
             return result;
         } catch (JAXBException e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -249,7 +244,7 @@ public class ScriptingProject {
      */
     public Set<CameraType> getDistinctCameraTypes() {
         Set<CameraType> result = new HashSet<CameraType>();
-        for (Camera c: cameras) {
+        for (Camera c: this.cameras) {
             result.add(c.getCameraType());
         }
         

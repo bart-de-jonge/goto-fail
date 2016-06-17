@@ -1,25 +1,19 @@
 package data;
 
-import java.util.ArrayList;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Class to store information about cameras.
  */
 @XmlRootElement(name = "camera")
 @XmlAccessorType(XmlAccessType.FIELD)
-@EqualsAndHashCode
 @ToString
 @Log4j2
 public class Camera implements Cloneable {
@@ -41,7 +35,7 @@ public class Camera implements Cloneable {
 
     // The movementMargin, the time it takes for the Camera to move to a new position
     // Defined in seconds
-    @Setter
+    @Getter @Setter
     private double movementMargin;
 
     // Counter that ensures no timelines with duplicate numbers will be created.
@@ -82,7 +76,6 @@ public class Camera implements Cloneable {
         try {
             super.clone();
         } catch (CloneNotSupportedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         Camera camera = new Camera(name, description, cameraType.clone());
@@ -116,5 +109,58 @@ public class Camera implements Cloneable {
      */
     public static void incrementCounter() {
         instanceCounter++;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((cameraType == null) ? 0 : cameraType.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((ip == null) ? 0 : ip.hashCode());
+        long temp;
+        temp = Double.doubleToLongBits(movementMargin);
+        result = prime * result + (int) (temp ^ (temp >>> Integer.SIZE));
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null ||  !(o instanceof Camera)) {
+            return false;
+        }
+
+        Camera camera = (Camera) o;
+
+        if (Double.compare(camera.getMovementMargin(), getMovementMargin()) != 0) {
+            return false;
+        }
+        if (instance != camera.instance) {
+            return false;
+        }
+        if ((name != null && !name.equals(camera.name))
+                || (name == null && camera.name != null)) {
+            return false;
+        }
+        if ((description != null && !description.equals(camera.description))
+                || (description == null && camera.description != null)) {
+            return false;
+        }
+        if ((cameraType != null && !cameraType.equals(camera.cameraType))
+                || (cameraType == null && camera.cameraType != null)) {
+            return false;
+        }
+        if (ip != null) {
+            return ip.equals(camera.ip);
+        } else {
+            return camera.ip == null;
+        }
     }
 }

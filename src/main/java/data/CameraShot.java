@@ -15,10 +15,10 @@ import lombok.extern.log4j.Log4j2;
 @XmlRootElement(name = "cameraShot")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Log4j2
-public class CameraShot extends Shot {
+public class CameraShot extends Shot implements Cloneable {
 
     // Counter that ensures no shots with duplicate numbers will be created. 
-    @Setter
+    @Setter @Getter
     private static int instanceCounter = 0;
 
     @Getter
@@ -27,7 +27,7 @@ public class CameraShot extends Shot {
     private DirectorShot directorShot;
     
  // The instancenumber of the Shot.
-    @Getter
+    @Getter @Setter
     private int instance;
     
     @Getter @Setter
@@ -65,6 +65,22 @@ public class CameraShot extends Shot {
     public CameraShot(String name, String description, double startCount, double endCount) {
         this(new GeneralShotData(name, description, startCount, endCount), null);
     }
+    
+    @Override
+    public CameraShot clone() {
+        try {
+            super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        CameraShot result = new CameraShot(getName(), getDescription(),
+                getBeginCount(), getEndCount());
+        result.setDirectorShot(getDirectorShot());
+        result.setColliding(isColliding());
+        result.setInstruments(getInstruments());
+        result.setPresetId(getPresetId());
+        return result;
+    }
 
     /**
      * Static method to increment the instance counter.
@@ -81,7 +97,7 @@ public class CameraShot extends Shot {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((directorShot == null) ? 0 : directorShot.hashCode());
-        result = prime * result + instance;
+        result = prime * result + presetId;
         return result;
     }
 

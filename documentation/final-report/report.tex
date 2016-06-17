@@ -13,9 +13,10 @@
 \usepackage[english]{babel}															% English language/hyphenation
 \usepackage[protrusion=true,expansion=true]{microtype}				% Better typography
 \usepackage{amsmath,amsfonts,amsthm}										% Math packages
-\usepackage[pdftex]{graphicx}														% Enable pdflatex
+\usepackage[pdftex]{graphicx}	
+\usepackage{textcomp}													% Enable pdflatex
 \usepackage{url}
-
+\usepackage[hidelinks]{hyperref}
 
 %%% Custom sectioning (sectsty package)
 \usepackage{sectsty}												% Custom sectioning (see below)
@@ -43,8 +44,10 @@
 %%% Maketitle metadata
 \newcommand{\horrule}[1]{\rule{\linewidth}{#1}} 	% Horizontal rule
 
+\setcounter{secnumdepth}{1}
+
 \title{
-		%\vspace{-1in} 	
+		%\vspace{-5in} 	
 		\usefont{OT1}{bch}{b}{n}
 		\normalfont \normalsize \textsc{TU Delft Context Project 2016} \\ [25pt]
 		\horrule{0.5pt} \\[0.4cm]
@@ -55,15 +58,15 @@
 		\normalfont 								\normalsize
         Team: goto fail;\\\\[-3pt]		\normalsize
         Alexander Geenen\\[-3pt] \normalsize
-        Mark van de Ruit\\[-3pt] \normalsize
         Martijn Janssen\\[-3pt] \normalsize
         Bart de Jonge\\[-3pt] \normalsize
-        Menno Oudshoorn\\\\[-3pt] \normalsize
+        Menno Oudshoorn\\[-3pt] \normalsize
+		Mark van de Ruit\\\\[-3pt] \normalsize
         Context: Multimedia Services\\\\[-3pt] \normalsize
         \textit{Supervised by:}\\[-3pt] \normalsize
-        Valentine Mairet (Software Engineering TA)\\[-3pt] \normalsize
+        Cynthia Liem (Context Supervisor)\\[-3pt] \normalsize
         Alessio Bazzica (Context TA)\\[-3pt] \normalsize
-        Cynthia Liem (Context Supervisor)\\\\[3pt] \normalsize
+        Valentine Mairet (Software Engineering TA)\\\\[3pt] \normalsize
         \today
 }
 \date{}
@@ -72,6 +75,7 @@
 \addtolength{\oddsidemargin}{-2.5cm}
 \addtolength{\evensidemargin}{-2.5cm}
 \addtolength{\textwidth}{5cm}
+\addtolength{\topmargin}{-2cm}
 
 
 
@@ -96,6 +100,10 @@
 \input{./tex/evaluation}
 \newpage
 \input{./tex/outlook}
+\newpage
+\input{./tex/appendixarequirements}
+\newpage
+\input{./tex/appendixbtestinstructions}
 
 %%% End document
 \end{document}

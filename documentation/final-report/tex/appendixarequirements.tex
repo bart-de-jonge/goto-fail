@@ -1,0 +1,95 @@
+\section*{Appendix A: Initial requirements}
+\addcontentsline{toc}{section}{\protect\numberline{}Appendix A: Initial requirements}%
+
+\begin{large}
+\textbf{Scripting application}
+\end{large}\\
+\begin{itemize}
+\item Must haves
+\begin{itemize}
+\item Loading and saving of created scripts
+\item Timeline interface to show all camera shots in order, and per camera
+\item Adding and deleting of camera shots
+\item Moving camera shots around through a drag-and-drop interface
+\item Highlighting of shots that collide with other shots
+\item Director timeline that shows a summary of camera shots
+\item Ability to change the size of a timeline, relative to number of counts
+\end{itemize}
+\item Should haves
+\begin{itemize}
+\item Automatically generated camera timelines from constraints specified by the director
+\begin{itemize}
+\item Constraints such as: I want a shot of the violin from 0 to 10 with either camera 4 or camera 5. I want a conductor shot from 2 to 15 with camera 4. The program should then select camera 5 for the violin shot to avoid collisions.
+\end{itemize}
+\item Ability to add a camera to multiple timelines at the same time
+\item Editing of camera shots
+\end{itemize}
+\item Could haves
+\begin{itemize}
+\item Modularity and customizability of GUI
+\begin{itemize}
+\item Modularity means that elements created for the GUI can be reused in different positions, sizes and other configurations, throughout the GUI. Customizability means that the user can choose where and how to reuse these elements. For example: The ability to snap a pane to the left, right, top or bottom of an application, depending on user preference.
+\end{itemize}
+\item Post-production editing
+\end{itemize}
+\item Won't haves
+\begin{itemize}
+\item Support for transitions between shots
+\end{itemize}
+\end{itemize}
+\begin{large}
+\textbf{Web application}
+\end{large}
+\begin{itemize}
+\item Must haves
+\begin{itemize}
+\item Different views for different people, such as the director, a camera operator, the score caller.
+\begin{itemize}
+\item A score caller is someone who calls out to the camera operators where in the script they are at that moment. This should mostly be replaced by this product, but the score caller can still manage the speed of the timeline and take over manual control if something goes wrong.
+\end{itemize}
+\item Ability to easily move ahead through the timeline
+\item Ability for the director to edit the timeline during play
+\item Ability for the score caller to change the speed at which the timeline progresses
+\end{itemize}
+\item Should haves
+\begin{itemize}
+\item Ability for the score caller to choose between manual and automatic timeline speed, and change this within a recording.
+\item Highlighting those cameras that a certain camera operator is operating
+\item Warnings for possible problems when the director edits the timeline during recording, such as collisions
+\end{itemize}
+\item Could haves
+\begin{itemize}
+\item Ability to tap the timeline to see more information about a shot
+\end{itemize}
+\item Won't haves
+\begin{itemize}
+\item None for now
+\end{itemize}
+\end{itemize}
+\begin{large}
+\textbf{Camera control center and presets}
+\end{large}
+\begin{itemize}
+\item Must haves
+\begin{itemize}
+\item Interface to store and recall camera presets.
+\begin{itemize}
+\item These are actual camera settings, like pan, tilt, zoom etc.
+\end{itemize}
+\item A web server used to operate the cameras
+\item Automatic preset recalling during recordings
+\item Possibility to switch off automatic recall and take over manual control
+\end{itemize}
+\item Should haves
+\begin{itemize}
+\item Live low-quality preview of upcoming cameras
+\end{itemize}
+\item Could haves
+\begin{itemize}
+\item Possibility to move/zoom the cameras through the preset interface
+\end{itemize}
+\item Won't haves
+\begin{itemize}
+\item Live high-quality preview of upcoming cameras in our application
+\end{itemize}
+\end{itemize}

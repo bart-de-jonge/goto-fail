@@ -5,6 +5,7 @@ import gui.modal.PreferencesModalView;
 import gui.modal.ReloadModalView;
 import javafx.scene.input.MouseEvent;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Controller for the PreferencesModalView.
@@ -13,9 +14,9 @@ public class PreferencesViewController {
 
     private ControllerManager controllerManager;
 
-    @Getter
+    @Getter @Setter
     private PreferencesModalView preferencesModalView;
-    @Getter
+    @Getter @Setter
     private ReloadModalView reloadModalView;
 
     /**

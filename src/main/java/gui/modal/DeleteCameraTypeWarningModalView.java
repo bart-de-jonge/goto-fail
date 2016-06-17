@@ -1,18 +1,18 @@
 package gui.modal;
 
-import java.util.List;
-
+import control.ProjectController;
 import data.Camera;
 import gui.misc.TweakingHelper;
 import gui.root.RootPane;
 import gui.styling.StyledButton;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
+
+import java.util.List;
 
 public class DeleteCameraTypeWarningModalView extends ModalView {
 
@@ -30,11 +30,6 @@ public class DeleteCameraTypeWarningModalView extends ModalView {
 
     // simple background styles of the three main areas.
     private String topStyle = ModalUtilities.constructDefaultModalTopStyle(20);
-    private String bottomStyle = "-fx-background-color: "
-            + TweakingHelper.getColorString(0) + ";";
-
-    // variables for the buttons
-    private int buttonSpacing = 20;
 
     // variables for the title label
     private static final int titlelabelOffsetFromLeft = 20;
@@ -123,11 +118,10 @@ public class DeleteCameraTypeWarningModalView extends ModalView {
         boolean even = false;
         for (int i = 0; i < camerasToShow.size(); i++) {
             HBox cameraBox = new HBox();
-            cameraBox.getChildren().addAll(
-                    new Label(camerasToShow.get(i).getName()),
-                    new Label(" - "),
-                    new Label(camerasToShow.get(i).getDescription())
-            );
+            cameraBox.getChildren().add(new Label(
+                    ProjectController.constructModalString(
+                            camerasToShow.get(i).getName(),
+                            camerasToShow.get(i).getDescription())));
 
             if (even) {
                 cameraBox.setStyle("-fx-background-color: rgb(245,245,245);");

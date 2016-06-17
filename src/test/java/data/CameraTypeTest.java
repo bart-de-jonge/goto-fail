@@ -49,9 +49,43 @@ public class CameraTypeTest {
     }
 
     @Test
+    public void toStringTest() {
+        assertEquals("CameraType(name=type-1, description=A test camera type, movementMargin=2.0)", type.toString());
+    }
+
+    @Test
+    public void defaultConstructor() {
+        CameraType myType = new CameraType();
+        assertEquals("", myType.getName());
+        assertEquals("", myType.getDescription());
+        assertEquals(-1, myType.getMovementMargin(), 0);
+    }
+
+    @Test
+    public void cloneTest() {
+        assertEquals(type, type.clone());
+    }
+
+
+    @Test
     public void equalsTrueTest() {
         CameraType type2 = new CameraType("type-1", "A test camera type", 2);
         assertEquals(type2, type);
+    }
+
+    @Test
+    public void equalsTestSameObject() {
+        assertEquals(type, type);
+    }
+
+    @Test
+    public void equalsTestNull() {
+        assertNotEquals(type, null);
+    }
+
+    @Test
+    public void equalsTestOtherClass() {
+        assertNotEquals(type, "");
     }
 
     @Test
@@ -61,9 +95,35 @@ public class CameraTypeTest {
     }
 
     @Test
+    public void equalsNameNullTest() {
+        CameraType type2 = new CameraType(null, "A test camera type", 2);
+        assertNotEquals(type2, type);
+    }
+
+    @Test
+    public void equalsNameBothNullTest() {
+        CameraType type2 = new CameraType(null, "A test camera type", 2);
+        type.setName(null);
+        assertEquals(type2, type);
+    }
+
+    @Test
     public void equalsDescriptionTest() {
         CameraType type2 = new CameraType("type-1", "A test camera type 2", 2);
         assertNotEquals(type2, type);
+    }
+
+    @Test
+    public void equalsDescriptionNullTest() {
+        CameraType type2 = new CameraType("type-1", null, 2);
+        assertNotEquals(type2, type);
+    }
+
+    @Test
+    public void equalsDescriptionBothNullTest() {
+        CameraType type2 = new CameraType("type-1", null, 2);
+        type.setDescription(null);
+        assertEquals(type2, type);
     }
 
     @Test
@@ -71,16 +131,21 @@ public class CameraTypeTest {
         CameraType type2 = new CameraType("type-1", "A test camera type", 3);
         assertNotEquals(type2, type);
     }
-
+    
     @Test
-    public void testHashCodeTest() {
-        assertEquals(-245683693, type.hashCode());
+    public void hashCodeTestNothingNull() {
+        assertEquals(-122272765, type.hashCode());
     }
-
+    
     @Test
-    public void canEqualTest() {
-        CameraType type2 = new CameraType("type-1", "A test camera type", 3);
-        assertTrue(type.canEqual(type2));
+    public void hashCodeTestNameNull() {
+        type.setName(null);
+        assertEquals(736531877, type.hashCode());
     }
-
+    
+    @Test
+    public void hashCodeTestDescriptionNull() {
+        type.setDescription(null);
+        assertEquals(-1932516675, type.hashCode());
+    }
 }

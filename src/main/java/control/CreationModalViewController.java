@@ -5,9 +5,8 @@ import data.DirectorShot;
 import data.GeneralShotData;
 import gui.modal.CameraShotCreationModalView;
 import gui.modal.DirectorShotCreationModalView;
+import gui.styling.StyledCheckbox;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
-import javafx.scene.control.CheckBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -132,14 +131,14 @@ public class CreationModalViewController {
                         cameraShotCreationModalView.getStartField().getText()),
                 Double.parseDouble(
                         cameraShotCreationModalView.getEndField().getText()));
-            cameraShotCreationModalView.getInstrumentsDropdown().getCheckModel()
-                .getCheckedIndices().forEach(e -> {
-                        shot.addInstrument(this.controllerManager.getScriptingProject()
-                                                                 .getInstruments().get(e));
-                    });
+
+            cameraShotCreationModalView.getInstrumentsInShot().forEach(shotIndex -> {
+                    shot.addInstrument(controllerManager.getScriptingProject()
+                            .getInstruments().get(shotIndex));
+                });
 
             cameraShotCreationModalView.getCamerasInShot().forEach(cameraIndex -> {
-                    timelineController.addCameraShot(cameraIndex, shot);
+                    timelineController.addCameraShot(cameraIndex, shot.clone());
                 });
 
             cameraShotCreationModalView.getModalStage().close();
@@ -159,8 +158,8 @@ public class CreationModalViewController {
         String errorString = "";
 
         boolean aCameraSelected = false;
-        for (CheckBox cb : cameraShotCreationModalView.getCameraCheckboxes()) {
-            if (cb.isSelected()) {
+        for (StyledCheckbox cb : cameraShotCreationModalView.getCameraCheckboxes()) {
+            if (cb.getSelected()) {
                 aCameraSelected = true;
             }
         }
@@ -225,7 +224,7 @@ public class CreationModalViewController {
      * Handler for when enter is pressed on the startcount field in directorshot creation.
      * @param event - the keyevent
      */
-    private void directorShotStartCountEnterHandler(KeyEvent event) {
+    protected void directorShotStartCountEnterHandler(KeyEvent event) {
         if (event.getCode().equals(KeyCode.ENTER)) {
             directorShotCreationModalView.getStartField().setText(
                     CountUtilities.parseCountNumber(
@@ -239,7 +238,7 @@ public class CreationModalViewController {
      * @param oldValue - the old value of the focus
      * @param newValue - the new value of the focus
      */
-    private void directorShotEndCountFocusHandler(ObservableValue<? extends Boolean> observable,
+    protected void directorShotEndCountFocusHandler(ObservableValue<? extends Boolean> observable,
                                                 Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             directorShotCreationModalView.getEndField().setText(
@@ -252,7 +251,7 @@ public class CreationModalViewController {
      * Handler for when enter is pressed on the endcount field in directorshot creation.
      * @param event - the keyevent
      */
-    private void directorShotEndCountEnterHandler(KeyEvent event) {
+    protected void directorShotEndCountEnterHandler(KeyEvent event) {
         if (event.getCode().equals(KeyCode.ENTER)) {
             directorShotCreationModalView.getEndField().setText(
                     CountUtilities.parseCountNumber(
@@ -266,7 +265,7 @@ public class CreationModalViewController {
      * @param oldValue - the old value of the focus
      * @param newValue - the new value of the focus
      */
-    private void directorShotStartCountFocusHandler(ObservableValue<? extends Boolean> observable,
+    protected void directorShotStartCountFocusHandler(ObservableValue<? extends Boolean> observable,
                                                   Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             directorShotCreationModalView.getStartField().setText(
@@ -296,11 +295,10 @@ public class CreationModalViewController {
                 Double.parseDouble(directorShotCreationModalView.getEndPaddingField().getText()),
                 directorShotCreationModalView.getCamerasInShot());
             
-            directorShotCreationModalView.getInstrumentsDropdown().getCheckModel()
-                .getCheckedIndices().forEach(e -> {
-                        shot.addInstrument(this.controllerManager.getScriptingProject()
-                            .getInstruments().get(e));
-                    });
+            directorShotCreationModalView.getInstrumentsInShot().forEach(e -> {
+                    shot.addInstrument(this.controllerManager.getScriptingProject()
+                        .getInstruments().get(e));
+                });
 
             directorTimelineController.addDirectorShot(shot);
 
@@ -325,17 +323,6 @@ public class CreationModalViewController {
         }
 
         errorString = validateDirectorShotCounts(errorString);
-
-        boolean aCameraSelected = false;
-        for (CheckBox cb : directorShotCreationModalView.getCameraCheckboxes()) {
-            if (cb.isSelected()) {
-                aCameraSelected = true;
-            }
-        }
-
-        if (!aCameraSelected) {
-            errorString += "Please select at least one camera for this shot.";
-        }
 
         if (errorString.isEmpty()) {
             return true;
