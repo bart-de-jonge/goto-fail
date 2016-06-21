@@ -43,7 +43,7 @@ public class CameraTest {
     @Test
     public void toStringTest() {
         camera.setInstance(15);
-        assertEquals("Camera(name=camera-1, description=A test camera, cameraType=CameraType(name=cameratype-1, description=A test cameratype, movementMargin=2.0), ip=, movementMargin=2.0, instance=15)", camera.toString());
+        assertEquals("Camera(remoteCameraId=-1, name=camera-1, description=A test camera, cameraType=CameraType(name=cameratype-1, description=A test cameratype, movementMargin=2.0), ip=, movementMargin=2.0, instance=15)", camera.toString());
     }
 
     @Test

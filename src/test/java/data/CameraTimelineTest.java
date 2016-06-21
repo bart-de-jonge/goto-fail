@@ -20,7 +20,7 @@ public class CameraTimelineTest {
 
     @Test
     public void toStringTest() {
-        assertEquals("CameraTimeline(camera=Camera(name=camera-1, description=A test camera, cameraType=CameraType(name=cameratype-1, description=A test cameratype, movementMargin=2.0), ip=, movementMargin=2.0, instance=" + timeline.getCamera().getInstance() + "), shots=[], instance=" + timeline.getInstance() + ")", timeline.toString());
+        assertEquals("CameraTimeline(camera=Camera(remoteCameraId=-1, name=camera-1, description=A test camera, cameraType=CameraType(name=cameratype-1, description=A test cameratype, movementMargin=2.0), ip=, movementMargin=2.0, instance=" + timeline.getCamera().getInstance() + "), shots=[], instance=" + timeline.getInstance() + ")", timeline.toString());
     }
 
     @Test
