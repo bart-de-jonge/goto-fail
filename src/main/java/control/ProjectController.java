@@ -299,6 +299,7 @@ public class ProjectController {
             ScriptingProject project = constructProjectFromModalData();
             project.getDirectorTimeline().setProject(project);
             project.getCameraTimelines().forEach(c -> c.setProject(project));
+            project.setFilePath(null);
             controllerManager.setScriptingProject(project);
             controllerManager.updateWindowTitle();
             RootCenterArea area = new RootCenterArea(controllerManager.getRootPane(),

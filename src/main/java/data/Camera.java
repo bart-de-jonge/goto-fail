@@ -17,6 +17,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @ToString
 @Log4j2
 public class Camera implements Cloneable {
+    
+    @Getter @Setter
+    private int remoteCameraId;
 
     // Name of the camera
     @Getter @Setter
@@ -69,6 +72,7 @@ public class Camera implements Cloneable {
         log.debug("Created new Camera(name={}, description={}, cameraType={}",
                 name, description, cameraType);
         this.ip = "";
+        this.remoteCameraId = -1;
     }
     
     @Override
@@ -80,6 +84,9 @@ public class Camera implements Cloneable {
         }
         Camera camera = new Camera(name, description, cameraType.clone());
         camera.setInstance(this.getInstance());
+        camera.setIp(getIp());
+        camera.setRemoteCameraId(getRemoteCameraId());
+        camera.setMovementMargin(getMovementMargin());
         return camera;
     }
     
